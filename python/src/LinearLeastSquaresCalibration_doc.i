@@ -156,40 +156,6 @@ startingPoint : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearLeastSquaresCalibration::getBounds
-"Accessor to the parameter bounds.
-
-Returns
--------
-bounds : :class:`~openturns.Interval`
-    Parameter bounds used to constrain the calibration.
-    An empty interval means no bounds are applied."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearLeastSquaresCalibration::setBounds
-"Accessor to the parameter bounds.
-
-Parameters
-----------
-bounds : :class:`~openturns.Interval`
-    Parameter bounds used to constrain the calibration.
-    An empty interval means no bounds are applied.
-    A non-empty interval must have the calibration parameter dimension.
-
-Notes
------
-When bounds are set, the calibration solves the bounded linear least-squares
-problem as a quadratic problem, using the first algorithm selected by
-:meth:`~openturns.OptimizationAlgorithm.Build` instead of the unconstrained QR,
-SVD or Cholesky decomposition. The selected algorithm is the
-:class:`~openturns.experimental.HiGHS` quadratic solver when OpenTURNS is built
-with HiGHS support. Parameters lying on a bound up to the absolute tolerance
-``LinearLeastSquaresCalibration-ActiveBoundTolerance`` are considered fixed,
-and a rank-deficient free Jacobian block raises an exception."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::LinearLeastSquaresCalibration::getMethodName
 "Accessor to the name of least-squares method used for the resolution.
 

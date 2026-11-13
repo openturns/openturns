@@ -546,21 +546,6 @@ void GaussianNonLinearCalibration::setOptimizationAlgorithm(const OptimizationAl
   // enforce specific bounds.
 }
 
-/* Bounds accessor */
-Interval GaussianNonLinearCalibration::getBounds() const
-{
-  return bounds_;
-}
-
-void GaussianNonLinearCalibration::setBounds(const Interval & bounds)
-{
-  // An empty interval means no bounds; otherwise the dimension must match
-  // the calibration parameter dimension when it is already known.
-  const UnsignedInteger parameterDimension = parameterPrior_.getDimension();
-  if ((bounds.getDimension() != 0) && (parameterDimension != 0) && (bounds.getDimension() != parameterDimension)) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
-  bounds_ = bounds;
-}
-
 /* Algorithm accessor */
 UnsignedInteger GaussianNonLinearCalibration::getBootstrapSize() const
 {
@@ -591,7 +576,6 @@ void GaussianNonLinearCalibration::save(Advocate & adv) const
 {
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algorithm_", algorithm_);
-  adv.saveAttribute("bounds_", bounds_);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
   adv.saveAttribute("errorCovariance_", errorCovariance_);
   adv.saveAttribute("globalErrorCovariance_", globalErrorCovariance_);
@@ -602,8 +586,6 @@ void GaussianNonLinearCalibration::load(Advocate & adv)
 {
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algorithm_", algorithm_);
-  if (adv.hasAttribute("bounds_"))
-    adv.loadAttribute("bounds_", bounds_);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
   if (adv.hasAttribute("errorCovariance_"))
   {

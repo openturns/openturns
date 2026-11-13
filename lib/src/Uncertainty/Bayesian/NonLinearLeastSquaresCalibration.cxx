@@ -402,21 +402,6 @@ void NonLinearLeastSquaresCalibration::setOptimizationAlgorithm(const Optimizati
   // enforce specific bounds.
 }
 
-/* Bounds accessor */
-Interval NonLinearLeastSquaresCalibration::getBounds() const
-{
-  return bounds_;
-}
-
-void NonLinearLeastSquaresCalibration::setBounds(const Interval & bounds)
-{
-  // An empty interval means no bounds; otherwise the dimension must match
-  // the calibration parameter dimension when it is already known.
-  const UnsignedInteger parameterDimension = parameterPrior_.getDimension();
-  if ((bounds.getDimension() != 0) && (parameterDimension != 0) && (bounds.getDimension() != parameterDimension)) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
-  bounds_ = bounds;
-}
-
 /* Algorithm accessor */
 UnsignedInteger NonLinearLeastSquaresCalibration::getBootstrapSize() const
 {
@@ -458,7 +443,6 @@ void NonLinearLeastSquaresCalibration::save(Advocate & adv) const
 {
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algorithm_", algorithm_);
-  adv.saveAttribute("bounds_", bounds_);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
   adv.saveAttribute("useLaplaceApproximation_", useLaplaceApproximation_);
 }
@@ -468,8 +452,6 @@ void NonLinearLeastSquaresCalibration::load(Advocate & adv)
 {
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algorithm_", algorithm_);
-  if (adv.hasAttribute("bounds_"))
-    adv.loadAttribute("bounds_", bounds_);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
   if (adv.hasAttribute("useLaplaceApproximation_")) adv.loadAttribute("useLaplaceApproximation_", useLaplaceApproximation_);
   else useLaplaceApproximation_ = false;

@@ -113,41 +113,6 @@ algo : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NonLinearLeastSquaresCalibration::getBounds
-"Return the parameter bounds used to constrain the optimization.
-
-Returns
--------
-bounds : :class:`~openturns.Interval`
-    Parameter bounds used to constrain the optimization.
-    An empty interval means no bounds are applied."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::NonLinearLeastSquaresCalibration::setBounds
-"Set the parameter bounds used to constrain the optimization.
-
-Parameters
-----------
-bounds : :class:`~openturns.Interval`
-    Parameter bounds used to constrain the optimization.
-    An empty interval means no bounds are applied.
-    A non-empty interval must have the calibration parameter dimension.
-
-Notes
------
-:meth:`~openturns.NonLinearLeastSquaresCalibration.setOptimizationAlgorithm`
-adopts the bounds carried by the given algorithm problem when it has some
-and keeps the current bounds otherwise. Call this method after
-:meth:`~openturns.NonLinearLeastSquaresCalibration.setOptimizationAlgorithm`
-to enforce specific bounds. With a zero bootstrap size, parameters active
-at a bound up to the absolute ``LinearLeastSquaresCalibration-ActiveBoundTolerance``
-tolerance are considered fixed: the posterior covariance is computed from
-the free Jacobian block only and is zero in the fixed directions, and the
-residual degrees of freedom exclude the fixed parameters."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::getBootstrapSize
 "Return the bootstrap size used to sample the posterior distribution.
 
