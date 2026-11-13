@@ -70,7 +70,7 @@ public:
 
   /** Objective functions accessor */
   Function getObjective() const;
-  void setObjective(const Function & objective);
+  virtual void setObjective(const Function & objective);
   Bool hasMultipleObjective() const;
 
   /** Equality constraint function accessor */

@@ -81,7 +81,7 @@ public:
   void setPenalizedValue(const Scalar penalizedValue);
 
   /** Objective accessor, replaces the objective in the wrapped problem */
-  void setObjective(const Function & objective);
+  void setObjective(const Function & objective) override;
 
   /** Equality constraint accessor */
   void setEqualityConstraint(const Function & equalityConstraint) override;
