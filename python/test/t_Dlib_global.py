@@ -54,3 +54,39 @@ printResults(constrainingBoundsGlobal.getResult(), "Constraining bounds Global")
 assert (
     notConstrainingBoundsGlobal.getResult().getOptimalValue()[0] < 4.0
 ), "optimum not found"
+
+# progress/stop callbacks and user stop
+max_calls = 20
+global_progress = []
+
+
+def progress(p):
+    global_progress.append(p)
+
+
+def no_stop():
+    return False
+
+
+def stop_now():
+    return True
+
+
+global_algo = ot.Dlib(notConstrainingBoundsProblem, "global")
+global_algo.setStartingPoint([0.0] * 2)
+global_algo.setMaximumCallsNumber(max_calls)
+global_algo.setProgressCallback(progress)
+global_algo.setStopCallback(no_stop)
+global_algo.run()
+assert len(global_progress) == max_calls, "wrong progress calls number"
+assert all(0.0 <= p <= 100.0 for p in global_progress), "progress out of range"
+assert all(b >= a for a, b in zip(global_progress, global_progress[1:])), "progress not monotonic"
+assert abs(global_progress[-1] - 100.0) < 1e-12, "wrong final progress"
+
+stop_global = ot.Dlib(notConstrainingBoundsProblem, "global")
+stop_global.setStartingPoint([0.0] * 2)
+stop_global.setMaximumCallsNumber(max_calls)
+stop_global.setStopCallback(stop_now)
+stop_global.run()
+assert stop_global.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+assert stop_global.getResult().getCallsNumber() == 0, "wrong calls number"
