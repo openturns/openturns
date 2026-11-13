@@ -15,7 +15,7 @@ Schueremans and van Gemert (2005) [Schueremans2005]_ as a benchmark for
 structural reliability analysis. It represents a series system with four
 distinct failure modes (branches). The function has been widely used in
 reliability literature, particularly for testing active learning methods
-such as AK-MCS [Echard2011]_.
+such as AK-MCS [echard2011]_.
 
 Definition
 ----------
@@ -120,9 +120,10 @@ References
   networks in simulation based structural reliability analysis," *Structural Safety*,
   vol. 27, no. 3, pp. 241-258, 2005. DOI: 10.1016/j.strusafe.2004.11.001
 
-* [Echard2011]_ B. Echard, N. Gayton, and M. Lemaire, "AK-MCS: An active learning
-  reliability method combining Kriging and Monte Carlo simulation",
-  *Reliability Engineering and System Safety*, vol. 96, no. 2, pp. 145-154, 2011.
+* [echard2011]_ Echard B., Gayton N., Lemaire M.,
+  *AK-MCS: an active learning reliability method combining Kriging and Monte Carlo simulation*,
+  Structural Safety, 33(2), 145-154, 2011.
+  https://doi.org/10.1016/j.strusafe.2011.01.002
 
 Load the use case
 -----------------
