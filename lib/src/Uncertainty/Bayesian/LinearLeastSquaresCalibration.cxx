@@ -266,22 +266,6 @@ Point LinearLeastSquaresCalibration::getStartingPoint() const
   return getParameterPrior().getMean();
 }
 
-/* Bounds accessor */
-Interval LinearLeastSquaresCalibration::getBounds() const
-{
-  return bounds_;
-}
-
-void LinearLeastSquaresCalibration::setBounds(const Interval & bounds)
-{
-  // An empty interval means no bounds; otherwise the dimension must match
-  // the calibration parameter dimension when it is already known.
-  const UnsignedInteger parameterDimension = parameterPrior_.getDimension();
-  if ((bounds.getDimension() != 0) && (parameterDimension != 0) && (bounds.getDimension() != parameterDimension))
-    throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
-  bounds_ = bounds;
-}
-
 /* Least squares method name accessor */
 String LinearLeastSquaresCalibration::getMethodName() const
 {
@@ -308,7 +292,6 @@ void LinearLeastSquaresCalibration::save(Advocate & adv) const
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("modelObservations_", modelObservations_);
   adv.saveAttribute("gradientObservations_", gradientObservations_);
-  adv.saveAttribute("bounds_", bounds_);
   adv.saveAttribute("methodName_", methodName_);
 }
 
@@ -318,8 +301,6 @@ void LinearLeastSquaresCalibration::load(Advocate & adv)
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("modelObservations_", modelObservations_);
   adv.loadAttribute("gradientObservations_", gradientObservations_);
-  if (adv.hasAttribute("bounds_"))
-    adv.loadAttribute("bounds_", bounds_);
   adv.loadAttribute("methodName_", methodName_);
 }
 

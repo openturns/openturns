@@ -226,6 +226,22 @@ Distribution CalibrationAlgorithmImplementation::getParameterPrior() const
   return parameterPrior_;
 }
 
+/* Bounds accessor */
+Interval CalibrationAlgorithmImplementation::getBounds() const
+{
+  return bounds_;
+}
+
+void CalibrationAlgorithmImplementation::setBounds(const Interval & bounds)
+{
+  // An empty interval means no bounds; otherwise the dimension must match
+  // the calibration parameter dimension when it is already known.
+  const UnsignedInteger parameterDimension = parameterPrior_.getDimension();
+  if ((bounds.getDimension() != 0) && (parameterDimension != 0) && (bounds.getDimension() != parameterDimension))
+    throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
+  bounds_ = bounds;
+}
+
 /* Result accessor */
 void CalibrationAlgorithmImplementation::setResult(const CalibrationResult & result)
 {
@@ -251,6 +267,7 @@ void CalibrationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute("inputObservations_", inputObservations_);
   adv.saveAttribute("outputObservations_", outputObservations_);
   adv.saveAttribute("parameterPrior_", parameterPrior_);
+  adv.saveAttribute("bounds_", bounds_);
   adv.saveAttribute("result_", result_);
 }
 
@@ -262,6 +279,8 @@ void CalibrationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute("inputObservations_", inputObservations_);
   adv.loadAttribute("outputObservations_", outputObservations_);
   adv.loadAttribute("parameterPrior_", parameterPrior_);
+  if (adv.hasAttribute("bounds_"))
+    adv.loadAttribute("bounds_", bounds_);
   adv.loadAttribute("result_", result_);
 }
 

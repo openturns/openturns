@@ -72,6 +72,47 @@ OT_CalibrationAlgorithm_getParameterPrior_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CalibrationAlgorithm_getBounds_doc
+"Accessor to the parameter bounds.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    Parameter bounds used to constrain the calibration.
+    An empty interval means that no bounds are applied."
+%enddef
+%feature("docstring") OT::CalibrationAlgorithmImplementation::getBounds
+OT_CalibrationAlgorithm_getBounds_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CalibrationAlgorithm_setBounds_doc
+"Accessor to the parameter bounds.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    Parameter bounds used to constrain the calibration.
+    An empty interval means that no bounds are applied.
+    A non-empty interval must have the calibration parameter dimension.
+
+Notes
+-----
+The bounds constrain the optimization of the calibration.
+
+For :class:`~openturns.LinearLeastSquaresCalibration` and
+:class:`~openturns.NonLinearLeastSquaresCalibration`, parameters lying on a
+bound up to the absolute
+``LinearLeastSquaresCalibration-ActiveBoundTolerance`` tolerance are
+considered fixed when the posterior is computed from the linearized model:
+the covariance is zero in the fixed directions, and the residual degrees of
+freedom exclude the fixed parameters."
+%enddef
+%feature("docstring") OT::CalibrationAlgorithmImplementation::setBounds
+OT_CalibrationAlgorithm_setBounds_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CalibrationAlgorithm_run_doc
 "Launch the algorithm.
 

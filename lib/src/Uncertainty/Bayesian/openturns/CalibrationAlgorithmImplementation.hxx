@@ -71,6 +71,10 @@ public:
   /** Prior parameter distribution accessor */
   Distribution getParameterPrior() const;
 
+  /** Parameter bounds accessor */
+  Interval getBounds() const;
+  void setBounds(const Interval & bounds);
+
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
   virtual void run();
 
@@ -120,6 +124,9 @@ protected:
 
   /* The parameter prior distribution */
   Distribution parameterPrior_;
+
+  /* The parameter bounds: an empty interval means no bounds */
+  Interval bounds_;
 
   /* The calibration result */
   CalibrationResult result_;
