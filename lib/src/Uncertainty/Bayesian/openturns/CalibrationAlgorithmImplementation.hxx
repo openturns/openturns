@@ -26,6 +26,10 @@
 #include "openturns/CalibrationResult.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/Indices.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/CovarianceMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -86,6 +90,25 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  /* Indices of the parameters that are not fixed at a bound: all the
+   * directions when bounds is empty, the free ones otherwise. */
+  static Indices ComputeFreeParameterIndices(const Point & thetaStar,
+      const Interval & bounds);
+
+  /* Inverse of the Gram matrix on the free directions of a design matrix,
+   * padded with zeros in the directions fixed at a bound. When checkRank is
+   * true, a rank-deficient free block raises instead of returning a non-finite
+   * covariance. */
+  static CovarianceMatrix ComputeFreeGramInverse(const Matrix & design,
+      const Indices & freeIndices,
+      const String & methodName,
+      const Bool checkRank = true);
+
+  /* Inverse of a Hessian matrix on the free directions, padded with zeros in
+   * the directions fixed at a bound. */
+  static CovarianceMatrix ComputeFreeHessianInverse(const Matrix & hessian,
+      const Indices & freeIndices);
+
   /* Model to calibrate */
   Function model_;
 

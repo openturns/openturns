@@ -164,58 +164,9 @@ void LinearLeastSquaresCalibration::run()
     // P. E. Gill, W. Murray and M. H. Wright, Practical Optimization,
     // Academic Press, London, 1981, Section 5.2, for the active-set treatment
     // of bound constraints.
-    // Absolute tolerance used to detect a parameter lying on one of its bounds.
-    // It is deliberately larger than the default primal feasibility tolerance of
-    // the quadratic solver (1e-7) so that a parameter reported slightly outside
-    // its bound is still detected. It is not scaled by the bound magnitude:
-    // scaling by a large bound would classify a parameter lying well inside the
-    // feasible interval as fixed.
-    const Scalar tolerance = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance");
-    if (!(tolerance > 0.0) || !std::isfinite(tolerance))
-      throw InvalidArgumentException(HERE) << "Error: the active bound tolerance must be finite and strictly positive, got " << tolerance;
-    for (UnsignedInteger i = 0; i < parameterDimension; ++i)
-    {
-      Bool active = false;
-      if (finiteLowerBound[i] && (std::abs(thetaStar[i] - lowerBound[i]) <= tolerance))
-        active = true;
-      if (finiteUpperBound[i] && (std::abs(thetaStar[i] - upperBound[i]) <= tolerance))
-        active = true;
-      if (!active)
-        freeIndices.add(i);
-    }
-    const UnsignedInteger freeDimension = freeIndices.getSize();
-    degreesOfFreedom = freeDimension;
-    // The covariance is zero in the directions fixed at a bound: start from a
-    // zero matrix instead of the identity matrix used by CovarianceMatrix(dim).
-    gramInverse = CovarianceMatrix(parameterDimension, Point(parameterDimension));
-    if (freeDimension > 0)
-    {
-      Matrix freeGradient(gradientObservations_.getNbRows(), freeDimension);
-      for (UnsignedInteger j = 0; j < freeDimension; ++j)
-        for (UnsignedInteger i = 0; i < gradientObservations_.getNbRows(); ++i)
-          freeGradient(i, j) = gradientObservations_(i, freeIndices[j]);
-      // A rank-deficient free block gives a small positive singular value whose
-      // inverse can still be finite: check the numerical rank before relying on
-      // the factorization of the free block.
-      const Point singularValues(freeGradient.computeSingularValues());
-      const UnsignedInteger singularValuesSize = singularValues.getSize();
-      const Scalar largestSingularValue = (singularValuesSize > 0) ? singularValues[0] : 0.0;
-      const Scalar rankTolerance = std::max(freeGradient.getNbRows(), freeDimension) * SpecFunc::Precision * largestSingularValue;
-      if ((singularValuesSize < freeDimension) || !(largestSingularValue > 0.0) || (singularValues[singularValuesSize - 1] <= rankTolerance))
-        throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
-      LeastSquaresMethod freeMethod(LeastSquaresMethod::Build(methodName_, freeGradient));
-      // Initialize the decomposition before accessing the Gram inverse
-      freeMethod.update(Indices(), freeMethod.getCurrentIndices(), Indices(), false);
-      const CovarianceMatrix freeGramInverse(freeMethod.getGramInverse());
-      for (UnsignedInteger i = 0; i < freeDimension; ++i)
-        for (UnsignedInteger j = 0; j < freeDimension; ++j)
-        {
-          const Scalar value = freeGramInverse(i, j);
-          if (!std::isfinite(value))
-            throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
-          gramInverse(freeIndices[i], freeIndices[j]) = value;
-        }
-    }
+    freeIndices = ComputeFreeParameterIndices(thetaStar, bounds_);
+    degreesOfFreedom = freeIndices.getSize();
+    gramInverse = ComputeFreeGramInverse(gradientObservations_, freeIndices, methodName_);
   }
   else
   {
