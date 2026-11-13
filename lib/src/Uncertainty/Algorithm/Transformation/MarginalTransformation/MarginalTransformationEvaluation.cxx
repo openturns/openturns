@@ -671,12 +671,6 @@ Description MarginalTransformationEvaluation::getParameterDescription() const
 }
 
 
-void MarginalTransformationEvaluation::setParameterDescription(const Description & description)
-{
-  EvaluationImplementation::setParameterDescription(description);
-}
-
-
 /* Accessor for input point dimension */
 UnsignedInteger MarginalTransformationEvaluation::getInputDimension() const
 {

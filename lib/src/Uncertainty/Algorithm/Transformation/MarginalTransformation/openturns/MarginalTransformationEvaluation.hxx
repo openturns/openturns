@@ -87,7 +87,6 @@ public:
 
   /** Parameters description accessor */
   Description getParameterDescription() const override;
-  void setParameterDescription(const Description & description) override;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const override;
