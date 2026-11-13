@@ -339,10 +339,27 @@ def testTensorProductExperiment3():
     ott.assert_almost_equal(weights, weightsExact, rtol, atol)
 
 
+def testTensorProductExperimentIsRandom():
+    # A tensor product is random as soon as one marginal experiment is random.
+    deterministic = ot.TensorProductExperiment(
+        [ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [3]),
+         ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [5])])
+    assert not deterministic.isRandom()
+    mixed = ot.TensorProductExperiment(
+        [ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [3]),
+         ot.MonteCarloExperiment(ot.Uniform(0.0, 1.0), 10)])
+    assert mixed.isRandom()
+    random = ot.TensorProductExperiment(
+        [ot.LHSExperiment(ot.Uniform(0.0, 1.0), 10),
+         ot.MonteCarloExperiment(ot.Uniform(0.0, 1.0), 10)])
+    assert random.isRandom()
+
+
 # Testing
 testTensorProductExperiment1()
 testTensorProductExperiment2()
 testTensorProductExperiment3()
+testTensorProductExperimentIsRandom()
 
 
 # Check polynomial degree of exactness

@@ -1,0 +1,1230 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief Base class for quantile simulation results
+ *
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#include <cmath>
+#include <limits>
+
+#include "openturns/QuantileSimulationResultImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Log.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+CLASSNAMEINIT(QuantileSimulationResultImplementation)
+
+static const Factory<QuantileSimulationResultImplementation> Factory_QuantileSimulationResultImplementation;
+
+/* Default constructor */
+QuantileSimulationResultImplementation::QuantileSimulationResultImplementation()
+  : SimulationResult()
+  , output_(RandomVector(Uniform()))
+  , confidenceInterval_()
+{
+  // Nothing to do
+}
+
+/* Standard constructor */
+QuantileSimulationResultImplementation::QuantileSimulationResultImplementation(const RandomVector & output,
+                                                                               const Scalar alpha,
+                                                                               const Scalar beta)
+  : SimulationResult()
+  , confidenceInterval_()
+{
+  setOutput(output);
+  setQuantileLevel(alpha);
+  setConfidenceLevel(beta);
+}
+
+/* Virtual constructor */
+QuantileSimulationResultImplementation * QuantileSimulationResultImplementation::clone() const
+{
+  return new QuantileSimulationResultImplementation(*this);
+}
+
+/* Output random vector accessor */
+void QuantileSimulationResultImplementation::setOutput(const RandomVector & output)
+{
+  UnsignedInteger dimension = 0;
+  try
+  {
+    dimension = output.getDimension();
+  }
+  catch (const Exception &)
+  {
+    throw InvalidArgumentException(HERE) << "The output random vector must be scalar, but its dimension cannot be retrieved";
+  }
+  if (dimension != 1)
+    throw InvalidArgumentException(HERE)
+        << "The quantile simulation result only supports a scalar output random vector, but the output dimension is "
+        << dimension << ". Select a marginal with output.getMarginal(i), or define a scalar function h and "
+        << "use CompositeRandomVector(h, output).";
+  output_ = output;
+}
+
+RandomVector QuantileSimulationResultImplementation::getOutput() const
+{
+  return output_;
+}
+
+/* Quantile level accessor */
+void QuantileSimulationResultImplementation::setQuantileLevel(const Scalar alpha)
+{
+  if (!(alpha > 0.0 && alpha < 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The quantile level must be in (0, 1), but alpha = " << alpha;
+  alpha_ = alpha;
+}
+
+Scalar QuantileSimulationResultImplementation::getQuantileLevel() const
+{
+  return alpha_;
+}
+
+/* Confidence level accessor */
+void QuantileSimulationResultImplementation::setConfidenceLevel(const Scalar beta)
+{
+  if (!(beta > 0.0 && beta < 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The confidence level must be in (0, 1), but beta = " << beta;
+  beta_ = beta;
+}
+
+Scalar QuantileSimulationResultImplementation::getConfidenceLevel() const
+{
+  return beta_;
+}
+
+/* Master seed accessor */
+void QuantileSimulationResultImplementation::setMasterSeed(const UnsignedInteger seed)
+{
+  masterSeed_ = seed;
+  hasMasterSeed_ = true;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getMasterSeed() const
+{
+  return masterSeed_;
+}
+
+Bool QuantileSimulationResultImplementation::hasMasterSeed() const
+{
+  return hasMasterSeed_;
+}
+
+/* Quantile estimate accessor */
+void QuantileSimulationResultImplementation::setQuantileEstimate(const Scalar estimate)
+{
+  if (!std::isfinite(estimate))
+    throw InvalidArgumentException(HERE)
+        << "The quantile estimate must be finite, but estimate = " << estimate;
+  quantileEstimate_ = estimate;
+}
+
+Scalar QuantileSimulationResultImplementation::getQuantileEstimate() const
+{
+  return quantileEstimate_;
+}
+
+/* Standard error accessor */
+void QuantileSimulationResultImplementation::setStandardError(const Scalar standardError)
+{
+  if (!std::isfinite(standardError) || !(standardError >= 0.0))
+    throw InvalidArgumentException(HERE)
+        << "The standard error must be finite and non-negative, but standardError = " << standardError;
+  standardError_ = standardError;
+}
+
+Scalar QuantileSimulationResultImplementation::getStandardError() const
+{
+  return standardError_;
+}
+
+/* Confidence interval accessor */
+void QuantileSimulationResultImplementation::setConfidenceInterval(const Interval & interval)
+{
+  if (interval.getDimension() != 1)
+    throw InvalidArgumentException(HERE)
+        << "The confidence interval must be one-dimensional, but its dimension is "
+        << interval.getDimension();
+  confidenceInterval_ = interval;
+}
+
+Interval QuantileSimulationResultImplementation::getConfidenceInterval() const
+{
+  return confidenceInterval_;
+}
+
+/* Estimator type accessor */
+void QuantileSimulationResultImplementation::setEstimatorType(const EstimatorType type)
+{
+  if ((type != EMPIRICAL_INVERSE) && (type != INTERPOLATED))
+    throw InvalidArgumentException(HERE) << "Unknown estimator type";
+  estimatorType_ = type;
+}
+
+QuantileSimulationResultImplementation::EstimatorType QuantileSimulationResultImplementation::getEstimatorType() const
+{
+  return estimatorType_;
+}
+
+/* Achieved coverage accessor */
+void QuantileSimulationResultImplementation::setCoverageType(const CoverageType type)
+{
+  if ((type != COVERAGE_EXACT) && (type != COVERAGE_ASYMPTOTIC)
+      && (type != COVERAGE_ANYTIME_VALID) && (type != COVERAGE_NONE))
+    throw InvalidArgumentException(HERE) << "Unknown coverage type";
+  coverageType_ = type;
+}
+
+QuantileSimulationResultImplementation::CoverageType QuantileSimulationResultImplementation::getCoverageType() const
+{
+  return coverageType_;
+}
+
+/* Required coverage accessor */
+void QuantileSimulationResultImplementation::setRequiredCoverage(const CoverageType type)
+{
+  if ((type != COVERAGE_EXACT) && (type != COVERAGE_ASYMPTOTIC)
+      && (type != COVERAGE_ANYTIME_VALID) && (type != COVERAGE_NONE))
+    throw InvalidArgumentException(HERE) << "Unknown coverage type";
+  requiredCoverage_ = type;
+}
+
+QuantileSimulationResultImplementation::CoverageType QuantileSimulationResultImplementation::getRequiredCoverage() const
+{
+  return requiredCoverage_;
+}
+
+/* Effective sample size accessor */
+void QuantileSimulationResultImplementation::setEffectiveSampleSize(const Scalar ess)
+{
+  if (!std::isfinite(ess) || !(ess > 0.0))
+    throw InvalidArgumentException(HERE)
+        << "The effective sample size must be finite and positive, but ess = " << ess;
+  effectiveSampleSize_ = ess;
+}
+
+Scalar QuantileSimulationResultImplementation::getEffectiveSampleSize() const
+{
+  return effectiveSampleSize_;
+}
+
+/* Sample size accessor */
+void QuantileSimulationResultImplementation::setSampleSize(const UnsignedInteger sampleSize)
+{
+  if (sampleSize == 0)
+    throw InvalidArgumentException(HERE) << "The sample size must be positive";
+  sampleSize_ = sampleSize;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getSampleSize() const
+{
+  return sampleSize_;
+}
+
+/* Statistical block length accessor */
+void QuantileSimulationResultImplementation::setBlockLength(const UnsignedInteger blockLength)
+{
+  blockLength_ = blockLength;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getBlockLength() const
+{
+  return blockLength_;
+}
+
+/* Block count accessor */
+void QuantileSimulationResultImplementation::setBlockCount(const UnsignedInteger blockCount)
+{
+  blockCount_ = blockCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getBlockCount() const
+{
+  return blockCount_;
+}
+
+/* Block quantile sample accessor */
+void QuantileSimulationResultImplementation::setBlockQuantileSample(const Point & blockQuantiles)
+{
+  for (UnsignedInteger i = 0; i < blockQuantiles.getSize(); ++i)
+    if (!std::isfinite(blockQuantiles[i]))
+      throw InvalidArgumentException(HERE)
+          << "The block quantiles must be finite, but blockQuantiles[" << i << "] = " << blockQuantiles[i];
+  blockQuantileSample_ = blockQuantiles;
+}
+
+Point QuantileSimulationResultImplementation::getBlockQuantileSample() const
+{
+  return blockQuantileSample_;
+}
+
+/* Combination rule accessor */
+void QuantileSimulationResultImplementation::setCombinationType(const CombinationType type)
+{
+  if ((type != MEAN) && (type != MEDIAN) && (type != TRIMMED_MEAN))
+    throw InvalidArgumentException(HERE) << "Unknown combination type";
+  combinationType_ = type;
+}
+
+QuantileSimulationResultImplementation::CombinationType QuantileSimulationResultImplementation::getCombinationType() const
+{
+  return combinationType_;
+}
+
+String QuantileSimulationResultImplementation::getCombinationDescription() const
+{
+  switch (combinationType_)
+  {
+    case MEAN:
+      return "Mean";
+    case MEDIAN:
+      return "Median";
+    case TRIMMED_MEAN:
+      return OSS() << "Trimmed mean (gamma=" << trimmingFraction_ << ")";
+    default:
+      break;
+  }
+  return "Unknown";
+}
+
+/* Trimming fraction accessor */
+void QuantileSimulationResultImplementation::setTrimmingFraction(const Scalar gamma)
+{
+  if (!(gamma >= 0.0 && gamma < 0.5))
+    throw InvalidArgumentException(HERE)
+        << "The trimming fraction must be in [0, 0.5), but gamma = " << gamma;
+  trimmingFraction_ = gamma;
+}
+
+Scalar QuantileSimulationResultImplementation::getTrimmingFraction() const
+{
+  return trimmingFraction_;
+}
+
+/* Block-length policy description accessor */
+void QuantileSimulationResultImplementation::setBlockLengthPolicyDescription(const String & description)
+{
+  blockLengthPolicyDescription_ = description;
+}
+
+String QuantileSimulationResultImplementation::getBlockLengthPolicyDescription() const
+{
+  return blockLengthPolicyDescription_;
+}
+
+/* Peak memory accessor */
+void QuantileSimulationResultImplementation::setPeakMemory(const UnsignedInteger peakMemory)
+{
+  peakMemory_ = peakMemory;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getPeakMemory() const
+{
+  return peakMemory_;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getPeakMemoryInBytes() const
+{
+  return peakMemory_ * sizeof(Scalar);
+}
+
+/* Bias estimate accessor */
+void QuantileSimulationResultImplementation::setBiasEstimate(const Scalar bias)
+{
+  if (!std::isfinite(bias))
+    throw InvalidArgumentException(HERE)
+        << "The bias estimate must be finite, but bias = " << bias;
+  biasEstimate_ = bias;
+  hasBiasEstimate_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getBiasEstimate() const
+{
+  return biasEstimate_;
+}
+
+Bool QuantileSimulationResultImplementation::hasBiasEstimate() const
+{
+  return hasBiasEstimate_;
+}
+
+Scalar QuantileSimulationResultImplementation::getBiasToStandardErrorRatio() const
+{
+  if (!hasBiasEstimate_ || (biasEstimate_ == 0.0))
+    return 0.0;
+  // A nonzero bias with a zero standard error is unbounded, not negligible.
+  if (!(standardError_ > 0.0))
+    return std::numeric_limits<Scalar>::infinity();
+  return std::abs(biasEstimate_) / standardError_;
+}
+
+/* Exact-tail diagnostics accessors */
+void QuantileSimulationResultImplementation::setTailType(const TailType type)
+{
+  if ((type != NO_TAIL) && (type != LOWER_TAIL) && (type != UPPER_TAIL))
+    throw InvalidArgumentException(HERE) << "Unknown tail type";
+  tailType_ = type;
+}
+
+QuantileSimulationResultImplementation::TailType QuantileSimulationResultImplementation::getTailType() const
+{
+  return tailType_;
+}
+
+String QuantileSimulationResultImplementation::getTailDescription() const
+{
+  switch (tailType_)
+  {
+    case NO_TAIL:
+      return "None";
+    case LOWER_TAIL:
+      return "Lower tail";
+    case UPPER_TAIL:
+      return "Upper tail";
+    default:
+      break;
+  }
+  return "Unknown";
+}
+
+/* Root-finding diagnostics accessors */
+void QuantileSimulationResultImplementation::setDirectionCount(const UnsignedInteger directionCount)
+{
+  directionCount_ = directionCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getDirectionCount() const
+{
+  return directionCount_;
+}
+
+void QuantileSimulationResultImplementation::setConditionalProbabilitySample(const Point & probabilities)
+{
+  for (UnsignedInteger i = 0; i < probabilities.getSize(); ++i)
+    if (!std::isfinite(probabilities[i]) || (probabilities[i] < 0.0) || (probabilities[i] > 1.0))
+      throw InvalidArgumentException(HERE)
+          << "The conditional probabilities must be in [0, 1], but probabilities[" << i
+          << "] = " << probabilities[i];
+  conditionalProbabilitySample_ = probabilities;
+}
+
+Point QuantileSimulationResultImplementation::getConditionalProbabilitySample() const
+{
+  return conditionalProbabilitySample_;
+}
+
+void QuantileSimulationResultImplementation::setImportantDirection(const Point & direction)
+{
+  for (UnsignedInteger i = 0; i < direction.getSize(); ++i)
+    if (!std::isfinite(direction[i]))
+      throw InvalidArgumentException(HERE)
+          << "The important direction must be finite, but direction[" << i
+          << "] = " << direction[i];
+  if (!(direction.norm() > 0.0))
+    throw InvalidArgumentException(HERE) << "The important direction must be non-zero";
+  importantDirection_ = direction;
+  hasImportantDirection_ = true;
+}
+
+Point QuantileSimulationResultImplementation::getImportantDirection() const
+{
+  return importantDirection_;
+}
+
+Bool QuantileSimulationResultImplementation::hasImportantDirection() const
+{
+  return hasImportantDirection_;
+}
+
+void QuantileSimulationResultImplementation::setRootBracket(const Interval & bracket)
+{
+  rootBracket_ = bracket;
+  hasRootBracket_ = true;
+}
+
+Interval QuantileSimulationResultImplementation::getRootBracket() const
+{
+  return rootBracket_;
+}
+
+Bool QuantileSimulationResultImplementation::hasRootBracket() const
+{
+  return hasRootBracket_;
+}
+
+void QuantileSimulationResultImplementation::setRootIterationCount(const UnsignedInteger iterationCount)
+{
+  rootIterationCount_ = iterationCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getRootIterationCount() const
+{
+  return rootIterationCount_;
+}
+
+void QuantileSimulationResultImplementation::setProbabilityEvaluationCount(const UnsignedInteger evaluationCount)
+{
+  probabilityEvaluationCount_ = evaluationCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getProbabilityEvaluationCount() const
+{
+  return probabilityEvaluationCount_;
+}
+
+void QuantileSimulationResultImplementation::setRootSolverType(const RootSolverType type)
+{
+  if ((type != BISECTION) && (type != ROBBINS_MONRO))
+    throw InvalidArgumentException(HERE) << "Unknown root solver type";
+  rootSolverType_ = type;
+}
+
+QuantileSimulationResultImplementation::RootSolverType QuantileSimulationResultImplementation::getRootSolverType() const
+{
+  return rootSolverType_;
+}
+
+String QuantileSimulationResultImplementation::getRootSolverDescription() const
+{
+  switch (rootSolverType_)
+  {
+    case BISECTION:
+      return "Bisection";
+    case ROBBINS_MONRO:
+      return "Robbins-Monro";
+    default:
+      break;
+  }
+  return "Unknown";
+}
+
+void QuantileSimulationResultImplementation::setRetainedCount(const UnsignedInteger retainedCount)
+{
+  retainedCount_ = retainedCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getRetainedCount() const
+{
+  return retainedCount_;
+}
+
+void QuantileSimulationResultImplementation::setLowerRank(const UnsignedInteger lowerRank)
+{
+  lowerRank_ = lowerRank;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getLowerRank() const
+{
+  return lowerRank_;
+}
+
+void QuantileSimulationResultImplementation::setUpperRank(const UnsignedInteger upperRank)
+{
+  upperRank_ = upperRank;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getUpperRank() const
+{
+  return upperRank_;
+}
+
+/* Threshold-scheme diagnostics accessors */
+void QuantileSimulationResultImplementation::setThresholdSequence(const Point & thresholds)
+{
+  for (UnsignedInteger i = 0; i < thresholds.getSize(); ++i)
+    if (!std::isfinite(thresholds[i]))
+      throw InvalidArgumentException(HERE)
+          << "The threshold sequence must be finite, but thresholds[" << i << "] = " << thresholds[i];
+  thresholdSequence_ = thresholds;
+}
+
+Point QuantileSimulationResultImplementation::getThresholdSequence() const
+{
+  return thresholdSequence_;
+}
+
+void QuantileSimulationResultImplementation::setLevelProbabilitySequence(const Point & probabilities)
+{
+  for (UnsignedInteger i = 0; i < probabilities.getSize(); ++i)
+    if (!std::isfinite(probabilities[i]) || !(probabilities[i] >= 0.0) || !(probabilities[i] <= 1.0))
+      throw InvalidArgumentException(HERE)
+          << "The level probabilities must be in [0, 1], but probabilities[" << i << "] = " << probabilities[i];
+  levelProbabilitySequence_ = probabilities;
+}
+
+Point QuantileSimulationResultImplementation::getLevelProbabilitySequence() const
+{
+  return levelProbabilitySequence_;
+}
+
+void QuantileSimulationResultImplementation::setStepCount(const UnsignedInteger stepCount)
+{
+  stepCount_ = stepCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getStepCount() const
+{
+  return stepCount_;
+}
+
+void QuantileSimulationResultImplementation::setAcceptanceRate(const Scalar acceptanceRate)
+{
+  if (!std::isfinite(acceptanceRate) || !(acceptanceRate >= 0.0) || !(acceptanceRate <= 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The acceptance rate must be in [0, 1], but acceptanceRate = " << acceptanceRate;
+  acceptanceRate_ = acceptanceRate;
+}
+
+Scalar QuantileSimulationResultImplementation::getAcceptanceRate() const
+{
+  return acceptanceRate_;
+}
+
+void QuantileSimulationResultImplementation::setPoissonRanks(const UnsignedInteger lowerRank,
+                                                             const UnsignedInteger upperRank)
+{
+  if (lowerRank == 0)
+    throw InvalidArgumentException(HERE) << "The lower Poisson rank must be positive";
+  if (upperRank < lowerRank)
+    throw InvalidArgumentException(HERE)
+        << "The upper Poisson rank (" << upperRank
+        << ") must not be smaller than the lower Poisson rank (" << lowerRank << ")";
+  poissonRankLower_ = lowerRank;
+  poissonRankUpper_ = upperRank;
+  hasPoissonRanks_ = true;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getPoissonRankLower() const
+{
+  return poissonRankLower_;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getPoissonRankUpper() const
+{
+  return poissonRankUpper_;
+}
+
+Bool QuantileSimulationResultImplementation::hasPoissonRanks() const
+{
+  return hasPoissonRanks_;
+}
+
+void QuantileSimulationResultImplementation::setParticleCount(const UnsignedInteger particleCount)
+{
+  if (particleCount == 0)
+    throw InvalidArgumentException(HERE) << "The particle count must be positive";
+  particleCount_ = particleCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getParticleCount() const
+{
+  return particleCount_;
+}
+
+void QuantileSimulationResultImplementation::setReplicateCount(const UnsignedInteger replicateCount)
+{
+  if (replicateCount == 0)
+    throw InvalidArgumentException(HERE) << "The replicate count must be positive";
+  replicateCount_ = replicateCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getReplicateCount() const
+{
+  return replicateCount_;
+}
+
+void QuantileSimulationResultImplementation::setReplicateEstimates(const Point & estimates)
+{
+  for (UnsignedInteger i = 0; i < estimates.getSize(); ++i)
+    if (!std::isfinite(estimates[i]))
+      throw InvalidArgumentException(HERE)
+          << "The replicate estimates must be finite, but estimates[" << i << "] = " << estimates[i];
+  replicateEstimates_ = estimates;
+}
+
+Point QuantileSimulationResultImplementation::getReplicateEstimates() const
+{
+  return replicateEstimates_;
+}
+
+/* Cross-entropy diagnostics accessors */
+void QuantileSimulationResultImplementation::setAuxiliaryDistribution(const Distribution & distribution)
+{
+  auxiliaryDistribution_ = distribution;
+  hasAuxiliaryDistribution_ = true;
+}
+
+Distribution QuantileSimulationResultImplementation::getAuxiliaryDistribution() const
+{
+  return auxiliaryDistribution_;
+}
+
+Bool QuantileSimulationResultImplementation::hasAuxiliaryDistribution() const
+{
+  return hasAuxiliaryDistribution_;
+}
+
+void QuantileSimulationResultImplementation::setIntermediateQuantileLevel(const Scalar level)
+{
+  if (!(level > 0.0 && level < 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The intermediate quantile level must be in (0, 1), but level = " << level;
+  intermediateQuantileLevel_ = level;
+}
+
+Scalar QuantileSimulationResultImplementation::getIntermediateQuantileLevel() const
+{
+  return intermediateQuantileLevel_;
+}
+
+void QuantileSimulationResultImplementation::setConditionalProbability(const Scalar probability)
+{
+  if (!(probability > 0.0 && probability < 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The conditional probability must be in (0, 1), but probability = " << probability;
+  conditionalProbability_ = probability;
+}
+
+Scalar QuantileSimulationResultImplementation::getConditionalProbability() const
+{
+  return conditionalProbability_;
+}
+
+void QuantileSimulationResultImplementation::setCommonRandomNumbers(const Bool commonRandomNumbers)
+{
+  commonRandomNumbers_ = commonRandomNumbers;
+}
+
+Bool QuantileSimulationResultImplementation::getCommonRandomNumbers() const
+{
+  return commonRandomNumbers_;
+}
+
+void QuantileSimulationResultImplementation::setRandomStreamCapability(const Bool capability)
+{
+  randomStreamCapability_ = capability;
+}
+
+Bool QuantileSimulationResultImplementation::getRandomStreamCapability() const
+{
+  return randomStreamCapability_;
+}
+
+void QuantileSimulationResultImplementation::setDelegatedToDirectExtraction(const Bool delegated)
+{
+  delegatedToDirectExtraction_ = delegated;
+}
+
+Bool QuantileSimulationResultImplementation::getDelegatedToDirectExtraction() const
+{
+  return delegatedToDirectExtraction_;
+}
+
+void QuantileSimulationResultImplementation::setWrappedAlgorithmDescription(const String & description)
+{
+  wrappedAlgorithmDescription_ = description;
+  hasWrappedAlgorithmDescription_ = true;
+}
+
+String QuantileSimulationResultImplementation::getWrappedAlgorithmDescription() const
+{
+  return wrappedAlgorithmDescription_;
+}
+
+Bool QuantileSimulationResultImplementation::hasWrappedAlgorithmDescription() const
+{
+  return hasWrappedAlgorithmDescription_;
+}
+
+/* Post-analytical diagnostics accessors */
+void QuantileSimulationResultImplementation::setAnalyticalProbability(const Scalar probability)
+{
+  if (!std::isfinite(probability) || (probability < 0.0) || (probability > 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The analytical probability must be in [0, 1], but probability = " << probability;
+  analyticalProbability_ = probability;
+  hasAnalyticalProbability_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getAnalyticalProbability() const
+{
+  return analyticalProbability_;
+}
+
+Bool QuantileSimulationResultImplementation::hasAnalyticalProbability() const
+{
+  return hasAnalyticalProbability_;
+}
+
+void QuantileSimulationResultImplementation::setDesignPoint(const Point & designPoint)
+{
+  for (UnsignedInteger i = 0; i < designPoint.getSize(); ++i)
+    if (!std::isfinite(designPoint[i]))
+      throw InvalidArgumentException(HERE)
+          << "The design point must be finite, but designPoint[" << i
+          << "] = " << designPoint[i];
+  designPoint_ = designPoint;
+  hasDesignPoint_ = true;
+}
+
+Point QuantileSimulationResultImplementation::getDesignPoint() const
+{
+  return designPoint_;
+}
+
+Bool QuantileSimulationResultImplementation::hasDesignPoint() const
+{
+  return hasDesignPoint_;
+}
+
+void QuantileSimulationResultImplementation::setReliabilityIndex(const Scalar index)
+{
+  if (!std::isfinite(index))
+    throw InvalidArgumentException(HERE)
+        << "The reliability index must be finite, but index = " << index;
+  reliabilityIndex_ = index;
+  hasReliabilityIndex_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getReliabilityIndex() const
+{
+  return reliabilityIndex_;
+}
+
+Bool QuantileSimulationResultImplementation::hasReliabilityIndex() const
+{
+  return hasReliabilityIndex_;
+}
+
+void QuantileSimulationResultImplementation::setCurvatureCorrection(const Scalar correction)
+{
+  if (!std::isfinite(correction) || !(correction > 0.0))
+    throw InvalidArgumentException(HERE)
+        << "The curvature correction must be finite and positive, but correction = "
+        << correction;
+  curvatureCorrection_ = correction;
+  hasCurvatureCorrection_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getCurvatureCorrection() const
+{
+  return curvatureCorrection_;
+}
+
+Bool QuantileSimulationResultImplementation::hasCurvatureCorrection() const
+{
+  return hasCurvatureCorrection_;
+}
+
+void QuantileSimulationResultImplementation::setRefinedProbability(const Scalar probability)
+{
+  if (!std::isfinite(probability) || (probability < 0.0) || (probability > 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The refined probability must be in [0, 1], but probability = " << probability;
+  refinedProbability_ = probability;
+  hasRefinedProbability_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getRefinedProbability() const
+{
+  return refinedProbability_;
+}
+
+Bool QuantileSimulationResultImplementation::hasRefinedProbability() const
+{
+  return hasRefinedProbability_;
+}
+
+void QuantileSimulationResultImplementation::setRefinementStandardError(const Scalar standardError)
+{
+  if (!std::isfinite(standardError) || (standardError < 0.0))
+    throw InvalidArgumentException(HERE)
+        << "The refinement standard error must be finite and non-negative, but standardError = "
+        << standardError;
+  refinementStandardError_ = standardError;
+}
+
+Scalar QuantileSimulationResultImplementation::getRefinementStandardError() const
+{
+  return refinementStandardError_;
+}
+
+/* Fixed sample flag accessor */
+void QuantileSimulationResultImplementation::setIsFixedSample(const Bool fixedSample)
+{
+  isFixedSample_ = fixedSample;
+}
+
+Bool QuantileSimulationResultImplementation::isFixedSample() const
+{
+  return isFixedSample_;
+}
+
+/* Convergence history accessor */
+void QuantileSimulationResultImplementation::setConvergenceHistory(const Sample & history)
+{
+  if ((history.getSize() > 0) && (history.getDimension() < 2))
+    throw InvalidArgumentException(HERE)
+        << "The convergence history must have at least two columns (sample size, estimate), but its dimension is "
+        << history.getDimension();
+  convergenceHistory_ = history;
+}
+
+Sample QuantileSimulationResultImplementation::getConvergenceHistory() const
+{
+  return convergenceHistory_;
+}
+
+/* Estimator description */
+String QuantileSimulationResultImplementation::getEstimatorDescription() const
+{
+  switch (estimatorType_)
+  {
+    case EMPIRICAL_INVERSE:
+      return "Empirical inverse";
+    case INTERPOLATED:
+      return "Interpolated";
+    default:
+      break;
+  }
+  return "Unknown";
+}
+
+/* Coverage description */
+String QuantileSimulationResultImplementation::getCoverageDescription() const
+{
+  switch (coverageType_)
+  {
+    case COVERAGE_EXACT:
+      return "Exact";
+    case COVERAGE_ASYMPTOTIC:
+      return "Asymptotic";
+    case COVERAGE_ANYTIME_VALID:
+      return "Anytime-valid";
+    case COVERAGE_NONE:
+      return "None";
+    default:
+      break;
+  }
+  return "Unknown";
+}
+
+/* Draw the quantile convergence */
+Graph QuantileSimulationResultImplementation::drawQuantileConvergence() const
+{
+  Graph graph("Quantile convergence", "sample size", "quantile");
+  const UnsignedInteger size = convergenceHistory_.getSize();
+  if (size == 0)
+    return graph;
+
+  Sample estimateSample(size, 2);
+  Sample lowerSample(0, 2);
+  Sample upperSample(0, 2);
+  const Bool hasBounds = convergenceHistory_.getDimension() >= 4;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar sampleSize = convergenceHistory_(i, 0);
+    estimateSample(i, 0) = sampleSize;
+    estimateSample(i, 1) = convergenceHistory_(i, 1);
+    if (hasBounds)
+    {
+      lowerSample.add(Point({sampleSize, convergenceHistory_(i, 2)}));
+      upperSample.add(Point({sampleSize, convergenceHistory_(i, 3)}));
+    }
+  }
+
+  Curve estimateCurve(estimateSample, "quantile estimate");
+  estimateCurve.setLineWidth(2);
+  graph.add(estimateCurve);
+  if (hasBounds)
+  {
+    Curve lowerCurve(lowerSample, "confidence bounds");
+    graph.add(lowerCurve);
+    Curve upperCurve(upperSample);
+    upperCurve.setColor(graph.getDrawable(1).getColor());
+    graph.add(upperCurve);
+  }
+  graph.setLegendPosition("topright");
+  return graph;
+}
+
+/* String converter */
+String QuantileSimulationResultImplementation::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << QuantileSimulationResultImplementation::GetClassName()
+      << " output=" << output_
+      << " alpha=" << alpha_
+      << " beta=" << beta_
+      << " quantileEstimate=" << quantileEstimate_
+      << " standardError=" << standardError_
+      << " confidenceInterval=" << confidenceInterval_
+      << " estimator=" << getEstimatorDescription()
+      << " coverage=" << getCoverageDescription()
+      << " sampleSize=" << sampleSize_
+      << " effectiveSampleSize=" << effectiveSampleSize_
+      << " blockLength=" << blockLength_
+      << " blockCount=" << blockCount_
+      << " combination=" << getCombinationDescription()
+      << " blockLengthPolicy=" << blockLengthPolicyDescription_
+      << " peakMemory=" << peakMemory_
+      << " tail=" << getTailDescription()
+      << " retainedCount=" << retainedCount_
+      << " lowerRank=" << lowerRank_
+      << " upperRank=" << upperRank_
+      << " thresholdCount=" << thresholdSequence_.getSize()
+      << " stepCount=" << stepCount_
+      << " acceptanceRate=" << acceptanceRate_
+      << " particleCount=" << particleCount_
+      << " replicateCount=" << replicateCount_
+      << " intermediateQuantileLevel=" << intermediateQuantileLevel_
+      << " conditionalProbability=" << conditionalProbability_
+      << " hasAuxiliaryDistribution=" << hasAuxiliaryDistribution_
+      << " isFixedSample=" << isFixedSample_;
+  return oss;
+}
+
+String QuantileSimulationResultImplementation::__str__(const String & /*offset*/) const
+{
+  OSS oss;
+  oss << getEstimatorDescription() << " quantile estimate=" << quantileEstimate_
+      << " at level " << alpha_
+      << " in " << confidenceInterval_
+      << " (" << getCoverageDescription() << " coverage)";
+  return oss;
+}
+
+/* Method save() stores the object through the StorageManager */
+void QuantileSimulationResultImplementation::save(Advocate & adv) const
+{
+  SimulationResult::save(adv);
+  adv.saveAttribute("output_", output_);
+  adv.saveAttribute("quantileEstimate_", quantileEstimate_);
+  adv.saveAttribute("standardError_", standardError_);
+  adv.saveAttribute("confidenceInterval_", confidenceInterval_);
+  adv.saveAttribute("alpha_", alpha_);
+  adv.saveAttribute("beta_", beta_);
+  adv.saveAttribute("masterSeed_", masterSeed_);
+  adv.saveAttribute("hasMasterSeed_", hasMasterSeed_);
+  adv.saveAttribute("estimatorType_", static_cast<UnsignedInteger>(estimatorType_));
+  adv.saveAttribute("coverageType_", static_cast<UnsignedInteger>(coverageType_));
+  adv.saveAttribute("requiredCoverage_", static_cast<UnsignedInteger>(requiredCoverage_));
+  adv.saveAttribute("effectiveSampleSize_", effectiveSampleSize_);
+  adv.saveAttribute("sampleSize_", sampleSize_);
+  adv.saveAttribute("blockLength_", blockLength_);
+  adv.saveAttribute("blockCount_", blockCount_);
+  adv.saveAttribute("blockQuantileSample_", blockQuantileSample_);
+  adv.saveAttribute("combinationType_", static_cast<UnsignedInteger>(combinationType_));
+  adv.saveAttribute("trimmingFraction_", trimmingFraction_);
+  adv.saveAttribute("blockLengthPolicyDescription_", blockLengthPolicyDescription_);
+  adv.saveAttribute("peakMemory_", peakMemory_);
+  adv.saveAttribute("biasEstimate_", biasEstimate_);
+  adv.saveAttribute("hasBiasEstimate_", hasBiasEstimate_);
+  adv.saveAttribute("tailType_", static_cast<UnsignedInteger>(tailType_));
+  adv.saveAttribute("retainedCount_", retainedCount_);
+  adv.saveAttribute("lowerRank_", lowerRank_);
+  adv.saveAttribute("upperRank_", upperRank_);
+  adv.saveAttribute("thresholdSequence_", thresholdSequence_);
+  adv.saveAttribute("levelProbabilitySequence_", levelProbabilitySequence_);
+  adv.saveAttribute("stepCount_", stepCount_);
+  adv.saveAttribute("acceptanceRate_", acceptanceRate_);
+  adv.saveAttribute("poissonRankLower_", poissonRankLower_);
+  adv.saveAttribute("poissonRankUpper_", poissonRankUpper_);
+  adv.saveAttribute("hasPoissonRanks_", hasPoissonRanks_);
+  adv.saveAttribute("particleCount_", particleCount_);
+  adv.saveAttribute("replicateCount_", replicateCount_);
+  adv.saveAttribute("replicateEstimates_", replicateEstimates_);
+  adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
+  adv.saveAttribute("hasAuxiliaryDistribution_", hasAuxiliaryDistribution_);
+  adv.saveAttribute("intermediateQuantileLevel_", intermediateQuantileLevel_);
+  adv.saveAttribute("conditionalProbability_", conditionalProbability_);
+  adv.saveAttribute("directionCount_", directionCount_);
+  adv.saveAttribute("conditionalProbabilitySample_", conditionalProbabilitySample_);
+  adv.saveAttribute("importantDirection_", importantDirection_);
+  adv.saveAttribute("hasImportantDirection_", hasImportantDirection_);
+  adv.saveAttribute("rootBracket_", rootBracket_);
+  adv.saveAttribute("hasRootBracket_", hasRootBracket_);
+  adv.saveAttribute("rootIterationCount_", rootIterationCount_);
+  adv.saveAttribute("probabilityEvaluationCount_", probabilityEvaluationCount_);
+  adv.saveAttribute("rootSolverType_", static_cast<UnsignedInteger>(rootSolverType_));
+  adv.saveAttribute("commonRandomNumbers_", commonRandomNumbers_);
+  adv.saveAttribute("randomStreamCapability_", randomStreamCapability_);
+  adv.saveAttribute("delegatedToDirectExtraction_", delegatedToDirectExtraction_);
+  adv.saveAttribute("wrappedAlgorithmDescription_", wrappedAlgorithmDescription_);
+  adv.saveAttribute("hasWrappedAlgorithmDescription_", hasWrappedAlgorithmDescription_);
+  adv.saveAttribute("analyticalProbability_", analyticalProbability_);
+  adv.saveAttribute("hasAnalyticalProbability_", hasAnalyticalProbability_);
+  adv.saveAttribute("designPoint_", designPoint_);
+  adv.saveAttribute("hasDesignPoint_", hasDesignPoint_);
+  adv.saveAttribute("reliabilityIndex_", reliabilityIndex_);
+  adv.saveAttribute("hasReliabilityIndex_", hasReliabilityIndex_);
+  adv.saveAttribute("curvatureCorrection_", curvatureCorrection_);
+  adv.saveAttribute("hasCurvatureCorrection_", hasCurvatureCorrection_);
+  adv.saveAttribute("refinedProbability_", refinedProbability_);
+  adv.saveAttribute("hasRefinedProbability_", hasRefinedProbability_);
+  adv.saveAttribute("refinementStandardError_", refinementStandardError_);
+  adv.saveAttribute("isFixedSample_", isFixedSample_);
+  adv.saveAttribute("convergenceHistory_", convergenceHistory_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void QuantileSimulationResultImplementation::load(Advocate & adv)
+{
+  SimulationResult::load(adv);
+  adv.loadAttribute("output_", output_);
+  adv.loadAttribute("quantileEstimate_", quantileEstimate_);
+  adv.loadAttribute("standardError_", standardError_);
+  adv.loadAttribute("confidenceInterval_", confidenceInterval_);
+  adv.loadAttribute("alpha_", alpha_);
+  adv.loadAttribute("beta_", beta_);
+  adv.loadAttribute("masterSeed_", masterSeed_);
+  adv.loadAttribute("hasMasterSeed_", hasMasterSeed_);
+  UnsignedInteger estimatorType = static_cast<UnsignedInteger>(estimatorType_);
+  adv.loadAttribute("estimatorType_", estimatorType);
+  estimatorType_ = static_cast<EstimatorType>(estimatorType);
+  UnsignedInteger coverageType = static_cast<UnsignedInteger>(coverageType_);
+  adv.loadAttribute("coverageType_", coverageType);
+  coverageType_ = static_cast<CoverageType>(coverageType);
+  UnsignedInteger requiredCoverage = static_cast<UnsignedInteger>(requiredCoverage_);
+  adv.loadAttribute("requiredCoverage_", requiredCoverage);
+  requiredCoverage_ = static_cast<CoverageType>(requiredCoverage);
+  adv.loadAttribute("effectiveSampleSize_", effectiveSampleSize_);
+  adv.loadAttribute("sampleSize_", sampleSize_);
+  adv.loadAttribute("blockLength_", blockLength_);
+  if (adv.hasAttribute("blockCount_"))
+    adv.loadAttribute("blockCount_", blockCount_);
+  if (adv.hasAttribute("blockQuantileSample_"))
+    adv.loadAttribute("blockQuantileSample_", blockQuantileSample_);
+  if (adv.hasAttribute("combinationType_"))
+  {
+    UnsignedInteger combinationType = static_cast<UnsignedInteger>(combinationType_);
+    adv.loadAttribute("combinationType_", combinationType);
+    combinationType_ = static_cast<CombinationType>(combinationType);
+  }
+  if (adv.hasAttribute("trimmingFraction_"))
+    adv.loadAttribute("trimmingFraction_", trimmingFraction_);
+  if (adv.hasAttribute("blockLengthPolicyDescription_"))
+    adv.loadAttribute("blockLengthPolicyDescription_", blockLengthPolicyDescription_);
+  if (adv.hasAttribute("peakMemory_"))
+    adv.loadAttribute("peakMemory_", peakMemory_);
+  adv.loadAttribute("biasEstimate_", biasEstimate_);
+  adv.loadAttribute("hasBiasEstimate_", hasBiasEstimate_);
+  if (adv.hasAttribute("tailType_"))
+  {
+    UnsignedInteger tailType = static_cast<UnsignedInteger>(tailType_);
+    adv.loadAttribute("tailType_", tailType);
+    tailType_ = static_cast<TailType>(tailType);
+  }
+  if (adv.hasAttribute("retainedCount_"))
+    adv.loadAttribute("retainedCount_", retainedCount_);
+  if (adv.hasAttribute("lowerRank_"))
+    adv.loadAttribute("lowerRank_", lowerRank_);
+  if (adv.hasAttribute("upperRank_"))
+    adv.loadAttribute("upperRank_", upperRank_);
+  if (adv.hasAttribute("thresholdSequence_"))
+    adv.loadAttribute("thresholdSequence_", thresholdSequence_);
+  if (adv.hasAttribute("levelProbabilitySequence_"))
+    adv.loadAttribute("levelProbabilitySequence_", levelProbabilitySequence_);
+  if (adv.hasAttribute("stepCount_"))
+    adv.loadAttribute("stepCount_", stepCount_);
+  if (adv.hasAttribute("acceptanceRate_"))
+    adv.loadAttribute("acceptanceRate_", acceptanceRate_);
+  if (adv.hasAttribute("poissonRankLower_"))
+    adv.loadAttribute("poissonRankLower_", poissonRankLower_);
+  if (adv.hasAttribute("poissonRankUpper_"))
+    adv.loadAttribute("poissonRankUpper_", poissonRankUpper_);
+  if (adv.hasAttribute("hasPoissonRanks_"))
+    adv.loadAttribute("hasPoissonRanks_", hasPoissonRanks_);
+  if (adv.hasAttribute("particleCount_"))
+    adv.loadAttribute("particleCount_", particleCount_);
+  if (adv.hasAttribute("replicateCount_"))
+    adv.loadAttribute("replicateCount_", replicateCount_);
+  if (adv.hasAttribute("replicateEstimates_"))
+    adv.loadAttribute("replicateEstimates_", replicateEstimates_);
+  if (adv.hasAttribute("auxiliaryDistribution_"))
+    adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
+  if (adv.hasAttribute("hasAuxiliaryDistribution_"))
+    adv.loadAttribute("hasAuxiliaryDistribution_", hasAuxiliaryDistribution_);
+  if (adv.hasAttribute("intermediateQuantileLevel_"))
+    adv.loadAttribute("intermediateQuantileLevel_", intermediateQuantileLevel_);
+  if (adv.hasAttribute("conditionalProbability_"))
+    adv.loadAttribute("conditionalProbability_", conditionalProbability_);
+  if (adv.hasAttribute("directionCount_"))
+    adv.loadAttribute("directionCount_", directionCount_);
+  if (adv.hasAttribute("conditionalProbabilitySample_"))
+    adv.loadAttribute("conditionalProbabilitySample_", conditionalProbabilitySample_);
+  if (adv.hasAttribute("importantDirection_"))
+    adv.loadAttribute("importantDirection_", importantDirection_);
+  if (adv.hasAttribute("hasImportantDirection_"))
+    adv.loadAttribute("hasImportantDirection_", hasImportantDirection_);
+  if (adv.hasAttribute("rootBracket_"))
+    adv.loadAttribute("rootBracket_", rootBracket_);
+  if (adv.hasAttribute("hasRootBracket_"))
+    adv.loadAttribute("hasRootBracket_", hasRootBracket_);
+  if (adv.hasAttribute("rootIterationCount_"))
+    adv.loadAttribute("rootIterationCount_", rootIterationCount_);
+  if (adv.hasAttribute("probabilityEvaluationCount_"))
+    adv.loadAttribute("probabilityEvaluationCount_", probabilityEvaluationCount_);
+  if (adv.hasAttribute("rootSolverType_"))
+  {
+    UnsignedInteger rootSolverType = static_cast<UnsignedInteger>(rootSolverType_);
+    adv.loadAttribute("rootSolverType_", rootSolverType);
+    rootSolverType_ = static_cast<RootSolverType>(rootSolverType);
+  }
+  if (adv.hasAttribute("commonRandomNumbers_"))
+    adv.loadAttribute("commonRandomNumbers_", commonRandomNumbers_);
+  if (adv.hasAttribute("randomStreamCapability_"))
+    adv.loadAttribute("randomStreamCapability_", randomStreamCapability_);
+  if (adv.hasAttribute("delegatedToDirectExtraction_"))
+    adv.loadAttribute("delegatedToDirectExtraction_", delegatedToDirectExtraction_);
+  if (adv.hasAttribute("wrappedAlgorithmDescription_"))
+    adv.loadAttribute("wrappedAlgorithmDescription_", wrappedAlgorithmDescription_);
+  if (adv.hasAttribute("hasWrappedAlgorithmDescription_"))
+    adv.loadAttribute("hasWrappedAlgorithmDescription_", hasWrappedAlgorithmDescription_);
+  if (adv.hasAttribute("analyticalProbability_"))
+    adv.loadAttribute("analyticalProbability_", analyticalProbability_);
+  if (adv.hasAttribute("hasAnalyticalProbability_"))
+    adv.loadAttribute("hasAnalyticalProbability_", hasAnalyticalProbability_);
+  if (adv.hasAttribute("designPoint_"))
+    adv.loadAttribute("designPoint_", designPoint_);
+  if (adv.hasAttribute("hasDesignPoint_"))
+    adv.loadAttribute("hasDesignPoint_", hasDesignPoint_);
+  if (adv.hasAttribute("reliabilityIndex_"))
+    adv.loadAttribute("reliabilityIndex_", reliabilityIndex_);
+  if (adv.hasAttribute("hasReliabilityIndex_"))
+    adv.loadAttribute("hasReliabilityIndex_", hasReliabilityIndex_);
+  if (adv.hasAttribute("curvatureCorrection_"))
+    adv.loadAttribute("curvatureCorrection_", curvatureCorrection_);
+  if (adv.hasAttribute("hasCurvatureCorrection_"))
+    adv.loadAttribute("hasCurvatureCorrection_", hasCurvatureCorrection_);
+  if (adv.hasAttribute("refinedProbability_"))
+    adv.loadAttribute("refinedProbability_", refinedProbability_);
+  if (adv.hasAttribute("hasRefinedProbability_"))
+    adv.loadAttribute("hasRefinedProbability_", hasRefinedProbability_);
+  if (adv.hasAttribute("refinementStandardError_"))
+    adv.loadAttribute("refinementStandardError_", refinementStandardError_);
+  adv.loadAttribute("isFixedSample_", isFixedSample_);
+  adv.loadAttribute("convergenceHistory_", convergenceHistory_);
+}
+
+END_NAMESPACE_OPENTURNS

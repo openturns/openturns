@@ -152,6 +152,12 @@ Bool WeightedExperimentImplementation::isRandom() const
   return true;
 }
 
+/* Return whether the experiment generates i.i.d. points with uniform weights */
+Bool WeightedExperimentImplementation::isIID() const
+{
+  return false;
+}
+
 /* Method save() stores the object through the StorageManager */
 void WeightedExperimentImplementation::save(Advocate & adv) const
 {

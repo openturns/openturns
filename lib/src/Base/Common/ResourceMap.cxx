@@ -1670,6 +1670,48 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("ProbabilitySimulationResult-CheckPositiveVariance", false);
   addAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95);
 
+  // QuantileSimulation parameters //
+  addAsScalar("QuantileSimulation-DefaultAlpha", 0.95);
+  addAsScalar("QuantileSimulation-DefaultConfidenceLevel", 0.95);
+  addAsUnsignedInteger("QuantileSimulation-DefaultSampleSize", 0);
+  addAsScalar("QuantileSimulation-DefaultTrimmingFraction", 0.1);
+  addAsUnsignedInteger("QuantileSimulation-MinimumBlockCount", 30);
+
+  // MonteCarloQuantileSimulation parameters //
+  addAsUnsignedInteger("MonteCarloQuantileSimulation-DefaultReplicateCount", 30);
+
+  // BlockQuantileSimulation parameters //
+  addAsScalar("BlockQuantileSimulation-DefaultAdaptiveTolerance", 0.1);
+  addAsScalar("BlockQuantileSimulation-DefaultBiasTolerance", 0.1);
+  addAsString("BlockQuantileSimulation-DefaultBlockLengthPolicy", "ASYMPTOTIC", {"FIXED", "SQRT_N", "ASYMPTOTIC", "BIAS_TARGET", "MEMORY_BOUND", "ADAPTIVE"});
+  addAsUnsignedInteger("BlockQuantileSimulation-DefaultBootstrapSize", 0);
+  addAsUnsignedInteger("BlockQuantileSimulation-PilotMaximumSize", 20000);
+  addAsUnsignedInteger("BlockQuantileSimulation-PilotMinimumSize", 1000);
+  addAsScalar("BlockQuantileSimulation-PilotSizeFraction", 0.05);
+
+  // ExactTailQuantileSimulation parameters //
+  addAsUnsignedInteger("ExactTailQuantileSimulation-MinimumChunkSize", 4096);
+  // QuantileRootSolver parameters //
+  addAsScalar("QuantileRootSolver-DefaultTolerance", 1.0e-4);
+  addAsUnsignedInteger("QuantileRootSolver-DefaultMaximumIteration", 100);
+  addAsUnsignedInteger("QuantileRootSolver-DefaultBracketExpansion", 40);
+  addAsUnsignedInteger("QuantileRootSolver-PilotSampleSize", 1000);
+
+  // PostAnalyticalQuantile parameters //
+  addAsUnsignedInteger("PostAnalyticalQuantile-DefaultReplicateCount", 30);
+
+  // SubsetSamplingQuantile parameters //
+  addAsUnsignedInteger("SubsetSamplingQuantile-DefaultBurnIn", 10);
+  addAsUnsignedInteger("SubsetSamplingQuantile-DefaultReplicateCount", 30);
+
+  // LastParticleQuantile parameters //
+  addAsUnsignedInteger("LastParticleQuantile-DefaultBurnIn", 10);
+  addAsUnsignedInteger("LastParticleQuantile-DefaultParticleCount", 1000);
+
+  // CrossEntropyQuantile parameters //
+  addAsUnsignedInteger("CrossEntropyQuantile-DefaultPilotSize", 1000);
+  addAsScalar("CrossEntropyQuantile-MinimumProposalStandardDeviation", 1.2);
+
   // ExpectationSimulationAlgorithm parameters //
   addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX", {"NONE", "MAX", "NORM1", "NORM2"});
   addAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE", {"NONE", "MAX", "NORM1", "NORM2"});

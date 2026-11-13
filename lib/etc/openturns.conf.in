@@ -1021,6 +1021,48 @@
   <ProbabilitySimulationResult-CheckPositiveVariance  value_bool="false"  />
   <ProbabilitySimulationResult-DefaultConfidenceLevel value_float="0.95" />
 
+  <!-- OT::QuantileSimulation parameters -->
+  <QuantileSimulation-DefaultAlpha            value_float="0.95" />
+  <QuantileSimulation-DefaultConfidenceLevel  value_float="0.95" />
+  <QuantileSimulation-DefaultSampleSize       value_int="0" />
+  <QuantileSimulation-DefaultTrimmingFraction value_float="0.1" />
+  <QuantileSimulation-MinimumBlockCount       value_int="30" />
+
+  <!-- OT::MonteCarloQuantileSimulation parameters -->
+  <MonteCarloQuantileSimulation-DefaultReplicateCount value_int="30" />
+
+  <!-- OT::BlockQuantileSimulation parameters -->
+  <BlockQuantileSimulation-DefaultAdaptiveTolerance  value_float="0.1" />
+  <BlockQuantileSimulation-DefaultBiasTolerance      value_float="0.1" />
+  <BlockQuantileSimulation-DefaultBlockLengthPolicy  value_str="ASYMPTOTIC" />
+  <BlockQuantileSimulation-DefaultBootstrapSize      value_int="0" />
+  <BlockQuantileSimulation-PilotMaximumSize          value_int="20000" />
+  <BlockQuantileSimulation-PilotMinimumSize          value_int="1000" />
+  <BlockQuantileSimulation-PilotSizeFraction         value_float="0.05" />
+
+  <!-- OT::ExactTailQuantileSimulation parameters -->
+  <ExactTailQuantileSimulation-MinimumChunkSize value_int="4096" />
+
+  <!-- OT::SubsetSamplingQuantile parameters -->
+  <SubsetSamplingQuantile-DefaultBurnIn         value_int="10" />
+  <SubsetSamplingQuantile-DefaultReplicateCount value_int="30" />
+
+  <!-- OT::LastParticleQuantile parameters -->
+  <LastParticleQuantile-DefaultBurnIn        value_int="10" />
+  <LastParticleQuantile-DefaultParticleCount value_int="1000" />
+
+  <!-- OT::CrossEntropyQuantile parameters -->
+  <CrossEntropyQuantile-DefaultPilotSize value_int="1000" />
+  <CrossEntropyQuantile-MinimumProposalStandardDeviation value_float="1.2" />
+  <!-- OT::QuantileRootSolver parameters -->
+  <QuantileRootSolver-DefaultTolerance      value_float="1.0e-4" />
+  <QuantileRootSolver-DefaultMaximumIteration value_int="100" />
+  <QuantileRootSolver-DefaultBracketExpansion value_int="40" />
+  <QuantileRootSolver-PilotSampleSize       value_int="1000" />
+
+  <!-- OT::PostAnalyticalQuantile parameters -->
+  <PostAnalyticalQuantile-DefaultReplicateCount value_int="30" />
+
   <!-- OT::ExpectationSimulationAlgorithm parameters -->
   <ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType value_str="MAX"  />
   <ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType      value_str="NONE" />

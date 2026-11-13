@@ -409,3 +409,9 @@ print(marginalDegreesList)
 for i in range(len(marginalDegreesList)):
     marginalDegrees = marginalDegreesList[i]
     checkPolynomialExactness(marginalDegrees, level, verbose=True)
+
+# A Smolyak experiment does not support level changes, so it cannot be nested
+# as a marginal of another Smolyak experiment.
+innerSmolyak = ot.SmolyakExperiment([ot.GaussProductExperiment(ot.Uniform())], 1)
+with ott.assert_raises(TypeError):
+    ot.SmolyakExperiment([innerSmolyak], 2)

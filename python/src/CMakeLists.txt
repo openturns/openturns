@@ -613,6 +613,20 @@ ot_add_python_module(experimental experimental_module.i
                      SparseExpansion.i SparseExpansion_doc.i
                      PushForwardDistribution.i PushForwardDistribution_doc.i
                      PushForwardOverMesh.i PushForwardOverMesh_doc.i
+                     QuantileSimulationResultImplementation.i QuantileSimulationResultImplementation_doc.i
+                     QuantileSimulationResult.i QuantileSimulationResult_doc.i
+                     QuantileSimulationImplementation.i QuantileSimulationImplementation_doc.i
+                     QuantileSimulation.i QuantileSimulation_doc.i
+                     MonteCarloQuantileSimulation.i MonteCarloQuantileSimulation_doc.i
+                     BlockQuantileSimulation.i BlockQuantileSimulation_doc.i
+                     ExactTailQuantileSimulation.i ExactTailQuantileSimulation_doc.i
+                     SubsetSamplingQuantile.i SubsetSamplingQuantile_doc.i
+                     LastParticleQuantile.i LastParticleQuantile_doc.i
+                     CrossEntropyQuantile.i CrossEntropyQuantile_doc.i
+                     DirectionalSamplingQuantile.i DirectionalSamplingQuantile_doc.i
+                     LineSamplingQuantile.i LineSamplingQuantile_doc.i
+                     PostAnalyticalQuantile.i PostAnalyticalQuantile_doc.i
+                     ProbabilityInversionQuantile.i ProbabilityInversionQuantile_doc.i
                      RatioDistribution.i RatioDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i

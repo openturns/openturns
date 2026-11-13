@@ -79,6 +79,12 @@ String MonteCarloExperiment::__repr__() const
   return oss;
 }
 
+/* Return whether the experiment generates i.i.d. points with uniform weights */
+Bool MonteCarloExperiment::isIID() const
+{
+  return true;
+}
+
 /* Sample generation */
 Sample MonteCarloExperiment::generateWithWeights(Point & weights) const
 {
