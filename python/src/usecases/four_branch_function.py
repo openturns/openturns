@@ -11,9 +11,9 @@ References
 * [Schueremans2005]_ L. Schueremans and D. van Gemert, "Benefit of splines and neural
   networks in simulation based structural reliability analysis," Structural Safety,
   vol. 27, no. 3, 2005.
-* [Echard2011]_ B. Echard, N. Gayton, and M. Lemaire, "AK-MCS: An active learning
-  reliability method combining Kriging and Monte Carlo simulation", Reliability
-  Engineering and System Safety, vol. 96, pp. 145-154, 2011.
+* [echard2011]_ Echard B., Gayton N., Lemaire M.,
+  *AK-MCS: an active learning reliability method combining Kriging and Monte Carlo simulation*,
+  Structural Safety, 33(2), 145-154, 2011.
 """
 
 import openturns as ot
@@ -72,7 +72,7 @@ class FourBranchModel:
     References
     ----------
     * [Schueremans2005]_
-    * [Echard2011]_
+    * [echard2011]_
 
     Examples
     --------
