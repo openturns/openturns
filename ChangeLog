@@ -13,10 +13,14 @@
 ==== New classes ====
  * BasisOrthonormalizationAlgorithm, BasisOrthonormalizationFactory, GaussLPQuadrature, GaussLPQuadratureRule (openturns.experimental)
  * Bingham, BinghamFactory (openturns.experimental)
+ * BlockQuantileSimulation (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
+ * CrossEntropyQuantile (openturns.experimental)
  * CumulativeDistributionNetworkFactory (openturns.experimental)
+ * ExactTailQuantileSimulation (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
+ * LastParticleQuantile (openturns.experimental)
  * LeaveOneOut
  * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
  * ManifoldMappedDistribution (openturns.experimental)
@@ -30,12 +34,14 @@
  * SparseExpansion (openturns.experimental)
  * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
+ * SubsetSamplingQuantile (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
  * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
+ * QuantileSimulation, MonteCarloQuantileSimulation, QuantileSimulationImplementation, QuantileSimulationResult, QuantileSimulationResultImplementation (openturns.experimental)
  * RatioDistribution (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * UniformOverMeshFactory (openturns.experimental)
@@ -94,6 +100,8 @@
  * Added HiGHS.getDualPoint/getReducedCosts/getConstraintValues to expose the dual solution (openturns.experimental)
  * Added HiGHS.getSimplexIterationNumber/getIPMIterationNumber/getCrossoverIterationNumber/getPDLPIterationNumber/getQPIterationNumber to expose per-solver iteration counts (openturns.experimental)
  * Added ProcessSample.split
+ * Added WeightedExperiment.isIID to identify an independent identically distributed design with uniform weights: MonteCarloExperiment returns True and the default implementation returns False
+ * WeightedExperiment.isRandom now reflects the design randomness: False for FixedExperiment, LowDiscrepancyExperiment when its randomization is disabled, and SmolyakExperiment; TensorProductExperiment is random when any of its component experiments is random; SobolIndicesExperiment delegates to the wrapped experiment
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
  * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
  * Added SpecFunc.BesselJ and SpecFunc.BesselJDerivative

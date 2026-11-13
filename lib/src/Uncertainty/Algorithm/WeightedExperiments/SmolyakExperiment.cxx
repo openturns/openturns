@@ -58,6 +58,8 @@ SmolyakExperiment::SmolyakExperiment(const WeightedExperimentCollection & collec
     const UnsignedInteger marginalDimension = distributionCollection[i].getDimension();
     if (marginalDimension != 1) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " has dimension " << marginalDimension << " which is different from 1";
     if (collection_[i].isRandom()) throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " is random.";
+    if (dynamic_cast<const SmolyakExperiment *>(collection_[i].getImplementation().get()) != nullptr)
+      throw InvalidArgumentException(HERE) << "Error: the marginal with index " << i << " is a Smolyak experiment, which does not support level changes.";
   }
   const JointDistribution distribution(distributionCollection);
   WeightedExperimentImplementation::setDistribution(distribution);
@@ -102,6 +104,12 @@ Bool SmolyakExperiment::hasUniformWeights() const
 {
   // level=1 => only one node
   return (level_ == 1);
+}
+
+/* Return isRandom flag */
+Bool SmolyakExperiment::isRandom() const
+{
+  return false;
 }
 
 /* Sample generation */

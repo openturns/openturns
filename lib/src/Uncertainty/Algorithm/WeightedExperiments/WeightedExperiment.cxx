@@ -114,4 +114,10 @@ Bool WeightedExperiment::isRandom() const
   return getImplementation()->isRandom();
 }
 
+/* Return whether the experiment generates i.i.d. points with uniform weights */
+Bool WeightedExperiment::isIID() const
+{
+  return getImplementation()->isIID();
+}
+
 END_NAMESPACE_OPENTURNS
