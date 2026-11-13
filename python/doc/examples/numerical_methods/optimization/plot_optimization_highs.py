@@ -149,12 +149,12 @@ print(" -- Reduced costs = " + str(algoDual.getReducedCosts()))
 #    \min_{\vect{x} \in B} \frac{1}{2} \vect{x}^T \mat{Q} \vect{x} + \vect{c}^T \vect{x}
 #
 # where :math:`\mat{Q}` is a symmetric positive semi-definite matrix and
-# :math:`B` are bound constraints. The ``choose`` solver selects the active-set
-# quadratic solver ``qpasm`` on such problems.
+# :math:`B` are bound constraints. The ``choose`` solver selects the
+# quadratic solver available in the linked HiGHS build.
 Q = ot.SymmetricMatrix([[2.0, 0.0], [0.0, 2.0]])
 boundsQP = ot.Interval([0.0, 0.0], [0.5, 10.0])
 problemQP = otexp.QuadraticProblem(Q, [-2.0, -4.0], boundsQP)
-algoQP = otexp.HiGHS(problemQP, "qpasm")
+algoQP = otexp.HiGHS(problemQP, "choose")
 algoQP.run()
 resultQP = algoQP.getResult()
 print(" -- QP optimal point = " + str(resultQP.getOptimalPoint()))
