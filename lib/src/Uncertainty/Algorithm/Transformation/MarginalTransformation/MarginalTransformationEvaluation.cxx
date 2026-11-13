@@ -648,7 +648,7 @@ Description MarginalTransformationEvaluation::getParameterDescription() const
   if ((parameterSide_ == LEFT) || (parameterSide_ == BOTH))
   {
     const UnsignedInteger size = inputDistributionCollection_.getSize();
-    const char * prefix = (parameterSide_ == BOTH ? "input_" : "marginal_");
+    const String prefix = (parameterSide_ == BOTH ? "input_" : "marginal_");
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Description marginalDescription(BuildConsistentMarginalParameterDescription(inputDistributionCollection_[i]));
@@ -659,7 +659,7 @@ Description MarginalTransformationEvaluation::getParameterDescription() const
   if ((parameterSide_ == RIGHT) || (parameterSide_ == BOTH))
   {
     const UnsignedInteger size = outputDistributionCollection_.getSize();
-    const char * prefix = (parameterSide_ == BOTH ? "output_" : "marginal_");
+    const String prefix = (parameterSide_ == BOTH ? "output_" : "marginal_");
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Description marginalDescription(BuildConsistentMarginalParameterDescription(outputDistributionCollection_[i]));
