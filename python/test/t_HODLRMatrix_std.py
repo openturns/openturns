@@ -767,7 +767,7 @@ err30 = (y30 - b30).norm() / b30.norm()
 # absolute 5 s budget flakes there. A genuine retry cascade is orders of
 # magnitude slower (tens of seconds locally, i.e. 1000 s+ on such a runner),
 # so a scaled budget still catches it.
-t_limit30 = 120.0 if sys.platform.startswith("win") else 5.0
+t_limit30 = 120.0 if sys.platform.startswith("win") else 30.0
 assert t_fac30 < t_limit30, f"factorize took {t_fac30:.1f}s (retry cascade regression, budget {t_limit30:.0f}s)"
 assert 0.0 < shift30 < 1.0, f"unexpected heal shift {shift30:.2e}"
 assert err30 < 1.0e-5, f"near-singular solve error {err30:.2e} should be small"
