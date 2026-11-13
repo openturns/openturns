@@ -92,6 +92,9 @@ public:
   /** Return isRandom flag */
   virtual Bool isRandom() const;
 
+  /** Return whether the experiment generates i.i.d. points with uniform weights */
+  virtual Bool isIID() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

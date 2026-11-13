@@ -104,6 +104,12 @@ Bool SmolyakExperiment::hasUniformWeights() const
   return (level_ == 1);
 }
 
+/* Return isRandom flag */
+Bool SmolyakExperiment::isRandom() const
+{
+  return false;
+}
+
 /* Sample generation */
 Sample SmolyakExperiment::generate() const
 {

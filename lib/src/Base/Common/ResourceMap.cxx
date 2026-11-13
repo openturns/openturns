@@ -1670,6 +1670,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("ProbabilitySimulationResult-CheckPositiveVariance", false);
   addAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95);
 
+  // MonteCarloQuantileSimulation parameters //
+  addAsUnsignedInteger("MonteCarloQuantileSimulation-DefaultReplicateCount", 30);
+
   // ExpectationSimulationAlgorithm parameters //
   addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX", {"NONE", "MAX", "NORM1", "NORM2"});
   addAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE", {"NONE", "MAX", "NORM1", "NORM2"});
