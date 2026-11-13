@@ -166,17 +166,23 @@ void CirculantEmbeddingGaussianProcess::initializeND() const
       eigenvalues_ = Point(totalSize);
       Bool hasNegativeEigenvalues = false;
       Scalar minEigenvalue = SpecFunc::MaxScalar;
+      Scalar maxAbsLambda = 0.0;
+      Scalar maxAbsImag = 0.0;
       for (UnsignedInteger k = 0; k < totalSize; ++k)
       {
         const Scalar lambda = std::real(eigenvaluesFFT[k]);
         eigenvalues_[k] = lambda;
         minEigenvalue = std::min(minEigenvalue, lambda);
+        maxAbsLambda = std::max(maxAbsLambda, std::abs(lambda));
         if (lambda < 0.0) hasNegativeEigenvalues = true;
-        const Scalar absImag = std::abs(std::imag(eigenvaluesFFT[k]));
-        if (absImag > (SpecFunc::Precision * (1.0 + absImag)))
-        {
-          LOGWARN(OSS() << "Non-zero imaginary part in eigenvalue " << k << ": " << std::imag(eigenvaluesFFT[k]));
-        }
+        maxAbsImag = std::max(maxAbsImag, std::abs(std::imag(eigenvaluesFFT[k])));
+      }
+      // FFT roundoff on a real symmetric input leaves a tiny imaginary residue
+      // growing with the problem size and the eigenvalue magnitude; warn once
+      const Scalar imagTolerance = SpecFunc::Precision * (1.0 * totalSize + maxAbsLambda);
+      if (maxAbsImag > imagTolerance)
+      {
+        LOGWARN(OSS() << "Non-zero imaginary part in eigenvalues (max=" << maxAbsImag << " over " << totalSize << " values, tolerance=" << imagTolerance << ")");
       }
 
       if (!hasNegativeEigenvalues) break;
