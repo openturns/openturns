@@ -333,7 +333,7 @@ void NonLinearLeastSquaresCalibration::run()
     if (bounds_.getDimension() == 0)
     {
       Indices freeIndices(parameterDimension);
-      freeIndices.fill();
+      freeIndices.iota();
       parameterPosterior = LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(thetaStar, residual.getImplementation()->getData(), gramInverseFull, freeIndices, parameterDimension, 0, tmp);
     }
     else
