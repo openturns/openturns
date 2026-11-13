@@ -31,6 +31,34 @@ CLASSNAMEINIT(MultiStart)
 static const Factory<MultiStart> Factory_MultiStart;
 static const Factory<PersistentCollection<OptimizationResult> > Factory_PersistentCollection_OptimizationResult;
 
+namespace {
+// Data forwarded to the scaled progress callback: the inner solver reports
+// progress on its local budget, we re-express it on the global budget from
+// the shared evaluation counter so progress stays monotonic across restarts.
+struct MultiStartProgressData
+{
+  OptimizationAlgorithmImplementation::ProgressCallback callback = nullptr;
+  void * state = nullptr;
+  const MultiStart * algo = nullptr;
+  UnsignedInteger initialCallsNumber = 0;
+};
+
+void MultiStartScaledProgressCallback(Scalar, void * data)
+{
+  const MultiStartProgressData * progressData = static_cast<const MultiStartProgressData *>(data);
+  if (!progressData || !progressData->callback || !progressData->algo) return;
+  const UnsignedInteger globalMax = progressData->algo->getMaximumCallsNumber();
+  Scalar progress = 100.0;
+  if (globalMax > 0)
+  {
+    const UnsignedInteger globalCalls = progressData->algo->getProblem().getObjective().getEvaluationCallsNumber() - progressData->initialCallsNumber;
+    progress = (100.0 * globalCalls) / globalMax;
+    if (progress > 100.0) progress = 100.0;
+  }
+  progressData->callback(progress, progressData->state);
+}
+}
+
 /* Constructor with no parameters */
 MultiStart::MultiStart()
   : OptimizationAlgorithmImplementation()
@@ -104,6 +132,20 @@ void MultiStart::run()
   result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = startingSample_.getSize();
   const UnsignedInteger initialCallsNumber = getProblem().getObjective().getEvaluationCallsNumber();
+  // forward user callbacks to the inner solver so local searches report
+  // progress and can be interrupted without waiting for the current restart;
+  // inner progress is rescaled to the global budget, stop is forwarded as is;
+  // if both inner and outer callbacks are set the outer ones take precedence
+  MultiStartProgressData progressData;
+  if (progressCallback_.first)
+  {
+    progressData.callback = progressCallback_.first;
+    progressData.state = progressCallback_.second;
+    progressData.algo = this;
+    progressData.initialCallsNumber = initialCallsNumber;
+    solver.setProgressCallback(MultiStartScaledProgressCallback, &progressData);
+  }
+  if (stopCallback_.first) solver.setStopCallback(stopCallback_.first, stopCallback_.second);
   UnsignedInteger callsNumber = 0;
   UnsignedInteger successNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
@@ -197,12 +239,14 @@ void MultiStart::run()
       if (stop)
       {
         LOGINFO(OSS() << "MultiStart was stopped by user");
+        result_.setStatus(OptimizationResult::INTERRUPTION);
+        result_.setStatusMessage(OSS() << "MultiStart was stopped by user");
         break;
       }
     }
   }
 
-  if (!(successNumber > 0))
+  if (!(successNumber > 0) && (result_.getStatus() != OptimizationResult::INTERRUPTION))
   {
     result_.setStatus(OptimizationResult::FAILURE);
     if (getCheckStatus())
