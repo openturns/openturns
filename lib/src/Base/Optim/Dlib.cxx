@@ -333,13 +333,24 @@ public:
     // Compute stop criterion
     const bool timeout = (dlibAlgorithm_.getMaximumTimeDuration() > 0.0) && (timeDuration > dlibAlgorithm_.getMaximumTimeDuration());
 
+    // callbacks
+    if (dlibAlgorithm_.progressCallback_.first)
+    {
+      const UnsignedInteger maximumCallsNumber = dlibAlgorithm_.getMaximumCallsNumber();
+      const Scalar progress = (maximumCallsNumber > 0) ? (100.0 * evaluationNumber) / maximumCallsNumber : 100.0;
+      dlibAlgorithm_.progressCallback_.first(progress, dlibAlgorithm_.progressCallback_.second);
+    }
+    Bool interrupted = false;
+    if (dlibAlgorithm_.stopCallback_.first && dlibAlgorithm_.stopCallback_.first(dlibAlgorithm_.stopCallback_.second))
+      interrupted = true;
+
     bool stopSearch = ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
                        && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
                        && (residualError < dlibAlgorithm_.getMaximumResidualError()))
                       || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
                       || ((objectiveFunction_.getEvaluationCallsNumber() - initialEvaluationNumber_) >= dlibAlgorithm_.getMaximumCallsNumber())
                       || timeout
-                      || (dlibAlgorithm_.stopCallback_.first && dlibAlgorithm_.stopCallback_.first(dlibAlgorithm_.stopCallback_.second));
+                      || interrupted;
 
     lastInput_ = xPoint;
     lastOutput_ = fxPoint;
@@ -350,7 +361,16 @@ public:
 
     if (!stopSearch) optimizationResult_.setIterationNumber(optimizationResult_.getIterationNumber() + 1);
     if (timeout)
+    {
       optimizationResult_.setStatus(OptimizationResult::TIMEOUT);
+      optimizationResult_.setStatusMessage(OSS() << "Dlib optimization timeout after " << timeDuration << "s");
+    }
+    if (interrupted)
+    {
+      LOGINFO(OSS() << "Dlib was stopped by user");
+      optimizationResult_.setStatus(OptimizationResult::INTERRUPTION);
+      optimizationResult_.setStatusMessage(OSS() << "Dlib was stopped by user");
+    }
 
     return !stopSearch;
   }
@@ -701,6 +721,7 @@ void Dlib::run()
         break;
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       {
+        LOGINFO(OSS() << "Dlib was stopped by user");
         interrupted = true;
         break;
       }
@@ -713,6 +734,12 @@ void Dlib::run()
           xOrig(j) = std::exp(xLog(j));
       const double y = objectiveDlibFunction(xOrig);
       request.set(minimization ? -y : y);
+      // callbacks
+      if (progressCallback_.first)
+      {
+        const Scalar progress = (maxCalls > 0) ? (100.0 * objectiveDlibFunction.getCallsNumber()) / maxCalls : 100.0;
+        progressCallback_.first(progress, progressCallback_.second);
+      }
     }
     if (objectiveDlibFunction.getCallsNumber() == 0)
     {
@@ -772,6 +799,7 @@ void Dlib::run()
       result_.setHessianCallsNumber(objectiveDlibFunction.getHessianCallsNumber());
       if (interrupted)
       {
+        LOGINFO(OSS() << "Dlib was stopped by user");
         result_.setStatus(OptimizationResult::INTERRUPTION);
         result_.setStatusMessage("Dlib optimization interrupted by user");
       }
@@ -889,7 +917,9 @@ void Dlib::run()
     result_.setStatusMessage(OSS() << "Dlib optimization timeout after " << timeDuration << "s");
   }
 
-  if (result_.getStatus() != OptimizationResult::SUCCESS)
+  // a user-requested stop is reported as INTERRUPTION without throwing,
+  // like CMinpack: checkStatus only guards actual failures and timeouts
+  if ((result_.getStatus() != OptimizationResult::SUCCESS) && (result_.getStatus() != OptimizationResult::INTERRUPTION))
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "Solving optimization problem with Dlib failed (" << result_.getStatusMessage() << ")";
