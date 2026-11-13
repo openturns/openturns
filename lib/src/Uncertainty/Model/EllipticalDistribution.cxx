@@ -504,7 +504,9 @@ void EllipticalDistribution::update()
   } // dimension > 1
   else  // dimension 1
   {
-    if (!cholesky_.getDimension())  // First time we enter here, set matrix sizes
+    // Resize also on dimension shrink (e.g. clone staged from a larger
+    // dimension), otherwise a stale larger factor would be kept
+    if (cholesky_.getDimension() != 1)
     {
       cholesky_ = TriangularMatrix(1);
     }
@@ -918,13 +920,21 @@ void EllipticalDistribution::setParameter(const Point & parameters)
       }
     }
   }
-  // commit all changes at once
-  mean_ = mean;
-  sigma_ = sigma;
-  R_ = R;
-  update();
-  computeRange();
-  isAlreadyComputedCovariance_ = false;
+  // commit all changes at once, staging on a polymorphic clone so that
+  // a dimension change updates dimension_, description and range
+  // with the concrete distribution behavior (see setParametersCollection),
+  // with no partial update on error
+  Implementation tmp(clone());
+  EllipticalDistribution * p_tmp = dynamic_cast<EllipticalDistribution*>(tmp.get());
+  if (!p_tmp) throw InternalException(HERE) << "Error: cannot stage EllipticalDistribution parameters on a clone of type " << tmp->getClassName();
+  p_tmp->setDimension(dimension);
+  p_tmp->mean_ = mean;
+  p_tmp->sigma_ = sigma;
+  p_tmp->R_ = R;
+  p_tmp->update();
+  p_tmp->computeRange();
+  p_tmp->isAlreadyComputedCovariance_ = false;
+  *this = *p_tmp;
 }
 
 Description EllipticalDistribution::getParameterDescription() const
