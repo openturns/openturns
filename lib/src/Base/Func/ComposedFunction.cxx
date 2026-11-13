@@ -25,6 +25,7 @@
 #include "openturns/ComposedGradient.hxx"
 #include "openturns/ComposedHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -223,7 +224,7 @@ void ComposedFunction::setParameter(const Point & parameter)
   {
     FunctionImplementation::setParameter(parameter);
   }
-  catch (...)
+  catch (const Exception &)
   {
     p_rightFunction_ = oldRight;
     p_leftFunction_ = oldLeft;
