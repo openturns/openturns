@@ -186,3 +186,54 @@ algo6.setCheckStatus(False)
 algo6.run()
 assert algo6.getResult().getStatus() == ot.OptimizationResult.MAXIMUMCALLS, "status"
 assert len(algo6.getResult().getStatusMessage()) > 0, "model status"
+
+# progress/stop callbacks: random dense LP large enough that the solver
+# loop iterates and fires the interrupt callbacks
+ot.RandomGenerator.SetSeed(0)
+normal = ot.Normal()
+n_vars = 60
+n_cons = 30
+cost_cb = normal.getSample(n_vars).asPoint()
+bounds_cb = ot.Interval([0.0] * n_vars, [1.0] * n_vars)
+A_cb = ot.Matrix(n_cons, n_vars)
+for i in range(n_cons):
+    row = normal.getSample(n_vars).asPoint()
+    for j in range(n_vars):
+        A_cb[i, j] = row[j]
+upper_cb = [sum(abs(A_cb[i, j]) for j in range(n_vars)) * 0.5 + 1.0 for i in range(n_cons)]
+cb_cb = ot.Interval([-1e30] * n_cons, upper_cb, [False] * n_cons, [True] * n_cons)
+problem_cb = otexp.LinearProblem(cost_cb, bounds_cb, A_cb, cb_cb)
+
+
+def no_stop():
+    return False
+
+
+def stop_now():
+    return True
+
+
+def check_monotonic(progress_calls):
+    assert len(progress_calls) > 0, "progress callback was not invoked"
+    assert all(0.0 <= p <= 100.0 for p in progress_calls), "progress out of range"
+    assert all(b >= a for a, b in zip(progress_calls, progress_calls[1:])), "progress not monotonic"
+
+
+for solver in ["simplex", "ipm"]:
+    progress_calls = []
+
+    def progress(p):
+        progress_calls.append(p)
+
+    algo_cb = otexp.HiGHS(problem_cb, solver)
+    algo_cb.setProgressCallback(progress)
+    algo_cb.setStopCallback(no_stop)
+    algo_cb.run()
+    assert algo_cb.getResult().getStatus() == ot.OptimizationResult.SUCCESS, "status"
+    check_monotonic(progress_calls)
+
+stop_algo = otexp.HiGHS(problem_cb, "simplex")
+stop_algo.setCheckStatus(False)
+stop_algo.setStopCallback(stop_now)
+stop_algo.run()
+assert stop_algo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION, "status"

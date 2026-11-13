@@ -28,6 +28,8 @@
 
 #ifdef OPENTURNS_HAVE_HIGHS
 #include <Highs.h>
+#include <HConfig.h>
+#define HIGHS_VERSION_NR (HIGHS_VERSION_MAJOR * 100000 + HIGHS_VERSION_MINOR * 100 + HIGHS_VERSION_PATCH)
 #endif
 
 #include <algorithm>
@@ -348,6 +350,60 @@ void HiGHS::run()
   HighsStatus return_status = highs.passModel(model);
   if (return_status == HighsStatus::kError)
     throw InvalidArgumentException(HERE) << "Cannot initialize highs model: " << highsStatusToString(return_status) ;
+
+  // User callbacks: forward progress/stop requests through HiGHS interrupt callbacks.
+  // HiGHS>=1.13 names the callback data structs so they can be forward-declared
+  // in a public header (ERGO-Code/HiGHS#2625); here the callback lives in the
+  // .cxx so no header change is needed and it works with older HiGHS too.
+  if (progressCallback_.first || stopCallback_.first)
+  {
+    // counters in data_out are per-phase snapshots (eg IPM counts reset
+    // when crossover starts), so clamp to a running maximum to keep
+    // progress monotonic
+    Scalar lastProgress = 0.0;
+    HighsCallbackFunctionType highsCallback = [this, &lastProgress](int, const std::string &,
+        const HighsCallbackOutput * data_out, HighsCallbackInput * data_in, void *)
+    {
+      if (data_out && progressCallback_.first)
+      {
+        Scalar progress = 0.0;
+        const Scalar maxTime = getMaximumTimeDuration();
+        const UnsignedInteger maxIter = getMaximumIterationNumber();
+        if (maxTime > 0.0)
+          progress = 100.0 * data_out->running_time / maxTime;
+        else if (maxIter > 0)
+        {
+          const UnsignedInteger totalIter =
+            static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->simplex_iteration_count, 0))
+            + static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->ipm_iteration_count, 0))
+            + static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->pdlp_iteration_count, 0))
+// QP iteration counter only exists since HiGHS 1.16
+#if HIGHS_VERSION_NR >= 101600
+            + static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->qpasm_iteration_count, 0))
+#endif
+            ;
+          progress = (100.0 * totalIter) / maxIter;
+        }
+        if (progress > 100.0) progress = 100.0;
+        if (progress < lastProgress) progress = lastProgress;
+        else lastProgress = progress;
+        progressCallback_.first(progress, progressCallback_.second);
+      }
+      if (data_in && stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      {
+        LOGINFO(OSS() << "HiGHS was stopped by user");
+        data_in->user_interrupt = true;
+      }
+    };
+    highs.setCallback(highsCallback);
+    highs.startCallback(kCallbackSimplexInterrupt);
+    highs.startCallback(kCallbackIpmInterrupt);
+    highs.startCallback(kCallbackMipInterrupt);
+// QP interrupt callback only exists since HiGHS 1.16
+#if HIGHS_VERSION_NR >= 101600
+    highs.startCallback(kCallbackQpInterrupt);
+#endif
+  }
 
   // Solve the model
   return_status = highs.run();
