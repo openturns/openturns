@@ -20,6 +20,13 @@
  */
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/IdentityMatrix.hxx"
+
+#include <algorithm>
+#include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,6 +64,133 @@ CalibrationAlgorithmImplementation::CalibrationAlgorithmImplementation(const Fun
 void CalibrationAlgorithmImplementation::run()
 {
   throw NotYetImplementedException(HERE) << "In CalibrationAlgorithmImplementation::run()";
+}
+
+/* Indices of the parameters that are not fixed at a bound: all the
+ * directions when bounds is empty, the free ones otherwise. */
+Indices CalibrationAlgorithmImplementation::ComputeFreeParameterIndices(const Point & thetaStar,
+    const Interval & bounds)
+{
+  const UnsignedInteger parameterDimension = thetaStar.getDimension();
+  if (bounds.getDimension() == 0)
+  {
+    Indices freeIndices(parameterDimension);
+    freeIndices.iota();
+    return freeIndices;
+  }
+  if (bounds.getDimension() != parameterDimension)
+    throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
+  // Absolute tolerance used to detect a parameter lying on one of its bounds.
+  // It is deliberately larger than the default primal feasibility tolerance of
+  // the quadratic solver (1e-7) so that a parameter reported slightly outside
+  // its bound is still detected. It is not scaled by the bound magnitude:
+  // scaling by a large bound would classify a parameter lying well inside the
+  // feasible interval as fixed.
+  const Scalar tolerance = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance");
+  if (!(tolerance > 0.0) || !std::isfinite(tolerance))
+    throw InvalidArgumentException(HERE) << "Error: the active bound tolerance must be finite and strictly positive, got " << tolerance;
+  const Point lowerBound(bounds.getLowerBound());
+  const Point upperBound(bounds.getUpperBound());
+  const Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
+  Indices freeIndices(0);
+  for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+  {
+    Bool active = false;
+    if (finiteLowerBound[i] && (std::abs(thetaStar[i] - lowerBound[i]) <= tolerance))
+      active = true;
+    if (finiteUpperBound[i] && (std::abs(thetaStar[i] - upperBound[i]) <= tolerance))
+      active = true;
+    if (!active)
+      freeIndices.add(i);
+  }
+  return freeIndices;
+}
+
+/* Inverse of the Gram matrix on the free directions of a design matrix,
+ * padded with zeros in the directions fixed at a bound. */
+CovarianceMatrix CalibrationAlgorithmImplementation::ComputeFreeGramInverse(const Matrix & design,
+    const Indices & freeIndices,
+    const String & methodName,
+    const Bool checkRank)
+{
+  const UnsignedInteger parameterDimension = design.getNbColumns();
+  const UnsignedInteger freeDimension = freeIndices.getSize();
+  // The covariance is zero in the directions fixed at a bound: start from a
+  // zero matrix instead of the identity matrix used by CovarianceMatrix(dim).
+  CovarianceMatrix gramInverse(parameterDimension, Point(parameterDimension));
+  if (freeDimension == 0)
+    return gramInverse;
+  Matrix freeDesign(design.getNbRows(), freeDimension);
+  for (UnsignedInteger j = 0; j < freeDimension; ++j)
+    for (UnsignedInteger i = 0; i < design.getNbRows(); ++i)
+      freeDesign(i, j) = design(i, freeIndices[j]);
+  // When requested, a rank-deficient free block gives a small positive
+  // singular value whose inverse can still be finite: check the numerical rank
+  // before relying on the factorization. The unbounded non-linear path keeps
+  // the unconstrained behaviour and lets the caller detect a non-finite
+  // covariance, so that regularized non-identifiable problems keep being
+  // calibrated.
+  if (checkRank)
+  {
+    const Point singularValues(freeDesign.computeSingularValues());
+    const UnsignedInteger singularValuesSize = singularValues.getSize();
+    const Scalar largestSingularValue = (singularValuesSize > 0) ? singularValues[0] : 0.0;
+    const Scalar rankTolerance = std::max(freeDesign.getNbRows(), freeDimension) * SpecFunc::Precision * largestSingularValue;
+    if ((singularValuesSize < freeDimension) || !(largestSingularValue > 0.0) || (singularValues[singularValuesSize - 1] <= rankTolerance))
+      throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+  }
+  LeastSquaresMethod freeMethod(LeastSquaresMethod::Build(methodName, freeDesign));
+  // Initialize the decomposition before accessing the Gram inverse
+  freeMethod.update(Indices(), freeMethod.getCurrentIndices(), Indices(), false);
+  const CovarianceMatrix freeGramInverse(freeMethod.getGramInverse());
+  for (UnsignedInteger i = 0; i < freeDimension; ++i)
+    for (UnsignedInteger j = 0; j < freeDimension; ++j)
+    {
+      const Scalar value = freeGramInverse(i, j);
+      if (!std::isfinite(value))
+        throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+      gramInverse(freeIndices[i], freeIndices[j]) = value;
+    }
+  return gramInverse;
+}
+
+/* Inverse of a Hessian matrix on the free directions, padded with zeros in
+ * the directions fixed at a bound. */
+CovarianceMatrix CalibrationAlgorithmImplementation::ComputeFreeHessianInverse(const Matrix & hessian,
+    const Indices & freeIndices)
+{
+  const UnsignedInteger parameterDimension = hessian.getNbRows();
+  const UnsignedInteger freeDimension = freeIndices.getSize();
+  CovarianceMatrix hessianInverse(parameterDimension, Point(parameterDimension));
+  if (freeDimension == 0)
+    return hessianInverse;
+  Matrix freeHessian(freeDimension, freeDimension);
+  for (UnsignedInteger i = 0; i < freeDimension; ++i)
+    for (UnsignedInteger j = 0; j < freeDimension; ++j)
+      freeHessian(i, j) = hessian(freeIndices[i], freeIndices[j]);
+  try
+  {
+    const Matrix freeInverse(freeHessian.solveLinearSystem(IdentityMatrix(freeDimension)));
+    const CovarianceMatrix freeCovariance(*freeInverse.getImplementation());
+    for (UnsignedInteger i = 0; i < freeDimension; ++i)
+      for (UnsignedInteger j = 0; j < freeDimension; ++j)
+      {
+        const Scalar value = freeCovariance(i, j);
+        if (!std::isfinite(value))
+          throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+        hessianInverse(freeIndices[i], freeIndices[j]) = value;
+      }
+  }
+  catch (const InvalidArgumentException &)
+  {
+    throw;
+  }
+  catch (const Exception &)
+  {
+    throw InvalidArgumentException(HERE) << "Error: cannot compute the Laplace approximation: the Hessian of the residuals at the optimum is not positive definite in the free parameter directions.";
+  }
+  return hessianInverse;
 }
 
 /* String converter */
