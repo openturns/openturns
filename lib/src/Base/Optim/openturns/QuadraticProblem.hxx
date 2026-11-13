@@ -73,6 +73,11 @@ public:
   /** Quadratic flag accessor */
   Bool isQuadratic() const override;
 
+  /** Objective accessor. The quadratic coefficients are the reference, so a
+   * generic objective replacement is rejected: use setHessian, setLinearCost
+   * and setConstant instead. */
+  void setObjective(const Function & objective) override;
+
   /** Objective accessors */
   void setHessian(const SymmetricMatrix & hessian);
   SymmetricMatrix getHessian() const override;

@@ -31,6 +31,21 @@ problemConstant = otexp.QuadraticProblem(Q, c, bounds, 2.0)
 assert problemConstant.getConstant() == 2.0
 ott.assert_almost_equal(problemConstant.getObjective()([0.5, 2.0]), [-2.75])
 
+# a generic objective replacement would leave stale quadratic data, it is
+# rejected in favor of the Hessian/linear cost/constant accessors
+with ott.assert_raises(TypeError):
+    problem.setObjective(ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"]))
+
+# updating a quadratic coefficient keeps the variable types
+integerTypes = [
+    ot.OptimizationProblemImplementation.INTEGER,
+    ot.OptimizationProblemImplementation.CONTINUOUS,
+]
+problem.setVariablesType(integerTypes)
+problem.setLinearCost(c)
+assert problem.getVariablesType() == integerTypes
+problem.setVariablesType([ot.OptimizationProblemImplementation.CONTINUOUS] * 2)
+
 # bounds can be replaced or cleared
 problem.setBounds(ot.Interval([0.0, 0.0], [0.25, 10.0]))
 assert problem.getBounds() == ot.Interval([0.0, 0.0], [0.25, 10.0])

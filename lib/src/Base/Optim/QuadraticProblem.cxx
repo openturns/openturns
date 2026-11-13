@@ -313,6 +313,15 @@ QuadraticProblem QuadraticProblem::FromLeastSquares(const Matrix & matrix,
 }
 
 
+/* Objective accessor: the quadratic coefficients are the reference, so a
+ * generic objective replacement is rejected instead of leaving a stale
+ * Hessian, linear cost or constant for the solvers. */
+void QuadraticProblem::setObjective(const Function &)
+{
+  throw InvalidArgumentException(HERE) << "QuadraticProblem does not support setObjective, use setHessian, setLinearCost and setConstant instead";
+}
+
+
 /* Rebuild the objective function from the quadratic data */
 void QuadraticProblem::updateObjective()
 {
@@ -324,7 +333,12 @@ void QuadraticProblem::updateObjective()
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
       quadratic(i, j, 0) = hessian_(i, j);
-  setObjective(QuadraticFunction(Point(dimension), Point({constant_}), linear, quadratic));
+  // setObjective() always resets the variable types to CONTINUOUS: restore
+  // them when the dimension is unchanged.
+  const Indices variablesType(getVariablesType());
+  OptimizationProblemImplementation::setObjective(QuadraticFunction(Point(dimension), Point({constant_}), linear, quadratic));
+  if (variablesType.getSize() == getDimension())
+    setVariablesType(variablesType);
 }
 
 
