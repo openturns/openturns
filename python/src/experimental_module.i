@@ -26,6 +26,7 @@
 /* Base/Type */
 %include BaseTypCollection.i
 %import typ_module.i
+%include SparseMatrix.i
 
 /* Base/Func */
 %include BaseFuncCollection.i

@@ -31,7 +31,6 @@
 %include PointWithDescription.i
 %include MatrixImplementation.i
 %include Matrix.i
-%include SparseMatrix.i
 %include SquareMatrix.i
 %include SymmetricMatrix.i
 %include Tensor.i

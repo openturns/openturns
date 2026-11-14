@@ -498,27 +498,6 @@ OT_OptimizationProblem_getLinearConstraintCoefficients_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_OptimizationProblem_getSparseLinearConstraintCoefficients_doc
-"Accessor to the sparse linear constraint term.
-
-Only relevant for the linear problem type.
-
-The default implementation converts the dense coefficients returned by
-:meth:`getLinearConstraintCoefficients`; override it to avoid the
-densification of a large sparse problem.
-
-Returns
--------
-A : :class:`~openturns.SparseMatrix`
-    Linear inequality constraint term, in compressed sparse column form.
-"
-%enddef
-%feature("docstring") OT::OptimizationProblemImplementation::getSparseLinearConstraintCoefficients
-OT_OptimizationProblem_getSparseLinearConstraintCoefficients_doc
-
-
-// ---------------------------------------------------------------------
-
 %define OT_OptimizationProblem_getLinearConstraintBounds_doc
 "Accessor to the linear constraint bounds.
 
