@@ -4,6 +4,8 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.testing as ott
 import os
+import re
+import struct
 
 ot.TESTPREAMBLE()
 
@@ -173,16 +175,79 @@ with ott.assert_raises(TypeError):
 # persistence
 if ot.PlatformInfo.HasFeature("libxml2"):
     fileName = "sparse_matrix_study.xml"
-    study = ot.Study()
-    study.setStorageManager(ot.XMLStorageManager(fileName))
-    study.add("matrix", matrix2)
-    study.save()
+
+    def saveMatrixContent():
+        study = ot.Study()
+        study.setStorageManager(ot.XMLStorageManager(fileName))
+        study.add("matrix", matrix2)
+        study.save()
+        with open(fileName) as stream:
+            return stream.read()
+
+    def getMemberId(content, memberName):
+        return re.search(
+            r'<object member="%s" id="(\d+)"/>' % memberName, content
+        ).group(1)
+
+    def replaceIndices(content, objectId, entries):
+        body = "\n".join(
+            '    <unsignedlong index="%d">%d</unsignedlong>' % (index, value)
+            for index, value in enumerate(entries)
+        )
+        if entries:
+            element = (
+                '  <object class="Indices" id="%s" size="%d" '
+                'StudyVisible="false" StudyLabel="">\n%s\n  </object>'
+                % (objectId, len(entries), body)
+            )
+        else:
+            element = (
+                '  <object class="Indices" id="%s" size="0" '
+                'StudyVisible="false" StudyLabel=""/>' % objectId
+            )
+        return re.sub(
+            r'  <object class="Indices" id="%s"[^>]*(?:/>|>.*?</object>)' % objectId,
+            element,
+            content,
+            flags=re.S,
+        )
+
+    def replaceValues(content, objectId, entries):
+        body = "\n".join(
+            '    <numericalscalar index="%d">%r</numericalscalar>' % (index, value)
+            for index, value in enumerate(entries)
+        )
+        element = (
+            '  <object class="Point" id="%s" size="%d" '
+            'StudyVisible="false" StudyLabel="">\n%s\n  </object>'
+            % (objectId, len(entries), body)
+        )
+        return re.sub(
+            r'  <object class="Point" id="%s"[^>]*(?:/>|>.*?</object>)' % objectId,
+            element,
+            content,
+            flags=re.S,
+        )
+
+    def assertRejectedStudy(content, rejectedMatrix):
+        with open(fileName, "w") as stream:
+            stream.write(content)
+        study = ot.Study()
+        study.setStorageManager(ot.XMLStorageManager(fileName))
+        study.load()
+        with ott.assert_raises(Exception):
+            study.fillObject("matrix", rejectedMatrix)
+
+    savedContent = saveMatrixContent()
+    columnPointerId = getMemberId(savedContent, "columnPointer_")
+    rowIndexId = getMemberId(savedContent, "rowIndex_")
+    valuesId = getMemberId(savedContent, "values_")
+
     study = ot.Study()
     study.setStorageManager(ot.XMLStorageManager(fileName))
     study.load()
     matrix5 = otexp.SparseMatrix()
     study.fillObject("matrix", matrix5)
-    os.remove(fileName)
     assert matrix5.getColumnPointer() == matrix2.getColumnPointer(), "column pointer"
     assert matrix5.getRowIndices() == matrix2.getRowIndices(), "row indices"
     ott.assert_almost_equal(matrix5.getValues(), matrix2.getValues())
@@ -190,38 +255,59 @@ if ot.PlatformInfo.HasFeature("libxml2"):
     # a corrupted study cannot make the CSC accessors read out of bounds: an
     # empty column pointer with the largest column count used to wrap the
     # columnPointer.getSize() == nbColumns + 1 check
-    import re
-    import struct
-
-    study = ot.Study()
-    study.setStorageManager(ot.XMLStorageManager(fileName))
-    study.add("matrix", matrix2)
-    study.save()
-    with open(fileName) as stream:
-        content = stream.read()
     maxUnsignedInteger = 2 ** (8 * struct.calcsize("L")) - 1
-    content = re.sub(
+    overflowContent = re.sub(
         r'(<object class="SparseMatrix"[^>]*nbColumns_=")\d+(")',
         r"\g<1>%d\g<2>" % maxUnsignedInteger,
-        content,
+        savedContent,
     )
-    columnPointerId = re.search(
-        r'<object member="columnPointer_" id="(\d+)"/>', content
-    ).group(1)
-    content = re.sub(
-        r'<object class="Indices" id="%s"[^>]*>.*?</object>' % columnPointerId,
-        '<object class="Indices" id="%s" size="0"/>' % columnPointerId,
-        content,
-        flags=re.S,
+    unchangedMatrix = otexp.SparseMatrix(3, 2)
+    unchangedMatrix[1, 0] = 5.0
+    assertRejectedStudy(replaceIndices(overflowContent, columnPointerId, []), unchangedMatrix)
+    # a failed load leaves the target matrix unchanged
+    assert unchangedMatrix.getNbNonZeros() == 1, "unchanged non zeros"
+    assert unchangedMatrix[1, 0] == 5.0, "unchanged value"
+
+    # the column pointer count must match the column dimension
+    wrongColumnCountContent = re.sub(
+        r'(<object class="SparseMatrix"[^>]*nbColumns_=")\d+(")',
+        r"\g<1>1\g<2>",
+        savedContent,
     )
-    with open(fileName, "w") as stream:
-        stream.write(content)
-    study = ot.Study()
-    study.setStorageManager(ot.XMLStorageManager(fileName))
-    study.load()
-    corruptedMatrix = otexp.SparseMatrix()
-    with ott.assert_raises(Exception):
-        study.fillObject("matrix", corruptedMatrix)
+    assertRejectedStudy(wrongColumnCountContent, otexp.SparseMatrix())
+
+    # the column pointer must start at zero, increase, and end on the number of
+    # stored coefficients
+    assertRejectedStudy(
+        replaceIndices(savedContent, columnPointerId, [1, 2, 3]), otexp.SparseMatrix()
+    )
+    assertRejectedStudy(
+        replaceIndices(savedContent, columnPointerId, [0, 3, 2]), otexp.SparseMatrix()
+    )
+    assertRejectedStudy(
+        replaceIndices(savedContent, columnPointerId, [0, 1, 2]), otexp.SparseMatrix()
+    )
+
+    # the values, the non-zero count and the row indices must be consistent
+    assertRejectedStudy(
+        replaceValues(savedContent, valuesId, [4.0, 4.0]), otexp.SparseMatrix()
+    )
+    wrongSizeContent = re.sub(
+        r'(<object class="SparseMatrix"[^>]*size_=")\d+(")', r"\g<1>2\g<2>", savedContent
+    )
+    assertRejectedStudy(wrongSizeContent, otexp.SparseMatrix())
+    assertRejectedStudy(
+        replaceIndices(savedContent, rowIndexId, [0, 1, 99]), otexp.SparseMatrix()
+    )
+    # the canonical layout needs strictly increasing row indices in each column:
+    # unsorted rows or duplicate coordinates would break the mutable accessor
+    # and the compressed model handed over to HiGHS
+    assertRejectedStudy(
+        replaceIndices(savedContent, rowIndexId, [1, 0, 2]), otexp.SparseMatrix()
+    )
+    assertRejectedStudy(
+        replaceIndices(savedContent, rowIndexId, [0, 0, 2]), otexp.SparseMatrix()
+    )
     os.remove(fileName)
 
 print("OK")

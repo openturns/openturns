@@ -3,6 +3,8 @@
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.testing as ott
+import os
+import re
 
 ot.TESTPREAMBLE()
 
@@ -92,19 +94,18 @@ with ott.assert_raises(ValueError):
 
 # persistence
 if ot.PlatformInfo.HasFeature("libxml2"):
-    import os
-
     fileName = "linear_problem_study.xml"
     study = ot.Study()
     study.setStorageManager(ot.XMLStorageManager(fileName))
     study.add("problem", sparseProblem)
     study.save()
+    with open(fileName) as stream:
+        savedContent = stream.read()
     study = ot.Study()
     study.setStorageManager(ot.XMLStorageManager(fileName))
     study.load()
     loadedProblem = otexp.LinearProblem()
     study.fillObject("problem", loadedProblem)
-    os.remove(fileName)
     ott.assert_almost_equal(loadedProblem.getLinearCost(), cost)
     ott.assert_almost_equal(loadedProblem.getLinearConstraintCoefficients(), A)
     ott.assert_almost_equal(
@@ -115,3 +116,44 @@ if ot.PlatformInfo.HasFeature("libxml2"):
         loadedProblem.getLinearConstraintBounds().getUpperBound(),
         LU.getUpperBound(),
     )
+
+    # a study saved before the sparse representation stored the coefficients as
+    # a dense matrix under constraintCoefficients_: the backward compatible
+    # loader converts it back to the sparse form
+    denseFileName = "linear_problem_dense_study.xml"
+    denseStudy = ot.Study()
+    denseStudy.setStorageManager(ot.XMLStorageManager(denseFileName))
+    denseStudy.add("matrix", A)
+    denseStudy.save()
+    with open(denseFileName) as stream:
+        denseContent = stream.read()
+    denseElement = re.search(
+        r'  <object class="MatrixImplementation".*?</object>\n', denseContent, re.S
+    ).group(0)
+    sparseElement = re.search(
+        r'  <object class="SparseMatrix".*?</object>\n', savedContent, re.S
+    ).group(0)
+    sparseId = re.search(r'id="(\d+)"', sparseElement).group(1)
+    denseElement = re.sub(r'id="\d+"', 'id="%s"' % sparseId, denseElement, count=1)
+    denseElement = denseElement.replace(
+        'StudyVisible="true" StudyLabel="matrix"',
+        'StudyVisible="false" StudyLabel=""',
+    )
+    oldContent = savedContent.replace(sparseElement, denseElement)
+    oldContent = oldContent.replace(
+        'member="sparseConstraintCoefficients_" id="%s"' % sparseId,
+        'member="constraintCoefficients_" id="%s"' % sparseId,
+    )
+    with open(fileName, "w") as stream:
+        stream.write(oldContent)
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(fileName))
+    study.load()
+    oldProblem = otexp.LinearProblem()
+    study.fillObject("problem", oldProblem)
+    ott.assert_almost_equal(oldProblem.getLinearConstraintCoefficients(), A)
+    ott.assert_almost_equal(
+        oldProblem.getSparseLinearConstraintCoefficients().asDenseMatrix(), A
+    )
+    os.remove(fileName)
+    os.remove(denseFileName)
