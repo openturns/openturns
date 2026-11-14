@@ -9,10 +9,11 @@ This defines a linear problem as:
 
 .. math::
 
-    \min_{\vect{x} \in B} f(\vect{x}) = \vect{c}^T \vect{x} \\
+    \min_{\vect{x} \in B} f(\vect{x}) = \vect{c}^T \vect{x} + d \\
     \vect{lc_l} \leq \mat{A} \vect{x} \leq \vect{lc_u}
 
 where :math:`B` are the problem bounds, :math:`\vect{c}` is the cost vector,
+:math:`d` is a constant term,
 :math:`\mat{A}` is the constraint matrix term,
 and :math:`\vect{cb_l}, \vect{cb_u}` are the constraints bounds terms.
 
@@ -27,6 +28,8 @@ A : :class:`~openturns.Matrix` or :class:`~openturns.experimental.SparseMatrix`
     avoids storing the zero coefficients of a large sparse problem.
 cb : :class:`~openturns.Interval`
     Linear inequality constraints bounds terms :math:`\vect{cb_l}, \vect{cb_u}`
+constant : float, optional
+    The constant term :math:`d`. Default is 0.
 
 Notes
 -----
@@ -103,6 +106,26 @@ Parameters
 cost : :class:`~openturns.Point`
     Linear cost term.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::setConstant
+"Accessor to the constant term of the objective.
+
+Parameters
+----------
+constant : float
+    Constant term."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::getConstant
+"Accessor to the constant term of the objective.
+
+Returns
+-------
+constant : float
+    Constant term."
 
 // ---------------------------------------------------------------------
 
@@ -241,7 +264,9 @@ A : :class:`~openturns.experimental.SparseMatrix`
 "Transform a general optimization problem to a linear problem.
 
 Objective and inequality constraints coefficients are computed
-from their gradients at the specified location.
+from their gradients at the specified location. The constant term
+of the linearized objective is set so that it matches the original
+objective at the location.
 
 Parameters
 ----------
