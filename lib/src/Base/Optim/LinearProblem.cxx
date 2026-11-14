@@ -61,6 +61,8 @@ LinearProblem * LinearProblem::clone() const
 /* Objective accessor */
 void LinearProblem::setLinearCost(const Point & cost)
 {
+  if ((constraintCoefficients_.getNbColumns() != 0) && (constraintCoefficients_.getNbColumns() != cost.getDimension()))
+    throw InvalidDimensionException(HERE) << "Linear cost dimension (" << cost.getDimension() << ") must match constraint matrix column dimension (" << constraintCoefficients_.getNbColumns() << ")";
   cost_ = cost;
   const UnsignedInteger dimension = cost.getDimension();
   Matrix linear(1, dimension);
@@ -97,6 +99,43 @@ Matrix LinearProblem::getLinearConstraintCoefficients() const
 Interval LinearProblem::getLinearConstraintBounds() const
 {
   return constraintBounds_;
+}
+
+
+/* Equality and inequality constraints, derived from the linear constraints */
+Bool LinearProblem::hasEqualityConstraint() const
+{
+  return HasLinearEqualityConstraint(constraintBounds_);
+}
+
+
+Function LinearProblem::getEqualityConstraint() const
+{
+  return GetLinearEqualityConstraint(constraintCoefficients_, constraintBounds_, cost_.getDimension());
+}
+
+
+void LinearProblem::setEqualityConstraint(const Function & equalityConstraint)
+{
+  SetLinearEqualityConstraint(constraintCoefficients_, constraintBounds_, equalityConstraint, cost_.getDimension());
+}
+
+
+Bool LinearProblem::hasInequalityConstraint() const
+{
+  return HasLinearInequalityConstraint(constraintBounds_);
+}
+
+
+Function LinearProblem::getInequalityConstraint() const
+{
+  return GetLinearInequalityConstraint(constraintCoefficients_, constraintBounds_, cost_.getDimension());
+}
+
+
+void LinearProblem::setInequalityConstraint(const Function & inequalityConstraint)
+{
+  SetLinearInequalityConstraint(constraintCoefficients_, constraintBounds_, inequalityConstraint, cost_.getDimension());
 }
 
 

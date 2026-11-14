@@ -78,13 +78,117 @@ cost : :class:`~openturns.Point`
 %feature("docstring") OT::LinearProblem::setLinearConstraint
 "Accessor to the linear constraint term.
 
+Each row :math:`i` of the constraint matrix defines
+:math:`L_i \\leq \\vect{A}_i \\vect{x} \\leq U_i`, where :math:`L_i` and
+:math:`U_i` are the bounds of the constraint interval. Use an infinite bound
+for a one-sided constraint and equal lower and upper bounds for an equality
+constraint.
+
+Parameters
+----------
+A : :class:`~openturns.Matrix`
+    Linear constraint matrix.
+cb : :class:`~openturns.Interval`
+    Linear constraint bounds.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::getEqualityConstraint
+"Accessor to the equality constraints.
+
+The equality constraints are derived from the linear constraints: a row whose
+lower and upper bounds are equal, :math:`L_i = U_i`, defines the equality
+constraint :math:`\\vect{A}_i \\vect{x} = L_i`.
+
 Returns
 -------
-A : :class:`~openturns.Matrix`
-    Linear inequality constraint term.
-cb : :class:`~openturns.Interval`
-    Linear inequality constraint bounds.
-"
+equality : :class:`~openturns.Function`
+    Linear function :math:`\\vect{x} \\mapsto \\mat{A}_{eq} \\vect{x} - \\vect{L}_{eq}`
+    built from the equality rows. Its input dimension is the problem
+    dimension and its output dimension is the number of equality rows. When
+    there is no equality row, the returned linear function has zero output
+    dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::setEqualityConstraint
+"Set the equality constraint function.
+
+The function must be linear: either a :class:`~openturns.LinearFunction`, or a
+:class:`~openturns.Function` whose :meth:`~openturns.Function.isLinear` method
+returns *True*. It is converted to the linear constraints
+:math:`\\mat{A} \\vect{x} = \\vect{L}`, where :math:`\\mat{A}` is the transpose
+of its gradient at the origin and :math:`\\vect{L} = -h(\\vect{0})` for a
+function :math:`h` such that :math:`h(\\vect{x}) = \\vect{0}` is the expected
+equality constraint. Existing inequality constraints are preserved.
+
+Parameters
+----------
+equalityConstraint : :class:`~openturns.Function`
+    Linear equality constraint :math:`h(\\vect{x}) = \\vect{0}`. An empty
+    function clears the equality constraints."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::hasEqualityConstraint
+"Test whether equality constraints are defined.
+
+Returns
+-------
+hasEqualityConstraint : bool
+    *True* if at least one row of the linear constraints has equal lower and
+    upper bounds."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::getInequalityConstraint
+"Accessor to the inequality constraints.
+
+The inequality constraints are derived from the linear constraints: each
+finite bound of a row that is not an equality constraint gives one component,
+with the convention :math:`h(\\vect{x}) \\geq 0`. The row
+:math:`L_i \\leq \\vect{A}_i \\vect{x} \\leq U_i` gives the components
+:math:`\\vect{A}_i \\vect{x} - L_i` and :math:`U_i - \\vect{A}_i \\vect{x}`.
+
+Returns
+-------
+inequality : :class:`~openturns.Function`
+    Linear function :math:`\\vect{x} \\mapsto \\mat{A}_{ineq} \\vect{x} - \\vect{L}_{ineq}`
+    built from the inequality rows. Its input dimension is the problem
+    dimension and its output dimension is the number of finite bounds of the
+    rows that are not equality constraints. When there is no such row, the
+    returned linear function has zero output dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::setInequalityConstraint
+"Set the inequality constraint function.
+
+The function must be linear: either a :class:`~openturns.LinearFunction`, or a
+:class:`~openturns.Function` whose :meth:`~openturns.Function.isLinear` method
+returns *True*. It is converted to the linear constraints
+:math:`\\mat{A} \\vect{x} \\geq \\vect{L}`, where :math:`\\mat{A}` is the
+transpose of its gradient at the origin and :math:`\\vect{L} = -g(\\vect{0})`
+for a function :math:`g` such that :math:`g(\\vect{x}) \\geq 0` is the expected
+inequality constraint. Existing equality constraints are preserved.
+
+Parameters
+----------
+inequalityConstraint : :class:`~openturns.Function`
+    Linear inequality constraint :math:`g(\\vect{x}) \\geq 0`. An empty
+    function clears the inequality constraints."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::hasInequalityConstraint
+"Test whether inequality constraints are defined.
+
+Returns
+-------
+hasInequalityConstraint : bool
+    *True* if at least one row of the linear constraints has a finite bound
+    and is not an equality constraint."
 
 // ---------------------------------------------------------------------
 
