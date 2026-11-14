@@ -263,6 +263,109 @@ This implies:
 
     \vect{\theta} \; | \; \vect{y} \sim \mathcal{N}\left(\hat{\vect{\theta}}_{MAP}, \; A\right)
 
+Bounded Gaussian calibration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The parameter bounds can be set with
+:meth:`~openturns.GaussianLinearCalibration.setBounds` and
+:meth:`~openturns.GaussianNonLinearCalibration.setBounds`.
+Let :math:`\vect{\ell}` and :math:`\vect{u}` be the lower and upper bounds.
+The constrained MAP estimator is the solution of:
+
+.. math::
+
+    \hat{\vect{\theta}}_{MAP} = \argmin_{\vect{\ell} \leq \vect{\theta} \leq \vect{u}}
+    \frac{1}{2} \left( \|\vect{y} - h(\vect{\theta})\|^2_R
+    + \|\vect{\theta}-\vect{\mu} \|^2_B \right).
+
+The posterior distribution then depends on the handling selected by the
+``GaussianLinearCalibration-BoundsHandling`` and
+``GaussianNonLinearCalibration-BoundsHandling`` keys of the
+:class:`~openturns.ResourceMap`.
+
+These keys are used only when the bootstrap size is zero. For
+:class:`~openturns.GaussianNonLinearCalibration`, the default bootstrap size
+is 100: the posterior is then a kernel smoothing of the bootstrapped MAP
+estimators, and the bounds only constrain each MAP optimization. Call
+:meth:`~openturns.GaussianNonLinearCalibration.setBootstrapSize` with zero
+before relying on the two handlings described below.
+
+The ``ActiveSet`` handling (default) treats the parameters lying on a bound
+as fixed: the posterior covariance is computed on the free block of the
+Jacobian, and it is zero in the directions fixed at a bound. For the
+least-squares calibrations, the residual degrees of freedom also exclude the
+fixed parameters. This is a first-order approximation, because it conditions
+on the active set instead of integrating over the possible changes of the
+active set.
+
+The ``Truncated`` handling returns the Gaussian posterior truncated to the
+bounds, as a :class:`~openturns.TruncatedDistribution`:
+
+- for :class:`~openturns.GaussianLinearCalibration`, the unconstrained
+  posterior :math:`\mathcal{N}(\hat{\vect{\theta}}_{MAP}, A)` is truncated,
+  which is the exact posterior of the linear-Gaussian model with bounds;
+- for :class:`~openturns.GaussianNonLinearCalibration`, the Gaussian
+  surrogate :math:`\mathcal{N}(\hat{\vect{\theta}}_{MAP} - H^{-1} g, A(\hat{\vect{\theta}}_{MAP}))`
+  of the Laplace approximation at the MAP is truncated, where :math:`H` is the
+  Gauss-Newton approximation of the Hessian of the negative log posterior
+  (the normal matrix of the linearized residual) and :math:`g` the gradient
+  of the negative log posterior at the MAP.
+  The gradient vanishes at an interior MAP and is kept when the MAP lies on a
+  bound; for an affine model this makes the truncated posterior agree with
+  :class:`~openturns.GaussianLinearCalibration`. This is the exact posterior
+  of the surrogate (*truncated Gauss-Newton Laplace approximation*), not the
+  exact posterior of the nonlinear model.
+
+In both cases, the reported MAP is the mode of the truncated distribution,
+while its mean is different in general. The current
+:class:`~openturns.TruncatedDistribution` only computes its moments in
+reasonable time for dimensions up to about three, so this handling is not the
+default. Moreover, the truncated distribution is numerically representable only
+if the bounds leave a non-negligible probability under the Gaussian posterior;
+when the data are very informative and the MAP lies far outside the bounds, the
+``ActiveSet`` handling is more robust.
+
+.. _ill_conditioned_calibration:
+
+Ill-conditioned linearization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The calibrations above are driven by the Jacobian :math:`\mat{J}` of the model
+with respect to the parameter, evaluated at the current parameter. Its
+condition number bounds what the observations can say about each direction of
+the parameter space: a direction associated with a singular value
+:math:`\sigma` contributes a term of magnitude :math:`\sigma^2` to the residual
+sum of squares.
+
+For :class:`~openturns.LinearLeastSquaresCalibration` and
+:class:`~openturns.GaussianLinearCalibration` without bounds, :math:`\mat{J}`
+itself is decomposed, so every singular value is used. With bounds, the
+equivalent quadratic problem is built from the normal matrix
+:math:`\mat{J}^T \mat{J}`, which squares the condition number. When the
+smallest singular value is below :math:`\sqrt{\epsilon}` times the largest one,
+where :math:`\epsilon` is the machine precision, the normal matrix cannot
+represent that direction anymore: the bounded problem is then solved directly
+on :math:`\mat{J}` with a bounded-variable active-set method, whose
+subproblems use its singular value decomposition. The estimate therefore
+agrees with the unconstrained one when no bound is active, and a bound acting
+on a weakly identified parameter is resolved exactly.
+
+For :class:`~openturns.NonLinearLeastSquaresCalibration` and
+:class:`~openturns.GaussianNonLinearCalibration`, the MAP is obtained by
+minimizing the residual sum of squares, so :math:`\mat{J}^T \mat{J}` is not
+formed. The limitation is then a matter of resolution rather than of algebra:
+a direction whose contribution to the sum of squares is smaller than the
+machine precision relative to the objective cannot be identified from the
+data. The returned MAP then depends on the optimization algorithm and on its
+stopping criterion, and a bound acting on such a direction may not be detected
+as active. The posterior variance in that direction is large, which is the
+honest signature of the non-identifiability. In such a case, rescale the
+parameterization so that the directions have comparable influence on the
+model, or use a proper prior distribution through
+:class:`~openturns.GaussianLinearCalibration` or
+:class:`~openturns.GaussianNonLinearCalibration`, whose prior term resolves the
+direction.
+
 Bias of Linear Gaussian Calibration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -296,5 +399,9 @@ parameters, reducing the variance comes at the price of an increased bias.
 .. topic:: References:
 
     - N. H. Bingham and John M. Fry (2010). *Regression, Linear Models in Statistics*, Springer Undergraduate Mathematics Series. Springer.
+    - A. Genz and F. Bretz (2009). *Computation of Multivariate Normal and t Probabilities*, Lecture Notes in Statistics 195. Springer.
+    - W. C. Horrace (2005). *Some results on the multivariate truncated normal distribution*, Journal of Multivariate Analysis, 94(1), 209-221.
     - S. Huet, A. Bouvier, M.A. Poursat, and E. Jolivet (2004). *Statistical Tools for Nonlinear Regression*, Springer.
     - C. E. Rasmussen and C. K. I. Williams (2006), *Gaussian Processes for Machine Learning*, The MIT Press.
+    - G. M. Tallis (1961). *The moment generating function of the truncated multi-normal distribution*, Journal of the Royal Statistical Society: Series B, 23(1), 223-229.
+    - G. Wilhelm and B. G. Manjunath (2010). *tmvtnorm: A package for the truncated multivariate normal distribution*, The R Journal, 2(1), 25-29.

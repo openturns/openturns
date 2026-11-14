@@ -72,6 +72,72 @@ OT_CalibrationAlgorithm_getParameterPrior_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CalibrationAlgorithm_getBounds_doc
+"Accessor to the parameter bounds.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    Parameter bounds used to constrain the calibration.
+    An empty interval means that no bounds are applied."
+%enddef
+%feature("docstring") OT::CalibrationAlgorithmImplementation::getBounds
+OT_CalibrationAlgorithm_getBounds_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CalibrationAlgorithm_setBounds_doc
+"Accessor to the parameter bounds.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    Parameter bounds used to constrain the calibration.
+    An empty interval means that no bounds are applied.
+    A non-empty interval must have the calibration parameter dimension.
+
+Notes
+-----
+Setting bounds changes the calibration:
+
+- :class:`~openturns.LinearLeastSquaresCalibration` and
+  :class:`~openturns.GaussianLinearCalibration` solve a bounded linear
+  least-squares problem as a convex quadratic problem, using the first
+  algorithm selected by :meth:`~openturns.OptimizationAlgorithm.Build`. This
+  is the :class:`~openturns.experimental.HiGHS` quadratic solver when
+  OpenTURNS is built with HiGHS support. When the design matrix is so
+  ill-conditioned that its normal matrix would lose an identified direction,
+  the problem is solved directly on the design matrix with a bounded-variable
+  active-set method instead, so that the result agrees with the unconstrained
+  least-squares solution when no bound is active.
+- :class:`~openturns.NonLinearLeastSquaresCalibration` and
+  :class:`~openturns.GaussianNonLinearCalibration` constrain the optimization
+  algorithm.
+- A parameter is considered fixed at a bound when its distance to the bound
+  is lower than the absolute tolerance
+  ``LinearLeastSquaresCalibration-ActiveBoundTolerance`` of the
+  :class:`~openturns.ResourceMap` (1.0e-6 by default). A rank-deficient free
+  Jacobian block raises an exception.
+
+For the non-linear least-squares and Gaussian non-linear calibrations,
+:meth:`~openturns.NonLinearLeastSquaresCalibration.setOptimizationAlgorithm`
+adopts the bounds carried by the given algorithm problem when it has some and
+keeps the current bounds otherwise. Call :meth:`setBounds` after
+:meth:`~openturns.NonLinearLeastSquaresCalibration.setOptimizationAlgorithm`
+to enforce specific bounds.
+
+The posterior distribution of the Gaussian calibrations depends on the
+``GaussianLinearCalibration-BoundsHandling`` and
+``GaussianNonLinearCalibration-BoundsHandling`` keys of the
+:class:`~openturns.ResourceMap`. See
+:class:`~openturns.GaussianLinearCalibration` and
+:class:`~openturns.GaussianNonLinearCalibration` for details."
+%enddef
+%feature("docstring") OT::CalibrationAlgorithmImplementation::setBounds
+OT_CalibrationAlgorithm_setBounds_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CalibrationAlgorithm_run_doc
 "Launch the algorithm.
 

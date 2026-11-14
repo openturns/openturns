@@ -28,10 +28,8 @@
 #include "openturns/BootstrapExperiment.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
-#include "openturns/SpecFunc.hxx"
 
 #include <algorithm>
-#include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -367,9 +365,9 @@ void GaussianNonLinearCalibration::run()
     }
     gradientObservations = gradientObservations.transpose();
 
-    TriangularMatrix dummy;
+    TriangularMatrix designErrorInverseCholesky;
     const Matrix Abar(GaussianLinearCalibration::ComputeDesignMatrix(parameterDimension, outputDimension, size, getParameterPrior(), gradientObservations,
-                      globalErrorCovariance_, errorCovariance_, dummy));
+                      globalErrorCovariance_, errorCovariance_, designErrorInverseCholesky));
 
     // Compute the inverse Gram of the design matrix
     const String methodName(ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
@@ -384,77 +382,78 @@ void GaussianNonLinearCalibration::run()
     }
     else
     {
-      // Variables at an active bound are considered fixed: the posterior
-      // covariance is computed on the free block Abar_F^T Abar_F only and
-      // is zero in the directions fixed at a bound. This is the usual
-      // active-set approximation, which treats the active bounds as equality
-      // constraints and applies the unconstrained Gaussian approximation to
-      // the remaining free parameters. See
-      // S. Huet, A. Bouvier, M.-A. Poursat and E. Jolivet, Statistical Tools for
-      // Nonlinear Regression: A Practical Guide with S-PLUS and R Examples,
-      // 2nd ed., Springer, New York, 2004, for the Gaussian approximation, and
-      // P. E. Gill, W. Murray and M. H. Wright, Practical Optimization,
-      // Academic Press, London, 1981, Section 5.2, for the active-set treatment
-      // of bound constraints.
-      // Absolute tolerance used to detect a parameter lying on one of its bounds.
-      const Scalar tolerance = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance");
-      if (!(tolerance > 0.0) || !std::isfinite(tolerance))
-        throw InvalidArgumentException(HERE) << "Error: the active bound tolerance must be finite and strictly positive, got " << tolerance;
-      const Point lowerBound(bounds_.getLowerBound());
-      const Point upperBound(bounds_.getUpperBound());
-      const Interval::BoolCollection finiteLowerBound(bounds_.getFiniteLowerBound());
-      const Interval::BoolCollection finiteUpperBound(bounds_.getFiniteUpperBound());
-      Indices freeIndices(0);
-      for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+      const String boundsHandling(ResourceMap::GetAsString("GaussianNonLinearCalibration-BoundsHandling"));
+      if (boundsHandling == "Truncated")
       {
-        Bool active = false;
-        if (finiteLowerBound[i] && (std::abs(thetaStar[i] - lowerBound[i]) <= tolerance))
-          active = true;
-        if (finiteUpperBound[i] && (std::abs(thetaStar[i] - upperBound[i]) <= tolerance))
-          active = true;
-        if (!active)
-          freeIndices.add(i);
+        // Truncated Gauss-Newton Laplace approximation: the Gaussian
+        // surrogate Normal(mean, (Abar^T Abar)^{-1}) is truncated to the
+        // parameter bounds. This is exact for the Gaussian surrogate built at
+        // the MAP, but it is not the exact posterior of the nonlinear model,
+        // which would require sampling. The MAP thetaStar is the mode of the
+        // resulting truncated distribution, while its mean differs from the
+        // MAP. See G. M. Tallis, The moment generating function of the
+        // truncated multi-normal distribution, JRSS B 23(1):223-229, 1961,
+        // and W. C. Horrace, Some results on the multivariate truncated normal
+        // distribution, J. Multivariate Anal. 94(1):209-221, 2005.
+        LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, Abar));
+        (void) method.solve(Point(Abar.getNbRows()));
+        const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
+        // Abar^T Abar is the Gauss-Newton approximation of the Hessian of the
+        // negative log posterior (the exact Hessian also contains the
+        // residual-weighted second derivatives of the model). The gradient of
+        // the Gauss-Newton quadratic model does not vanish when thetaStar lies
+        // on a bound. The Gaussian surrogate with the same local expansion has
+        // mean thetaStar - H^{-1} g, where g is the gradient at thetaStar. For
+        // an affine model this is exactly the unconstrained Gaussian
+        // posterior, so that the truncated posterior agrees with the one
+        // returned by GaussianLinearCalibration.
+        const GaussianNonLinearFunctions::CalibrationModelEvaluation residualEvaluation(model_, getInputObservations(), getOutputObservations(), getParameterMean(), parameterInverseCholesky, errorInverseCholesky);
+        // CalibrationModelEvaluation orders the observation block first and
+        // the prior block last, whereas Abar is built prior first: reorder the
+        // residual to match the design matrix.
+        const Point evaluatedResidual(residualEvaluation(thetaStar));
+        const UnsignedInteger observationBlockSize(size * outputDimension);
+        Point residualAtStar(parameterDimension + observationBlockSize);
+        std::copy(evaluatedResidual.begin() + observationBlockSize, evaluatedResidual.end(), residualAtStar.begin());
+        std::copy(evaluatedResidual.begin(), evaluatedResidual.begin() + observationBlockSize, residualAtStar.begin() + parameterDimension);
+        // The Jacobian of the residual is Abar with the sign of the data
+        // block flipped, because Abar stores -errorInverseCholesky.J.
+        Matrix residualJacobian(Abar);
+        for (UnsignedInteger i = parameterDimension; i < residualJacobian.getNbRows(); ++i)
+          for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+            residualJacobian(i, j) = -residualJacobian(i, j);
+        const Point gradient(residualJacobian.transpose() * residualAtStar);
+        const Point surrogateMean(thetaStar - covarianceThetaStar * gradient);
+        parameterPosterior = ComputeTruncatedPosterior(surrogateMean, covarianceThetaStar, bounds_);
       }
-      const UnsignedInteger freeDimension = freeIndices.getSize();
-      // The covariance is zero in the directions fixed at a bound
-      CovarianceMatrix covarianceThetaStar(parameterDimension, Point(parameterDimension));
-      if (freeDimension > 0)
+      else if (boundsHandling == "ActiveSet")
       {
-        Matrix freeDesign(Abar.getNbRows(), freeDimension);
-        for (UnsignedInteger j = 0; j < freeDimension; ++j)
-          for (UnsignedInteger i = 0; i < Abar.getNbRows(); ++i)
-            freeDesign(i, j) = Abar(i, freeIndices[j]);
-        // A rank-deficient free block gives a small positive singular value whose
-        // inverse can still be finite: check the numerical rank before relying on
-        // the factorization of the free block.
-        const Point singularValues(freeDesign.computeSingularValues());
-        const UnsignedInteger singularValuesSize = singularValues.getSize();
-        const Scalar largestSingularValue = (singularValuesSize > 0) ? singularValues[0] : 0.0;
-        const Scalar rankTolerance = std::max(freeDesign.getNbRows(), freeDimension) * SpecFunc::Precision * largestSingularValue;
-        if ((singularValuesSize < freeDimension) || !(largestSingularValue > 0.0) || (singularValues[singularValuesSize - 1] <= rankTolerance))
-          throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
-        LeastSquaresMethod freeMethod(LeastSquaresMethod::Build(methodName, freeDesign));
-        // Initialize the decomposition before accessing the Gram inverse
-        freeMethod.update(Indices(), freeMethod.getCurrentIndices(), Indices(), false);
-        const CovarianceMatrix freeGramInverse(freeMethod.getGramInverse());
-        for (UnsignedInteger i = 0; i < freeDimension; ++i)
-          for (UnsignedInteger j = 0; j < freeDimension; ++j)
-          {
-            const Scalar value = freeGramInverse(i, j);
-            if (!std::isfinite(value))
-              throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
-            covarianceThetaStar(freeIndices[i], freeIndices[j]) = value;
-          }
+        // Variables at an active bound are considered fixed: the posterior
+        // covariance is computed on the free block Abar_F^T Abar_F only and
+        // is zero in the directions fixed at a bound. This is the usual
+        // active-set approximation, which treats the active bounds as equality
+        // constraints and applies the unconstrained Gaussian approximation to
+        // the remaining free parameters. See
+        // S. Huet, A. Bouvier, M.-A. Poursat and E. Jolivet, Statistical Tools for
+        // Nonlinear Regression: A Practical Guide with S-PLUS and R Examples,
+        // 2nd ed., Springer, New York, 2004, for the Gaussian approximation, and
+        // P. E. Gill, W. Murray and M. H. Wright, Practical Optimization,
+        // Academic Press, London, 1981, Section 5.2, for the active-set treatment
+        // of bound constraints.
+        const Indices freeIndices(ComputeFreeParameterIndices(thetaStar, bounds_));
+        const CovarianceMatrix covarianceThetaStar(ComputeFreeGramInverse(Abar, freeIndices, methodName));
+        // Create the result object
+        try
+        {
+          parameterPosterior = Normal(thetaStar, covarianceThetaStar);
+        }
+        catch (...)
+        {
+          throw InternalException(HERE) << "Error: the covariance of the posterior distribution is not definite positive. The problem may be not identifiable.";
+        }
       }
-      // Create the result object
-      try
-      {
-        parameterPosterior = Normal(thetaStar, covarianceThetaStar);
-      }
-      catch (...)
-      {
-        throw InternalException(HERE) << "Error: the covariance of the posterior distribution is not definite positive. The problem may be not identifiable.";
-      }
+      else
+        throw InvalidArgumentException(HERE) << "Error: unknown value " << boundsHandling << " for the GaussianNonLinearCalibration-BoundsHandling key, expected \"ActiveSet\" or \"Truncated\"";
     }
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
@@ -546,21 +545,6 @@ void GaussianNonLinearCalibration::setOptimizationAlgorithm(const OptimizationAl
   // enforce specific bounds.
 }
 
-/* Bounds accessor */
-Interval GaussianNonLinearCalibration::getBounds() const
-{
-  return bounds_;
-}
-
-void GaussianNonLinearCalibration::setBounds(const Interval & bounds)
-{
-  // An empty interval means no bounds; otherwise the dimension must match
-  // the calibration parameter dimension when it is already known.
-  const UnsignedInteger parameterDimension = parameterPrior_.getDimension();
-  if ((bounds.getDimension() != 0) && (parameterDimension != 0) && (bounds.getDimension() != parameterDimension)) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
-  bounds_ = bounds;
-}
-
 /* Algorithm accessor */
 UnsignedInteger GaussianNonLinearCalibration::getBootstrapSize() const
 {
@@ -591,7 +575,6 @@ void GaussianNonLinearCalibration::save(Advocate & adv) const
 {
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algorithm_", algorithm_);
-  adv.saveAttribute("bounds_", bounds_);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
   adv.saveAttribute("errorCovariance_", errorCovariance_);
   adv.saveAttribute("globalErrorCovariance_", globalErrorCovariance_);
@@ -602,8 +585,6 @@ void GaussianNonLinearCalibration::load(Advocate & adv)
 {
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algorithm_", algorithm_);
-  if (adv.hasAttribute("bounds_"))
-    adv.loadAttribute("bounds_", bounds_);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
   if (adv.hasAttribute("errorCovariance_"))
   {

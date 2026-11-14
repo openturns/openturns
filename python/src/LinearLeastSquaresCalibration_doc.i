@@ -49,6 +49,16 @@ so a parameter lying inside the feasible interval of a bound with a large
 magnitude is not considered fixed. A rank-deficient free Jacobian block raises
 an exception.
 
+The quadratic problem is built from the normal matrix
+:math:`\mat{J}^T \mat{J}`, which squares the condition number of the Jacobian.
+When the ratio between the smallest and the largest singular value of the
+Jacobian is below the square root of the machine precision, this normal matrix
+cannot represent the smallest identified direction anymore. In that case the
+bounded problem is solved directly on the Jacobian with a bounded-variable
+active-set method whose subproblems use its singular value decomposition: the
+estimate then coincides with the unconstrained one when no bound is active, and
+a bound that is active on a weakly identified parameter is resolved exactly.
+
 The prior distribution of the parameter is a noninformative prior
 emulated using a flat :class:`~openturns.Normal` centered on the `startingPoint` and with a variance equal to SpecFunc.Infinity.
 
@@ -153,40 +163,6 @@ Returns
 -------
 startingPoint : :class:`~openturns.Point`
     Parameter startingPoint."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearLeastSquaresCalibration::getBounds
-"Accessor to the parameter bounds.
-
-Returns
--------
-bounds : :class:`~openturns.Interval`
-    Parameter bounds used to constrain the calibration.
-    An empty interval means no bounds are applied."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearLeastSquaresCalibration::setBounds
-"Accessor to the parameter bounds.
-
-Parameters
-----------
-bounds : :class:`~openturns.Interval`
-    Parameter bounds used to constrain the calibration.
-    An empty interval means no bounds are applied.
-    A non-empty interval must have the calibration parameter dimension.
-
-Notes
------
-When bounds are set, the calibration solves the bounded linear least-squares
-problem as a quadratic problem, using the first algorithm selected by
-:meth:`~openturns.OptimizationAlgorithm.Build` instead of the unconstrained QR,
-SVD or Cholesky decomposition. The selected algorithm is the
-:class:`~openturns.experimental.HiGHS` quadratic solver when OpenTURNS is built
-with HiGHS support. Parameters lying on a bound up to the absolute tolerance
-``LinearLeastSquaresCalibration-ActiveBoundTolerance`` are considered fixed,
-and a rank-deficient free Jacobian block raises an exception."
 
 // ---------------------------------------------------------------------
 

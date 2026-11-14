@@ -23,8 +23,6 @@
 #include "openturns/Normal.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/QuadraticProblem.hxx"
-#include "openturns/OptimizationAlgorithm.hxx"
 
 #include <algorithm>
 #include <cmath>
@@ -124,33 +122,13 @@ void LinearLeastSquaresCalibration::run()
   if (bounds_.getDimension() > 0)
   {
     // Minimize ||J.theta-(J.theta0-deltaY)||^2 subject to the parameter bounds.
-    // The constant term of the QP is ||J.theta0-deltaY||^2, so its optimal
-    // value is the residual sum of squares.
-    const Point target(gradientObservations_ * getStartingPoint() - deltaY);
-    const QuadraticProblem problem(QuadraticProblem::FromLeastSquares(gradientObservations_, target, bounds_));
-    OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
-    // Build only sets the problem: the selected algorithm has no starting point
-    // of its own, and solvers such as Cobyla require one. Start from the
-    // calibration starting point projected onto the bounds, which is feasible.
-    Point solverStart(getStartingPoint());
-    const Point lowerBound(bounds_.getLowerBound());
-    const Point upperBound(bounds_.getUpperBound());
-    const Interval::BoolCollection finiteLowerBound(bounds_.getFiniteLowerBound());
-    const Interval::BoolCollection finiteUpperBound(bounds_.getFiniteUpperBound());
-    for (UnsignedInteger i = 0; i < parameterDimension; ++i)
-    {
-      if (finiteLowerBound[i] && (solverStart[i] < lowerBound[i]))
-        solverStart[i] = lowerBound[i];
-      if (finiteUpperBound[i] && (solverStart[i] > upperBound[i]))
-        solverStart[i] = upperBound[i];
-    }
-    solver.setStartingPoint(solverStart);
-    solver.run();
-    const OptimizationResult result(solver.getResult());
-    if (result.getStatus() != OptimizationResult::SUCCESS)
-      throw InternalException(HERE) << "Error: the bounded quadratic program solver failed: " << result.getStatusMessage();
-    thetaStar = result.getOptimalPoint();
-    r = gradientObservations_ * thetaStar - target;
+    // In the increment variable theta-theta0 the right-hand side is -deltaY,
+    // which avoids cancelling deltaY against a large J.theta0. The residual
+    // at the optimum is then deltaY+J.(thetaStar-theta0).
+    const Point incrementRhs(-deltaY);
+    const Point deltaTheta(SolveBoundedLeastSquaresIncrement(gradientObservations_, incrementRhs, bounds_, getStartingPoint()));
+    thetaStar = getStartingPoint() + deltaTheta;
+    r = deltaY + gradientObservations_ * deltaTheta;
 
     // Variables at an active bound are considered fixed: the posterior
     // covariance is computed on the free block J_F^T J_F only, and the
@@ -266,22 +244,6 @@ Point LinearLeastSquaresCalibration::getStartingPoint() const
   return getParameterPrior().getMean();
 }
 
-/* Bounds accessor */
-Interval LinearLeastSquaresCalibration::getBounds() const
-{
-  return bounds_;
-}
-
-void LinearLeastSquaresCalibration::setBounds(const Interval & bounds)
-{
-  // An empty interval means no bounds; otherwise the dimension must match
-  // the calibration parameter dimension when it is already known.
-  const UnsignedInteger parameterDimension = parameterPrior_.getDimension();
-  if ((bounds.getDimension() != 0) && (parameterDimension != 0) && (bounds.getDimension() != parameterDimension))
-    throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
-  bounds_ = bounds;
-}
-
 /* Least squares method name accessor */
 String LinearLeastSquaresCalibration::getMethodName() const
 {
@@ -308,7 +270,6 @@ void LinearLeastSquaresCalibration::save(Advocate & adv) const
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("modelObservations_", modelObservations_);
   adv.saveAttribute("gradientObservations_", gradientObservations_);
-  adv.saveAttribute("bounds_", bounds_);
   adv.saveAttribute("methodName_", methodName_);
 }
 
@@ -318,8 +279,6 @@ void LinearLeastSquaresCalibration::load(Advocate & adv)
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("modelObservations_", modelObservations_);
   adv.loadAttribute("gradientObservations_", gradientObservations_);
-  if (adv.hasAttribute("bounds_"))
-    adv.loadAttribute("bounds_", bounds_);
   adv.loadAttribute("methodName_", methodName_);
 }
 

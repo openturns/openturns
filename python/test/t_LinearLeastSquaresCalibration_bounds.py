@@ -7,6 +7,8 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
+HAVE_LIBXML2 = ot.PlatformInfo.HasFeature("libxml2")
+
 # Linear model y = a + b*x, exact observations generated with (a, b) = (2, 3)
 g = ot.SymbolicFunction(["a", "b", "x"], ["a + b*x"])
 model = ot.ParametricFunction(g, [0, 1], [2.0, 3.0])
@@ -86,7 +88,9 @@ for method in ["SVD", "QR", "Cholesky"]:
 algoMixed = ot.LinearLeastSquaresCalibration(model, x, y, candidate, "SVD")
 algoMixed.setBounds(ot.Interval([-10.0, -10.0], [10.0, 2.5]))
 algoMixed.run()
-ott.assert_almost_equal(algoMixed.getResult().getParameterMAP(), [3.0, 2.5], boundedMapRtol)
+ott.assert_almost_equal(
+    algoMixed.getResult().getParameterMAP(), [3.0, 2.5], boundedMapRtol
+)
 
 # infinite bounds on the free side are supported
 algoInfinite = ot.LinearLeastSquaresCalibration(model, x, y, candidate, "SVD")
@@ -123,9 +127,7 @@ ott.assert_almost_equal(algoEmpty.getResult().getParameterMAP(), [2.0, 3.0])
 gVector = ot.SymbolicFunction(["a", "b", "x"], ["a + b*x", "a - b*x"])
 modelVector = ot.ParametricFunction(gVector, [0, 1], [2.0, 3.0])
 yVector = modelVector(x)
-algoVector = ot.LinearLeastSquaresCalibration(
-    modelVector, x, yVector, candidate, "SVD"
-)
+algoVector = ot.LinearLeastSquaresCalibration(modelVector, x, yVector, candidate, "SVD")
 algoVector.setBounds(ot.Interval([-10.0, -10.0], [0.5, 10.0]))
 algoVector.run()
 resultVector = algoVector.getResult()
@@ -172,7 +174,9 @@ aLarge = 1.0e6 + 0.5
 modelLarge = ot.ParametricFunction(gLarge, [1], [aLarge])
 xLarge = ot.Sample([[1.0], [2.0], [3.0]])
 yLarge = ot.Sample([[aLarge], [2.0 * aLarge], [3.0 * aLarge + 1.0]])
-algoLarge = ot.LinearLeastSquaresCalibration(modelLarge, xLarge, yLarge, [aLarge], "SVD")
+algoLarge = ot.LinearLeastSquaresCalibration(
+    modelLarge, xLarge, yLarge, [aLarge], "SVD"
+)
 algoLarge.setBounds(ot.Interval([1.0e6], [2.0e6]))
 algoLarge.run()
 resultLarge = algoLarge.getResult()
@@ -191,6 +195,86 @@ covarianceLarge = resultLarge.getParameterPosterior().getCovariance()
 assert covarianceLarge[0, 0] > 0.0
 ott.assert_almost_equal([covarianceLarge[0, 0]], [5.0 / 392.0], 5e-2)
 
+# a large increment from the starting point must not exhaust the fallback
+# solver budget: the bounded problem is solved in the increment variable, so a
+# candidate far from the solution produces a large increment
+gShift = ot.SymbolicFunction(["x", "a"], ["a * x"])
+modelShift = ot.ParametricFunction(gShift, [1], [0.0])
+xShift = ot.Sample([[1.0], [1.0], [1.0]])
+yShift = ot.Sample([[1.0e6], [1.0e6], [1.0e6]])
+algoShift = ot.LinearLeastSquaresCalibration(
+    modelShift, xShift, yShift, [0.0], "SVD"
+)
+algoShift.setBounds(ot.Interval([-2.0e6], [2.0e6]))
+algoShift.run()
+ott.assert_almost_equal(algoShift.getResult().getParameterMAP(), [1.0e6], 1e-6)
+
+# a design whose smallest singular value is below the square root of the
+# machine precision: its normal matrix cannot represent the direction it
+# identifies, so the bounded solve works on the design itself and agrees with
+# the unconstrained SVD solution when no bound is active
+illG = ot.SymbolicFunction(["t", "a", "b"], ["a + b + t", "1e-9 * b", "0.0"])
+illModel = ot.ParametricFunction(illG, [1, 2], [0.0, 0.0])
+illX = ot.Sample([[0.0]])
+for illObservations in ([1.0, 1e-9, 0.1], [1.0, 2e-9, 0.1]):
+    illY = ot.Sample([illObservations])
+    reference = ot.LinearLeastSquaresCalibration(
+        illModel, illX, illY, [0.0, 0.0], "SVD"
+    )
+    reference.run()
+    bounded = ot.LinearLeastSquaresCalibration(
+        illModel, illX, illY, [0.0, 0.0], "SVD"
+    )
+    bounded.setBounds(ot.Interval([-3.0, -3.0], [3.0, 3.0]))
+    bounded.run()
+    ott.assert_almost_equal(
+        bounded.getResult().getParameterMAP(),
+        reference.getResult().getParameterMAP(),
+        1e-6,
+        1e-6,
+    )
+# a bound active on the weakly identified direction is resolved exactly
+active = ot.LinearLeastSquaresCalibration(
+    illModel, illX, ot.Sample([[1.0, 2e-9, 0.1]]), [0.0, 0.0], "SVD"
+)
+active.setBounds(ot.Interval([-3.0, 0.0], [3.0, 1.5]))
+active.run()
+ott.assert_almost_equal(
+    active.getResult().getParameterMAP(), [-0.5, 1.5], 1e-6, 1e-6
+)
+
+# the active-set fallback must honour the finite-bound flags: an interval may
+# store an endpoint on a side marked unbounded, which must stay unconstrained
+splitG = ot.SymbolicFunction(["t", "a", "b"], ["a + t", "1e-9 * b", "0.0"])
+splitModel = ot.ParametricFunction(splitG, [1, 2], [0.0, 0.0])
+splitY = ot.Sample([[-1.0, 1e-9, 0.1]])
+unboundedLower = ot.LinearLeastSquaresCalibration(
+    splitModel, illX, splitY, [0.0, 0.0], "SVD"
+)
+unboundedLower.setBounds(
+    ot.Interval([0.0, -3.0], [3.0, 3.0], [False, True], [True, True])
+)
+unboundedLower.run()
+ott.assert_almost_equal(
+    unboundedLower.getResult().getParameterMAP(), [-1.0, 1.0], 1e-6, 1e-6
+)
+# a coordinate sitting on a bound must stay free when the step is blocked by
+# another coordinate, instead of being frozen at its current value
+blocked = ot.LinearLeastSquaresCalibration(
+    splitModel, illX, splitY, [0.0, 0.0], "SVD"
+)
+blocked.setBounds(ot.Interval([0.0, 0.0], [3.0, 3.0]))
+blocked.run()
+ott.assert_almost_equal(blocked.getResult().getParameterMAP(), [0.0, 1.0], 1e-6, 1e-6)
+# a parameter with equal bounds is fixed for good: releasing it would cycle
+# until the iteration budget is exhausted
+equality = ot.LinearLeastSquaresCalibration(
+    splitModel, illX, ot.Sample([[1.0, 1e-9, 0.1]]), [0.0, 0.0], "SVD"
+)
+equality.setBounds(ot.Interval([0.0, -3.0], [0.0, 3.0]))
+equality.run()
+ott.assert_almost_equal(equality.getResult().getParameterMAP(), [0.0, 1.0], 1e-6, 1e-6)
+
 # invalid active-bound tolerances are rejected instead of silently changing
 # the covariance and the residual degrees of freedom
 toleranceKey = "LinearLeastSquaresCalibration-ActiveBoundTolerance"
@@ -206,19 +290,22 @@ finally:
     ot.ResourceMap.SetAsScalar(toleranceKey, toleranceDefault)
 
 # save/load round trip
-algoSave = ot.LinearLeastSquaresCalibration(model, x, y, candidate, "SVD")
-algoSave.setBounds(bounds)
-studyFile = "linear_least_squares_calibration_bounds.xml"
-study = ot.Study()
-study.setStorageManager(ot.XMLStorageManager(studyFile))
-study.add("algo", algoSave)
-study.save()
-loadedStudy = ot.Study()
-loadedStudy.setStorageManager(ot.XMLStorageManager(studyFile))
-loadedStudy.load()
-loadedAlgo = ot.LinearLeastSquaresCalibration()
-loadedStudy.fillObject("algo", loadedAlgo)
-assert loadedAlgo.getBounds() == bounds
-loadedAlgo.run()
-ott.assert_almost_equal(loadedAlgo.getResult().getParameterMAP(), [0.5, 3.5], boundedMapRtol)
-os.remove(studyFile)
+if HAVE_LIBXML2:
+    algoSave = ot.LinearLeastSquaresCalibration(model, x, y, candidate, "SVD")
+    algoSave.setBounds(bounds)
+    studyFile = "linear_least_squares_calibration_bounds.xml"
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(studyFile))
+    study.add("algo", algoSave)
+    study.save()
+    loadedStudy = ot.Study()
+    loadedStudy.setStorageManager(ot.XMLStorageManager(studyFile))
+    loadedStudy.load()
+    loadedAlgo = ot.LinearLeastSquaresCalibration()
+    loadedStudy.fillObject("algo", loadedAlgo)
+    assert loadedAlgo.getBounds() == bounds
+    loadedAlgo.run()
+    ott.assert_almost_equal(
+        loadedAlgo.getResult().getParameterMAP(), [0.5, 3.5], boundedMapRtol
+    )
+    os.remove(studyFile)

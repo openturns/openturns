@@ -81,10 +81,6 @@ public:
   /** Flag for the full error covariance accessor */
   Bool getGlobalErrorCovariance() const;
 
-  /** Bounds accessor */
-  Interval getBounds() const;
-  void setBounds(const Interval & bounds);
-
   /** Bootstrap size accessor */
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
@@ -104,9 +100,6 @@ private:
 
   /* The optimization algorithm */
   OptimizationAlgorithm algorithm_;
-
-  /* Parameter bounds */
-  Interval bounds_;
 
   /* Number of bootstrap replica */
   UnsignedInteger bootstrapSize_;
