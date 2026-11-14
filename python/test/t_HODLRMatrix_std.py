@@ -764,7 +764,7 @@ hodlr30.gemv('N', 1.0, x_sol30, 0.0, y30)
 err30 = (y30 - b30).norm() / b30.norm()
 # Wall-time budget scaled to runner speed: the MSVC CI runner executes this
 # file ~45x slower than a dev box (25 s vs 0.55 s measured 2026-09-21), so an
-# absolute 5 s budget flakes there. A genuine retry cascade is orders of
+# absolute 30 s budget (120 s on Windows) flakes there. A genuine retry cascade is orders of
 # magnitude slower (tens of seconds locally, i.e. 1000 s+ on such a runner),
 # so a scaled budget still catches it.
 t_limit30 = 120.0 if sys.platform.startswith("win") else 30.0

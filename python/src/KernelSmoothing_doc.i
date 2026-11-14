@@ -173,6 +173,7 @@ Examples
 >>> import openturns as ot
 >>> sample = ot.Exponential(1.0).getSample(1000)
 >>> smoother = ot.KernelSmoothing(ot.Normal(), False, 0)
+>>> smoother.setBoundingOption(ot.KernelSmoothing.BOTH)
 >>> truncated = smoother.buildAsTruncatedDistribution(sample, [1.0])
 "
 

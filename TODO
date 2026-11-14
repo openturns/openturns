@@ -23,4 +23,4 @@ Remove QuantileConfidence.computeUnilateralConfidenceIntervalWithCoverage
 Remove QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage
 Remove deprecated viewer.PlotDesign in some future version
 Remove deprecated LHSExperiment alwaysShuffle/randomShift arguments
-Remove deprecated KernelSmoothing boundaryCorrrection argument
+Remove deprecated KernelSmoothing boundaryCorrection argument

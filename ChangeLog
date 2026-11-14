@@ -110,6 +110,7 @@
  * ProbabilitySimulationResult is now a handle to ProbabilitySimulationResultImplementation, which holds the concrete result of all the simulation algorithms; EventSimulation.getResult() still returns a ProbabilitySimulationResult handle and the former result accessors are preserved, while the setters, getImportanceFactors, drawImportanceFactors and getConfidenceLength of the handle are deprecated in favour of the implementation class
  * Deprecated LHSExperiment alwaysShuffle/randomShift flags, dedicated accessors must be used instead
  * Deprecated KernelSmoothing boundaryCorrection flag argument, dedicated accessor must be used instead
+ * Added AssertionException mapped to AssertionError: openturns.testing.assert_almost_equal and the OTtestcode.hxx helpers now raise AssertionError instead of RuntimeError, and dimension/size mismatches raise AssertionException instead of InvalidArgumentException
 
 ==== New features ====
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
