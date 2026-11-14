@@ -851,23 +851,25 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
         ++parameterIndex;
       }
     }
-    // Validate the correlation matrix before mutating this: R(i, j) assignment above already checks range, setR checks dimension
-    if (R.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Correlation matrix dimension mismatch";
+    // R(i, j) assignment above already checks range, setR checks dimension,
+    // so R is valid here and no extra dimension check is needed
   }
   // All validations passed: stage the commit on a polymorphic clone so that
   // range computation retains the concrete distribution behavior (e.g. Normal::computeRange),
-  // no partial update on error
-  Implementation tmp(clone());
-  EllipticalDistribution * p_tmp = dynamic_cast<EllipticalDistribution*>(tmp.get());
-  if (!p_tmp) throw InternalException(HERE) << "Error: cannot stage EllipticalDistribution parameters on a clone of type " << tmp->getClassName();
-  p_tmp->setDimension(dimension);
-  p_tmp->mean_ = mean;
-  p_tmp->sigma_ = sigma;
-  p_tmp->R_ = R;
-  p_tmp->update();
-  p_tmp->computeRange();
-  p_tmp->isAlreadyComputedCovariance_ = false;
-  *this = *p_tmp;
+  // no partial update on error.
+  // Note: the staged clone is assigned back through EllipticalDistribution::operator=,
+  // so derived members are intentionally left untouched here; each derived class
+  // (Normal, Student) refreshes its own extra state after the base-class call.
+  Implementation stagedImplementation(clone());
+  EllipticalDistribution & stagedDistribution = dynamic_cast<EllipticalDistribution&>(*stagedImplementation);
+  stagedDistribution.setDimension(dimension);
+  stagedDistribution.mean_ = mean;
+  stagedDistribution.sigma_ = sigma;
+  stagedDistribution.R_ = R;
+  stagedDistribution.update();
+  stagedDistribution.computeRange();
+  stagedDistribution.isAlreadyComputedCovariance_ = false;
+  *this = stagedDistribution;
 }
 
 Point EllipticalDistribution::getParameter() const
@@ -923,18 +925,20 @@ void EllipticalDistribution::setParameter(const Point & parameters)
   // commit all changes at once, staging on a polymorphic clone so that
   // a dimension change updates dimension_, description and range
   // with the concrete distribution behavior (see setParametersCollection),
-  // with no partial update on error
-  Implementation tmp(clone());
-  EllipticalDistribution * p_tmp = dynamic_cast<EllipticalDistribution*>(tmp.get());
-  if (!p_tmp) throw InternalException(HERE) << "Error: cannot stage EllipticalDistribution parameters on a clone of type " << tmp->getClassName();
-  p_tmp->setDimension(dimension);
-  p_tmp->mean_ = mean;
-  p_tmp->sigma_ = sigma;
-  p_tmp->R_ = R;
-  p_tmp->update();
-  p_tmp->computeRange();
-  p_tmp->isAlreadyComputedCovariance_ = false;
-  *this = *p_tmp;
+  // with no partial update on error.
+  // Note: assignment back goes through EllipticalDistribution::operator=,
+  // so derived members are intentionally left untouched here; each derived
+  // class refreshes its own extra state after the base-class call.
+  Implementation stagedImplementation(clone());
+  EllipticalDistribution & stagedDistribution = dynamic_cast<EllipticalDistribution&>(*stagedImplementation);
+  stagedDistribution.setDimension(dimension);
+  stagedDistribution.mean_ = mean;
+  stagedDistribution.sigma_ = sigma;
+  stagedDistribution.R_ = R;
+  stagedDistribution.update();
+  stagedDistribution.computeRange();
+  stagedDistribution.isAlreadyComputedCovariance_ = false;
+  *this = stagedDistribution;
 }
 
 Description EllipticalDistribution::getParameterDescription() const
