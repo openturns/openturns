@@ -66,3 +66,4 @@ Sampling methods
     lhs_simulation
     qmc_simulation
     subset_sampling
+    quantile_simulation

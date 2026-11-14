@@ -60,6 +60,9 @@ public:
   /** Uniform weights ? */
   Bool hasUniformWeights() const override;
 
+  /** Return isRandom flag */
+  Bool isRandom() const override;
+
   /** Sample generation */
   Sample generateWithWeights(Point & weightsOut) const override;
 

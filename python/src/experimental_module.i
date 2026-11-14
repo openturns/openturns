@@ -67,6 +67,16 @@
 %include FejerExperiment.i
 %include ChristoffelSubsampleExperiment.i
 
+/* Uncertainty/Algorithm/Simulation */
+%import simulation_module.i
+%include QuantileSimulationResultImplementation.i
+%include QuantileSimulationResult.i
+%include QuantileSimulationImplementation.i
+%include QuantileSimulation.i
+%include MonteCarloQuantileSimulation.i
+%include BlockQuantileSimulation.i
+%include ExactTailQuantileSimulation.i
+
 /* Uncertainty */
 %import metamodel_module.i
 

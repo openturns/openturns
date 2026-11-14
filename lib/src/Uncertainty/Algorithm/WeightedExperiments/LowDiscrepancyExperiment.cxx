@@ -201,6 +201,12 @@ void LowDiscrepancyExperiment::setRandomize(const Bool randomize)
   randomize_ = randomize;
 }
 
+/* Return isRandom flag */
+Bool LowDiscrepancyExperiment::isRandom() const
+{
+  return randomize_;
+}
+
 
 /* Sample generation */
 Sample LowDiscrepancyExperiment::generateWithWeights(Point & weights) const

@@ -65,6 +65,21 @@ simulation algorithms: it preserves the dynamic type of the concrete result.
 which holds the result state and concrete accessors; most users only handle the
 former.
 
+Quantile simulation (experimental)
+==================================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    experimental.QuantileSimulation
+    experimental.QuantileSimulationImplementation
+    experimental.MonteCarloQuantileSimulation
+    experimental.BlockQuantileSimulation
+    experimental.ExactTailQuantileSimulation
+    experimental.QuantileSimulationResult
+    experimental.QuantileSimulationResultImplementation
+
 Directional Sampling
 ====================
 

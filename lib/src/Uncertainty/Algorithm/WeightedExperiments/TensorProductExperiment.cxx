@@ -112,6 +112,15 @@ Bool TensorProductExperiment::hasUniformWeights() const
   return hasUniformWeights;
 }
 
+/* Return isRandom flag */
+Bool TensorProductExperiment::isRandom() const
+{
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+    if (collection_[i].isRandom())
+      return true;
+  return false;
+}
+
 /* Sample generation */
 Sample TensorProductExperiment::generateWithWeights(Point & weights) const
 {
