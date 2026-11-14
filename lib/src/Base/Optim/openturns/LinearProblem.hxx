@@ -65,7 +65,9 @@ public:
   void setLinearConstraint(const Matrix & constraintCoefficients, const Interval & LU);
   void setLinearConstraint(const SparseMatrix & constraintCoefficients, const Interval & LU);
   Matrix getLinearConstraintCoefficients() const override;
+#ifndef SWIG
   SparseMatrix getSparseLinearConstraintCoefficients() const override;
+#endif
   Interval getLinearConstraintBounds() const override;
 
   /** String converter */

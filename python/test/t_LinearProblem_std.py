@@ -34,7 +34,7 @@ assert problem.getVariablesType()[1] == ot.OptimizationProblemImplementation.INT
 assert problem.getBounds().getLowerBound() == [0.0, 1.0]
 
 # the sparse constraint matrix gives the same problem
-sparseA = ot.SparseMatrix.FromDenseMatrix(A)
+sparseA = otexp.SparseMatrix.FromDenseMatrix(A)
 assert sparseA.getNbNonZeros() == 6, "non zeros"
 sparseProblem = otexp.LinearProblem(cost, bounds, sparseA, LU)
 ott.assert_almost_equal(sparseProblem.getLinearConstraintCoefficients(), A)
@@ -66,24 +66,17 @@ sparseZeroProblem = otexp.LinearProblem(
 )
 assert sparseZeroProblem.getSparseLinearConstraintCoefficients().getNbNonZeros() == 2
 
-# the wrapper forwards the sparse accessor
-wrapper = ot.OptimizationProblem(sparseProblem)
-ott.assert_almost_equal(
-    wrapper.getSparseLinearConstraintCoefficients().asDenseMatrix(), A
-)
-
-# the default sparse accessor delegates to the dense one, which is not
-# implemented by the base class
-with ott.assert_raises(RuntimeError):
-    ot.OptimizationProblemImplementation().getSparseLinearConstraintCoefficients()
+# SparseMatrix is exposed by the experimental module, the stable wrapper does
+# not expose the sparse accessor
+assert not hasattr(ot.OptimizationProblem, "getSparseLinearConstraintCoefficients")
 
 # the sparse constraint setter
 sparseProblem.setLinearConstraint(sparseA, LU)
 ott.assert_almost_equal(sparseProblem.getLinearConstraintCoefficients(), A)
 with ott.assert_raises(ValueError):
-    sparseProblem.setLinearConstraint(ot.SparseMatrix(3, 1), ot.Interval(3))
+    sparseProblem.setLinearConstraint(otexp.SparseMatrix(3, 1), ot.Interval(3))
 with ott.assert_raises(ValueError):
-    sparseProblem.setLinearConstraint(ot.SparseMatrix(1, 2), ot.Interval(2))
+    sparseProblem.setLinearConstraint(otexp.SparseMatrix(1, 2), ot.Interval(2))
 
 # the dense constraint setter accepts a matrix without zero
 sparseProblem.setLinearConstraint(A, LU)
@@ -93,9 +86,9 @@ ott.assert_almost_equal(
 
 # dimension checks on the sparse constructor
 with ott.assert_raises(ValueError):
-    otexp.LinearProblem(cost, bounds, ot.SparseMatrix(3, 3), LU)
+    otexp.LinearProblem(cost, bounds, otexp.SparseMatrix(3, 3), LU)
 with ott.assert_raises(ValueError):
-    otexp.LinearProblem(cost, bounds, ot.SparseMatrix(2, 2), LU)
+    otexp.LinearProblem(cost, bounds, otexp.SparseMatrix(2, 2), LU)
 
 # persistence
 if ot.PlatformInfo.HasFeature("libxml2"):

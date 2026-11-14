@@ -216,10 +216,18 @@ void HiGHS::run()
   const UnsignedInteger initialCallsNumber = getProblem().getObjective().getEvaluationCallsNumber();
 
   HighsModel model;
-  model.lp_.num_col_ = problemDimension;
+  // HiGHS stores its dimensions and indices as HighsInt: reject the dimensions
+  // which do not fit before narrowing them
+  const Unsigned64BitsInteger maxHighsDimension = static_cast<Unsigned64BitsInteger>(std::numeric_limits<HighsInt>::max());
+  if (static_cast<Unsigned64BitsInteger>(problemDimension) > maxHighsDimension)
+    throw InvalidDimensionException(HERE) << "The problem dimension " << problemDimension << " exceeds the HiGHS capacity " << maxHighsDimension;
+  model.lp_.num_col_ = static_cast<HighsInt>(problemDimension);
   // linear constraints, stored sparse column-wise (exact zeros skipped)
   const SparseMatrix sparseCoefficients(getProblem().getSparseLinearConstraintCoefficients());
-  model.lp_.num_row_ = sparseCoefficients.getNbRows();
+  const UnsignedInteger constraintDimension = sparseCoefficients.getNbRows();
+  if (static_cast<Unsigned64BitsInteger>(constraintDimension) > maxHighsDimension)
+    throw InvalidDimensionException(HERE) << "The constraint dimension " << constraintDimension << " exceeds the HiGHS capacity " << maxHighsDimension;
+  model.lp_.num_row_ = static_cast<HighsInt>(constraintDimension);
 
   // objective function
   model.lp_.sense_ = getProblem().isMinimization() ? ObjSense::kMinimize : ObjSense::kMaximize;
@@ -284,13 +292,12 @@ void HiGHS::run()
   // HiGHS model instead of scanning a dense matrix
   if (model.lp_.num_row_ > 0)
   {
-    const UnsignedInteger nbRows = static_cast<UnsignedInteger>(model.lp_.num_row_);
+    const UnsignedInteger nbRows = sparseCoefficients.getNbRows();
     if (sparseCoefficients.getNbColumns() != problemDimension)
       throw InvalidDimensionException(HERE) << "The constraint matrix has " << sparseCoefficients.getNbColumns() << " columns, expected " << problemDimension;
     const Indices columnPointer(sparseCoefficients.getColumnPointer());
     const Indices rowIndices(sparseCoefficients.getRowIndices());
     const Point values(sparseCoefficients.getValues());
-    const Unsigned64BitsInteger maxHighsIndex = static_cast<Unsigned64BitsInteger>(std::numeric_limits<HighsInt>::max());
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
     model.lp_.a_matrix_.start_.resize(model.lp_.num_col_ + 1);
     model.lp_.a_matrix_.start_[0] = 0;
@@ -303,14 +310,14 @@ void HiGHS::run()
         {
           if (!(rowIndices[k] < nbRows))
             throw InvalidArgumentException(HERE) << "The row index " << rowIndices[k] << " exceeds the constraint dimension " << nbRows;
-          if (static_cast<Unsigned64BitsInteger>(rowIndices[k]) > maxHighsIndex)
-            throw InvalidArgumentException(HERE) << "The row index " << rowIndices[k] << " exceeds the HiGHS index capacity " << maxHighsIndex;
+          if (static_cast<Unsigned64BitsInteger>(rowIndices[k]) > maxHighsDimension)
+            throw InvalidArgumentException(HERE) << "The row index " << rowIndices[k] << " exceeds the HiGHS index capacity " << maxHighsDimension;
           model.lp_.a_matrix_.index_.push_back(static_cast<HighsInt>(rowIndices[k]));
           model.lp_.a_matrix_.value_.push_back(coefficient);
         }
       }
-      if (static_cast<Unsigned64BitsInteger>(model.lp_.a_matrix_.index_.size()) > maxHighsIndex)
-        throw InvalidArgumentException(HERE) << "The number of non-zero constraint coefficients exceeds the HiGHS index capacity " << maxHighsIndex;
+      if (static_cast<Unsigned64BitsInteger>(model.lp_.a_matrix_.index_.size()) > maxHighsDimension)
+        throw InvalidArgumentException(HERE) << "The number of non-zero constraint coefficients exceeds the HiGHS index capacity " << maxHighsDimension;
       model.lp_.a_matrix_.start_[col + 1] = static_cast<HighsInt>(model.lp_.a_matrix_.index_.size());
     }
     model.lp_.row_lower_.resize(model.lp_.num_row_);

@@ -44,7 +44,8 @@ drops the zero coefficients.
 Examples
 --------
 >>> import openturns as ot
->>> matrix = ot.SparseMatrix(3, 2, [0, 2, 0], [0, 1, 0], [1.0, 2.0, 3.0])
+>>> import openturns.experimental as otexp
+>>> matrix = otexp.SparseMatrix(3, 2, [0, 2, 0], [0, 1, 0], [1.0, 2.0, 3.0])
 >>> print(matrix.getNbNonZeros())
 2
 >>> print(matrix.getColumnPointer())
@@ -78,7 +79,7 @@ matrix : :class:`~openturns.Matrix`
 
 Returns
 -------
-sparseMatrix : :class:`~openturns.SparseMatrix`
+sparseMatrix : :class:`~openturns.experimental.SparseMatrix`
     The sparse matrix with the same coefficients."
 
 // ---------------------------------------------------------------------------
@@ -197,5 +198,5 @@ result : :class:`~openturns.Matrix`
 
 Returns
 -------
-transpose : :class:`~openturns.SparseMatrix`
+transpose : :class:`~openturns.experimental.SparseMatrix`
     The transposed matrix."

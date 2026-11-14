@@ -108,7 +108,12 @@ SparseMatrix::SparseMatrix(const UnsignedInteger nbRows,
     columnEntries.reserve(end - start);
     for (UnsignedInteger k = start; k < end; ++ k)
       columnEntries.push_back(std::make_pair(rowIndex_[k], values_[k]));
-    std::sort(columnEntries.begin(), columnEntries.end());
+    // a stable sort keeps the triplets in input order for duplicate coordinates,
+    // so that their sum does not depend on the values themselves
+    std::stable_sort(columnEntries.begin(), columnEntries.end(),
+                     [](const std::pair<UnsignedInteger, Scalar> & a,
+                        const std::pair<UnsignedInteger, Scalar> & b)
+                     { return a.first < b.first; });
     UnsignedInteger k = 0;
     while (k < columnEntries.size())
     {
@@ -352,11 +357,14 @@ String SparseMatrix::__repr__() const
       << " rows=" << getNbRows()
       << " columns=" << getNbColumns()
       << " triplets=[";
+  Bool isFirst = true;
   for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
     for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
     {
+      if (!isFirst)
+        oss << ",";
       oss << "[" << rowIndex_[k] << "," << j << "," << values_[k] << "]";
-      oss << ((j == nbColumns_ - 1) && (k == columnPointer_[j + 1] - 1) ? "" : ",");
+      isFirst = false;
     }
   oss << "]";
   return oss;
@@ -386,15 +394,50 @@ void SparseMatrix::load(Advocate & adv)
   Indices columnPointer;
   Indices rowIndices;
   Point values;
+  UnsignedInteger size = 0;
+  UnsignedInteger nbRows = 0;
+  UnsignedInteger nbColumns = 0;
   adv.loadAttribute("columnPointer_", columnPointer);
   adv.loadAttribute("rowIndex_", rowIndices);
   adv.loadAttribute("values_", values);
+  adv.loadAttribute("size_", size);
+  adv.loadAttribute("nbRows_", nbRows);
+  adv.loadAttribute("nbColumns_", nbColumns);
+  // Check the consistency of the loaded arrays before installing them: a
+  // corrupted or hand-edited study file must not produce a matrix whose
+  // accessors read past the end of the stored coefficients, and a failed load
+  // must leave the matrix unchanged.
+  // The subtraction form avoids the overflow of nbColumns + 1 when nbColumns
+  // is the largest UnsignedInteger.
+  if ((columnPointer.getSize() == 0) || (columnPointer.getSize() - 1 != nbColumns))
+    throw InvalidArgumentException(HERE) << "The column pointer has " << columnPointer.getSize() << " entries for " << nbColumns << " columns";
+  if (columnPointer[0] != 0)
+    throw InvalidArgumentException(HERE) << "The first column pointer is " << columnPointer[0] << ", expected 0";
+  for (UnsignedInteger j = 0; j < nbColumns; ++ j)
+    if (columnPointer[j + 1] < columnPointer[j])
+      throw InvalidArgumentException(HERE) << "The column pointer decreases at column " << j;
+  if (columnPointer[nbColumns] != rowIndices.getSize())
+    throw InvalidArgumentException(HERE) << "The last column pointer is " << columnPointer[nbColumns] << ", expected the number of row indices " << rowIndices.getSize();
+  if (values.getSize() != rowIndices.getSize())
+    throw InvalidArgumentException(HERE) << "The number of values " << values.getSize() << " does not match the number of row indices " << rowIndices.getSize();
+  if (size != rowIndices.getSize())
+    throw InvalidArgumentException(HERE) << "The number of non zeros " << size << " does not match the number of row indices " << rowIndices.getSize();
+  for (UnsignedInteger k = 0; k < rowIndices.getSize(); ++ k)
+    if (!(rowIndices[k] < nbRows))
+      throw InvalidArgumentException(HERE) << "The row index " << rowIndices[k] << " must be less than the row dimension " << nbRows;
+  // The canonical layout stores each column with strictly increasing row
+  // indices and no duplicate: the mutable accessor inserts at the sorted
+  // position, and HiGHS relies on the same invariant to assemble its model.
+  for (UnsignedInteger j = 0; j < nbColumns; ++ j)
+    for (UnsignedInteger k = columnPointer[j] + 1; k < columnPointer[j + 1]; ++ k)
+      if (!(rowIndices[k - 1] < rowIndices[k]))
+        throw InvalidArgumentException(HERE) << "The row indices of column " << j << " must be sorted in strictly increasing order, got " << rowIndices[k - 1] << " before " << rowIndices[k];
   columnPointer_.assign(columnPointer.begin(), columnPointer.end());
   rowIndex_.assign(rowIndices.begin(), rowIndices.end());
   values_.assign(values.begin(), values.end());
-  adv.loadAttribute("size_", size_);
-  adv.loadAttribute("nbRows_", nbRows_);
-  adv.loadAttribute("nbColumns_", nbColumns_);
+  size_ = size;
+  nbRows_ = nbRows;
+  nbColumns_ = nbColumns;
 }
 
 END_NAMESPACE_OPENTURNS

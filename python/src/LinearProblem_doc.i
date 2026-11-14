@@ -18,7 +18,7 @@ cost : :class:`~openturns.Function`
     The cost vector :math:`\vect{c}`.
 bounds : :class:`~openturns.Interval`
     Bound constraints :math:`B`
-A : :class:`~openturns.Matrix` or :class:`~openturns.SparseMatrix`
+A : :class:`~openturns.Matrix` or :class:`~openturns.experimental.SparseMatrix`
     Linear inequality constraints matrix :math:`\mat{A}`. The sparse form
     avoids storing the zero coefficients of a large sparse problem.
 cb : :class:`~openturns.Interval`
@@ -27,9 +27,9 @@ cb : :class:`~openturns.Interval`
 Notes
 -----
 The constraint matrix is stored in compressed sparse column form (see
-:class:`~openturns.SparseMatrix`). Passing a dense :class:`~openturns.Matrix`
+:class:`~openturns.experimental.SparseMatrix`). Passing a dense :class:`~openturns.Matrix`
 converts it once and drops its zero coefficients; passing a
-:class:`~openturns.SparseMatrix` stores it as is. A large sparse problem
+:class:`~openturns.experimental.SparseMatrix` stores it as is. A large sparse problem
 should therefore be built from a sparse matrix, as a dense one would need
 :math:`8 m n` bytes for :math:`m` constraints and :math:`n` variables.
 
@@ -79,7 +79,7 @@ The same problem can be defined from the sparse constraint matrix, which only
 stores the non-zero coefficients. The triplets are given by their row index,
 their column index and their value; duplicate coordinates are summed:
 
->>> A = ot.SparseMatrix(3, 2, [0, 1, 1, 2, 2], [1, 0, 1, 0, 1], [1.0, 1.0, 2.0, 3.0, 2.0])
+>>> A = otexp.SparseMatrix(3, 2, [0, 1, 1, 2, 2], [1, 0, 1, 0, 1], [1.0, 1.0, 2.0, 3.0, 2.0])
 >>> print(A.asDenseMatrix())
 [[ 0 1 ]
  [ 1 2 ]
@@ -107,7 +107,7 @@ cost : :class:`~openturns.Point`
 
 Parameters
 ----------
-A : :class:`~openturns.Matrix` or :class:`~openturns.SparseMatrix`
+A : :class:`~openturns.Matrix` or :class:`~openturns.experimental.SparseMatrix`
     Linear inequality constraint term.
 cb : :class:`~openturns.Interval`
     Linear inequality constraint bounds.
@@ -123,7 +123,7 @@ being densified.
 
 Returns
 -------
-A : :class:`~openturns.SparseMatrix`
+A : :class:`~openturns.experimental.SparseMatrix`
     Linear inequality constraint term.
 "
 

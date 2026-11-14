@@ -101,7 +101,9 @@ public:
   /** Linear function accessor */
   Point getLinearCost() const;
   Matrix getLinearConstraintCoefficients() const;
+#ifndef SWIG
   SparseMatrix getSparseLinearConstraintCoefficients() const;
+#endif
   Interval getLinearConstraintBounds() const;
   Bool isLinear() const;
 

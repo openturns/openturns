@@ -188,7 +188,7 @@ assert algo6.getResult().getStatus() == ot.OptimizationResult.MAXIMUMCALLS, "sta
 assert len(algo6.getResult().getStatusMessage()) > 0, "model status"
 
 # sparse constraint coefficients give the same solution as the dense matrix
-sparseA = ot.SparseMatrix.FromDenseMatrix(A)
+sparseA = otexp.SparseMatrix.FromDenseMatrix(A)
 sparseProblem = otexp.LinearProblem(cost, bounds, sparseA, cb)
 sparseAlgo = otexp.HiGHS(sparseProblem, "simplex")
 sparseAlgo.run()
@@ -212,7 +212,7 @@ ott.assert_almost_equal(sparseA.asDenseMatrix(), A)
 rowIndices = [1, 2, 0, 1, 1, 2, 2, 2]
 columnIndices = [0, 0, 1, 1, 1, 1, 1, 0]
 values = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0]
-tripletA = ot.SparseMatrix(3, 2, rowIndices, columnIndices, values)
+tripletA = otexp.SparseMatrix(3, 2, rowIndices, columnIndices, values)
 ott.assert_almost_equal(tripletA.asDenseMatrix(), A)
 tripletProblem = otexp.LinearProblem(cost, bounds, tripletA, cb)
 tripletAlgo = otexp.HiGHS(tripletProblem, "simplex")
@@ -225,7 +225,7 @@ ott.assert_almost_equal(
 zeroRows = [1, 2, 0, 1, 1, 2, 2, 2, 0]
 zeroColumns = [0, 0, 1, 1, 1, 1, 1, 0, 0]
 zeroValues = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.0]
-zeroA = ot.SparseMatrix(3, 2, zeroRows, zeroColumns, zeroValues)
+zeroA = otexp.SparseMatrix(3, 2, zeroRows, zeroColumns, zeroValues)
 assert zeroA.getNbNonZeros() == 6, "explicit zeros are kept in the sparse layout"
 ott.assert_almost_equal(zeroA.asDenseMatrix(), A)
 zeroProblem = otexp.LinearProblem(cost, bounds, zeroA, cb)
@@ -241,7 +241,7 @@ dimension = 20000
 largeRows = list(range(dimension))
 largeColumns = list(range(dimension))
 largeValues = [1.0] * dimension
-largeA = ot.SparseMatrix(
+largeA = otexp.SparseMatrix(
     dimension, dimension, largeRows, largeColumns, largeValues
 )
 largeBounds = ot.Interval([0.0] * dimension, [1e30] * dimension)
