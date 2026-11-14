@@ -141,6 +141,24 @@ shuffle : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::LHSExperiment::isRandom
+"Check if the experiment is random.
+
+Returns
+-------
+isRandom : bool
+    Flag to tell if :meth:`generate` draws from the random number generator.
+    It is true when the shuffle is regenerated at each call or when the
+    point in each cell is randomly shifted, i.e. when either
+    `alwaysShuffle` or `randomShift` is true.
+
+    Note that the initial cell shuffle itself is drawn from the random
+    number generator, so the first :meth:`generate` call consumes the
+    generator state even when both flags are false; subsequent calls are
+    then deterministic."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::LHSExperiment::ComputeShuffle
 R"RAW(Generate a new cell randomization for external use.
 

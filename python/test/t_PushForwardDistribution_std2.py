@@ -115,6 +115,7 @@ ot.ResourceMap.SetAsUnsignedInteger(
 # the uniform cube and Y = (X0^2 + X1^2, X2, X3), the fibre at (r^2, y1, y2)
 # is a quarter circle of radius r, so the density is again pi / 4.
 volumeKey = "PushForwardDistribution-NonlinearCoAreaVolumeDiscretization"
+previousVolumeDiscretization = ot.ResourceMap.GetAsUnsignedInteger(volumeKey)
 # A volume discretization of 8 is also enough for the normal R^4 densities
 # below (validated 30x margin on their 1e-4 assertions)
 ot.ResourceMap.SetAsUnsignedInteger(volumeKey, 8)
@@ -180,7 +181,7 @@ expectedTinyCurve4PDF = (
 pdf = normalCurve4.computePDF(tinyCurve4Point)
 print(f"normalCurve4 pdf({tinyCurve4Point})={pdf:.12g}")
 ott.assert_almost_equal(pdf, expectedTinyCurve4PDF, 1e-4, 0.0)
-ot.ResourceMap.Reset()
+ot.ResourceMap.SetAsUnsignedInteger(volumeKey, previousVolumeDiscretization)
 
 # A nonlinear R^3 -> R^2 map without an analytical gradient uses the finite
 # difference fallback for the two dimensional Jacobian.

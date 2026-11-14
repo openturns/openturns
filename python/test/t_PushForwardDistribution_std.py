@@ -310,11 +310,14 @@ assert uniformSumDistribution.computePDF([4.0]) == 0.0
 studentProjection = ot.SymbolicFunction(["x0", "x1", "x2"], ["x0"])
 # The default co-area error is needlessly tight here: 1e-10 keeps a validated
 # 100x margin on the assertion below at a fraction of the cost
+previousMaximumError = ot.ResourceMap.GetAsScalar(
+    "PushForwardDistribution-CoAreaMaximumError")
 ot.ResourceMap.SetAsScalar("PushForwardDistribution-CoAreaMaximumError", 1e-10)
 studentProjectionDistribution = otexp.PushForwardDistribution(
     studentProjection, ot.JointDistribution([student] * 3))
 pdf = studentProjectionDistribution.computePDF([2.0])
-ot.ResourceMap.Reset()
+ot.ResourceMap.SetAsScalar(
+    "PushForwardDistribution-CoAreaMaximumError", previousMaximumError)
 print(f"studentProjection pdf(2)={pdf:.12g}")
 ott.assert_almost_equal(pdf, student.computePDF([2.0]), 1e-6, 0.0)
 
@@ -322,13 +325,16 @@ ott.assert_almost_equal(pdf, student.computePDF([2.0]), 1e-6, 0.0)
 # variables, the third coordinate being free
 studentSumFunction = ot.SymbolicFunction(["x0", "x1", "x2"], ["x0 + x1"])
 # Same relaxation as above: validated 1000x margin on the assertion below
+previousMaximumError = ot.ResourceMap.GetAsScalar(
+    "PushForwardDistribution-CoAreaMaximumError")
 ot.ResourceMap.SetAsScalar("PushForwardDistribution-CoAreaMaximumError", 1e-10)
 studentSumDistribution = otexp.PushForwardDistribution(
     studentSumFunction, ot.JointDistribution([student] * 3))
 studentSumReference = ot.LinearCombinationDistribution(
     [student, student], [1.0, 1.0])
 pdf = studentSumDistribution.computePDF([1.0])
-ot.ResourceMap.Reset()
+ot.ResourceMap.SetAsScalar(
+    "PushForwardDistribution-CoAreaMaximumError", previousMaximumError)
 print(f"studentSum pdf(1)={pdf:.12g}")
 ott.assert_almost_equal(pdf, studentSumReference.computePDF([1.0]), 1e-6, 0.0)
 
@@ -375,12 +381,15 @@ uniformSumFourFunction = ot.SymbolicFunction(
     ["x0", "x1", "x2", "x3"], ["x0 + x1 + x2 + x3"])
 uniformSumFourReference = ot.LinearCombinationDistribution(
     [ot.Uniform(-1.0, 1.0)] * 4, [1.0, 1.0, 1.0, 1.0])
+previousMaximumError = ot.ResourceMap.GetAsScalar(
+    "PushForwardDistribution-CoAreaMaximumError")
 ot.ResourceMap.SetAsScalar("PushForwardDistribution-CoAreaMaximumError", 1.0e-6)
 uniformSumFourDistribution = otexp.PushForwardDistribution(
     uniformSumFourFunction,
     ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 4))
 pdf = uniformSumFourDistribution.computePDF([0.0])
-ot.ResourceMap.Reset()
+ot.ResourceMap.SetAsScalar(
+    "PushForwardDistribution-CoAreaMaximumError", previousMaximumError)
 print(f"uniformSumFour pdf(0)={pdf:.12g}")
 ott.assert_almost_equal(pdf, uniformSumFourReference.computePDF([0.0]), 1e-6,
                         0.0)
@@ -388,9 +397,12 @@ ott.assert_almost_equal(pdf, uniformSumFourReference.computePDF([0.0]), 1e-6,
 # The floor of the requested error keeps the cost reasonable for a fibre of
 # dimension three even when the default maximum error asks for much more
 # accuracy than the nested rule can deliver across the kinks of its bounds
+previousErrorFloor = ot.ResourceMap.GetAsScalar(
+    "PushForwardDistribution-CoAreaErrorFloor")
 ot.ResourceMap.SetAsScalar("PushForwardDistribution-CoAreaErrorFloor", 1.0e-4)
 pdf = uniformSumFourDistribution.computePDF([0.0])
-ot.ResourceMap.Reset()
+ot.ResourceMap.SetAsScalar(
+    "PushForwardDistribution-CoAreaErrorFloor", previousErrorFloor)
 print(f"uniformSumFour floored pdf(0)={pdf:.12g}")
 ott.assert_almost_equal(pdf, uniformSumFourReference.computePDF([0.0]), 1e-3,
                         0.0)
@@ -401,11 +413,14 @@ ott.assert_almost_equal(pdf, uniformSumFourReference.computePDF([0.0]), 1e-3,
 # only trims useless subdivisions.
 meanFiveFunction = ot.LinearFunction(ot.Point(5), ot.Point(1),
                                      ot.Matrix(1, 5, [0.2] * 5))
+previousMaximumError = ot.ResourceMap.GetAsScalar(
+    "PushForwardDistribution-CoAreaMaximumError")
 ot.ResourceMap.SetAsScalar("PushForwardDistribution-CoAreaMaximumError", 1e-1)
 meanFiveDistribution = otexp.PushForwardDistribution(
     meanFiveFunction, ot.JointDistribution([ot.Normal()] * 5))
 pdf = meanFiveDistribution.computePDF([0.5])
-ot.ResourceMap.Reset()
+ot.ResourceMap.SetAsScalar(
+    "PushForwardDistribution-CoAreaMaximumError", previousMaximumError)
 print(f"meanFive pdf(0.5)={pdf:.12g}")
 ott.assert_almost_equal(pdf, ot.Normal(0.0, 1.0 / math.sqrt(5.0)).computePDF([0.5]),
                         1e-6, 0.0)
@@ -533,9 +548,10 @@ for level in [-1.0, -0.5, 0.5, 1.0]:
 # with X ~ Normal(3) is the chi-square distribution with three degrees of
 # freedom. A discretization of 40 keeps a validated 3x margin on the loose
 # 2e-2 assertion below at half the extraction cost.
-ot.ResourceMap.SetAsUnsignedInteger(
-    "PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization", 40
-)
+surfaceDiscretizationKey = "PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization"
+previousSurfaceDiscretization = ot.ResourceMap.GetAsUnsignedInteger(
+    surfaceDiscretizationKey)
+ot.ResourceMap.SetAsUnsignedInteger(surfaceDiscretizationKey, 40)
 surfaceCoArea = otexp.PushForwardDistribution(
     ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2 + x1^2 + x2^2"]),
     ot.Normal(3),
@@ -547,7 +563,8 @@ for level in [0.5, 1.0, 2.0]:
     pdf = surfaceCoArea.computePDF([level])
     print(f"surfaceCoArea pdf({level})={pdf:.12g}")
     ott.assert_almost_equal(pdf, expected, 2e-2, 0.0)
-ot.ResourceMap.Reset()
+ot.ResourceMap.SetAsUnsignedInteger(
+    surfaceDiscretizationKey, previousSurfaceDiscretization)
 # A negative level is outside the image of the sum of squares: its fibre is
 # empty and the density is zero.
 assert surfaceCoArea.computePDF([-1.0]) == 0.0
