@@ -284,11 +284,15 @@ Dirac::PointWithDescriptionCollection Dirac::getParametersCollection() const
 void Dirac::setParametersCollection(const PointCollection & parametersCollection)
 {
   const UnsignedInteger dimension = parametersCollection.getSize();
+  if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: empty parameters collection";
   Point point(dimension);
   // The ith component of the point is supposed to be the first component of the point
   // at position i in the parameters collection
   for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (parametersCollection[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: invalid marginal parameter dimension at index " << i << ", expected 1, got " << parametersCollection[i].getDimension();
     point[i] = parametersCollection[i][0];
+  }
   *this = Dirac(point);
 }
 

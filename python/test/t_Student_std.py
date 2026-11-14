@@ -399,3 +399,12 @@ dd_cov = ot.Student(5.0, [0.0] * 3, [0.0, 1.0, 1.0], R3_cov)
 assert dd_cov.computeConditionalPDF(0.5, [0.0]) >= 0.0
 assert 0.0 <= dd_cov.computeConditionalCDF(0.5, [0.0]) <= 1.0
 dd_cov.computeConditionalQuantile(0.5, [0.0])
+# malformed collections must raise instead of reading out of bounds
+with ott.assert_raises(Exception):
+    ot.Student(2.0, 3).setParametersCollection(ot.PointCollection([ot.Point(1)]))
+with ott.assert_raises(Exception):
+    ot.Student(2.0, 3).setParametersCollection(ot.PointCollection([ot.Point(2)]))
+with ott.assert_raises(Exception):
+    ot.Student(5.0, [0.0, 0.0], [1.0, 1.0]).setParametersCollection(
+        ot.PointCollection([ot.Point(3), ot.Point(1), ot.Point(2)])
+    )
