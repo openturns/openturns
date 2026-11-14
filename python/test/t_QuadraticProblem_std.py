@@ -8,6 +8,8 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
+HAVE_LIBXML2 = ot.PlatformInfo.HasFeature("libxml2")
+
 # min 1/2 x^T Q x + c^T x + d with 0 <= x0 <= 0.5, 0 <= x1 <= 10
 Q = ot.SymmetricMatrix([[2.0, 0.0], [0.0, 2.0]])
 c = [-2.0, -4.0]
@@ -256,25 +258,26 @@ with ott.assert_raises(ValueError):
     problemC.setLinearConstraint(ot.Matrix(1, 3), ot.Interval(1))
 
 # save/load round trip
-studyFile = "quadratic_problem.xml"
-study = ot.Study()
-study.setStorageManager(ot.XMLStorageManager(studyFile))
-study.add("problem", problemLS)
-study.add("problemC", problemC)
-study.save()
-loadedStudy = ot.Study()
-loadedStudy.setStorageManager(ot.XMLStorageManager(studyFile))
-loadedStudy.load()
-loadedProblem = otexp.QuadraticProblem()
-loadedStudy.fillObject("problem", loadedProblem)
-assert loadedProblem.getHessian() == problemLS.getHessian()
-assert loadedProblem.getLinearCost() == problemLS.getLinearCost()
-assert loadedProblem.getConstant() == problemLS.getConstant()
-assert loadedProblem.getBounds() == problemLS.getBounds()
-assert loadedProblem.isQuadratic()
-ott.assert_almost_equal(loadedProblem.getObjective()([0.0, 0.0]), [14.0])
-loadedProblemC = otexp.QuadraticProblem()
-loadedStudy.fillObject("problemC", loadedProblemC)
-assert loadedProblemC.getLinearConstraintCoefficients() == Aconstraint
-assert loadedProblemC.getLinearConstraintBounds() == constraintBounds
-os.remove(studyFile)
+if HAVE_LIBXML2:
+    studyFile = "quadratic_problem.xml"
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(studyFile))
+    study.add("problem", problemLS)
+    study.add("problemC", problemC)
+    study.save()
+    loadedStudy = ot.Study()
+    loadedStudy.setStorageManager(ot.XMLStorageManager(studyFile))
+    loadedStudy.load()
+    loadedProblem = otexp.QuadraticProblem()
+    loadedStudy.fillObject("problem", loadedProblem)
+    assert loadedProblem.getHessian() == problemLS.getHessian()
+    assert loadedProblem.getLinearCost() == problemLS.getLinearCost()
+    assert loadedProblem.getConstant() == problemLS.getConstant()
+    assert loadedProblem.getBounds() == problemLS.getBounds()
+    assert loadedProblem.isQuadratic()
+    ott.assert_almost_equal(loadedProblem.getObjective()([0.0, 0.0]), [14.0])
+    loadedProblemC = otexp.QuadraticProblem()
+    loadedStudy.fillObject("problemC", loadedProblemC)
+    assert loadedProblemC.getLinearConstraintCoefficients() == Aconstraint
+    assert loadedProblemC.getLinearConstraintBounds() == constraintBounds
+    os.remove(studyFile)
