@@ -408,6 +408,8 @@ Bibliography
     rectangular probabilities of multinomial, multivariate hypergeometric and
     multivariate Polya distributions.* Statistics and Computing 23, 615-623.
     `doi <https://doi.org/10.1007/s11222-012-9334-8>`__
+.. [lebrun2024] Lebrun, A., *Unit commitment*, ENSTA Paris project, 2024.
+    `notebook <https://github.com/alicelebrun/Unit_commitment>`__
 .. [legratiet2017] Le Gratiet, L., Marelli, S., & Sudret, B. (2017).
     *Metamodel-based sensitivity analysis: polynomial chaos expansions and
     Gaussian processes.* In Handbook of uncertainty quantification

@@ -147,6 +147,7 @@
  * Theory: add interpolation page
  * LeastSquaresMethod: document weights, indices and notation
  * Mentioned all ResourceMap entries for each class
+ * New unit commitment use case, solved with a sparse mixed integer linear problem
 
 === Python module ===
  * Add Process sample slicing operator
