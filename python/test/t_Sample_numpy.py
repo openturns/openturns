@@ -29,9 +29,6 @@ np.testing.assert_allclose(np.add(smp, 1.0)[0], [2.0, 3.0])
 # fancy indexing with where() result still works
 ott.assert_almost_equal(smp[list(np.where(arr_s[:, 0] == 1.0)[0])][0], [1.0, 2.0])
 
-# empty buffer advertises no address
-assert ot.Sample(0, 2).__array_interface__["data"] == (0, True)
-
 # lifetime contract: the view borrows the internal buffer, so a
 # size-changing mutation may invalidate it; retain a copy instead
 smp2 = ot.Sample([[1.0, 2.0]])

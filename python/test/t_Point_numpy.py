@@ -37,8 +37,6 @@ np.testing.assert_allclose(np.add(pt, ot.Point([1.0, 1.0, 1.0])), [2.0, 3.0, 4.0
 # empty point
 empty = ot.Point(0)
 assert np.asarray(empty).shape == (0,)
-# empty buffer advertises no address
-assert empty.__array_interface__["data"] == (0, True)
 
 # lifetime contract: the view borrows the internal buffer, so a
 # size-changing mutation may invalidate it; retain a copy instead

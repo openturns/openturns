@@ -89,11 +89,12 @@
 def __Sample_getattribute(self, name):
     """Implement attribute accesses."""
     if name == "__array_interface__":
-        # (0, True) is the valid empty-buffer form: no dereferenceable
-        # address exists for an empty Sample
+        # Keep a nonzero address even when empty: a NULL data pointer
+        # makes some numpy versions skip the interface and fall back to
+        # sequence conversion. With a 0 in the shape it is never dereferenced.
         self.__dict__["__array_interface__"] = {"shape": (self.getSize(), self.getDimension()),
                                                 "typestr": f"|f{self.__elementsize__()}",
-                                                "data": (int(self.__baseaddress__() or 0), True),
+                                                "data": (int(self.__baseaddress__() or 1), True),
                                                 "version": 3,
                                                 }
     return super(Sample, self).__getattribute__(name)

@@ -196,11 +196,12 @@ Point.__iter__ = _Point___iter__
 # must outlive mutations of the Point.
 def __Point_getattribute(self, name):
     if name == "__array_interface__":
-        # (0, True) is the valid empty-buffer form: no dereferenceable
-        # address exists for an empty Point
+        # Keep a nonzero address even when empty: a NULL data pointer
+        # makes some numpy versions skip the interface and fall back to
+        # sequence conversion. With shape (0,) it is never dereferenced.
         self.__dict__["__array_interface__"] = {"shape": (self.getSize(),),
                                                 "typestr": f"|f{self.__elementsize__()}",
-                                                "data": (int(self.__baseaddress__() or 0), True),
+                                                "data": (int(self.__baseaddress__() or 1), True),
                                                 "version": 3,
                                                 }
     return super(Point, self).__getattribute__(name)
