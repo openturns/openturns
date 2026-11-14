@@ -325,6 +325,47 @@ if the bounds leave a non-negligible probability under the Gaussian posterior;
 when the data are very informative and the MAP lies far outside the bounds, the
 ``ActiveSet`` handling is more robust.
 
+.. _ill_conditioned_calibration:
+
+Ill-conditioned linearization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The calibrations above are driven by the Jacobian :math:`\mat{J}` of the model
+with respect to the parameter, evaluated at the current parameter. Its
+condition number bounds what the observations can say about each direction of
+the parameter space: a direction associated with a singular value
+:math:`\sigma` contributes a term of magnitude :math:`\sigma^2` to the residual
+sum of squares.
+
+For :class:`~openturns.LinearLeastSquaresCalibration` and
+:class:`~openturns.GaussianLinearCalibration` without bounds, :math:`\mat{J}`
+itself is decomposed, so every singular value is used. With bounds, the
+equivalent quadratic problem is built from the normal matrix
+:math:`\mat{J}^T \mat{J}`, which squares the condition number. When the
+smallest singular value is below :math:`\sqrt{\epsilon}` times the largest one,
+where :math:`\epsilon` is the machine precision, the normal matrix cannot
+represent that direction anymore: the bounded problem is then solved directly
+on :math:`\mat{J}` with a bounded-variable active-set method, whose
+subproblems use its singular value decomposition. The estimate therefore
+agrees with the unconstrained one when no bound is active, and a bound acting
+on a weakly identified parameter is resolved exactly.
+
+For :class:`~openturns.NonLinearLeastSquaresCalibration` and
+:class:`~openturns.GaussianNonLinearCalibration`, the MAP is obtained by
+minimizing the residual sum of squares, so :math:`\mat{J}^T \mat{J}` is not
+formed. The limitation is then a matter of resolution rather than of algebra:
+a direction whose contribution to the sum of squares is smaller than the
+machine precision relative to the objective cannot be identified from the
+data. The returned MAP then depends on the optimization algorithm and on its
+stopping criterion, and a bound acting on such a direction may not be detected
+as active. The posterior variance in that direction is large, which is the
+honest signature of the non-identifiability. In such a case, rescale the
+parameterization so that the directions have comparable influence on the
+model, or use a proper prior distribution through
+:class:`~openturns.GaussianLinearCalibration` or
+:class:`~openturns.GaussianNonLinearCalibration`, whose prior term resolves the
+direction.
+
 Bias of Linear Gaussian Calibration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

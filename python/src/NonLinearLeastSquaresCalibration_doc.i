@@ -56,6 +56,19 @@ exclude the fixed parameters. With a nonzero bootstrap size the posterior is
 a kernel smoothing of the bootstrap estimates, so this active-set covariance
 does not apply and the bounds only constrain each calibration.
 
+The linearization of the model at the optimum may be ill-conditioned, for
+example when two parameters have a nearly identical influence on the model.
+The MAP minimizes the residual sum of squares, so no normal matrix is formed,
+but a direction whose contribution to this sum is below the machine precision
+cannot be identified from the data: the returned MAP then depends on the
+optimization algorithm and on its stopping criterion, and a bound acting on
+that direction may not be detected as active. The posterior variance is large
+in such a direction, which signals the non-identifiability. Rescale the
+parameterization so that the directions have comparable influence on the
+model, or set a proper prior through
+:class:`~openturns.GaussianNonLinearCalibration`, whose prior term resolves the
+direction. See :any:`ill_conditioned_calibration` for details.
+
 The output (observation) error is modeled as a Normal random variable whose variance
 is estimated from the calibration residuals.
 This is performed whatever the value of the `NonLinearLeastSquaresCalibration-BootstrapSize`
