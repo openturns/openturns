@@ -162,6 +162,21 @@ flatSigma2 = sum(v * v for v in flatResiduals) / (
 ott.assert_almost_equal(flatCovariance[0, 0] * flatHessian, flatSigma2, 1e-6, 1e-6)
 ot.ResourceMap.Reset()
 
+# a singular Laplace Hessian is rejected instead of being silently
+# pseudo-inverted, which would give a tiny variance to an unidentified
+# parameter
+singularG = ot.SymbolicFunction(["a", "b", "x"], ["a * x"])
+singularModel = ot.ParametricFunction(singularG, [0, 1], [2.0, 3.0])
+singularX = ot.Sample([[0.5], [1.0], [1.5], [2.0]])
+singularY = ot.Sample([[1.0], [2.0], [3.0], [4.0]])
+singularAlgo = ot.NonLinearLeastSquaresCalibration(
+    singularModel, singularX, singularY, [1.0, 1.0]
+)
+singularAlgo.setUseLaplaceApproximation(True)
+singularAlgo.setBootstrapSize(0)
+with ott.assert_raises(TypeError):
+    singularAlgo.run()
+
 # test bounds
 algo = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
 algo.setBootstrapSize(0)
