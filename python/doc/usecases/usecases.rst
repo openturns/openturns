@@ -24,6 +24,7 @@ Contents
    use_case_viscous_fall
    use_case_fire_satellite
    use_case_wingweight
+   use_case_unit_commitment
    use_case_oscillator
    use_case_coles
    use_case_linthurst
