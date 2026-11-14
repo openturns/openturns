@@ -37,6 +37,17 @@ np.testing.assert_allclose(np.add(pt, ot.Point([1.0, 1.0, 1.0])), [2.0, 3.0, 4.0
 # empty point
 empty = ot.Point(0)
 assert np.asarray(empty).shape == (0,)
+# empty buffer advertises no address
+assert empty.__array_interface__["data"] == (0, True)
+
+# lifetime contract: the view borrows the internal buffer, so a
+# size-changing mutation may invalidate it; retain a copy instead
+pt2 = ot.Point([1.0, 2.0])
+snapshot = np.asarray(pt2).copy()
+pt2.add(3.0)
+ott.assert_almost_equal(list(snapshot), [1.0, 2.0])
+# a fresh view after mutation reflects the new content
+ott.assert_almost_equal(list(np.asarray(pt2)), [1.0, 2.0, 3.0])
 
 # fancy indexing with where() result still works
 idx = np.where(np.asarray(pt) == 1.0)[0]

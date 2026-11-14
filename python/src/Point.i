@@ -188,11 +188,19 @@ Point.__iter__ = _Point___iter__
 # Note: ot.Point.__eq__ keeps whole-object semantics (returns Bool); for element-wise
 # comparison use numpy ufuncs, e.g. np.equal(pt, 1) or np.asarray(pt) == 1,
 # then np.where(...) works on the resulting boolean ndarray.
+# Lifetime contract of the zero-copy view: np.asarray(pt) borrows the
+# internal buffer (ndarray.base keeps the Point proxy alive, but not the
+# buffer itself). Any size-changing mutation (add, resize, clear, erase)
+# may reallocate the buffer and invalidates outstanding views; reading such
+# a view afterwards is a use-after-free. Call .copy() on the array if it
+# must outlive mutations of the Point.
 def __Point_getattribute(self, name):
     if name == "__array_interface__":
+        # (0, True) is the valid empty-buffer form: no dereferenceable
+        # address exists for an empty Point
         self.__dict__["__array_interface__"] = {"shape": (self.getSize(),),
                                                 "typestr": f"|f{self.__elementsize__()}",
-                                                "data": (int(self.__baseaddress__() or 1), True),
+                                                "data": (int(self.__baseaddress__() or 0), True),
                                                 "version": 3,
                                                 }
     return super(Point, self).__getattribute__(name)

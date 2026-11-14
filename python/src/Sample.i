@@ -80,12 +80,20 @@
 # for details.
 # See python doc http://docs.python.org/reference/datamodel.html?highlight=getattribute#object.__getattribute__
 # for details on how to write such a method.
+# Lifetime contract of the zero-copy view: np.asarray(smp) borrows the
+# internal buffer (ndarray.base keeps the Sample proxy alive, but not the
+# buffer itself). Any size-changing mutation (add, resize, clear, erase)
+# may reallocate the buffer and invalidates outstanding views; reading such
+# a view afterwards is a use-after-free. Call .copy() on the array if it
+# must outlive mutations of the Sample.
 def __Sample_getattribute(self, name):
     """Implement attribute accesses."""
     if name == "__array_interface__":
+        # (0, True) is the valid empty-buffer form: no dereferenceable
+        # address exists for an empty Sample
         self.__dict__["__array_interface__"] = {"shape": (self.getSize(), self.getDimension()),
                                                 "typestr": f"|f{self.__elementsize__()}",
-                                                "data": (int(self.__baseaddress__() or 1), True),
+                                                "data": (int(self.__baseaddress__() or 0), True),
                                                 "version": 3,
                                                 }
     return super(Sample, self).__getattribute__(name)
