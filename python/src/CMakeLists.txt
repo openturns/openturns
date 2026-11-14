@@ -1126,7 +1126,7 @@ if (SPHINX_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_dlib)")
   endif ()
   if (NOT highs_FOUND)
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_highs)|(plot_orthonormalization)|(plot_gauss_lp_quadrature)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_highs)|(plot_orthonormalization)|(plot_gauss_lp_quadrature)|(plot_unit_commitment)")
   endif ()
   if (NOT Pagmo_FOUND)
     set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)|(optimization_penalized)")
@@ -1191,6 +1191,7 @@ if (SPHINX_FOUND)
     ${SPHINX_SOURCE_DIR}/*.rst_t
     ${SPHINX_SOURCE_DIR}/*.css_t
     ${SPHINX_SOURCE_DIR}/*.conf
+    ${SPHINX_SOURCE_DIR}/*.csv
     ${SPHINX_SOURCE_DIR}/*.py
     ${SPHINX_SOURCE_DIR}/*.png
     ${SPHINX_SOURCE_DIR}/*.svg
