@@ -1389,11 +1389,11 @@ void JointDistribution::setParametersCollection(const PointCollection& parameter
   // All slices accepted: stage the commit on a copy so a throw in setCore
   // leaves *this unchanged (e.g. core with support outside the unit cube)
   const Description description(getDescription());
-  JointDistribution tmp(*this);
-  tmp.setDistributionCollection(newMarginals);
-  tmp.setDescription(description);
-  if (dimension > 1) tmp.setCore(newCore);
-  *this = tmp;
+  JointDistribution stagedDistribution(*this);
+  stagedDistribution.setDistributionCollection(newMarginals);
+  stagedDistribution.setDescription(description);
+  if (dimension > 1) stagedDistribution.setCore(newCore);
+  *this = stagedDistribution;
 }
 
 
@@ -1444,11 +1444,11 @@ void JointDistribution::setParameter(const Point & parameter)
   // setDistributionCollection rebuilds the description from the marginals: save/restore it,
   // before setCore so the core receives the original description
   const Description description(getDescription());
-  JointDistribution tmp(*this);
-  tmp.setDistributionCollection(newMarginals);
-  tmp.setDescription(description);
-  if (dimension > 1) tmp.setCore(newCore);
-  *this = tmp;
+  JointDistribution stagedDistribution(*this);
+  stagedDistribution.setDistributionCollection(newMarginals);
+  stagedDistribution.setDescription(description);
+  if (dimension > 1) stagedDistribution.setCore(newCore);
+  *this = stagedDistribution;
 }
 
 Description JointDistribution::getParameterDescription() const

@@ -510,9 +510,9 @@ void FiniteDiscreteDistribution::setParameter(const Point & parameter)
     newProbabilities[i] = parameter[dimension * size + i];
   }
   // Commit via a temporary so a throw in setData() leaves *this unchanged
-  FiniteDiscreteDistribution tmp(*this);
-  tmp.setData(newPoints, newProbabilities);
-  *this = tmp;
+  FiniteDiscreteDistribution stagedDistribution(*this);
+  stagedDistribution.setData(newPoints, newProbabilities);
+  *this = stagedDistribution;
 }
 
 /* Get the i-th marginal distribution */

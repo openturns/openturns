@@ -3041,15 +3041,18 @@ void LinearCombinationDistribution::setParameter(const Point & parameter)
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Work on a copy: thanks to copy-on-write the stored distribution is left unchanged if a later distribution rejects its slice
-    Distribution distribution(distributionCollection_[i]);
-    Point localParameter(distribution.getParameter());
+    Distribution stagedAtom(distributionCollection_[i]);
+    Point localParameter(stagedAtom.getParameter());
     std::copy(parameter.begin() + shift, parameter.begin() + shift + localParameter.getSize(), localParameter.begin());
     shift += localParameter.getSize();
-    distribution.setParameter(localParameter);
-    newDistributions[i] = distribution;
+    stagedAtom.setParameter(localParameter);
+    newDistributions[i] = stagedAtom;
   }
-  // All slices accepted: commit the staged updates
-  setDistributionCollectionAndWeights(newDistributions, weights_, false);
+  // All slices accepted: commit the staged updates through a candidate,
+  // as setDistributionCollectionAndWeights mutates weights_/caches and can throw halfway
+  LinearCombinationDistribution stagedDistribution(*this);
+  stagedDistribution.setDistributionCollectionAndWeights(newDistributions, weights_, false);
+  *this = stagedDistribution;
 } // setParameter
 
 /* Parameters value and description accessor */
