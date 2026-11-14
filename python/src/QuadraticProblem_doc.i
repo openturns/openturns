@@ -169,15 +169,19 @@ equality : :class:`~openturns.Function`
 %feature("docstring") OT::QuadraticProblem::setEqualityConstraint
 "Set the equality constraint function.
 
-QuadraticProblem only supports linear constraints: this method always raises
-an exception. Define equality constraints through
-:meth:`~openturns.experimental.QuadraticProblem.setLinearConstraint` with equal
-lower and upper bounds.
+The function must be linear: either a :class:`~openturns.LinearFunction`, or a
+:class:`~openturns.Function` whose :meth:`~openturns.Function.isLinear` method
+returns *True*. It is converted to the linear constraints
+:math:`\\mat{A} \\vect{x} = \\vect{L}`, where :math:`\\mat{A}` is the transpose
+of its gradient at the origin and :math:`\\vect{L} = -h(\\vect{0})` for a
+function :math:`h` such that :math:`h(\\vect{x}) = \\vect{0}` is the expected
+equality constraint. Existing inequality constraints are preserved.
 
 Parameters
 ----------
 equalityConstraint : :class:`~openturns.Function`
-    Equality constraint function."
+    Linear equality constraint :math:`h(\\vect{x}) = \\vect{0}`. An empty
+    function clears the equality constraints."
 
 // ---------------------------------------------------------------------
 
@@ -215,14 +219,19 @@ inequality : :class:`~openturns.Function`
 %feature("docstring") OT::QuadraticProblem::setInequalityConstraint
 "Set the inequality constraint function.
 
-QuadraticProblem only supports linear constraints: this method always raises
-an exception. Define inequality constraints through
-:meth:`~openturns.experimental.QuadraticProblem.setLinearConstraint`.
+The function must be linear: either a :class:`~openturns.LinearFunction`, or a
+:class:`~openturns.Function` whose :meth:`~openturns.Function.isLinear` method
+returns *True*. It is converted to the linear constraints
+:math:`\\mat{A} \\vect{x} \\geq \\vect{L}`, where :math:`\\mat{A}` is the
+transpose of its gradient at the origin and :math:`\\vect{L} = -g(\\vect{0})`
+for a function :math:`g` such that :math:`g(\\vect{x}) \\geq 0` is the expected
+inequality constraint. Existing equality constraints are preserved.
 
 Parameters
 ----------
 inequalityConstraint : :class:`~openturns.Function`
-    Inequality constraint function."
+    Linear inequality constraint :math:`g(\\vect{x}) \\geq 0`. An empty
+    function clears the inequality constraints."
 
 // ---------------------------------------------------------------------
 

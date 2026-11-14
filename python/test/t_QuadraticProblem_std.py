@@ -108,19 +108,83 @@ problemMIP.setVariablesType(
 with ott.assert_raises(TypeError):
     otexp.HiGHS(problemMIP)
 
-# constraint functions cannot be mapped to the HiGHS model: only the linear
-# constraints given to setLinearConstraint are supported. A QuadraticProblem
-# refuses nonlinear constraint functions outright; a generic problem that
-# carries them is rejected by HiGHS.
+# linear constraint functions are converted to the combined linear storage,
+# nonlinear ones are rejected
 problemFunctions = otexp.QuadraticProblem(Q, c, ot.Interval())
-with ott.assert_raises(TypeError):
+for setter in (
+    problemFunctions.setEqualityConstraint,
+    problemFunctions.setInequalityConstraint,
+):
+    with ott.assert_raises(TypeError):
+        setter(ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1"]))
+
+# a SymbolicFunction known to be linear goes through the isLinear() path
+symbolicEquality = ot.SymbolicFunction(["x0", "x1"], ["x0 + x1 - 2.5"])
+problemFunctions.setEqualityConstraint(symbolicEquality)
+assert problemFunctions.hasEqualityConstraint()
+assert not problemFunctions.hasInequalityConstraint()
+convertedEquality = problemFunctions.getEqualityConstraint()
+assert isinstance(
+    convertedEquality.getEvaluation().getImplementation(), ot.LinearEvaluation
+)
+ott.assert_almost_equal(convertedEquality([0.75, 1.75]), [0.0])
+ott.assert_almost_equal(
+    convertedEquality.gradient([0.0, 0.0]), ot.Matrix([[1.0], [1.0]])
+)
+ott.assert_almost_equal(
+    problemFunctions.getLinearConstraintCoefficients(), ot.Matrix([[1.0, 1.0]])
+)
+assert problemFunctions.getLinearConstraintBounds().getLowerBound() == [2.5]
+assert problemFunctions.getLinearConstraintBounds().getUpperBound() == [2.5]
+
+# a LinearFunction with a non-zero center is converted through its value and
+# gradient at the origin: h(x) = -2.5 + [1, 1].(x - [1, 1]) = x0 + x1 - 4.5
+problemFunctions.setEqualityConstraint(
+    ot.LinearFunction([1.0, 1.0], [-2.5], ot.Matrix([[1.0, 1.0]]))
+)
+ott.assert_almost_equal(
+    problemFunctions.getEqualityConstraint()([0.0, 0.0]), [-4.5]
+)
+
+# setting one kind preserves the other kind
+problemFunctions.setInequalityConstraint(
+    ot.LinearFunction([0.0, 0.0], [1.0], ot.Matrix([[-1.0, -1.0]]))
+)
+assert problemFunctions.hasEqualityConstraint()
+assert problemFunctions.hasInequalityConstraint()
+ott.assert_almost_equal(
+    problemFunctions.getEqualityConstraint()([0.0, 0.0]), [-4.5]
+)
+ott.assert_almost_equal(
+    problemFunctions.getInequalityConstraint()([0.0, 0.0]), [1.0]
+)
+
+# an empty function clears the corresponding constraints
+problemFunctions.setInequalityConstraint(ot.Function())
+assert not problemFunctions.hasInequalityConstraint()
+assert problemFunctions.hasEqualityConstraint()
+problemFunctions.setEqualityConstraint(ot.Function())
+assert not problemFunctions.hasEqualityConstraint()
+
+# an input dimension mismatch is rejected
+with ott.assert_raises(ValueError):
     problemFunctions.setEqualityConstraint(
-        ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"])
+        ot.LinearFunction([0.0], [0.0], ot.Matrix([[1.0]]))
     )
-with ott.assert_raises(TypeError):
-    problemFunctions.setInequalityConstraint(
-        ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"])
-    )
+
+# constraints set through functions are mapped to the HiGHS model and give the
+# same solution as setLinearConstraint
+problemFunctionEquality = otexp.QuadraticProblem(Q, c, ot.Interval())
+problemFunctionEquality.setEqualityConstraint(
+    ot.LinearFunction([0.0, 0.0], [-2.5], ot.Matrix([[1.0, 1.0]]))
+)
+algoFunctions = otexp.HiGHS(problemFunctionEquality)
+algoFunctions.run()
+ott.assert_almost_equal(
+    algoFunctions.getResult().getOptimalPoint(), [0.75, 1.75]
+)
+
+# a generic problem carrying constraint functions is still rejected by HiGHS
 baseProblem = ot.OptimizationProblem(ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1^2"]))
 baseProblem.setEqualityConstraint(ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"]))
 with ott.assert_raises(TypeError):

@@ -22,7 +22,6 @@
 #include "openturns/QuadraticProblem.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/QuadraticFunction.hxx"
-#include "openturns/LinearFunction.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -30,17 +29,6 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(QuadraticProblem)
 
 static const Factory<QuadraticProblem> Factory_QuadraticProblem;
-
-namespace
-{
-// A constraint row with equal finite bounds encodes an equality constraint
-Bool IsEqualityConstraintRow(const Interval & bounds, const UnsignedInteger i)
-{
-  return bounds.getFiniteLowerBound()[i]
-         && bounds.getFiniteUpperBound()[i]
-         && (bounds.getLowerBound()[i] == bounds.getUpperBound()[i]);
-}
-}
 
 /* Default constructor */
 QuadraticProblem::QuadraticProblem()
@@ -190,101 +178,37 @@ Interval QuadraticProblem::getLinearConstraintBounds() const
 /* Equality and inequality constraints, derived from the linear constraints */
 Bool QuadraticProblem::hasEqualityConstraint() const
 {
-  const UnsignedInteger rowDimension = constraintBounds_.getDimension();
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-    if (IsEqualityConstraintRow(constraintBounds_, i))
-      return true;
-  return false;
+  return HasLinearEqualityConstraint(constraintBounds_);
 }
 
 
 Function QuadraticProblem::getEqualityConstraint() const
 {
-  const UnsignedInteger rowDimension = constraintBounds_.getDimension();
-  Indices equalityRows;
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-    if (IsEqualityConstraintRow(constraintBounds_, i))
-      equalityRows.add(i);
-  const UnsignedInteger dimension = linearCost_.getDimension();
-  const UnsignedInteger outputDimension = equalityRows.getSize();
-  Matrix coefficients(outputDimension, dimension);
-  Point constant(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger row = equalityRows[i];
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-      coefficients(i, j) = constraintCoefficients_(row, j);
-    constant[i] = -constraintBounds_.getLowerBound()[row];
-  }
-  return LinearFunction(Point(dimension), constant, coefficients);
+  return GetLinearEqualityConstraint(constraintCoefficients_, constraintBounds_, linearCost_.getDimension());
 }
 
 
-void QuadraticProblem::setEqualityConstraint(const Function & )
+void QuadraticProblem::setEqualityConstraint(const Function & equalityConstraint)
 {
-  throw InvalidArgumentException(HERE) << "QuadraticProblem only supports linear constraints, use setLinearConstraint with equal lower and upper bounds to define an equality constraint";
+  SetLinearEqualityConstraint(constraintCoefficients_, constraintBounds_, equalityConstraint, linearCost_.getDimension());
 }
 
 
 Bool QuadraticProblem::hasInequalityConstraint() const
 {
-  const UnsignedInteger rowDimension = constraintBounds_.getDimension();
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-    if (!IsEqualityConstraintRow(constraintBounds_, i)
-        && (constraintBounds_.getFiniteLowerBound()[i] || constraintBounds_.getFiniteUpperBound()[i]))
-      return true;
-  return false;
+  return HasLinearInequalityConstraint(constraintBounds_);
 }
 
 
 Function QuadraticProblem::getInequalityConstraint() const
 {
-  const UnsignedInteger rowDimension = constraintBounds_.getDimension();
-  const Interval::BoolCollection finiteLowerBound(constraintBounds_.getFiniteLowerBound());
-  const Interval::BoolCollection finiteUpperBound(constraintBounds_.getFiniteUpperBound());
-  UnsignedInteger outputDimension = 0;
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-    if (!IsEqualityConstraintRow(constraintBounds_, i))
-    {
-      if (finiteLowerBound[i])
-        ++outputDimension;
-      if (finiteUpperBound[i])
-        ++outputDimension;
-    }
-  const UnsignedInteger dimension = linearCost_.getDimension();
-  if (outputDimension == 0)
-    return LinearFunction(Point(dimension), Point(0), Matrix(0, dimension));
-  Matrix coefficients(outputDimension, dimension);
-  Point constant(outputDimension);
-  UnsignedInteger row = 0;
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-  {
-    if (IsEqualityConstraintRow(constraintBounds_, i))
-      continue;
-    // L <= a.x is written a.x - L >= 0
-    if (finiteLowerBound[i])
-    {
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        coefficients(row, j) = constraintCoefficients_(i, j);
-      constant[row] = -constraintBounds_.getLowerBound()[i];
-      ++row;
-    }
-    // a.x <= U is written U - a.x >= 0
-    if (finiteUpperBound[i])
-    {
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        coefficients(row, j) = -constraintCoefficients_(i, j);
-      constant[row] = constraintBounds_.getUpperBound()[i];
-      ++row;
-    }
-  }
-  return LinearFunction(Point(dimension), constant, coefficients);
+  return GetLinearInequalityConstraint(constraintCoefficients_, constraintBounds_, linearCost_.getDimension());
 }
 
 
-void QuadraticProblem::setInequalityConstraint(const Function & )
+void QuadraticProblem::setInequalityConstraint(const Function & inequalityConstraint)
 {
-  throw InvalidArgumentException(HERE) << "QuadraticProblem only supports linear constraints, use setLinearConstraint to define inequality constraints";
+  SetLinearInequalityConstraint(constraintCoefficients_, constraintBounds_, inequalityConstraint, linearCost_.getDimension());
 }
 
 

@@ -24,12 +24,65 @@
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/QuadraticFunction.hxx"
 #include "openturns/LinearFunction.hxx"
+#include "openturns/LinearEvaluation.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimizationProblemImplementation)
 
 static const Factory<OptimizationProblemImplementation> Factory_OptimizationProblemImplementation;
+
+namespace
+{
+/* A row whose lower and upper bounds are equal encodes an equality constraint */
+Bool IsEqualityConstraintRow(const Point & lowerBound,
+                             const Point & upperBound,
+                             const Interval::BoolCollection & finiteLowerBound,
+                             const Interval::BoolCollection & finiteUpperBound,
+                             const UnsignedInteger row)
+{
+  return finiteLowerBound[row]
+         && finiteUpperBound[row]
+         && (lowerBound[row] == upperBound[row]);
+}
+
+/* A row that is not an equality constraint and has at least one finite bound
+   encodes inequalities */
+Bool IsInequalityConstraintRow(const Point & lowerBound,
+                               const Point & upperBound,
+                               const Interval::BoolCollection & finiteLowerBound,
+                               const Interval::BoolCollection & finiteUpperBound,
+                               const UnsignedInteger row)
+{
+  return !IsEqualityConstraintRow(lowerBound, upperBound, finiteLowerBound, finiteUpperBound, row)
+         && (finiteLowerBound[row] || finiteUpperBound[row]);
+}
+
+/* Convert a constraint function to a linear function centered at the origin.
+   An empty function clears the corresponding constraints. */
+LinearFunction ConvertLinearConstraint(const Function & constraint,
+                                       const UnsignedInteger dimension,
+                                       const String & kind)
+{
+  if (!constraint.getEvaluation().getImplementation()->isActualImplementation())
+    return LinearFunction(Point(dimension), Point(0), Matrix(0, dimension));
+  if (constraint.getInputDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "The " << kind << " constraint input dimension (" << constraint.getInputDimension() << ") must match the problem dimension (" << dimension << ")";
+  if (!dynamic_cast<const LinearFunction *>(&constraint) && !constraint.isLinear())
+    throw InvalidArgumentException(HERE) << "The " << kind << " constraint must be linear, got " << constraint;
+  const Point origin(dimension);
+  // A Function built from the evaluation of a linear function has only a
+  // finite-difference gradient, which loses the coefficients when the
+  // constant term is large. Read them from the evaluation instead.
+  const LinearEvaluation * linear = dynamic_cast<const LinearEvaluation *>(constraint.getEvaluation().getImplementation().get());
+  if (linear)
+    return LinearFunction(origin,
+                          linear->getConstant() - linear->getLinear() * linear->getCenter(),
+                          linear->getLinear());
+  return LinearFunction(origin, constraint(origin), constraint.gradient(origin).transpose());
+}
+}
 
 /* Default constructor */
 OptimizationProblemImplementation::OptimizationProblemImplementation()
@@ -232,6 +285,207 @@ Matrix OptimizationProblemImplementation::getLinearConstraintCoefficients() cons
 Interval OptimizationProblemImplementation::getLinearConstraintBounds() const
 {
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearConstraintBounds";
+}
+
+/* Helpers for problems storing their constraints as L <= A.x <= U */
+Bool OptimizationProblemImplementation::HasLinearEqualityConstraint(const Interval & constraintBounds)
+{
+  const Point lowerBound(constraintBounds.getLowerBound());
+  const Point upperBound(constraintBounds.getUpperBound());
+  const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
+  for (UnsignedInteger i = 0; i < constraintBounds.getDimension(); ++i)
+    if (IsEqualityConstraintRow(lowerBound, upperBound, finiteLowerBound, finiteUpperBound, i))
+      return true;
+  return false;
+}
+
+Bool OptimizationProblemImplementation::HasLinearInequalityConstraint(const Interval & constraintBounds)
+{
+  const Point lowerBound(constraintBounds.getLowerBound());
+  const Point upperBound(constraintBounds.getUpperBound());
+  const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
+  for (UnsignedInteger i = 0; i < constraintBounds.getDimension(); ++i)
+    if (IsInequalityConstraintRow(lowerBound, upperBound, finiteLowerBound, finiteUpperBound, i))
+      return true;
+  return false;
+}
+
+Function OptimizationProblemImplementation::GetLinearEqualityConstraint(const Matrix & constraintCoefficients,
+    const Interval & constraintBounds,
+    const UnsignedInteger dimension)
+{
+  const UnsignedInteger rowDimension = constraintBounds.getDimension();
+  const Point lowerBound(constraintBounds.getLowerBound());
+  const Point upperBound(constraintBounds.getUpperBound());
+  const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
+  UnsignedInteger outputDimension = 0;
+  for (UnsignedInteger i = 0; i < rowDimension; ++i)
+    if (IsEqualityConstraintRow(lowerBound, upperBound, finiteLowerBound, finiteUpperBound, i))
+      ++outputDimension;
+  Matrix coefficients(outputDimension, dimension);
+  Point constant(outputDimension);
+  UnsignedInteger outputRow = 0;
+  for (UnsignedInteger i = 0; i < rowDimension; ++i)
+  {
+    if (!IsEqualityConstraintRow(lowerBound, upperBound, finiteLowerBound, finiteUpperBound, i))
+      continue;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      coefficients(outputRow, j) = constraintCoefficients(i, j);
+    constant[outputRow] = -lowerBound[i];
+    ++outputRow;
+  }
+  return LinearFunction(Point(dimension), constant, coefficients);
+}
+
+Function OptimizationProblemImplementation::GetLinearInequalityConstraint(const Matrix & constraintCoefficients,
+    const Interval & constraintBounds,
+    const UnsignedInteger dimension)
+{
+  const UnsignedInteger rowDimension = constraintBounds.getDimension();
+  const Point lowerBound(constraintBounds.getLowerBound());
+  const Point upperBound(constraintBounds.getUpperBound());
+  const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
+  UnsignedInteger outputDimension = 0;
+  for (UnsignedInteger i = 0; i < rowDimension; ++i)
+    if (IsInequalityConstraintRow(lowerBound, upperBound, finiteLowerBound, finiteUpperBound, i))
+    {
+      if (finiteLowerBound[i])
+        ++outputDimension;
+      if (finiteUpperBound[i])
+        ++outputDimension;
+    }
+  Matrix coefficients(outputDimension, dimension);
+  Point constant(outputDimension);
+  UnsignedInteger outputRow = 0;
+  for (UnsignedInteger i = 0; i < rowDimension; ++i)
+  {
+    if (!IsInequalityConstraintRow(lowerBound, upperBound, finiteLowerBound, finiteUpperBound, i))
+      continue;
+    // L <= a.x is written a.x - L >= 0
+    if (finiteLowerBound[i])
+    {
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        coefficients(outputRow, j) = constraintCoefficients(i, j);
+      constant[outputRow] = -lowerBound[i];
+      ++outputRow;
+    }
+    // a.x <= U is written U - a.x >= 0
+    if (finiteUpperBound[i])
+    {
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        coefficients(outputRow, j) = -constraintCoefficients(i, j);
+      constant[outputRow] = upperBound[i];
+      ++outputRow;
+    }
+  }
+  return LinearFunction(Point(dimension), constant, coefficients);
+}
+
+void OptimizationProblemImplementation::SetLinearEqualityConstraint(Matrix & constraintCoefficients,
+    Interval & constraintBounds,
+    const Function & equalityConstraint,
+    const UnsignedInteger dimension)
+{
+  const LinearFunction converted(ConvertLinearConstraint(equalityConstraint, dimension, "equality"));
+  const UnsignedInteger rowDimension = constraintBounds.getDimension();
+  const Point lowerBound(constraintBounds.getLowerBound());
+  const Point upperBound(constraintBounds.getUpperBound());
+  const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
+  Indices keptRows;
+  for (UnsignedInteger i = 0; i < rowDimension; ++i)
+    if (!IsEqualityConstraintRow(lowerBound, upperBound, finiteLowerBound, finiteUpperBound, i))
+      keptRows.add(i);
+  const UnsignedInteger addedDimension = converted.getOutputDimension();
+  const UnsignedInteger newRowDimension = keptRows.getSize() + addedDimension;
+  Matrix newCoefficients(newRowDimension, dimension);
+  Point newLowerBound(newRowDimension);
+  Point newUpperBound(newRowDimension);
+  Interval::BoolCollection newFiniteLowerBound(newRowDimension);
+  Interval::BoolCollection newFiniteUpperBound(newRowDimension);
+  UnsignedInteger newRow = 0;
+  for (UnsignedInteger k = 0; k < keptRows.getSize(); ++k)
+  {
+    const UnsignedInteger row = keptRows[k];
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      newCoefficients(newRow, j) = constraintCoefficients(row, j);
+    newLowerBound[newRow] = lowerBound[row];
+    newUpperBound[newRow] = upperBound[row];
+    newFiniteLowerBound[newRow] = finiteLowerBound[row];
+    newFiniteUpperBound[newRow] = finiteUpperBound[row];
+    ++newRow;
+  }
+  const Matrix addedCoefficients(converted.getLinear());
+  const Point addedConstant(converted.getConstant());
+  for (UnsignedInteger i = 0; i < addedDimension; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      newCoefficients(newRow, j) = addedCoefficients(i, j);
+    newLowerBound[newRow] = -addedConstant[i];
+    newUpperBound[newRow] = -addedConstant[i];
+    newFiniteLowerBound[newRow] = true;
+    newFiniteUpperBound[newRow] = true;
+    ++newRow;
+  }
+  constraintCoefficients = newCoefficients;
+  constraintBounds = Interval(newLowerBound, newUpperBound, newFiniteLowerBound, newFiniteUpperBound);
+}
+
+void OptimizationProblemImplementation::SetLinearInequalityConstraint(Matrix & constraintCoefficients,
+    Interval & constraintBounds,
+    const Function & inequalityConstraint,
+    const UnsignedInteger dimension)
+{
+  const LinearFunction converted(ConvertLinearConstraint(inequalityConstraint, dimension, "inequality"));
+  const UnsignedInteger rowDimension = constraintBounds.getDimension();
+  const Point lowerBound(constraintBounds.getLowerBound());
+  const Point upperBound(constraintBounds.getUpperBound());
+  const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
+  Indices keptRows;
+  for (UnsignedInteger i = 0; i < rowDimension; ++i)
+  {
+    const Bool isFree = !finiteLowerBound[i] && !finiteUpperBound[i];
+    if (IsEqualityConstraintRow(lowerBound, upperBound, finiteLowerBound, finiteUpperBound, i) || isFree)
+      keptRows.add(i);
+  }
+  const UnsignedInteger addedDimension = converted.getOutputDimension();
+  const UnsignedInteger newRowDimension = keptRows.getSize() + addedDimension;
+  Matrix newCoefficients(newRowDimension, dimension);
+  Point newLowerBound(newRowDimension);
+  Point newUpperBound(newRowDimension);
+  Interval::BoolCollection newFiniteLowerBound(newRowDimension);
+  Interval::BoolCollection newFiniteUpperBound(newRowDimension);
+  UnsignedInteger newRow = 0;
+  for (UnsignedInteger k = 0; k < keptRows.getSize(); ++k)
+  {
+    const UnsignedInteger row = keptRows[k];
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      newCoefficients(newRow, j) = constraintCoefficients(row, j);
+    newLowerBound[newRow] = lowerBound[row];
+    newUpperBound[newRow] = upperBound[row];
+    newFiniteLowerBound[newRow] = finiteLowerBound[row];
+    newFiniteUpperBound[newRow] = finiteUpperBound[row];
+    ++newRow;
+  }
+  const Matrix addedCoefficients(converted.getLinear());
+  const Point addedConstant(converted.getConstant());
+  for (UnsignedInteger i = 0; i < addedDimension; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      newCoefficients(newRow, j) = addedCoefficients(i, j);
+    newLowerBound[newRow] = -addedConstant[i];
+    newUpperBound[newRow] = SpecFunc::Infinity;
+    newFiniteLowerBound[newRow] = true;
+    newFiniteUpperBound[newRow] = false;
+    ++newRow;
+  }
+  constraintCoefficients = newCoefficients;
+  constraintBounds = Interval(newLowerBound, newUpperBound, newFiniteLowerBound, newFiniteUpperBound);
 }
 
 /* Quadratic flag accessor */
