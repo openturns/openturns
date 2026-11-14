@@ -614,11 +614,11 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
   }
   // No partial update on error: stage into a temporary and commit at once,
   // so a throw in update() leaves *this unchanged
-  EmpiricalBernsteinCopula tmp(*this);
-  tmp.copulaSample_ = newSample;
-  tmp.binNumber_ = static_cast<UnsignedInteger>(binNumber);
-  tmp.update();
-  *this = tmp;
+  EmpiricalBernsteinCopula stagedDistribution(*this);
+  stagedDistribution.copulaSample_ = newSample;
+  stagedDistribution.binNumber_ = static_cast<UnsignedInteger>(binNumber);
+  stagedDistribution.update();
+  *this = stagedDistribution;
 }
 
 Description EmpiricalBernsteinCopula::getParameterDescription() const

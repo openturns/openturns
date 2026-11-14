@@ -491,10 +491,14 @@ void OrdinalSumCopula::setParametersCollection(const PointCollection & parameter
     newCopulas[i] = copula;
   } // atoms
   if (globalIndex != parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too many dependence parameters, expected " << globalIndex << " parameters and got " << parametersDimension;
-  // All slices accepted: commit the staged updates
+  // All slices accepted: commit the staged updates.
+  // setCopulaCollection assigns before validating, so commit through a
+  // candidate: a throw there leaves *this unchanged.
   const Description description(getDescription());
-  setCopulaCollection(newCopulas);
-  setDescription(description);
+  OrdinalSumCopula stagedDistribution(*this);
+  stagedDistribution.setCopulaCollection(newCopulas);
+  stagedDistribution.setDescription(description);
+  *this = stagedDistribution;
 }
 
 Point OrdinalSumCopula::getParameter() const
@@ -526,10 +530,13 @@ void OrdinalSumCopula::setParameter(const Point & parameter)
     globalIndex += atomParametersDimension;
   } // atoms
   // All slices accepted: commit the staged updates
-  // setCopulaCollection overwrites the description from the first copula: save/restore it
+  // setCopulaCollection overwrites the description from the first copula: save/restore it.
+  // Commit through a candidate as setCopulaCollection assigns before validating.
   const Description description(getDescription());
-  setCopulaCollection(newCopulas);
-  setDescription(description);
+  OrdinalSumCopula stagedDistribution(*this);
+  stagedDistribution.setCopulaCollection(newCopulas);
+  stagedDistribution.setDescription(description);
+  *this = stagedDistribution;
 }
 
 Description OrdinalSumCopula::getParameterDescription() const

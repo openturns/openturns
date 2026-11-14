@@ -943,10 +943,13 @@ void MaximumEntropyOrderStatisticsDistribution::setParametersCollection(const Po
     marginal.setParameter(parametersCollection[marginalIndex]);
     newDistributions[marginalIndex] = marginal;
   }
-  // All slices accepted: commit the staged updates
+  // All slices accepted: commit the staged updates through a candidate,
+  // as setDistributionCollection rebuilds dimension/partition and can throw
   const Description description(getDescription());
-  setDistributionCollection(newDistributions);
-  setDescription(description);
+  MaximumEntropyOrderStatisticsDistribution stagedDistribution(*this);
+  stagedDistribution.setDistributionCollection(newDistributions);
+  stagedDistribution.setDescription(description);
+  *this = stagedDistribution;
 }
 
 

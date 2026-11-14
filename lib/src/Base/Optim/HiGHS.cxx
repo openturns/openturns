@@ -368,12 +368,12 @@ void HiGHS::run()
       {
         Scalar progress = 0.0;
         const Scalar maxTime = getMaximumTimeDuration();
-        const UnsignedInteger maxIter = getMaximumIterationNumber();
+        const UnsignedInteger maximumIterationNumber = getMaximumIterationNumber();
         if (maxTime > 0.0)
           progress = 100.0 * data_out->running_time / maxTime;
-        else if (maxIter > 0)
+        else if (maximumIterationNumber > 0)
         {
-          const UnsignedInteger totalIter =
+          const UnsignedInteger iterationNumber =
             static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->simplex_iteration_count, 0))
             + static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->ipm_iteration_count, 0))
             + static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->pdlp_iteration_count, 0))
@@ -382,7 +382,7 @@ void HiGHS::run()
             + static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->qpasm_iteration_count, 0))
 #endif
             ;
-          progress = (100.0 * totalIter) / maxIter;
+          progress = (100.0 * iterationNumber) / maximumIterationNumber;
         }
         if (progress > 100.0) progress = 100.0;
         if (progress < lastProgress) progress = lastProgress;

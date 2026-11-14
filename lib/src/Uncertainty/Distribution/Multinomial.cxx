@@ -729,11 +729,11 @@ void Multinomial::setParameter(const Point & parameter)
   Point p(dimension);
   std::copy(parameter.begin() + 1, parameter.end(), p.begin());
   // No partial update on error: stage on a copy to preserve description and numerical settings, then commit at once
-  Multinomial tmp(*this);
-  tmp.setN(static_cast<UnsignedInteger>(nScalar));
-  tmp.setP(p);
-  tmp.computeRange();
-  *this = tmp;
+  Multinomial stagedDistribution(*this);
+  stagedDistribution.setN(static_cast<UnsignedInteger>(nScalar));
+  stagedDistribution.setP(p);
+  stagedDistribution.computeRange();
+  *this = stagedDistribution;
 }
 
 /* Check if the distribution is elliptical */
