@@ -1191,6 +1191,7 @@ if (SPHINX_FOUND)
     ${SPHINX_SOURCE_DIR}/*.rst_t
     ${SPHINX_SOURCE_DIR}/*.css_t
     ${SPHINX_SOURCE_DIR}/*.conf
+    ${SPHINX_SOURCE_DIR}/*.csv
     ${SPHINX_SOURCE_DIR}/*.py
     ${SPHINX_SOURCE_DIR}/*.png
     ${SPHINX_SOURCE_DIR}/*.svg
