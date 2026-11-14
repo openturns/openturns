@@ -186,3 +186,71 @@ algo6.setCheckStatus(False)
 algo6.run()
 assert algo6.getResult().getStatus() == ot.OptimizationResult.MAXIMUMCALLS, "status"
 assert len(algo6.getResult().getStatusMessage()) > 0, "model status"
+
+# sparse constraint coefficients give the same solution as the dense matrix
+sparseA = otexp.SparseMatrix.FromDenseMatrix(A)
+sparseProblem = otexp.LinearProblem(cost, bounds, sparseA, cb)
+sparseAlgo = otexp.HiGHS(sparseProblem, "simplex")
+sparseAlgo.run()
+denseAlgo = otexp.HiGHS(problem, "simplex")
+denseAlgo.run()
+ott.assert_almost_equal(
+    sparseAlgo.getResult().getOptimalPoint(), denseAlgo.getResult().getOptimalPoint()
+)
+ott.assert_almost_equal(
+    sparseAlgo.getResult().getOptimalValue(),
+    denseAlgo.getResult().getOptimalValue(),
+)
+ott.assert_almost_equal(sparseAlgo.getDualPoint(), denseAlgo.getDualPoint())
+ott.assert_almost_equal(sparseAlgo.getReducedCosts(), denseAlgo.getReducedCosts())
+ott.assert_almost_equal(
+    sparseAlgo.getConstraintValues(), denseAlgo.getConstraintValues()
+)
+ott.assert_almost_equal(sparseA.asDenseMatrix(), A)
+
+# duplicate and unsorted triplets are canonicalized before reaching HiGHS
+rowIndices = [1, 2, 0, 1, 1, 2, 2, 2]
+columnIndices = [0, 0, 1, 1, 1, 1, 1, 0]
+values = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0]
+tripletA = otexp.SparseMatrix(3, 2, rowIndices, columnIndices, values)
+ott.assert_almost_equal(tripletA.asDenseMatrix(), A)
+tripletProblem = otexp.LinearProblem(cost, bounds, tripletA, cb)
+tripletAlgo = otexp.HiGHS(tripletProblem, "simplex")
+tripletAlgo.run()
+ott.assert_almost_equal(
+    tripletAlgo.getResult().getOptimalPoint(), denseAlgo.getResult().getOptimalPoint()
+)
+
+# explicit zeros are stored but skipped when copied to HiGHS
+zeroRows = [1, 2, 0, 1, 1, 2, 2, 2, 0]
+zeroColumns = [0, 0, 1, 1, 1, 1, 1, 0, 0]
+zeroValues = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.0]
+zeroA = otexp.SparseMatrix(3, 2, zeroRows, zeroColumns, zeroValues)
+assert zeroA.getNbNonZeros() == 6, "explicit zeros are kept in the sparse layout"
+ott.assert_almost_equal(zeroA.asDenseMatrix(), A)
+zeroProblem = otexp.LinearProblem(cost, bounds, zeroA, cb)
+zeroAlgo = otexp.HiGHS(zeroProblem, "simplex")
+zeroAlgo.run()
+ott.assert_almost_equal(
+    zeroAlgo.getResult().getOptimalPoint(), denseAlgo.getResult().getOptimalPoint()
+)
+
+# a large sparse problem: a 20000 x 20000 diagonal constraint matrix would need
+# 3.2 GB in dense form, the sparse path only stores one coefficient per column
+dimension = 20000
+largeRows = list(range(dimension))
+largeColumns = list(range(dimension))
+largeValues = [1.0] * dimension
+largeA = otexp.SparseMatrix(
+    dimension, dimension, largeRows, largeColumns, largeValues
+)
+largeBounds = ot.Interval([0.0] * dimension, [1e30] * dimension)
+largeConstraint = ot.Interval([1.0] * dimension, [1e30] * dimension)
+largeProblem = otexp.LinearProblem(
+    [1.0] * dimension, largeBounds, largeA, largeConstraint
+)
+largeAlgo = otexp.HiGHS(largeProblem, "simplex")
+largeAlgo.run()
+ott.assert_almost_equal(
+    largeAlgo.getResult().getOptimalPoint(), ot.Point([1.0] * dimension)
+)

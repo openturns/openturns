@@ -41,6 +41,14 @@ LinearProblem::LinearProblem()
 /* Parameter constructor */
 LinearProblem::LinearProblem(const Point & cost, const Interval & bounds,
                              const Matrix & constraintCoefficients, const Interval & constraintBounds)
+  : LinearProblem(cost, bounds, SparseMatrix::FromDenseMatrix(constraintCoefficients), constraintBounds)
+{
+  // Nothing to do
+}
+
+/* Parameter constructor with sparse constraint coefficients */
+LinearProblem::LinearProblem(const Point & cost, const Interval & bounds,
+                             const SparseMatrix & constraintCoefficients, const Interval & constraintBounds)
   : OptimizationProblemImplementation()
 {
   if (bounds.getDimension() && bounds.getDimension() != cost.getDimension())
@@ -79,6 +87,12 @@ Point LinearProblem::getLinearCost() const
 /* Constraint accessor */
 void LinearProblem::setLinearConstraint(const Matrix & constraintCoefficients, const Interval & constraintBounds)
 {
+  setLinearConstraint(SparseMatrix::FromDenseMatrix(constraintCoefficients), constraintBounds);
+}
+
+
+void LinearProblem::setLinearConstraint(const SparseMatrix & constraintCoefficients, const Interval & constraintBounds)
+{
   if (constraintCoefficients.getNbColumns() != cost_.getDimension())
     throw InvalidDimensionException(HERE) << "Matrix column dimension (" << constraintCoefficients.getNbColumns() << ") must match problem dimension (" << cost_.getDimension() << ")";
   if (constraintCoefficients.getNbRows() != constraintBounds.getDimension())
@@ -89,6 +103,12 @@ void LinearProblem::setLinearConstraint(const Matrix & constraintCoefficients, c
 
 
 Matrix LinearProblem::getLinearConstraintCoefficients() const
+{
+  return constraintCoefficients_.asDenseMatrix();
+}
+
+
+SparseMatrix LinearProblem::getSparseLinearConstraintCoefficients() const
 {
   return constraintCoefficients_;
 }
@@ -167,7 +187,7 @@ void LinearProblem::save(Advocate & adv) const
 {
   OptimizationProblemImplementation::save(adv);
   adv.saveAttribute( "cost_", cost_ );
-  adv.saveAttribute( "constraintCoefficients_", constraintCoefficients_ );
+  adv.saveAttribute( "sparseConstraintCoefficients_", constraintCoefficients_ );
   adv.saveAttribute( "constraintBounds_", constraintBounds_ );
 }
 
@@ -176,7 +196,16 @@ void LinearProblem::load(Advocate & adv)
 {
   OptimizationProblemImplementation::load(adv);
   adv.loadAttribute( "cost_", cost_ );
-  adv.loadAttribute( "constraintCoefficients_", constraintCoefficients_ );
+  // Studies saved before the sparse representation stored the coefficients
+  // as a dense matrix under the constraintCoefficients_ attribute
+  if (adv.hasAttribute("sparseConstraintCoefficients_"))
+    adv.loadAttribute( "sparseConstraintCoefficients_", constraintCoefficients_ );
+  else
+  {
+    Matrix denseConstraintCoefficients;
+    adv.loadAttribute( "constraintCoefficients_", denseConstraintCoefficients );
+    constraintCoefficients_ = SparseMatrix::FromDenseMatrix(denseConstraintCoefficients);
+  }
   adv.loadAttribute( "constraintBounds_", constraintBounds_ );
 }
 

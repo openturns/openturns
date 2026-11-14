@@ -28,6 +28,7 @@
  * PiecewiseLinearDistribution (openturns.experimental)
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
  * SparseExpansion (openturns.experimental)
+ * SparseMatrix (openturns.experimental)
  * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
@@ -110,6 +111,8 @@
  * ProbabilitySimulationResult is now a handle to ProbabilitySimulationResultImplementation, which holds the concrete result of all the simulation algorithms; EventSimulation.getResult() still returns a ProbabilitySimulationResult handle and the former result accessors are preserved, while the setters, getImportanceFactors, drawImportanceFactors and getConfidenceLength of the handle are deprecated in favour of the implementation class
 
 ==== New features ====
+ * Added SparseMatrix.getColumnPointer/getRowIndices/getValues, SparseMatrix.FromDenseMatrix, canonical triplet constructor (validated indices, sorted rows, summed duplicates) and persistence
+ * LinearProblem accepts and stores sparse constraint coefficients (SparseMatrix constructor and setLinearConstraint overload); new LinearProblem.getSparseLinearConstraintCoefficients avoids the densification, and HiGHS copies the sparse matrix into its model without densifying (openturns.experimental)
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
  * Added FittingTest.CopulaCramerVonMises and FittingTest.CopulaKolmogorov: rank-based Cramer-von Mises and Kolmogorov-Smirnov goodness-of-fit tests for copulas, with parametric bootstrap p-values (new FittingTest-CopulaMinimumSamplingSize/MaximumSamplingSize/Precision ResourceMap keys)
  * Added QuantileConfidence.computeUnilateralCoverage and QuantileConfidence.computeBilateralCoverage to compute the coverage probability of quantile confidence intervals without sample
@@ -144,6 +147,7 @@
  * Theory: add interpolation page
  * LeastSquaresMethod: document weights, indices and notation
  * Mentioned all ResourceMap entries for each class
+ * New unit commitment use case, solved with a sparse mixed integer linear problem
 
 === Python module ===
  * Add Process sample slicing operator

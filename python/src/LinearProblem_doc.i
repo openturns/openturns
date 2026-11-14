@@ -18,10 +18,24 @@ cost : :class:`~openturns.Function`
     The cost vector :math:`\vect{c}`.
 bounds : :class:`~openturns.Interval`
     Bound constraints :math:`B`
-A : :class:`~openturns.Matrix`
-    Linear inequality constraints matrix :math:`\mat{A}`
+A : :class:`~openturns.Matrix` or :class:`~openturns.experimental.SparseMatrix`
+    Linear inequality constraints matrix :math:`\mat{A}`. The sparse form
+    avoids storing the zero coefficients of a large sparse problem.
 cb : :class:`~openturns.Interval`
     Linear inequality constraints bounds terms :math:`\vect{cb_l}, \vect{cb_u}`
+
+Notes
+-----
+The constraint matrix is stored in compressed sparse column form (see
+:class:`~openturns.experimental.SparseMatrix`). Passing a dense :class:`~openturns.Matrix`
+converts it once and drops its zero coefficients; passing a
+:class:`~openturns.experimental.SparseMatrix` stores it as is. A large sparse problem
+should therefore be built from a sparse matrix, as a dense one would need
+:math:`8 m n` bytes for :math:`m` constraints and :math:`n` variables.
+
+:meth:`getLinearConstraintCoefficients` rebuilds the dense matrix, while
+:meth:`getSparseLinearConstraintCoefficients` returns the sparse coefficients
+without densifying them.
 
 Examples
 --------
@@ -60,6 +74,19 @@ and bound constraints:
 >>> lcb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9], [False, True, True], [True, True, False])
 >>> problem = otexp.LinearProblem(cost, bounds, A, lcb)
 >>> problem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER, ot.OptimizationProblemImplementation.CONTINUOUS])
+
+The same problem can be defined from the sparse constraint matrix, which only
+stores the non-zero coefficients. The triplets are given by their row index,
+their column index and their value; duplicate coordinates are summed:
+
+>>> A = otexp.SparseMatrix(3, 2, [0, 1, 1, 2, 2], [1, 0, 1, 0, 1], [1.0, 1.0, 2.0, 3.0, 2.0])
+>>> print(A.asDenseMatrix())
+[[ 0 1 ]
+ [ 1 2 ]
+ [ 3 2 ]]
+>>> problem = otexp.LinearProblem(cost, bounds, A, lcb)
+>>> print(problem.getSparseLinearConstraintCoefficients().getNbNonZeros())
+5
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -78,12 +105,26 @@ cost : :class:`~openturns.Point`
 %feature("docstring") OT::LinearProblem::setLinearConstraint
 "Accessor to the linear constraint term.
 
-Returns
--------
-A : :class:`~openturns.Matrix`
+Parameters
+----------
+A : :class:`~openturns.Matrix` or :class:`~openturns.experimental.SparseMatrix`
     Linear inequality constraint term.
 cb : :class:`~openturns.Interval`
     Linear inequality constraint bounds.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::getSparseLinearConstraintCoefficients
+"Accessor to the linear constraint term in sparse form.
+
+The constraint matrix is returned in compressed sparse column form, without
+being densified.
+
+Returns
+-------
+A : :class:`~openturns.experimental.SparseMatrix`
+    Linear inequality constraint term.
 "
 
 // ---------------------------------------------------------------------

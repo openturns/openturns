@@ -26,6 +26,7 @@
 #include "openturns/Function.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/SymmetricMatrix.hxx"
+#include "openturns/SparseMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -105,6 +106,12 @@ public:
   /** Linear function accessor */
   virtual Point getLinearCost() const;
   virtual Matrix getLinearConstraintCoefficients() const;
+#ifndef SWIG
+  /** Sparse linear constraint coefficients accessor.
+      The default implementation converts the dense coefficients returned by
+      getLinearConstraintCoefficients(). */
+  virtual SparseMatrix getSparseLinearConstraintCoefficients() const;
+#endif
   virtual Interval getLinearConstraintBounds() const;
   virtual Bool isLinear() const;
 

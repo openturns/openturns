@@ -90,6 +90,7 @@ Matrices
     SymmetricMatrix
     TriangularMatrix
     TriangularComplexMatrix
+    experimental.SparseMatrix
     HMatrixParameters
     HMatrixFactory
     HMatrix

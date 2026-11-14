@@ -23,6 +23,7 @@
 
 #include "openturns/OptimizationProblemImplementation.hxx"
 #include "openturns/OptimizationProblem.hxx"
+#include "openturns/SparseMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,6 +47,10 @@ public:
   LinearProblem(const Point & cost, const Interval & bounds,
                 const Matrix & constraintCoefficients, const Interval & constraintBounds);
 
+  /** Constructor with sparse constraint coefficients */
+  LinearProblem(const Point & cost, const Interval & bounds,
+                const SparseMatrix & constraintCoefficients, const Interval & constraintBounds);
+
   /** Virtual constructor */
   LinearProblem * clone() const override;
 
@@ -58,7 +63,11 @@ public:
 
   /** Constraint accessor */
   void setLinearConstraint(const Matrix & constraintCoefficients, const Interval & LU);
+  void setLinearConstraint(const SparseMatrix & constraintCoefficients, const Interval & LU);
   Matrix getLinearConstraintCoefficients() const override;
+#ifndef SWIG
+  SparseMatrix getSparseLinearConstraintCoefficients() const override;
+#endif
   Interval getLinearConstraintBounds() const override;
 
   /** String converter */
@@ -79,8 +88,8 @@ private:
   // The objective c^Tx
   Point cost_;
 
-  // The constraints L<=Ax<=U
-  Matrix constraintCoefficients_;
+  // The constraints L<=Ax<=U, stored in compressed sparse column form
+  SparseMatrix constraintCoefficients_;
   Interval constraintBounds_;
 
 }; /* class LinearProblem */

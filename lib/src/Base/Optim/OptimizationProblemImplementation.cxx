@@ -229,6 +229,11 @@ Matrix OptimizationProblemImplementation::getLinearConstraintCoefficients() cons
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearConstraintCoefficients";
 }
 
+SparseMatrix OptimizationProblemImplementation::getSparseLinearConstraintCoefficients() const
+{
+  return SparseMatrix::FromDenseMatrix(getLinearConstraintCoefficients());
+}
+
 Interval OptimizationProblemImplementation::getLinearConstraintBounds() const
 {
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearConstraintBounds";

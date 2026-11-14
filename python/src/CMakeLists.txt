@@ -582,6 +582,7 @@ ot_add_python_module(experimental experimental_module.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
                      QuadraticProblem.i QuadraticProblem_doc.i
+                     SparseMatrix.i SparseMatrix_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                      BasisOrthonormalizationAlgorithm.i BasisOrthonormalizationAlgorithm_doc.i
                      GaussLPQuadrature.i GaussLPQuadrature_doc.i
@@ -1190,6 +1191,7 @@ if (SPHINX_FOUND)
     ${SPHINX_SOURCE_DIR}/*.rst_t
     ${SPHINX_SOURCE_DIR}/*.css_t
     ${SPHINX_SOURCE_DIR}/*.conf
+    ${SPHINX_SOURCE_DIR}/*.csv
     ${SPHINX_SOURCE_DIR}/*.py
     ${SPHINX_SOURCE_DIR}/*.png
     ${SPHINX_SOURCE_DIR}/*.svg
