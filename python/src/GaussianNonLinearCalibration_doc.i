@@ -62,6 +62,14 @@ The ``Truncated`` handling is ignored when
 ``GaussianNonLinearCalibration-BootstrapSize`` is nonzero, because the
 posterior is then estimated from the bootstrap sample.
 
+When the linearization at the MAP is ill-conditioned, the MAP and the active set
+are determined only up to the resolution of the residual sum of squares: a
+direction whose contribution is below the machine precision is not identified,
+the returned MAP depends on the optimization algorithm and on its tolerances,
+and the posterior variance in that direction is large. Rescaling the
+parameterization or relying on the prior distribution resolves the direction.
+See :any:`ill_conditioned_calibration` for details.
+
 Depending on the value of the `GaussianNonLinearCalibration-BootstrapSize` key 
 in the :class:`~openturns.ResourceMap`, the parameters are estimated differently.
 
