@@ -108,6 +108,9 @@
  * Deprecated viewer.PlotDesign in favor of VisualTest.DrawPairsWithGrid
  * Added ExperimentIntegration.getWeightedExperiment: accessor to the weighted experiment wrapped by the integration rule
  * ProbabilitySimulationResult is now a handle to ProbabilitySimulationResultImplementation, which holds the concrete result of all the simulation algorithms; EventSimulation.getResult() still returns a ProbabilitySimulationResult handle and the former result accessors are preserved, while the setters, getImportanceFactors, drawImportanceFactors and getConfidenceLength of the handle are deprecated in favour of the implementation class
+ * Deprecated LHSExperiment alwaysShuffle/randomShift flags, dedicated accessors must be used instead
+ * Deprecated KernelSmoothing boundaryCorrection flag argument, dedicated accessor must be used instead
+ * Added AssertionException mapped to AssertionError: openturns.testing.assert_almost_equal and the OTtestcode.hxx helpers now raise AssertionError instead of RuntimeError, and dimension/size mismatches raise AssertionException instead of InvalidArgumentException
 
 ==== New features ====
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
@@ -151,6 +154,7 @@
  * Add the title_kw argument to the viewer to style the figure suptitle
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
  * Deprecated coupling_tools.execute method (use subprocess.run)
+ * Added numpy __array_interface__/__array_ufunc__ support for Point/Sample (zero-copy np.asarray) and __array_ufunc__ support for Description: element-wise ufuncs (np.equal, np.add, ...) and np.where(np.asarray(...) == ...) workflow
 
 === Miscellaneous ===
  * Mixture.drawPDF now draws the probability of each discrete component as a text label above its arrow

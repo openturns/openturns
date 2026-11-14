@@ -51,7 +51,7 @@ public:
   explicit KernelSmoothing(const Distribution & kernel,
                            const Bool binned = true,
                            const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("KernelSmoothing-BinNumber"),
-                           const Bool boundaryCorrection = false);
+                           const Bool boundaryCorrection = false); // deprecated boundaryCorrection argument
 
   /** Virtual constructor */
   KernelSmoothing * clone() const override;

@@ -115,6 +115,11 @@ Scalar MarshallOlkinCopula::computeCDF(const Point & point) const
   return u * v / std::max(ualpha, vbeta);
 }
 
+static void checkUnitParameter(const Scalar value, const String & name, const String & lowerName)
+{
+  if (!(value >= 0.0) || !(value <= 1.0)) throw InvalidArgumentException(HERE) << name << " MUST be in [0, 1], here " << lowerName << "=" << value;
+}
+
 /* Parameters value accessor */
 Point MarshallOlkinCopula::getParameter() const
 {
@@ -127,8 +132,13 @@ Point MarshallOlkinCopula::getParameter() const
 void MarshallOlkinCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 value, got " << parameter.getSize();
-  setAlpha(parameter[0]);
-  setBeta(parameter[1]);
+  // No partial update on error: validate both values before committing
+  const Scalar alpha = parameter[0];
+  const Scalar beta = parameter[1];
+  checkUnitParameter(alpha, "Alpha", "alpha");
+  checkUnitParameter(beta, "Beta", "beta");
+  setAlpha(alpha);
+  setBeta(beta);
 }
 
 /* Tell if the distribution has independent copula */
@@ -140,7 +150,7 @@ Bool MarshallOlkinCopula::hasIndependentCopula() const
 /* Alpha accessor */
 void MarshallOlkinCopula::setAlpha(const Scalar alpha)
 {
-  if (!(alpha >= 0.0) || !(alpha <= 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
+  checkUnitParameter(alpha, "Alpha", "alpha");
   if (alpha != alpha_)
   {
     alpha_ = alpha;
@@ -157,7 +167,7 @@ Scalar MarshallOlkinCopula::getAlpha() const
 /* Beta accessor */
 void MarshallOlkinCopula::setBeta(const Scalar beta)
 {
-  if (!(beta >= 0.0) || !(beta <= 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in [0, 1], here beta=" << beta;
+  checkUnitParameter(beta, "Beta", "beta");
   if (beta != beta_)
   {
     beta_ = beta;

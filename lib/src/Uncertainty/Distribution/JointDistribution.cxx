@@ -1375,10 +1375,25 @@ void JointDistribution::setParametersCollection(const PointCollection& parameter
   const UnsignedInteger parametersSize = dimension + (dimension > 1 ? 1 : 0);
   if (parametersCollection.getSize() < parametersSize) throw InvalidArgumentException(HERE) << "The collection is too small(" << parametersCollection.getSize() << "). Expected (" << parametersSize << ")";
 
-  // set marginal parameters
-  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex) distributionCollection_[marginalIndex].setParameter(parametersCollection[marginalIndex]);
+  // No partial update on error: work on copies before committing
+  DistributionCollection newMarginals(dimension);
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
+  {
+    Distribution marginal(distributionCollection_[marginalIndex]);
+    marginal.setParameter(parametersCollection[marginalIndex]);
+    newMarginals[marginalIndex] = marginal;
+  }
+  Distribution newCore(core_);
   // set core parameters
-  if (dimension > 1) core_.setParameter(parametersCollection[dimension]);
+  if (dimension > 1) newCore.setParameter(parametersCollection[dimension]);
+  // All slices accepted: stage the commit on a copy so a throw in setCore
+  // leaves *this unchanged (e.g. core with support outside the unit cube)
+  const Description description(getDescription());
+  JointDistribution stagedDistribution(*this);
+  stagedDistribution.setDistributionCollection(newMarginals);
+  stagedDistribution.setDescription(description);
+  if (dimension > 1) stagedDistribution.setCore(newCore);
+  *this = stagedDistribution;
 }
 
 
@@ -1424,13 +1439,16 @@ void JointDistribution::setParameter(const Point & parameter)
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
     newCore.setParameter(newParameters);
   }
-  // All slices accepted: commit the staged updates
+  // All slices accepted: stage the commit on a copy so a throw in setCore
+  // leaves *this unchanged (e.g. core with support outside the unit cube)
   // setDistributionCollection rebuilds the description from the marginals: save/restore it,
   // before setCore so the core receives the original description
   const Description description(getDescription());
-  setDistributionCollection(newMarginals);
-  setDescription(description);
-  if (dimension > 1) setCore(newCore);
+  JointDistribution stagedDistribution(*this);
+  stagedDistribution.setDistributionCollection(newMarginals);
+  stagedDistribution.setDescription(description);
+  if (dimension > 1) stagedDistribution.setCore(newCore);
+  *this = stagedDistribution;
 }
 
 Description JointDistribution::getParameterDescription() const

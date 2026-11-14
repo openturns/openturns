@@ -77,7 +77,7 @@ _ = otv.View(graph)
 
 
 def nor0post(pt):
-    z = np.array(pt)[2:]
+    z = np.asarray(pt)[2:]
     x0 = observations[z == 0]
     mu0 = x0.sum() / (0.1 + len(x0))
     sigma0 = 1.0 / (0.1 + len(x0))
@@ -85,7 +85,7 @@ def nor0post(pt):
 
 
 def nor1post(pt):
-    z = np.array(pt)[2:]
+    z = np.asarray(pt)[2:]
     x1 = observations[z == 1]
     mu1 = x1.sum() / (0.1 + len(x1))
     sigma1 = 1.0 / (0.1 + len(x1))

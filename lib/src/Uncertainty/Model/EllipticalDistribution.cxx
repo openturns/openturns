@@ -504,7 +504,9 @@ void EllipticalDistribution::update()
   } // dimension > 1
   else  // dimension 1
   {
-    if (!cholesky_.getDimension())  // First time we enter here, set matrix sizes
+    // Resize also on dimension shrink (e.g. clone staged from a larger
+    // dimension), otherwise a stale larger factor would be kept
+    if (cholesky_.getDimension() != 1)
     {
       cholesky_ = TriangularMatrix(1);
     }
@@ -815,25 +817,31 @@ EllipticalDistribution::PointWithDescriptionCollection EllipticalDistribution::g
 void EllipticalDistribution::setParametersCollection(const PointCollection & parametersCollection)
 {
   const UnsignedInteger size = parametersCollection.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: empty parameters collection";
   const UnsignedInteger dimension = size > 1 ? size - 1 : size;
-  setDimension(dimension);
-  mean_ = Point(dimension);
-  sigma_ = Point(dimension);
+  if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: empty parameters collection";
+  Point mean(dimension);
+  Point sigma(dimension);
   CorrelationMatrix R(dimension);
   if (dimension == 1)
   {
-    mean_[0] = parametersCollection[0][0];
-    sigma_[0] = parametersCollection[0][1];
-    if (!(sigma_[0] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma_[0];
+    if (size != 1) throw InvalidArgumentException(HERE) << "Error: invalid parameters collection size " << size << ", expected 1 for dimension 1";
+    if (parametersCollection[0].getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: invalid marginal parameter dimension at index 0, expected 2, got " << parametersCollection[0].getDimension();
+    mean[0] = parametersCollection[0][0];
+    sigma[0] = parametersCollection[0][1];
+    if (!(sigma[0] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[0];
   }
   else
   {
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      mean_[i] = parametersCollection[i][0];
-      sigma_[i] = parametersCollection[i][1];
-      if (!(sigma_[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma_[i];
+      if (parametersCollection[i].getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: invalid marginal parameter dimension at index " << i << ", expected 2, got " << parametersCollection[i].getDimension();
+      mean[i] = parametersCollection[i][0];
+      sigma[i] = parametersCollection[i][1];
+      if (!(sigma[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[i];
     }
+    const UnsignedInteger dependenceDimension = dimension * (dimension - 1) / 2;
+    if (parametersCollection[size - 1].getDimension() != dependenceDimension) throw InvalidArgumentException(HERE) << "Error: invalid dependence parameter dimension, expected " << dependenceDimension << ", got " << parametersCollection[size - 1].getDimension();
     UnsignedInteger parameterIndex = 0;
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
@@ -843,11 +851,25 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
         ++parameterIndex;
       }
     }
-    setR(R);
+    // R(i, j) assignment above already checks range, setR checks dimension,
+    // so R is valid here and no extra dimension check is needed
   }
-  update();
-  computeRange();
-  isAlreadyComputedCovariance_ = false;
+  // All validations passed: stage the commit on a polymorphic clone so that
+  // range computation retains the concrete distribution behavior (e.g. Normal::computeRange),
+  // no partial update on error.
+  // Note: the staged clone is assigned back through EllipticalDistribution::operator=,
+  // so derived members are intentionally left untouched here; each derived class
+  // (Normal, Student) refreshes its own extra state after the base-class call.
+  Implementation stagedImplementation(clone());
+  EllipticalDistribution & stagedDistribution = dynamic_cast<EllipticalDistribution&>(*stagedImplementation);
+  stagedDistribution.setDimension(dimension);
+  stagedDistribution.mean_ = mean;
+  stagedDistribution.sigma_ = sigma;
+  stagedDistribution.R_ = R;
+  stagedDistribution.update();
+  stagedDistribution.computeRange();
+  stagedDistribution.isAlreadyComputedCovariance_ = false;
+  *this = stagedDistribution;
 }
 
 Point EllipticalDistribution::getParameter() const
@@ -900,13 +922,23 @@ void EllipticalDistribution::setParameter(const Point & parameters)
       }
     }
   }
-  // commit all changes at once
-  mean_ = mean;
-  sigma_ = sigma;
-  R_ = R;
-  update();
-  computeRange();
-  isAlreadyComputedCovariance_ = false;
+  // commit all changes at once, staging on a polymorphic clone so that
+  // a dimension change updates dimension_, description and range
+  // with the concrete distribution behavior (see setParametersCollection),
+  // with no partial update on error.
+  // Note: assignment back goes through EllipticalDistribution::operator=,
+  // so derived members are intentionally left untouched here; each derived
+  // class refreshes its own extra state after the base-class call.
+  Implementation stagedImplementation(clone());
+  EllipticalDistribution & stagedDistribution = dynamic_cast<EllipticalDistribution&>(*stagedImplementation);
+  stagedDistribution.setDimension(dimension);
+  stagedDistribution.mean_ = mean;
+  stagedDistribution.sigma_ = sigma;
+  stagedDistribution.R_ = R;
+  stagedDistribution.update();
+  stagedDistribution.computeRange();
+  stagedDistribution.isAlreadyComputedCovariance_ = false;
+  *this = stagedDistribution;
 }
 
 Description EllipticalDistribution::getParameterDescription() const

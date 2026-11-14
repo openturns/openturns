@@ -56,3 +56,45 @@ algo.run()
 n_local_results_nokeep = algo.getResultCollection().getSize()
 assert n_local_results_nokeep == 0, "n_local_results_nokeep is wrong"
 assert result.getCallsNumber() < 400, "wrong calls number"
+
+# inner progress is rescaled to the global budget and stays monotonic
+progress_calls = []
+
+
+def progress(p):
+    progress_calls.append(p)
+
+
+def no_stop():
+    return False
+
+
+def stop_now():
+    return True
+
+
+ot.RandomGenerator.SetSeed(0)
+small_distribution = ot.JointDistribution([ot.Uniform(-3.0, 3.0)] * dim)
+small_sample = small_distribution.getSample(5)
+cb_algo = ot.MultiStart(ot.TNC(problem), small_sample)
+cb_algo.setMaximumCallsNumber(2000)
+cb_algo.setProgressCallback(progress)
+cb_algo.setStopCallback(no_stop)
+cb_algo.run()
+assert cb_algo.getResult().getStatus() == ot.OptimizationResult.SUCCESS
+assert len(progress_calls) > 0, "progress callback was not invoked"
+assert all(0.0 <= p <= 100.0 for p in progress_calls), "progress out of range"
+assert all(b >= a for a, b in zip(progress_calls, progress_calls[1:])), "progress not monotonic"
+
+# user stop interrupts the current local search, not just between restarts
+inner = ot.TNC(problem)
+inner.setCheckStatus(False)
+stop_algo = ot.MultiStart(inner, small_sample)
+stop_algo.setMaximumCallsNumber(2000)
+stop_algo.setCheckStatus(False)
+stop_algo.setKeepResults(True)
+stop_algo.setStopCallback(stop_now)
+stop_algo.run()
+assert stop_algo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+assert stop_algo.getResultCollection().getSize() == 1, "wrong restarts number"
+assert stop_algo.getResult().getCallsNumber() < 2000, "stop was not honored"

@@ -137,6 +137,12 @@ Sample LHSExperiment::generateWithWeights(Point & weights) const
   return sample;
 }
 
+/* Return isRandom flag */
+Bool LHSExperiment::isRandom() const
+{
+  return alwaysShuffle_ || randomShift_;
+}
+
 /* Shuffle the cells. */
 Matrix LHSExperiment::ComputeShuffle(const UnsignedInteger dimension,
                                      const UnsignedInteger totalSize)

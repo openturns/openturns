@@ -47,8 +47,74 @@ OTCollectionOperatorsHelper(OT::Description, OT::String)
 
 // needed for compatibility with pandas indexation (see is_list_like internal method)
 %pythoncode %{
+# Helpers for numpy __array_ufunc__ delegation, shared by Point.i, Sample.i
+# and Description.i (same SWIG module, defined once here as Description.i
+# is included first).
+def _ot_ufunc_convert(value):
+    """Convert an OpenTURNS vector object to ndarray for ufunc delegation.
+
+    Uses isinstance so Python subclasses (e.g. class MyPoint(ot.Point) defined
+    in __main__) are converted too; a module-name test would miss them and
+    recurse into the same __array_ufunc__.
+    """
+    try:
+        import openturns as _ot
+        _ot_types = (_ot.Point, _ot.Sample, _ot.Description)
+    except Exception:
+        return value
+    if isinstance(value, _ot_types):
+        try:
+            import numpy as _np
+            return _np.asarray(value)
+        except Exception:
+            return value
+    return value
+
+def _ot_ufunc_out_is_ot(out):
+    """Check whether a ufunc out= tuple holds an OpenTURNS object."""
+    if out is None:
+        return False
+    try:
+        import openturns as _ot
+        _ot_types = (_ot.Point, _ot.Sample, _ot.Description)
+    except Exception:
+        return False
+    for output in out:
+        if output is not None and isinstance(output, _ot_types):
+            return True
+    return False
+
 def _Description___iter__(self):
     for i in range(len(self)):
         yield self[i]
 Description.__iter__ = _Description___iter__
+
+# Numpy compatibility: delegate ufuncs to ndarrays (element-wise, copy-based:
+# variable-length strings cannot be exposed zero-copy, unlike Point/Sample).
+# Note: ot.Description.__eq__ keeps whole-object semantics (returns Bool); for
+# element-wise comparison use numpy ufuncs, e.g. np.equal(desc, "a").
+def __Description___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+    import numpy as _np
+    out = kwargs.get("out", None)
+    if _ot_ufunc_out_is_ot(out):
+        return NotImplemented
+    new_inputs = tuple(_ot_ufunc_convert(x) for x in inputs)
+    new_kwargs = dict(kwargs)
+    # Only where (besides out, handled above) can carry an array-like
+    # operand; converting every keyword would silently alter future kwargs.
+    if "where" in new_kwargs:
+        new_kwargs["where"] = _ot_ufunc_convert(new_kwargs["where"])
+    if ufunc in (_np.equal, _np.not_equal):
+        # Numpy < 1.24 has no string loop for equal/not_equal: compare as
+        # objects, with identical elementwise semantics
+        try:
+            return getattr(ufunc, method)(*new_inputs, **new_kwargs)
+        except TypeError:
+            new_inputs = tuple(_np.asarray(x, dtype=object)
+                               if isinstance(x, _np.ndarray) and x.dtype.kind in "US"
+                               else x for x in new_inputs)
+            return getattr(ufunc, method)(*new_inputs, **new_kwargs)
+    return getattr(ufunc, method)(*new_inputs, **new_kwargs)
+Description.__array_ufunc__ = __Description___array_ufunc__
+Description.__array_priority__ = 10000
 %}

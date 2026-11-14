@@ -21,6 +21,7 @@
  */
 #include <cmath>
 #include <algorithm>
+#include <limits>
 #include "openturns/Collection.hxx"
 #include "openturns/Multinomial.hxx"
 #include "openturns/Binomial.hxx"
@@ -722,11 +723,17 @@ void Multinomial::setParameter(const Point & parameter)
   const UnsignedInteger dimension = getDimension();
   if (parameter.getDimension() != (dimension + 1))
     throw InvalidArgumentException(HERE) << "Multinomial expected " << (dimension + 1) << " parameters, got " << parameter.getDimension();
-  if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n must be an integer, got " << parameter[0];
-  setN(parameter[0]);
+  const Scalar nScalar = parameter[0];
+  if (!(nScalar >= 0.0) || (nScalar != std::round(nScalar))) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n must be an integer, got " << parameter[0];
+  if (!(nScalar < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits))) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n is too large, got " << parameter[0];
   Point p(dimension);
   std::copy(parameter.begin() + 1, parameter.end(), p.begin());
-  setP(p);
+  // No partial update on error: stage on a copy to preserve description and numerical settings, then commit at once
+  Multinomial stagedDistribution(*this);
+  stagedDistribution.setN(static_cast<UnsignedInteger>(nScalar));
+  stagedDistribution.setP(p);
+  stagedDistribution.computeRange();
+  *this = stagedDistribution;
 }
 
 /* Check if the distribution is elliptical */

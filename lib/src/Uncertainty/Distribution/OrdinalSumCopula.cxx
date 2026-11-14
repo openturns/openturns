@@ -471,6 +471,8 @@ void OrdinalSumCopula::setParametersCollection(const PointCollection & parameter
   // Index within the given parametersCollection
   UnsignedInteger globalIndex = 0;
   const UnsignedInteger size = copulaCollection_.getSize();
+  // No partial update on error: work on copies before committing
+  DistributionCollection newCopulas(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // All distributions, including copulas, must output a collection of Point of size at least 1,
@@ -484,9 +486,19 @@ void OrdinalSumCopula::setParametersCollection(const PointCollection & parameter
       point[j] = parameters[globalIndex];
       ++globalIndex;
     } // atom parameters
-    copulaCollection_[i].setParametersCollection(PointCollection(1, point));
+    Distribution copula(copulaCollection_[i]);
+    copula.setParametersCollection(PointCollection(1, point));
+    newCopulas[i] = copula;
   } // atoms
   if (globalIndex != parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too many dependence parameters, expected " << globalIndex << " parameters and got " << parametersDimension;
+  // All slices accepted: commit the staged updates.
+  // setCopulaCollection assigns before validating, so commit through a
+  // candidate: a throw there leaves *this unchanged.
+  const Description description(getDescription());
+  OrdinalSumCopula stagedDistribution(*this);
+  stagedDistribution.setCopulaCollection(newCopulas);
+  stagedDistribution.setDescription(description);
+  *this = stagedDistribution;
 }
 
 Point OrdinalSumCopula::getParameter() const
@@ -518,10 +530,13 @@ void OrdinalSumCopula::setParameter(const Point & parameter)
     globalIndex += atomParametersDimension;
   } // atoms
   // All slices accepted: commit the staged updates
-  // setCopulaCollection overwrites the description from the first copula: save/restore it
+  // setCopulaCollection overwrites the description from the first copula: save/restore it.
+  // Commit through a candidate as setCopulaCollection assigns before validating.
   const Description description(getDescription());
-  setCopulaCollection(newCopulas);
-  setDescription(description);
+  OrdinalSumCopula stagedDistribution(*this);
+  stagedDistribution.setCopulaCollection(newCopulas);
+  stagedDistribution.setDescription(description);
+  *this = stagedDistribution;
 }
 
 Description OrdinalSumCopula::getParameterDescription() const

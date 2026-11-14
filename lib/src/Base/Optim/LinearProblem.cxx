@@ -40,7 +40,8 @@ LinearProblem::LinearProblem()
 
 /* Parameter constructor */
 LinearProblem::LinearProblem(const Point & cost, const Interval & bounds,
-                             const Matrix & constraintCoefficients, const Interval & constraintBounds)
+                             const Matrix & constraintCoefficients, const Interval & constraintBounds,
+                             const Scalar constant)
   : OptimizationProblemImplementation()
 {
   if (bounds.getDimension() && bounds.getDimension() != cost.getDimension())
@@ -48,6 +49,7 @@ LinearProblem::LinearProblem(const Point & cost, const Interval & bounds,
   setLinearCost(cost);
   setLinearConstraint(constraintCoefficients, constraintBounds);
   bounds_ = bounds;
+  setConstant(constant);
 }
 
 
@@ -62,17 +64,36 @@ LinearProblem * LinearProblem::clone() const
 void LinearProblem::setLinearCost(const Point & cost)
 {
   cost_ = cost;
-  const UnsignedInteger dimension = cost.getDimension();
-  Matrix linear(1, dimension);
-  for (UnsignedInteger j = 0; j < dimension; ++ j)
-    linear(0, j) = cost[j];
-  setObjective(LinearFunction(Point(dimension), Point({0.0}), linear));
+  updateObjective();
 }
 
 
 Point LinearProblem::getLinearCost() const
 {
   return cost_;
+}
+
+
+void LinearProblem::setConstant(const Scalar constant)
+{
+  constant_ = constant;
+  updateObjective();
+}
+
+
+Scalar LinearProblem::getConstant() const
+{
+  return constant_;
+}
+
+
+void LinearProblem::updateObjective()
+{
+  const UnsignedInteger dimension = cost_.getDimension();
+  Matrix linear(1, dimension);
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+    linear(0, j) = cost_[j];
+  setObjective(LinearFunction(Point(dimension), Point({constant_}), linear));
 }
 
 
@@ -139,6 +160,9 @@ LinearProblem LinearProblem::Linearize(const OptimizationProblem & problem, cons
   }
   const Interval LU(lb, ub);
   LinearProblem linearProblem(cost, problem.getBounds(), A, LU);
+  // the constant term carries the linearization offset so that the
+  // linearized objective matches the original function at the location
+  linearProblem.setConstant(problem.getObjective()(location)[0] - cost.dot(location));
   linearProblem.setVariablesType(problem.getVariablesType());
   return linearProblem;
 }
@@ -157,6 +181,7 @@ String LinearProblem::__repr__() const
   OSS oss;
   oss << "class=" << LinearProblem::GetClassName();
   oss << " cost=" << cost_
+      << " constant=" << constant_
       << " constraintCoefficients=" << constraintCoefficients_
       << " constraintBounds=" << constraintBounds_;
   return oss;
@@ -167,6 +192,7 @@ void LinearProblem::save(Advocate & adv) const
 {
   OptimizationProblemImplementation::save(adv);
   adv.saveAttribute( "cost_", cost_ );
+  adv.saveAttribute( "constant_", constant_ );
   adv.saveAttribute( "constraintCoefficients_", constraintCoefficients_ );
   adv.saveAttribute( "constraintBounds_", constraintBounds_ );
 }
@@ -176,6 +202,7 @@ void LinearProblem::load(Advocate & adv)
 {
   OptimizationProblemImplementation::load(adv);
   adv.loadAttribute( "cost_", cost_ );
+  if (adv.hasAttribute("constant_")) adv.loadAttribute( "constant_", constant_ );
   adv.loadAttribute( "constraintCoefficients_", constraintCoefficients_ );
   adv.loadAttribute( "constraintBounds_", constraintBounds_ );
 }

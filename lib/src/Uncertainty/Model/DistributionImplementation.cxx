@@ -5848,24 +5848,41 @@ DistributionImplementation::PointWithDescriptionCollection DistributionImplement
 
 void DistributionImplementation::setParametersCollection(const PointWithDescriptionCollection & parametersCollection)
 {
+  // Get the actual collection of parameters to check the size
+  const PointWithDescriptionCollection actualParameters(getParametersCollection());
+  const UnsignedInteger size = actualParameters.getSize();
+  if (parametersCollection.getSize() != size)
+  {
+    // The size differs: the distribution may still support a dimension change
+    // (e.g. EllipticalDistribution, Dirac). Strip descriptions and delegate
+    // to the PointCollection overload, which performs its own validation.
+    // Check entry sizes up-front: overrides index entries directly with
+    // unchecked Collection::operator[], so empty entries would be UB
+    // instead of an exception. Short non-empty entries are rejected by the
+    // override itself (EllipticalDistribution, Student, Dirac validate each
+    // entry dimension before indexing).
+    for (UnsignedInteger i = 0; i < parametersCollection.getSize(); ++ i)
+      if (parametersCollection[i].getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: the given parameters collection has an empty entry at index " << i;
+    PointCollection parameters(0);
+    for (UnsignedInteger i = 0; i < parametersCollection.getSize(); ++ i) parameters.add(parametersCollection[i]);
+    setParametersCollection(parameters);
+    return;
+  }
   if (getDimension() == 1)
   {
-    if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Expected collection of size 1, got " << parametersCollection.getSize();
     setParameter(parametersCollection[0]);
+    return;
   }
 
   // Get the actual collection of parameters to check the description and the size
-  const PointWithDescriptionCollection actualParameters(getParametersCollection());
-  const UnsignedInteger size = actualParameters.getSize();
-  if (parametersCollection.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the given parameters collection has an invalid size (" << parametersCollection.getSize() << "), it should be " << size;
-  PointCollection coll(0);
+  PointCollection parameters(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger dimension = actualParameters[i].getDimension();
     if (parametersCollection[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given parameters collection has an invalid dimension at index " << i;
-    coll.add(parametersCollection[i]);
+    parameters.add(parametersCollection[i]);
   }
-  setParametersCollection(coll);
+  setParametersCollection(parameters);
 }
 
 void DistributionImplementation::setParametersCollection(const PointCollection & parametersCollection)

@@ -56,9 +56,9 @@ view = otv.View(graph)
 
 # %%
 size = 100
-alwaysShuffle = True
-randomShift = True
-experiment = ot.LHSExperiment(distribution, size, alwaysShuffle, randomShift)
+experiment = ot.LHSExperiment(distribution, size)
+experiment.setAlwaysShuffle(True)
+experiment.setRandomShift(True)
 sample = experiment.generate()
 
 # %%

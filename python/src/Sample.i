@@ -72,15 +72,26 @@
 %apply const SampleCollection & { const OT::ProcessSample::SampleCollection &};
 
 %pythoncode %{
+# Helpers _ot_ufunc_convert/_ot_ufunc_out_is_ot for numpy __array_ufunc__
+# delegation are defined once in Description.i (same SWIG module).
 # This code has been added to conform to Numpy ndarray interface
 # that tries to reuse the data stored in the Sample (zero copy)
 # see http://docs.scipy.org/doc/numpy/reference/arrays.interface.html#arrays-interface
 # for details.
 # See python doc http://docs.python.org/reference/datamodel.html?highlight=getattribute#object.__getattribute__
 # for details on how to write such a method.
+# Lifetime contract of the zero-copy view: np.asarray(smp) borrows the
+# internal buffer (ndarray.base keeps the Sample proxy alive, but not the
+# buffer itself). Any size-changing mutation (add, resize, clear, erase)
+# may reallocate the buffer and invalidates outstanding views; reading such
+# a view afterwards is a use-after-free. Call .copy() on the array if it
+# must outlive mutations of the Sample.
 def __Sample_getattribute(self, name):
     """Implement attribute accesses."""
     if name == "__array_interface__":
+        # Keep a nonzero address even when empty: a NULL data pointer
+        # makes some numpy versions skip the interface and fall back to
+        # sequence conversion. With a 0 in the shape it is never dereferenced.
         self.__dict__["__array_interface__"] = {"shape": (self.getSize(), self.getDimension()),
                                                 "typestr": f"|f{self.__elementsize__()}",
                                                 "data": (int(self.__baseaddress__() or 1), True),
@@ -88,6 +99,24 @@ def __Sample_getattribute(self, name):
                                                 }
     return super(Sample, self).__getattribute__(name)
 Sample.__getattribute__ = __Sample_getattribute
+
+# Numpy compatibility: delegate ufuncs to ndarrays (element-wise).
+# Note: ot.Sample.__eq__ keeps whole-object semantics (returns Bool); for element-wise
+# comparison use numpy ufuncs, e.g. np.equal(smp, 1) or np.asarray(smp) == 1,
+# then np.where(...) works on the resulting boolean ndarray.
+def __Sample___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+    out = kwargs.get("out", None)
+    if _ot_ufunc_out_is_ot(out):
+        return NotImplemented
+    new_inputs = tuple(_ot_ufunc_convert(x) for x in inputs)
+    new_kwargs = dict(kwargs)
+    # Only where (besides out, handled above) can carry an array-like
+    # operand; converting every keyword would silently alter future kwargs.
+    if "where" in new_kwargs:
+        new_kwargs["where"] = _ot_ufunc_convert(new_kwargs["where"])
+    return getattr(ufunc, method)(*new_inputs, **new_kwargs)
+Sample.__array_ufunc__ = __Sample___array_ufunc__
+Sample.__array_priority__ = 10000
 
 def __Sample_asDataFrame(self):
     """

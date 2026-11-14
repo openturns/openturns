@@ -1,20 +1,25 @@
 %feature("docstring") OT::LinearProblem
 R"RAW(Linear optimization problem.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 This defines a linear problem as:
 
 .. math::
 
-    \min_{\vect{x} \in B} f(\vect{x}) = \vect{c}^T \vect{x} \\
+    \min_{\vect{x} \in B} f(\vect{x}) = \vect{c}^T \vect{x} + d \\
     \vect{lc_l} \leq \mat{A} \vect{x} \leq \vect{lc_u}
 
 where :math:`B` are the problem bounds, :math:`\vect{c}` is the cost vector,
+:math:`d` is a constant term,
 :math:`\mat{A}` is the constraint matrix term,
 and :math:`\vect{cb_l}, \vect{cb_u}` are the constraints bounds terms.
 
 Parameters
 ----------
-cost : :class:`~openturns.Function`
+cost : sequence of float
     The cost vector :math:`\vect{c}`.
 bounds : :class:`~openturns.Interval`
     Bound constraints :math:`B`
@@ -22,6 +27,8 @@ A : :class:`~openturns.Matrix`
     Linear inequality constraints matrix :math:`\mat{A}`
 cb : :class:`~openturns.Interval`
     Linear inequality constraints bounds terms :math:`\vect{cb_l}, \vect{cb_u}`
+constant : float, optional
+    The constant term :math:`d`. Default is 0.
 
 Examples
 --------
@@ -75,6 +82,26 @@ cost : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::LinearProblem::setConstant
+"Accessor to the constant term of the objective.
+
+Parameters
+----------
+constant : float
+    Constant term."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearProblem::getConstant
+"Accessor to the constant term of the objective.
+
+Returns
+-------
+constant : float
+    Constant term."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::LinearProblem::setLinearConstraint
 "Accessor to the linear constraint term.
 
@@ -92,7 +119,9 @@ cb : :class:`~openturns.Interval`
 "Transform a general optimization problem to a linear problem.
 
 Objective and inequality constraints coefficients are computed
-from their gradients at the specified location.
+from their gradients at the specified location. The constant term
+of the linearized objective is set so that it matches the original
+objective at the location.
 
 Parameters
 ----------

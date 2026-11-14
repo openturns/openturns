@@ -849,10 +849,23 @@ Student::PointWithDescriptionCollection Student::getParametersCollection() const
 void Student::setParametersCollection(const PointCollection & parametersCollection)
 {
   const UnsignedInteger size = parametersCollection.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: empty parameters collection";
   const UnsignedInteger dimension = size > 1 ? size - 1 : size;
-  if (dimension == 1) *this = Student(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: empty parameters collection";
+  if (dimension == 1)
+  {
+    if (size != 1) throw InvalidArgumentException(HERE) << "Error: invalid parameters collection size " << size << ", expected 1 for dimension 1";
+    if (parametersCollection[0].getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: invalid marginal parameter dimension at index 0, expected 3, got " << parametersCollection[0].getDimension();
+    *this = Student(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  }
   else
   {
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      if (parametersCollection[i].getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: invalid marginal parameter dimension at index " << i << ", expected 3, got " << parametersCollection[i].getDimension();
+    }
+    const UnsignedInteger dependenceDimension = dimension * (dimension - 1) / 2;
+    if (parametersCollection[size - 1].getDimension() != dependenceDimension + 1) throw InvalidArgumentException(HERE) << "Error: invalid dependence parameter dimension, expected " << dependenceDimension + 1 << ", got " << parametersCollection[size - 1].getDimension();
     const Scalar nu = parametersCollection[0][0];
     Point mean(dimension);
     Point sigma(dimension);

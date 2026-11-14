@@ -20,6 +20,7 @@
  */
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include "openturns/EmpiricalBernsteinCopula.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -598,18 +599,26 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
   const UnsignedInteger size = copulaSample_.getSize();
   if (parameter.getDimension() != (dimension * size + 1)) throw InvalidArgumentException(HERE) << "BernsteinCopula expected " << (dimension * size + 1) << " parameters, got " << parameter.getDimension();
   const Scalar binNumber = parameter[dimension * size];
-  if ((binNumber < 1.0) || (binNumber != std::round(binNumber))) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber must be a positive integer, got " << binNumber;
+  if (!(binNumber >= 1.0) || (binNumber != std::round(binNumber))) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber must be a positive integer, got " << binNumber;
+  if (!(binNumber < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits))) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber is too large, got " << binNumber;
+  // No partial update on error: stage into a copy before committing
+  Sample newSample(copulaSample_);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      copulaSample_(i, j) = parameter[index];
+      newSample(i, j) = parameter[index];
       ++ index;
     }
   }
-  binNumber_ = binNumber;
-  update();
+  // No partial update on error: stage into a temporary and commit at once,
+  // so a throw in update() leaves *this unchanged
+  EmpiricalBernsteinCopula stagedDistribution(*this);
+  stagedDistribution.copulaSample_ = newSample;
+  stagedDistribution.binNumber_ = static_cast<UnsignedInteger>(binNumber);
+  stagedDistribution.update();
+  *this = stagedDistribution;
 }
 
 Description EmpiricalBernsteinCopula::getParameterDescription() const

@@ -164,6 +164,8 @@ public:
   void setR(const CorrelationMatrix & R);
 
   /** Parameters accessors */
+  using EllipticalDistribution::setParametersCollection;
+  void setParametersCollection(const PointCollection & parametersCollection) override;
   void setParameter(const Point & parameter) override;
 
   /** Get the copula of a distribution */

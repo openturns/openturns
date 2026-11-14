@@ -160,16 +160,66 @@ Point __neg__()
  return -1.0 * (*self);
 }
 
+const OT::Scalar * __baseaddress__() const
+{
+  return self->data();
+}
+
+UnsignedInteger __elementsize__() const
+{
+  (void) self;
+  return sizeof(OT::Scalar);
+}
+
 } // %extend
 
 } // OT
 
 // needed for compatibility with pandas indexation (see is_list_like internal method)
 %pythoncode %{
+# Helpers _ot_ufunc_convert/_ot_ufunc_out_is_ot for numpy __array_ufunc__
+# delegation are defined once in Description.i (same SWIG module).
 def _Point___iter__(self):
     for i in range(self.getSize()):
         yield self[i]
 Point.__iter__ = _Point___iter__
+
+# Numpy compatibility: expose zero-copy array interface and ufunc delegation.
+# Note: ot.Point.__eq__ keeps whole-object semantics (returns Bool); for element-wise
+# comparison use numpy ufuncs, e.g. np.equal(pt, 1) or np.asarray(pt) == 1,
+# then np.where(...) works on the resulting boolean ndarray.
+# Lifetime contract of the zero-copy view: np.asarray(pt) borrows the
+# internal buffer (ndarray.base keeps the Point proxy alive, but not the
+# buffer itself). Any size-changing mutation (add, resize, clear, erase)
+# may reallocate the buffer and invalidates outstanding views; reading such
+# a view afterwards is a use-after-free. Call .copy() on the array if it
+# must outlive mutations of the Point.
+def __Point_getattribute(self, name):
+    if name == "__array_interface__":
+        # Keep a nonzero address even when empty: a NULL data pointer
+        # makes some numpy versions skip the interface and fall back to
+        # sequence conversion. With shape (0,) it is never dereferenced.
+        self.__dict__["__array_interface__"] = {"shape": (self.getSize(),),
+                                                "typestr": f"|f{self.__elementsize__()}",
+                                                "data": (int(self.__baseaddress__() or 1), True),
+                                                "version": 3,
+                                                }
+    return super(Point, self).__getattribute__(name)
+Point.__getattribute__ = __Point_getattribute
+
+def __Point___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+    out = kwargs.get("out", None)
+    if _ot_ufunc_out_is_ot(out):
+        return NotImplemented
+    new_inputs = tuple(_ot_ufunc_convert(x) for x in inputs)
+    new_kwargs = dict(kwargs)
+    # Only where (besides out, handled above) can carry an array-like
+    # operand; converting every keyword would silently alter future kwargs.
+    if "where" in new_kwargs:
+        new_kwargs["where"] = _ot_ufunc_convert(new_kwargs["where"])
+    return getattr(ufunc, method)(*new_inputs, **new_kwargs)
+Point.__array_ufunc__ = __Point___array_ufunc__
+Point.__array_priority__ = 10000
 %}
 
 #if SWIG_VERSION < 0x040200

@@ -44,7 +44,8 @@ public:
 
   /** Constructor with parameters */
   LinearProblem(const Point & cost, const Interval & bounds,
-                const Matrix & constraintCoefficients, const Interval & constraintBounds);
+                const Matrix & constraintCoefficients, const Interval & constraintBounds,
+                const Scalar constant = 0.0);
 
   /** Virtual constructor */
   LinearProblem * clone() const override;
@@ -55,6 +56,10 @@ public:
   /** Objective accessor */
   void setLinearCost(const Point & cost);
   Point getLinearCost() const override;
+
+  /** Constant accessor */
+  void setConstant(const Scalar constant);
+  Scalar getConstant() const override;
 
   /** Constraint accessor */
   void setLinearConstraint(const Matrix & constraintCoefficients, const Interval & LU);
@@ -76,8 +81,12 @@ public:
 
 private:
 
-  // The objective c^Tx
+  /** Rebuild the objective function from the linear data */
+  void updateObjective();
+
+  // The objective c^Tx + d
   Point cost_;
+  Scalar constant_ = 0.0;
 
   // The constraints L<=Ax<=U
   Matrix constraintCoefficients_;

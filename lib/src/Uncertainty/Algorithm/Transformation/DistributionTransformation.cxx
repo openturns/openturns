@@ -26,6 +26,7 @@
 #include "openturns/MarginalTransformationHessian.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -106,8 +107,14 @@ Function DistributionTransformation::Build (const Distribution & distribution,
       else
       {
         LOGINFO("Different standard space for input vector and basis");
+        // The isoprobabilistic transformations go through the normal
+        // standard space only when the standard distribution is the
+        // standard normal one: hasIndependentCopula() is not sufficient,
+        // e.g. the standard Student distribution has an independent copula
+        // but its isoprobabilistic maps are affine instead of going through
+        // the normal space, so the Rosenblatt maps must be used there.
         Function TX;
-        if (distribution.getStandardDistribution().hasIndependentCopula())
+        if (distribution.getStandardDistribution() == Normal(distribution.getDimension()))
         {
           LOGINFO("Normal standard space for input vector");
           TX = distribution.getIsoProbabilisticTransformation();
@@ -118,7 +125,7 @@ Function DistributionTransformation::Build (const Distribution & distribution,
           TX = Function(FunctionImplementation(RosenblattEvaluation(distribution).clone()));
         }
         Function invTZ;
-        if (measure.getStandardDistribution().hasIndependentCopula())
+        if (measure.getStandardDistribution() == Normal(measure.getDimension()))
         {
           LOGINFO("Normal standard space for basis");
           invTZ = measure.getInverseIsoProbabilisticTransformation();
