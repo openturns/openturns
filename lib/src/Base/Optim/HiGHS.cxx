@@ -222,7 +222,7 @@ void HiGHS::run()
 
   // objective function
   model.lp_.sense_ = getProblem().isMinimization() ? ObjSense::kMinimize : ObjSense::kMaximize;
-  model.lp_.offset_ = getProblem().isQuadratic() ? getProblem().getConstant() : 0.0;
+  model.lp_.offset_ = getProblem().getConstant();
   model.lp_.col_cost_.resize(model.lp_.num_col_);
   for (UnsignedInteger i = 0; i < problemDimension; ++ i)
     model.lp_.col_cost_[i] = getProblem().getLinearCost()[i];

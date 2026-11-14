@@ -110,6 +110,18 @@ ott.assert_almost_equal(
     algo.getResult().getOptimalPoint(), sol[ot.OptimizationProblemImplementation.CONTINUOUS]
 )
 
+# the constant term shifts the optimal value, not the optimal point
+problem.setConstant(10.0)
+assert problem.getConstant() == 10.0
+algoConstant = otexp.HiGHS(problem, "simplex")
+algoConstant.run()
+resultConstant = algoConstant.getResult()
+ott.assert_almost_equal(
+    resultConstant.getOptimalPoint(), sol[ot.OptimizationProblemImplementation.CONTINUOUS]
+)
+ott.assert_almost_equal(resultConstant.getOptimalValue(), [1.1 * 0.5 + 2.25 + 10.0])
+problem.setConstant(0.0)
+
 # a rejected setter leaves the previous algorithm name unchanged
 problemD = otexp.LinearProblem(cost, bounds, A, cb)
 problemD.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)
