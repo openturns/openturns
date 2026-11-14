@@ -158,6 +158,88 @@ for i in range(3):
 assert abs(boundedMAP[0] - bounds.getUpperBound()[0]) <= 1e-4
 assert posterior.getCovariance()[0, 0] == 0.0
 
+# test the truncated handling: the Gaussian surrogate at the MAP is truncated
+# to the bounds, and the MAP is the mode of the resulting distribution
+ot.ResourceMap.SetAsString("GaussianNonLinearCalibration-BoundsHandling", "Truncated")
+algoTruncated = ot.GaussianNonLinearCalibration(
+    modelX, x, y, candidate, priorCovariance, errorCovariance
+)
+algoTruncated.setBootstrapSize(0)
+algoTruncated.setBounds(bounds)
+algoTruncated.setOptimizationAlgorithm(ot.TNC())
+algoTruncated.run()
+truncatedResult = algoTruncated.getResult()
+truncatedMAP = truncatedResult.getParameterMAP()
+ott.assert_almost_equal(truncatedMAP, boundedMAP)
+truncatedPosterior = truncatedResult.getParameterPosterior()
+assert truncatedPosterior.getImplementation().getClassName() == "TruncatedDistribution"
+assert truncatedPosterior.getImplementation().getBounds() == bounds
+assert bounds.contains(truncatedMAP)
+truncatedMean = truncatedPosterior.getMean()
+assert bounds.contains(truncatedMean)
+
+# For an affine model the truncated Laplace surrogate must reproduce the exact
+# truncated posterior of GaussianLinearCalibration: the surrogate mean is
+# shifted by -H^{-1} g, where g is the gradient of the negative log posterior
+# at the constrained MAP, so that it coincides with the unconstrained posterior
+# mean even when the MAP lies on a bound.
+affineG = ot.SymbolicFunction(["a", "b", "x"], ["a + b * x"])
+affineModel = ot.ParametricFunction(affineG, [0, 1], [2.0, 3.0])
+affineX = ot.Sample([[0.0], [1.0], [2.0], [3.0], [4.0]])
+affineY = affineModel(affineX)
+affinePriorCovariance = ot.CovarianceMatrix(2)
+affinePriorCovariance[0, 0] = 1.0
+affinePriorCovariance[1, 1] = 1.0
+affineErrorCovariance = ot.CovarianceMatrix(1, [1.0])
+affineBounds = ot.Interval([-10.0, -10.0], [0.5, 10.0])
+ot.ResourceMap.SetAsString("GaussianLinearCalibration-BoundsHandling", "Truncated")
+affineGLC = ot.GaussianLinearCalibration(
+    affineModel,
+    affineX,
+    affineY,
+    [1.0, 1.0],
+    affinePriorCovariance,
+    affineErrorCovariance,
+    "SVD",
+)
+affineGLC.setBounds(affineBounds)
+affineGLC.run()
+affineGNLC = ot.GaussianNonLinearCalibration(
+    affineModel,
+    affineX,
+    affineY,
+    [1.0, 1.0],
+    affinePriorCovariance,
+    affineErrorCovariance,
+)
+affineGNLC.setBootstrapSize(0)
+affineGNLC.setBounds(affineBounds)
+affineGNLC.setOptimizationAlgorithm(ot.TNC())
+affineGNLC.run()
+affineGLCUnderlying = (
+    affineGLC.getResult().getParameterPosterior().getImplementation().getDistribution()
+)
+affineGNLCUnderlying = (
+    affineGNLC.getResult().getParameterPosterior().getImplementation().getDistribution()
+)
+ott.assert_almost_equal(
+    affineGNLCUnderlying.getMean(), affineGLCUnderlying.getMean(), 1e-5
+)
+ott.assert_almost_equal(
+    affineGNLCUnderlying.getCovariance(), affineGLCUnderlying.getCovariance(), 1e-5
+)
+ott.assert_almost_equal(
+    affineGNLC.getResult().getParameterMAP(),
+    affineGLC.getResult().getParameterMAP(),
+    1e-4,
+)
+ot.ResourceMap.SetAsString("GaussianLinearCalibration-BoundsHandling", "ActiveSet")
+ot.ResourceMap.SetAsString("GaussianNonLinearCalibration-BoundsHandling", "ActiveSet")
+
+# an unknown handling value is rejected by the ResourceMap
+with ott.assert_raises(TypeError):
+    ot.ResourceMap.SetAsString("GaussianNonLinearCalibration-BoundsHandling", "Bogus")
+
 # setOptimizationAlgorithm preserves bounds carried by the solver problem
 boundedProblem = ot.OptimizationProblem(
     ot.SymbolicFunction(["a", "b", "c"], ["a^2+b^2+c^2"]),
@@ -189,17 +271,22 @@ ott.assert_almost_equal(algo2.getBounds().getLowerBound(), boundsBefore.getLower
 ott.assert_almost_equal(algo2.getBounds().getUpperBound(), boundsBefore.getUpperBound())
 
 # save/load preserves bounds
-study = ot.Study()
-fileName = "testBoundsGaussianCalibration.xml"
-study.setStorageManager(ot.XMLStorageManager(fileName))
-study.add("algo", algo)
-study.save()
-loadedAlgo = ot.GaussianNonLinearCalibration()
-study2 = ot.Study()
-study2.setStorageManager(ot.XMLStorageManager(fileName))
-study2.load()
-study2.fillObject("algo", loadedAlgo)
-print("bounds (loaded)=", loadedAlgo.getBounds())
-ott.assert_almost_equal(loadedAlgo.getBounds().getLowerBound(), bounds.getLowerBound())
-ott.assert_almost_equal(loadedAlgo.getBounds().getUpperBound(), bounds.getUpperBound())
-os.remove(fileName)
+if ot.PlatformInfo.HasFeature("libxml2"):
+    study = ot.Study()
+    fileName = "testBoundsGaussianCalibration.xml"
+    study.setStorageManager(ot.XMLStorageManager(fileName))
+    study.add("algo", algo)
+    study.save()
+    loadedAlgo = ot.GaussianNonLinearCalibration()
+    study2 = ot.Study()
+    study2.setStorageManager(ot.XMLStorageManager(fileName))
+    study2.load()
+    study2.fillObject("algo", loadedAlgo)
+    print("bounds (loaded)=", loadedAlgo.getBounds())
+    ott.assert_almost_equal(
+        loadedAlgo.getBounds().getLowerBound(), bounds.getLowerBound()
+    )
+    ott.assert_almost_equal(
+        loadedAlgo.getBounds().getUpperBound(), bounds.getUpperBound()
+    )
+    os.remove(fileName)

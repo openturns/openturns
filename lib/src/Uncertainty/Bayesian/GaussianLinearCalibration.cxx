@@ -182,15 +182,80 @@ void GaussianLinearCalibration::run()
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
       ybar[i * outputDimension + j + parameterDimension] = invLRz[i * outputDimension + j];
   // Solve the linear least squares problem
-  LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
-  const Point deltaTheta(method.solve(ybar));
-  for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
-    if (!std::isfinite(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
+  Distribution parameterPosterior;
+  Point thetaStar;
+  if (bounds_.getDimension() == 0)
+  {
+    LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
+    const Point deltaTheta(method.solve(ybar));
+    for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
+      if (!std::isfinite(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
 
-  const Point thetaStar(getParameterMean() + deltaTheta);
-  const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
-  // Create the result object
-  Normal parameterPosterior(thetaStar, covarianceThetaStar);
+    thetaStar = getParameterMean() + deltaTheta;
+    const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
+    parameterPosterior = Normal(thetaStar, covarianceThetaStar);
+  }
+  else
+  {
+    // Constrained MAP: minimize ||Abar.theta - (ybar + Abar.parameterMean)||^2
+    // subject to the parameter bounds. In the increment variable
+    // theta-parameterMean the right-hand side is ybar. When the unconstrained
+    // optimum is feasible, the constrained MAP is equal to it.
+    const Point deltaTheta(SolveBoundedLeastSquaresIncrement(Abar, ybar, bounds_, getParameterMean()));
+    thetaStar = getParameterMean() + deltaTheta;
+
+    const String boundsHandling(ResourceMap::GetAsString("GaussianLinearCalibration-BoundsHandling"));
+    if (boundsHandling == "ActiveSet")
+    {
+      // Variables at an active bound are considered fixed: the posterior
+      // covariance is computed on the free block Abar_F^T Abar_F only, and it
+      // is zero in the directions fixed at a bound. This is the usual
+      // active-set approximation, which treats the active bounds as equality
+      // constraints and applies the unconstrained Gaussian approximation to
+      // the remaining free parameters. See
+      // S. Huet, A. Bouvier, M.-A. Poursat and E. Jolivet, Statistical Tools for
+      // Nonlinear Regression: A Practical Guide with S-PLUS and R Examples,
+      // 2nd ed., Springer, New York, 2004, for the Gaussian approximation, and
+      // P. E. Gill, W. Murray and M. H. Wright, Practical Optimization,
+      // Academic Press, London, 1981, Section 5.2, for the active-set treatment
+      // of bound constraints.
+      const Indices freeIndices(ComputeFreeParameterIndices(thetaStar, bounds_));
+      const CovarianceMatrix covarianceThetaStar(ComputeFreeGramInverse(Abar, freeIndices, methodName_));
+      try
+      {
+        parameterPosterior = Normal(thetaStar, covarianceThetaStar);
+      }
+      catch (...)
+      {
+        throw InternalException(HERE) << "Error: the covariance of the posterior distribution is not definite positive. The problem may be not identifiable.";
+      }
+    }
+    else if (boundsHandling == "Truncated")
+    {
+      // Unconstrained Gaussian posterior.
+      LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
+      const Point unconstrainedDeltaTheta(method.solve(ybar));
+      for (UnsignedInteger i = 0; i < unconstrainedDeltaTheta.getDimension(); ++ i)
+        if (!std::isfinite(unconstrainedDeltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
+      const Point unconstrainedMean(getParameterMean() + unconstrainedDeltaTheta);
+      const CovarianceMatrix unconstrainedCovariance(method.getGramInverse().getImplementation());
+
+      // Exact posterior of the linear-Gaussian model with bounds: the
+      // unconstrained Gaussian posterior truncated to the parameter bounds.
+      // The reported MAP is the mode of the truncated distribution, which is
+      // the constrained minimizer computed above; the mean of the truncated
+      // distribution differs from the MAP. Beware that the current
+      // TruncatedDistribution only computes its moments in reasonable time
+      // for dimensions up to about three. See G. M. Tallis, The moment
+      // generating function of the truncated multi-normal distribution,
+      // JRSS B 23(1):223-229, 1961, and W. C. Horrace, Some results on the
+      // multivariate truncated normal distribution, J. Multivariate Anal.
+      // 94(1):209-221, 2005.
+      parameterPosterior = ComputeTruncatedPosterior(unconstrainedMean, unconstrainedCovariance, bounds_);
+    }
+    else
+      throw InvalidArgumentException(HERE) << "Error: unknown value " << boundsHandling << " for the GaussianLinearCalibration-BoundsHandling key, expected \"ActiveSet\" or \"Truncated\"";
+  }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getParameterMean(), deltaY, gradientObservations_);
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_), inputObservations_, outputObservations_, residualFunction, true);

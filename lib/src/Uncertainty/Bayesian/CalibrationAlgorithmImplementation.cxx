@@ -24,6 +24,12 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/IdentityMatrix.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/TruncatedDistribution.hxx"
+#include "openturns/QuadraticProblem.hxx"
+#include "openturns/SymmetricMatrix.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/OptimizationResult.hxx"
 
 #include <algorithm>
 #include <cmath>
@@ -169,6 +175,20 @@ CovarianceMatrix CalibrationAlgorithmImplementation::ComputeFreeHessianInverse(c
   for (UnsignedInteger i = 0; i < freeDimension; ++i)
     for (UnsignedInteger j = 0; j < freeDimension; ++j)
       freeHessian(i, j) = hessian(freeIndices[i], freeIndices[j]);
+  // solveLinearSystem() is rank revealing: a singular or indefinite free
+  // Hessian would give a finite least-squares pseudo-inverse, i.e. a spurious
+  // tiny variance in an unidentified direction, without any error. Check that
+  // the free Hessian is positive definite before inverting it.
+  SymmetricMatrix symmetricHessian(freeDimension);
+  for (UnsignedInteger i = 0; i < freeDimension; ++i)
+    for (UnsignedInteger j = 0; j < freeDimension; ++j)
+      symmetricHessian(i, j) = freeHessian(i, j);
+  const Point eigenValues(symmetricHessian.computeEigenValues());
+  const Scalar smallestEigenValue = *std::min_element(eigenValues.begin(), eigenValues.end());
+  const Scalar largestEigenValue = *std::max_element(eigenValues.begin(), eigenValues.end());
+  const Scalar eigenTolerance = freeDimension * SpecFunc::Precision * largestEigenValue;
+  if (!(largestEigenValue > 0.0) || !(smallestEigenValue > eigenTolerance))
+    throw InvalidArgumentException(HERE) << "Error: cannot compute the Laplace approximation: the Hessian of the residuals at the optimum is not positive definite in the free parameter directions.";
   try
   {
     const Matrix freeInverse(freeHessian.solveLinearSystem(IdentityMatrix(freeDimension)));
@@ -191,6 +211,84 @@ CovarianceMatrix CalibrationAlgorithmImplementation::ComputeFreeHessianInverse(c
     throw InvalidArgumentException(HERE) << "Error: cannot compute the Laplace approximation: the Hessian of the residuals at the optimum is not positive definite in the free parameter directions.";
   }
   return hessianInverse;
+}
+
+/* Minimize ||design.increment - rightHandSide||^2 subject to the increment
+ * lying in the parameter bounds shifted by -startingPoint, and return the
+ * optimal increment. The problem is solved in the increment variable so that
+ * a large starting point does not lose the right-hand side through
+ * cancellation. The problem is solved with the first algorithm returned by
+ * OptimizationAlgorithm::Build(), i.e. the HiGHS quadratic solver when
+ * OpenTURNS is built with HiGHS support. */
+Point CalibrationAlgorithmImplementation::SolveBoundedLeastSquaresIncrement(const Matrix & design,
+    const Point & rightHandSide,
+    const Interval & bounds,
+    const Point & startingPoint)
+{
+  const UnsignedInteger parameterDimension = startingPoint.getDimension();
+  if (design.getNbColumns() != parameterDimension)
+    throw InvalidArgumentException(HERE) << "Error: expected a design matrix with " << parameterDimension << " columns, got " << design.getNbColumns();
+  if (rightHandSide.getDimension() != design.getNbRows())
+    throw InvalidArgumentException(HERE) << "Error: expected a right-hand side of dimension=" << design.getNbRows() << ", got dimension=" << rightHandSide.getDimension();
+  if (bounds.getDimension() != parameterDimension)
+    throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
+  const Point lowerBound(bounds.getLowerBound());
+  const Point upperBound(bounds.getUpperBound());
+  const Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
+  Point shiftedLowerBound(lowerBound);
+  Point shiftedUpperBound(upperBound);
+  for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+  {
+    if (finiteLowerBound[i])
+      shiftedLowerBound[i] -= startingPoint[i];
+    if (finiteUpperBound[i])
+      shiftedUpperBound[i] -= startingPoint[i];
+  }
+  const Interval shiftedBounds(shiftedLowerBound, shiftedUpperBound, finiteLowerBound, finiteUpperBound);
+  const QuadraticProblem problem(QuadraticProblem::FromLeastSquares(design, rightHandSide, shiftedBounds));
+  OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
+  // Cobyla uses getMaximumAbsoluteError() as its final trust-region radius.
+  // Its default value (1e-5) is coarser than the active-bound tolerance
+  // (1e-6 by default), so an active bound could be reported slightly inside
+  // the feasible interval and then be classified as free.
+  if (solver.getImplementation()->getClassName() == "Cobyla")
+  {
+    const Scalar tolerance = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance");
+    if (!(tolerance > 0.0) || !std::isfinite(tolerance))
+      throw InvalidArgumentException(HERE) << "Error: the active bound tolerance must be finite and strictly positive, got " << tolerance;
+    const Scalar cobylaTolerance = std::max(std::sqrt(SpecFunc::Precision), 0.1 * tolerance);
+    if (cobylaTolerance < solver.getMaximumAbsoluteError())
+      solver.setMaximumAbsoluteError(cobylaTolerance);
+  }
+  // Build only sets the problem: the selected algorithm has no starting point
+  // of its own, and solvers such as Cobyla require one. The zero increment is
+  // feasible when the starting point lies in the bounds; otherwise project it
+  // onto the shifted bounds.
+  Point solverStart(parameterDimension);
+  for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+  {
+    if (finiteLowerBound[i] && (solverStart[i] < shiftedLowerBound[i]))
+      solverStart[i] = shiftedLowerBound[i];
+    if (finiteUpperBound[i] && (solverStart[i] > shiftedUpperBound[i]))
+      solverStart[i] = shiftedUpperBound[i];
+  }
+  solver.setStartingPoint(solverStart);
+  solver.run();
+  const OptimizationResult result(solver.getResult());
+  if (result.getStatus() != OptimizationResult::SUCCESS)
+    throw InternalException(HERE) << "Error: the bounded quadratic program solver failed: " << result.getStatusMessage();
+  return result.getOptimalPoint();
+}
+
+/* Truncated Gaussian posterior: Normal(mean, covariance) truncated to the
+ * parameter bounds. */
+Distribution CalibrationAlgorithmImplementation::ComputeTruncatedPosterior(const Point & mean,
+    const CovarianceMatrix & covariance,
+    const Interval & bounds)
+{
+  const Normal gaussian(mean, covariance);
+  return TruncatedDistribution(gaussian, bounds);
 }
 
 /* String converter */

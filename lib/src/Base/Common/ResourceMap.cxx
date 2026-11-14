@@ -1999,6 +1999,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GaussianLinearCalibration parameters //
   addAsString("GaussianLinearCalibration-Method", "QR", {"SVD", "Cholesky", "QR"});
+  addAsString("GaussianLinearCalibration-BoundsHandling", "ActiveSet", {"ActiveSet", "Truncated"});
 
   // LinearLeastSquaresCalibration parameters //
   addAsScalar("LinearLeastSquaresCalibration-Regularization", 1e-12);
@@ -2010,6 +2011,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GaussianNonLinearCalibration parameters //
   addAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 100);
+  addAsString("GaussianNonLinearCalibration-BoundsHandling", "ActiveSet", {"ActiveSet", "Truncated"});
 
   // CalibrationResult parameters //
   addAsString("CalibrationResult-PriorLineStyle", "dashed");
