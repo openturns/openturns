@@ -187,3 +187,8 @@ validation.run()
 # --- Dirac integrality follows the atom ---
 assert ot.Dirac(2.0).isIntegral()
 assert not ot.Dirac(0.5).isIntegral()
+# malformed collections must raise instead of reading out of bounds
+with ott.assert_raises(Exception):
+    ot.Dirac([0.0, 0.0]).setParametersCollection(
+        ot.PointCollection([ot.Point(1), ot.Point(0)])
+    )

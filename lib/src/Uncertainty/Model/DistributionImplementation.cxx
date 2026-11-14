@@ -5858,12 +5858,14 @@ void DistributionImplementation::setParametersCollection(const PointWithDescript
     // to the PointCollection overload, which performs its own validation.
     // Check entry sizes up-front: overrides index entries directly with
     // unchecked Collection::operator[], so empty entries would be UB
-    // instead of an exception.
+    // instead of an exception. Short non-empty entries are rejected by the
+    // override itself (EllipticalDistribution, Student, Dirac validate each
+    // entry dimension before indexing).
     for (UnsignedInteger i = 0; i < parametersCollection.getSize(); ++ i)
       if (parametersCollection[i].getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: the given parameters collection has an empty entry at index " << i;
-    PointCollection coll(0);
-    for (UnsignedInteger i = 0; i < parametersCollection.getSize(); ++ i) coll.add(parametersCollection[i]);
-    setParametersCollection(coll);
+    PointCollection parameters(0);
+    for (UnsignedInteger i = 0; i < parametersCollection.getSize(); ++ i) parameters.add(parametersCollection[i]);
+    setParametersCollection(parameters);
     return;
   }
   if (getDimension() == 1)
@@ -5873,14 +5875,14 @@ void DistributionImplementation::setParametersCollection(const PointWithDescript
   }
 
   // Get the actual collection of parameters to check the description and the size
-  PointCollection coll(0);
+  PointCollection parameters(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger dimension = actualParameters[i].getDimension();
     if (parametersCollection[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given parameters collection has an invalid dimension at index " << i;
-    coll.add(parametersCollection[i]);
+    parameters.add(parametersCollection[i]);
   }
-  setParametersCollection(coll);
+  setParametersCollection(parameters);
 }
 
 void DistributionImplementation::setParametersCollection(const PointCollection & parametersCollection)
