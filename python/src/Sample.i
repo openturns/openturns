@@ -72,6 +72,8 @@
 %apply const SampleCollection & { const OT::ProcessSample::SampleCollection &};
 
 %pythoncode %{
+# Helpers _ot_ufunc_convert/_ot_ufunc_out_is_ot for numpy __array_ufunc__
+# delegation are defined once in Description.i (same SWIG module).
 # This code has been added to conform to Numpy ndarray interface
 # that tries to reuse the data stored in the Sample (zero copy)
 # see http://docs.scipy.org/doc/numpy/reference/arrays.interface.html#arrays-interface
@@ -94,24 +96,15 @@ Sample.__getattribute__ = __Sample_getattribute
 # comparison use numpy ufuncs, e.g. np.equal(smp, 1) or np.asarray(smp) == 1,
 # then np.where(...) works on the resulting boolean ndarray.
 def __Sample___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-    import numpy as _np
-    def _cvt(a):
-        mod = getattr(type(a), "__module__", "") or ""
-        if mod.startswith("openturns"):
-            try:
-                return _np.asarray(a)
-            except Exception:
-                return a
-        return a
     out = kwargs.get("out", None)
-    if out is not None:
-        for o in out:
-            if o is not None:
-                mod = getattr(type(o), "__module__", "") or ""
-                if mod.startswith("openturns"):
-                    return NotImplemented
-    new_inputs = tuple(_cvt(x) for x in inputs)
-    new_kwargs = {k: _cvt(v) for k, v in kwargs.items()}
+    if _ot_ufunc_out_is_ot(out):
+        return NotImplemented
+    new_inputs = tuple(_ot_ufunc_convert(x) for x in inputs)
+    new_kwargs = dict(kwargs)
+    # Only where (besides out, handled above) can carry an array-like
+    # operand; converting every keyword would silently alter future kwargs.
+    if "where" in new_kwargs:
+        new_kwargs["where"] = _ot_ufunc_convert(new_kwargs["where"])
     return getattr(ufunc, method)(*new_inputs, **new_kwargs)
 Sample.__array_ufunc__ = __Sample___array_ufunc__
 Sample.__array_priority__ = 10000

@@ -177,6 +177,8 @@ UnsignedInteger __elementsize__() const
 
 // needed for compatibility with pandas indexation (see is_list_like internal method)
 %pythoncode %{
+# Helpers _ot_ufunc_convert/_ot_ufunc_out_is_ot for numpy __array_ufunc__
+# delegation are defined once in Description.i (same SWIG module).
 def _Point___iter__(self):
     for i in range(self.getSize()):
         yield self[i]
@@ -197,24 +199,15 @@ def __Point_getattribute(self, name):
 Point.__getattribute__ = __Point_getattribute
 
 def __Point___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-    import numpy as _np
-    def _cvt(a):
-        mod = getattr(type(a), "__module__", "") or ""
-        if mod.startswith("openturns"):
-            try:
-                return _np.asarray(a)
-            except Exception:
-                return a
-        return a
     out = kwargs.get("out", None)
-    if out is not None:
-        for o in out:
-            if o is not None:
-                mod = getattr(type(o), "__module__", "") or ""
-                if mod.startswith("openturns"):
-                    return NotImplemented
-    new_inputs = tuple(_cvt(x) for x in inputs)
-    new_kwargs = {k: _cvt(v) for k, v in kwargs.items()}
+    if _ot_ufunc_out_is_ot(out):
+        return NotImplemented
+    new_inputs = tuple(_ot_ufunc_convert(x) for x in inputs)
+    new_kwargs = dict(kwargs)
+    # Only where (besides out, handled above) can carry an array-like
+    # operand; converting every keyword would silently alter future kwargs.
+    if "where" in new_kwargs:
+        new_kwargs["where"] = _ot_ufunc_convert(new_kwargs["where"])
     return getattr(ufunc, method)(*new_inputs, **new_kwargs)
 Point.__array_ufunc__ = __Point___array_ufunc__
 Point.__array_priority__ = 10000
