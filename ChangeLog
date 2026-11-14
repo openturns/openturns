@@ -96,7 +96,7 @@
  * Added HiGHS.getSimplexIterationNumber/getIPMIterationNumber/getCrossoverIterationNumber/getPDLPIterationNumber/getQPIterationNumber to expose per-solver iteration counts (openturns.experimental)
  * Added OptimizationProblem.isQuadratic/getHessian/getConstant to describe quadratic objectives
  * Added HiGHS quadratic programming support through QuadraticProblem (openturns.experimental)
- * Added LinearLeastSquaresCalibration.getBounds/setBounds to solve a bounded linear least-squares calibration
+ * Added LinearLeastSquaresCalibration.getBounds/setBounds to solve a bounded linear least-squares calibration, with a bounded-variable active-set fallback that keeps the directions identified by an ill-conditioned Jacobian
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
  * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory

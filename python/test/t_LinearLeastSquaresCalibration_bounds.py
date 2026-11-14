@@ -195,6 +195,86 @@ covarianceLarge = resultLarge.getParameterPosterior().getCovariance()
 assert covarianceLarge[0, 0] > 0.0
 ott.assert_almost_equal([covarianceLarge[0, 0]], [5.0 / 392.0], 5e-2)
 
+# a large increment from the starting point must not exhaust the fallback
+# solver budget: the bounded problem is solved in the increment variable, so a
+# candidate far from the solution produces a large increment
+gShift = ot.SymbolicFunction(["x", "a"], ["a * x"])
+modelShift = ot.ParametricFunction(gShift, [1], [0.0])
+xShift = ot.Sample([[1.0], [1.0], [1.0]])
+yShift = ot.Sample([[1.0e6], [1.0e6], [1.0e6]])
+algoShift = ot.LinearLeastSquaresCalibration(
+    modelShift, xShift, yShift, [0.0], "SVD"
+)
+algoShift.setBounds(ot.Interval([-2.0e6], [2.0e6]))
+algoShift.run()
+ott.assert_almost_equal(algoShift.getResult().getParameterMAP(), [1.0e6], 1e-6)
+
+# a design whose smallest singular value is below the square root of the
+# machine precision: its normal matrix cannot represent the direction it
+# identifies, so the bounded solve works on the design itself and agrees with
+# the unconstrained SVD solution when no bound is active
+illG = ot.SymbolicFunction(["t", "a", "b"], ["a + b + t", "1e-9 * b", "0.0"])
+illModel = ot.ParametricFunction(illG, [1, 2], [0.0, 0.0])
+illX = ot.Sample([[0.0]])
+for illObservations in ([1.0, 1e-9, 0.1], [1.0, 2e-9, 0.1]):
+    illY = ot.Sample([illObservations])
+    reference = ot.LinearLeastSquaresCalibration(
+        illModel, illX, illY, [0.0, 0.0], "SVD"
+    )
+    reference.run()
+    bounded = ot.LinearLeastSquaresCalibration(
+        illModel, illX, illY, [0.0, 0.0], "SVD"
+    )
+    bounded.setBounds(ot.Interval([-3.0, -3.0], [3.0, 3.0]))
+    bounded.run()
+    ott.assert_almost_equal(
+        bounded.getResult().getParameterMAP(),
+        reference.getResult().getParameterMAP(),
+        1e-6,
+        1e-6,
+    )
+# a bound active on the weakly identified direction is resolved exactly
+active = ot.LinearLeastSquaresCalibration(
+    illModel, illX, ot.Sample([[1.0, 2e-9, 0.1]]), [0.0, 0.0], "SVD"
+)
+active.setBounds(ot.Interval([-3.0, 0.0], [3.0, 1.5]))
+active.run()
+ott.assert_almost_equal(
+    active.getResult().getParameterMAP(), [-0.5, 1.5], 1e-6, 1e-6
+)
+
+# the active-set fallback must honour the finite-bound flags: an interval may
+# store an endpoint on a side marked unbounded, which must stay unconstrained
+splitG = ot.SymbolicFunction(["t", "a", "b"], ["a + t", "1e-9 * b", "0.0"])
+splitModel = ot.ParametricFunction(splitG, [1, 2], [0.0, 0.0])
+splitY = ot.Sample([[-1.0, 1e-9, 0.1]])
+unboundedLower = ot.LinearLeastSquaresCalibration(
+    splitModel, illX, splitY, [0.0, 0.0], "SVD"
+)
+unboundedLower.setBounds(
+    ot.Interval([0.0, -3.0], [3.0, 3.0], [False, True], [True, True])
+)
+unboundedLower.run()
+ott.assert_almost_equal(
+    unboundedLower.getResult().getParameterMAP(), [-1.0, 1.0], 1e-6, 1e-6
+)
+# a coordinate sitting on a bound must stay free when the step is blocked by
+# another coordinate, instead of being frozen at its current value
+blocked = ot.LinearLeastSquaresCalibration(
+    splitModel, illX, splitY, [0.0, 0.0], "SVD"
+)
+blocked.setBounds(ot.Interval([0.0, 0.0], [3.0, 3.0]))
+blocked.run()
+ott.assert_almost_equal(blocked.getResult().getParameterMAP(), [0.0, 1.0], 1e-6, 1e-6)
+# a parameter with equal bounds is fixed for good: releasing it would cycle
+# until the iteration budget is exhausted
+equality = ot.LinearLeastSquaresCalibration(
+    splitModel, illX, ot.Sample([[1.0, 1e-9, 0.1]]), [0.0, 0.0], "SVD"
+)
+equality.setBounds(ot.Interval([0.0, -3.0], [0.0, 3.0]))
+equality.run()
+ott.assert_almost_equal(equality.getResult().getParameterMAP(), [0.0, 1.0], 1e-6, 1e-6)
+
 # invalid active-bound tolerances are rejected instead of silently changing
 # the covariance and the residual degrees of freedom
 toleranceKey = "LinearLeastSquaresCalibration-ActiveBoundTolerance"

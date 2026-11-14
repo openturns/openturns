@@ -105,7 +105,11 @@ Setting bounds changes the calibration:
   least-squares problem as a convex quadratic problem, using the first
   algorithm selected by :meth:`~openturns.OptimizationAlgorithm.Build`. This
   is the :class:`~openturns.experimental.HiGHS` quadratic solver when
-  OpenTURNS is built with HiGHS support.
+  OpenTURNS is built with HiGHS support. When the design matrix is so
+  ill-conditioned that its normal matrix would lose an identified direction,
+  the problem is solved directly on the design matrix with a bounded-variable
+  active-set method instead, so that the result agrees with the unconstrained
+  least-squares solution when no bound is active.
 - :class:`~openturns.NonLinearLeastSquaresCalibration` and
   :class:`~openturns.GaussianNonLinearCalibration` constrain the optimization
   algorithm.

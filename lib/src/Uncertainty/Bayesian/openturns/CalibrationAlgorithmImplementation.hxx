@@ -124,6 +124,14 @@ protected:
       const Interval & bounds,
       const Point & startingPoint);
 
+  /* Bounded-variable least squares: minimize ||design.increment -
+   * rightHandSide||^2 over the box, solving each subproblem with the SVD of the
+   * free columns. Used when the design is too ill-conditioned for the normal
+   * equations to keep every direction it identifies. */
+  static Point SolveBoundedLeastSquaresByActiveSet(const Matrix & design,
+      const Point & rightHandSide,
+      const Interval & bounds);
+
   /* Truncated Gaussian posterior: Normal(mean, covariance) truncated to the
    * parameter bounds. The mode of the returned distribution is the
    * constrained maximizer of the Gaussian density, while its mean is the

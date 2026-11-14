@@ -30,9 +30,11 @@
 #include "openturns/SymmetricMatrix.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/OptimizationResult.hxx"
+#include "openturns/Cobyla.hxx"
 
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -219,7 +221,9 @@ CovarianceMatrix CalibrationAlgorithmImplementation::ComputeFreeHessianInverse(c
  * a large starting point does not lose the right-hand side through
  * cancellation. The problem is solved with the first algorithm returned by
  * OptimizationAlgorithm::Build(), i.e. the HiGHS quadratic solver when
- * OpenTURNS is built with HiGHS support. */
+ * OpenTURNS is built with HiGHS support. When the design is so ill-conditioned
+ * that forming its Gram matrix would lose an identified direction, the problem
+ * is solved directly on the design with an active-set method instead. */
 Point CalibrationAlgorithmImplementation::SolveBoundedLeastSquaresIncrement(const Matrix & design,
     const Point & rightHandSide,
     const Interval & bounds,
@@ -246,7 +250,27 @@ Point CalibrationAlgorithmImplementation::SolveBoundedLeastSquaresIncrement(cons
       shiftedUpperBound[i] -= startingPoint[i];
   }
   const Interval shiftedBounds(shiftedLowerBound, shiftedUpperBound, finiteLowerBound, finiteUpperBound);
-  const QuadraticProblem problem(QuadraticProblem::FromLeastSquares(design, rightHandSide, shiftedBounds));
+  // Forming the normal equations squares the condition number of the design: a
+  // direction identified by a singular value smaller than sqrt(epsilon) times
+  // the largest one vanishes from the Hessian, and no solver can recover it
+  // from the quadratic problem alone. Solve that case on the design itself,
+  // with subproblems that keep every singular value.
+  const Point singularValues(design.computeSingularValues());
+  Scalar smallestSingularValue = SpecFunc::MaxScalar;
+  Scalar largestSingularValue = 0.0;
+  for (UnsignedInteger i = 0; i < singularValues.getSize(); ++i)
+  {
+    smallestSingularValue = std::min(smallestSingularValue, singularValues[i]);
+    largestSingularValue = std::max(largestSingularValue, singularValues[i]);
+  }
+  if ((largestSingularValue > 0.0) && (smallestSingularValue < std::sqrt(SpecFunc::Precision) * largestSingularValue))
+    return SolveBoundedLeastSquaresByActiveSet(design, rightHandSide, shiftedBounds);
+  QuadraticProblem problem(QuadraticProblem::FromLeastSquares(design, rightHandSide, shiftedBounds));
+  // The constant term ||rightHandSide||^2 does not change the optimal point,
+  // but it can be huge compared with the variable part and swamp it in the
+  // solver's comparisons: a constant of 1e18 hides a variation of order one.
+  // Drop it so that the solver ranks the candidate points correctly.
+  problem.setConstant(0.0);
   OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
   // Cobyla uses getMaximumAbsoluteError() as its final trust-region radius.
   // Its default value (1e-5) is coarser than the active-bound tolerance
@@ -260,6 +284,19 @@ Point CalibrationAlgorithmImplementation::SolveBoundedLeastSquaresIncrement(cons
     const Scalar cobylaTolerance = std::max(std::sqrt(SpecFunc::Precision), 0.1 * tolerance);
     if (cobylaTolerance < solver.getMaximumAbsoluteError())
       solver.setMaximumAbsoluteError(cobylaTolerance);
+    // Cobyla starts from an initial change of the variables that only
+    // shrinks: scale it to the size of the feasible increment box, otherwise a
+    // large increment exhausts the call budget long before reaching the
+    // solution.
+    Cobyla * cobyla = dynamic_cast<Cobyla *>(solver.getImplementation().get());
+    if (cobyla != nullptr)
+    {
+      Scalar rhoBeg = cobyla->getRhoBeg();
+      for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+        if (finiteLowerBound[i] && finiteUpperBound[i])
+          rhoBeg = std::max(rhoBeg, 0.1 * (shiftedUpperBound[i] - shiftedLowerBound[i]));
+      cobyla->setRhoBeg(rhoBeg);
+    }
   }
   // Build only sets the problem: the selected algorithm has no starting point
   // of its own, and solvers such as Cobyla require one. The zero increment is
@@ -279,6 +316,166 @@ Point CalibrationAlgorithmImplementation::SolveBoundedLeastSquaresIncrement(cons
   if (result.getStatus() != OptimizationResult::SUCCESS)
     throw InternalException(HERE) << "Error: the bounded quadratic program solver failed: " << result.getStatusMessage();
   return result.getOptimalPoint();
+}
+
+/* Minimize ||design.increment - rightHandSide||^2 over the increment box,
+ * directly on the design. The normal equations cannot be used here: squaring
+ * the condition number of the design would erase its smallest identified
+ * direction, which is precisely why this method is called. Bounded-variable
+ * least squares (Lawson & Hanson, Solving Least Squares Problems, 1974): each
+ * iteration solves the least-squares problem restricted to the free variables
+ * with an SVD, moves toward that solution until a bound is reached, and
+ * releases the variable whose sign condition is the most violated, until the
+ * optimality conditions hold for every variable. */
+Point CalibrationAlgorithmImplementation::SolveBoundedLeastSquaresByActiveSet(const Matrix & design,
+    const Point & rightHandSide,
+    const Interval & bounds)
+{
+  const UnsignedInteger size = design.getNbRows();
+  const UnsignedInteger parameterDimension = design.getNbColumns();
+  Point lowerBound(bounds.getLowerBound());
+  Point upperBound(bounds.getUpperBound());
+  const Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
+  // An Interval keeps its stored endpoint on an unbounded side: replace it by
+  // the largest representable value so that every comparison below ignores
+  // that side, as the quadratic problem does with the same flags.
+  for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+  {
+    if (!finiteLowerBound[j])
+      lowerBound[j] = -SpecFunc::MaxScalar;
+    if (!finiteUpperBound[j])
+      upperBound[j] = SpecFunc::MaxScalar;
+  }
+  // A parameter whose bounds are equal is fixed: releasing it would only make
+  // the free solve return the same value again, and the active set would cycle
+  // until the iteration budget is exhausted.
+  std::vector<Bool> isFixed(parameterDimension, false);
+  for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+    isFixed[j] = finiteLowerBound[j] && finiteUpperBound[j] && (lowerBound[j] == upperBound[j]);
+  // Start from the zero increment projected onto the box: the bounds are
+  // shifted by the starting point, which may itself lie outside them.
+  Point solution(parameterDimension);
+  for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+    solution[j] = std::min(std::max(solution[j], lowerBound[j]), upperBound[j]);
+  std::vector<Bool> isFree(parameterDimension, true);
+  for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+    isFree[j] = !isFixed[j];
+  // Optimality is tested on the gradient of the objective. Normalizing each
+  // component by the norm of its design column makes the test independent of
+  // the parameter units.
+  Point columnNorm(parameterDimension);
+  for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+  {
+    Scalar squaredNorm = 0.0;
+    for (UnsignedInteger i = 0; i < size; ++i)
+      squaredNorm += design(i, j) * design(i, j);
+    columnNorm[j] = std::sqrt(squaredNorm);
+  }
+  const Scalar optimalityTolerance = std::sqrt(SpecFunc::Precision);
+  const UnsignedInteger maximumIteration = 10 * parameterDimension + 10;
+  for (UnsignedInteger iteration = 0; iteration < maximumIteration; ++iteration)
+  {
+    Indices freeIndices;
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+      if (isFree[j])
+        freeIndices.add(j);
+    const UnsignedInteger freeDimension = freeIndices.getSize();
+    // Least-squares solution restricted to the free variables, the variables
+    // fixed at a bound being moved to the right-hand side.
+    Point freeSolution;
+    if (freeDimension > 0)
+    {
+      Matrix freeDesign(size, freeDimension);
+      Point freeRightHandSide(rightHandSide);
+      for (UnsignedInteger k = 0; k < freeDimension; ++k)
+      {
+        const UnsignedInteger column = freeIndices[k];
+        for (UnsignedInteger i = 0; i < size; ++i)
+          freeDesign(i, k) = design(i, column);
+      }
+      for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+        if (!isFree[j])
+          for (UnsignedInteger i = 0; i < size; ++i)
+            freeRightHandSide[i] -= design(i, j) * solution[j];
+      LeastSquaresMethod method(LeastSquaresMethod::Build("SVD", freeDesign));
+      freeSolution = method.solve(freeRightHandSide);
+    }
+    // Move toward the free solution, stopping at the first bound reached.
+    Scalar step = 1.0;
+    for (UnsignedInteger k = 0; k < freeDimension; ++k)
+    {
+      const UnsignedInteger column = freeIndices[k];
+      if (freeSolution[k] == solution[column])
+        continue;
+      if ((freeSolution[k] < lowerBound[column]) || (freeSolution[k] > upperBound[column]))
+      {
+        const Scalar reached = freeSolution[k] < lowerBound[column]
+          ? lowerBound[column] : upperBound[column];
+        step = std::min(step, (reached - solution[column]) / (freeSolution[k] - solution[column]));
+      }
+    }
+    for (UnsignedInteger k = 0; k < freeDimension; ++k)
+    {
+      const UnsignedInteger column = freeIndices[k];
+      solution[column] += step * (freeSolution[k] - solution[column]);
+      // Fix a coordinate only when the free solve wants to go beyond the bound
+      // it reaches. A coordinate that merely starts on a bound and whose free
+      // solution is interior must stay free, otherwise a step blocked by
+      // another coordinate would freeze it at its current value.
+      if ((solution[column] <= lowerBound[column]) && (freeSolution[k] <= lowerBound[column]))
+      {
+        solution[column] = lowerBound[column];
+        isFree[column] = false;
+      }
+      else if ((solution[column] >= upperBound[column]) && (freeSolution[k] >= upperBound[column]))
+      {
+        solution[column] = upperBound[column];
+        isFree[column] = false;
+      }
+    }
+    if (step < 1.0)
+      continue;
+    // The solution is now optimal over the free variables. Check the sign
+    // conditions on the variables fixed at a bound: the gradient may not point
+    // below a lower bound nor above an upper bound.
+    Point gradient(parameterDimension);
+    Scalar squaredResidual = 0.0;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      Scalar residual = -rightHandSide[i];
+      for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+        residual += design(i, j) * solution[j];
+      squaredResidual += residual * residual;
+      for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+        gradient[j] += design(i, j) * residual;
+    }
+    const Scalar residualNorm = std::sqrt(squaredResidual);
+    UnsignedInteger releasedIndex = parameterDimension;
+    Scalar worstViolation = 0.0;
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+    {
+      // A parameter with equal bounds cannot move: it is never a release
+      // candidate, otherwise the active set would cycle.
+      if (isFree[j] || isFixed[j])
+        continue;
+      const Scalar tolerance = optimalityTolerance * columnNorm[j] * residualNorm;
+      Scalar violation = 0.0;
+      if ((solution[j] <= lowerBound[j]) && (gradient[j] < -tolerance))
+        violation = -gradient[j] - tolerance;
+      else if ((solution[j] >= upperBound[j]) && (gradient[j] > tolerance))
+        violation = gradient[j] - tolerance;
+      if (violation > worstViolation)
+      {
+        worstViolation = violation;
+        releasedIndex = j;
+      }
+    }
+    if (releasedIndex == parameterDimension)
+      return solution;
+    isFree[releasedIndex] = true;
+  }
+  throw InternalException(HERE) << "Error: the bounded least-squares active-set solver did not converge in " << maximumIteration << " iterations.";
 }
 
 /* Truncated Gaussian posterior: Normal(mean, covariance) truncated to the
