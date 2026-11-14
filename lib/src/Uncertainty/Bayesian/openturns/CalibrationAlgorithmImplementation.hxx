@@ -113,6 +113,26 @@ protected:
   static CovarianceMatrix ComputeFreeHessianInverse(const Matrix & hessian,
       const Indices & freeIndices);
 
+  /* Minimize ||design.increment - rightHandSide||^2 subject to the increment
+   * lying in the parameter bounds shifted by -startingPoint, and return the
+   * optimal increment. Solving in the increment variable keeps the right-hand
+   * side accurate when the starting point is large. The problem is solved with
+   * the first algorithm returned by OptimizationAlgorithm::Build(), i.e. the
+   * HiGHS quadratic solver when OpenTURNS is built with HiGHS support. */
+  static Point SolveBoundedLeastSquaresIncrement(const Matrix & design,
+      const Point & rightHandSide,
+      const Interval & bounds,
+      const Point & startingPoint);
+
+  /* Truncated Gaussian posterior: Normal(mean, covariance) truncated to the
+   * parameter bounds. The mode of the returned distribution is the
+   * constrained maximizer of the Gaussian density, while its mean is the
+   * expectation of the truncated distribution and differs from the mode in
+   * general. */
+  static Distribution ComputeTruncatedPosterior(const Point & mean,
+      const CovarianceMatrix & covariance,
+      const Interval & bounds);
+
   /* Model to calibrate */
   Function model_;
 

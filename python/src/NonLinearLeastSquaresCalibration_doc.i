@@ -44,6 +44,18 @@ The calibrated parameter distribution is approximated based on a kernel density 
 obtained from the bootstrap sample.
 By default, a bootstrap algorithm is used.
 
+Bounds can be set with :meth:`setBounds`. They always constrain the
+optimization. When the parameter posterior is built from the linear
+approximation, i.e. when ``NonLinearLeastSquaresCalibration-BootstrapSize``
+is set to zero, parameters lying on a bound up to the absolute
+``LinearLeastSquaresCalibration-ActiveBoundTolerance`` tolerance are
+considered fixed: the posterior covariance is computed from the free Jacobian
+block (or from the free block of the Hessian when the Laplace approximation is
+used) and is zero in the fixed directions, and the residual degrees of freedom
+exclude the fixed parameters. With a nonzero bootstrap size the posterior is
+a kernel smoothing of the bootstrap estimates, so this active-set covariance
+does not apply and the bounds only constrain each calibration.
+
 The output (observation) error is modeled as a Normal random variable whose variance
 is estimated from the calibration residuals.
 This is performed whatever the value of the `NonLinearLeastSquaresCalibration-BootstrapSize`

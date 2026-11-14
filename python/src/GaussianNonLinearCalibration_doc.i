@@ -31,7 +31,36 @@ dimension of the model and the number of observations.
 
 The prior distribution of the parameter is :class:`~openturns.Normal`.  
 
-The posterior distribution of the parameter is also :class:`~openturns.Normal`.
+The posterior distribution of the parameter is :class:`~openturns.Normal` when
+no bounds are set, or when the bounds are handled with the default active-set
+approach.
+
+Bounds can be set with :meth:`setBounds`. Their handling is selected by the
+``GaussianNonLinearCalibration-BoundsHandling`` key of the
+:class:`~openturns.ResourceMap`:
+
+- ``ActiveSet`` (default): the optimization is constrained, and the posterior
+  covariance is computed from the free block of the extended design matrix at
+  the MAP. Parameters fixed at a bound have a zero variance. This is a
+  first-order active-set approximation.
+- ``Truncated``: the Gaussian surrogate of the Gauss-Newton Laplace
+  approximation at the MAP is truncated to the bounds, which returns a
+  :class:`~openturns.TruncatedDistribution`. Its mean is shifted by the
+  first-order gradient term at the constrained MAP, so that an affine model
+  reproduces the :class:`~openturns.GaussianLinearCalibration` truncated
+  posterior. This is the exact posterior of the Gaussian (Laplace) surrogate,
+  not of the nonlinear model. The MAP is the mode of the truncated
+  distribution, not its mean. The current
+  :class:`~openturns.TruncatedDistribution` only computes its moments in
+  reasonable time for dimensions up to about three, so this option is not the
+  default. Moreover, the truncated distribution is numerically representable
+  only if the bounds leave a non-negligible probability under the Gaussian
+  surrogate; when the MAP lies far at a bound, the ``ActiveSet`` handling is
+  more robust.
+
+The ``Truncated`` handling is ignored when
+``GaussianNonLinearCalibration-BootstrapSize`` is nonzero, because the
+posterior is then estimated from the bootstrap sample.
 
 Depending on the value of the `GaussianNonLinearCalibration-BootstrapSize` key 
 in the :class:`~openturns.ResourceMap`, the parameters are estimated differently.
@@ -51,6 +80,13 @@ meaning that a bootstrap is used by default.
 This can be costly in some practical use cases, because it requires
 several runs of the optimization algorithm.
 In this case, please set the bootstrap size to zero.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``GaussianNonLinearCalibration-BootstrapSize`` (``UnsignedInteger``, default: ``100``): number of bootstrap resamples used to estimate the posterior distribution; zero selects the Laplace approximation
+- ``GaussianNonLinearCalibration-BoundsHandling`` (``String``, default: ``ActiveSet``): handling of the posterior distribution when bounds are set and the bootstrap size is zero. The possible values are ``ActiveSet`` and ``Truncated``
+- ``GaussianLinearCalibration-Method`` (``String``, default: ``QR``): name of the decomposition method used for the Laplace approximation
+- ``LinearLeastSquaresCalibration-ActiveBoundTolerance`` (``Scalar``, default: ``1e-6``): absolute distance to a bound below which a parameter is considered fixed at this bound when bounds are set
 
 The resulting error distribution is :class:`~openturns.Normal`
 with a mean estimated from the sample mean of the residuals and with a

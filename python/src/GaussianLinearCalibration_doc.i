@@ -42,7 +42,34 @@ the output dimension of the model and the number of observations.
 
 The prior distribution of the parameter is a :class:`~openturns.Normal`.
 
-The posterior distribution of the parameter is :class:`~openturns.Normal`.
+The posterior distribution of the parameter is :class:`~openturns.Normal`
+when no bounds are set, or when the bounds are handled with the default
+active-set approach.
+
+Bounds can be set with :meth:`setBounds`. Their handling is selected by the
+``GaussianLinearCalibration-BoundsHandling`` key of the
+:class:`~openturns.ResourceMap`:
+
+- ``ActiveSet`` (default): the optimization is constrained, and the posterior
+  covariance is computed from the free block of the extended design matrix at
+  the MAP. Parameters fixed at a bound have a zero variance. This is a
+  first-order active-set approximation.
+- ``Truncated``: the unconstrained Gaussian posterior is truncated to the
+  bounds, which returns a :class:`~openturns.TruncatedDistribution`. This is
+  the exact posterior of the linear-Gaussian model with bounds. The MAP is the
+  mode of the truncated distribution, not its mean. The current
+  :class:`~openturns.TruncatedDistribution` only computes its moments in
+  reasonable time for dimensions up to about three, so this option is not the
+  default. Moreover, the truncated distribution is numerically representable
+  only if the bounds leave a non-negligible probability under the unconstrained
+  posterior; when the data are very informative and the MAP lies far outside
+  the bounds, the ``ActiveSet`` handling is more robust.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``GaussianLinearCalibration-Method`` (``String``, default: ``QR``): name of the decomposition method used to solve the least squares problem of the Gaussian linear calibration. The possible values are ``SVD``, ``Cholesky`` and ``QR``
+- ``GaussianLinearCalibration-BoundsHandling`` (``String``, default: ``ActiveSet``): handling of the posterior distribution when bounds are set. The possible values are ``ActiveSet`` and ``Truncated``
+- ``LinearLeastSquaresCalibration-ActiveBoundTolerance`` (``Scalar``, default: ``1e-6``): absolute distance to a bound below which a parameter is considered fixed at this bound when bounds are set
 
 The resulting error distribution is :class:`~openturns.Normal`
 with a zero mean and with a covariance matrix equal to the

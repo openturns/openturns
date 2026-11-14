@@ -98,15 +98,36 @@ bounds : :class:`~openturns.Interval`
 
 Notes
 -----
-The bounds constrain the optimization of the calibration.
+Setting bounds changes the calibration:
 
-For :class:`~openturns.LinearLeastSquaresCalibration` and
-:class:`~openturns.NonLinearLeastSquaresCalibration`, parameters lying on a
-bound up to the absolute
-``LinearLeastSquaresCalibration-ActiveBoundTolerance`` tolerance are
-considered fixed when the posterior is computed from the linearized model:
-the covariance is zero in the fixed directions, and the residual degrees of
-freedom exclude the fixed parameters."
+- :class:`~openturns.LinearLeastSquaresCalibration` and
+  :class:`~openturns.GaussianLinearCalibration` solve a bounded linear
+  least-squares problem as a convex quadratic problem, using the first
+  algorithm selected by :meth:`~openturns.OptimizationAlgorithm.Build`. This
+  is the :class:`~openturns.experimental.HiGHS` quadratic solver when
+  OpenTURNS is built with HiGHS support.
+- :class:`~openturns.NonLinearLeastSquaresCalibration` and
+  :class:`~openturns.GaussianNonLinearCalibration` constrain the optimization
+  algorithm.
+- A parameter is considered fixed at a bound when its distance to the bound
+  is lower than the absolute tolerance
+  ``LinearLeastSquaresCalibration-ActiveBoundTolerance`` of the
+  :class:`~openturns.ResourceMap` (1.0e-6 by default). A rank-deficient free
+  Jacobian block raises an exception.
+
+For the non-linear least-squares and Gaussian non-linear calibrations,
+:meth:`~openturns.NonLinearLeastSquaresCalibration.setOptimizationAlgorithm`
+adopts the bounds carried by the given algorithm problem when it has some and
+keeps the current bounds otherwise. Call :meth:`setBounds` after
+:meth:`~openturns.NonLinearLeastSquaresCalibration.setOptimizationAlgorithm`
+to enforce specific bounds.
+
+The posterior distribution of the Gaussian calibrations depends on the
+``GaussianLinearCalibration-BoundsHandling`` and
+``GaussianNonLinearCalibration-BoundsHandling`` keys of the
+:class:`~openturns.ResourceMap`. See
+:class:`~openturns.GaussianLinearCalibration` and
+:class:`~openturns.GaussianNonLinearCalibration` for details."
 %enddef
 %feature("docstring") OT::CalibrationAlgorithmImplementation::setBounds
 OT_CalibrationAlgorithm_setBounds_doc
