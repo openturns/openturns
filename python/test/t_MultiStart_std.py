@@ -98,3 +98,24 @@ stop_algo.run()
 assert stop_algo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
 assert stop_algo.getResultCollection().getSize() == 1, "wrong restarts number"
 assert stop_algo.getResult().getCallsNumber() < 2000, "stop was not honored"
+
+# a one-time stop request is not lost between restarts: the local
+# INTERRUPTION is latched and stops the outer loop as well.
+# Dlib reports a user stop as INTERRUPTION without throwing.
+if ot.PlatformInfo.HasFeature("dlib"):
+    stop_calls = []
+
+    def stop_once():
+        stop_calls.append(1)
+        return len(stop_calls) == 1
+
+    once_inner = ot.Dlib(problem, "bfgs")
+    once_inner.setCheckStatus(False)
+    once_algo = ot.MultiStart(once_inner, small_sample)
+    once_algo.setMaximumCallsNumber(2000)
+    once_algo.setCheckStatus(False)
+    once_algo.setKeepResults(True)
+    once_algo.setStopCallback(stop_once)
+    once_algo.run()
+    assert once_algo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+    assert once_algo.getResultCollection().getSize() == 1, "stop request was lost"
