@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(4)
@@ -59,3 +60,16 @@ try:
     algo.run()
 except Exception:
     print("OK")
+
+# nearest-point problem converging exactly onto the relaxed boundary:
+# the solver enforces |h| <= maximumConstraintError while the replay judges
+# the raw residual strictly, which must not discard a successful run
+for levelValue, expected in [(0.0, 1.0), (0.5, 1.5)]:
+    f = ot.SymbolicFunction(["u"], ["u - 1.0"])
+    solver = ot.Cobyla(ot.NearestPointProblem(f, levelValue))
+    solver.setMaximumConstraintError(1e-8)
+    solver.setMaximumAbsoluteError(1e-8)
+    solver.setStartingPoint([0.0])
+    solver.run()
+    result = solver.getResult()
+    ott.assert_almost_equal(result.getOptimalPoint(), [expected], 1e-4, 0.0)
