@@ -73,8 +73,14 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS} ${SWIG_CXX_COMPILE_FLAGS}"
                                                   UNITY_BUILD OFF)
 
-  install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
-           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
+  if (CMAKE_VERSION VERSION_GREATER_EQUAL "4.5")
+    install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
+             DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
+             BUILD_DEPENDS ${MODULENAME})
+  else ()
+    install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
+             DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
+  endif ()
   install (TARGETS ${MODULENAME}
             LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
