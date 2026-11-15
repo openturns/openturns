@@ -73,3 +73,32 @@ for levelValue, expected in [(0.0, 1.0), (0.5, 1.5)]:
     solver.run()
     result = solver.getResult()
     ott.assert_almost_equal(result.getOptimalPoint(), [expected], 1e-4, 0.0)
+
+# user stop is reported as INTERRUPTION without throwing
+stopProblem = ot.OptimizationProblem(ot.SymbolicFunction(["x"], ["(x-1.0)^2"]))
+
+
+def stopNow():
+    return True
+
+
+stopSolver = ot.Cobyla(stopProblem)
+stopSolver.setStartingPoint([0.0])
+# enabled checkStatus also guards the final INTERRUPTION exclusion: an
+# unwanted throw would fail this test instead of only warning
+stopSolver.setCheckStatus(True)
+stopSolver.setStopCallback(stopNow)
+stopSolver.run()
+assert stopSolver.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+
+# stop on the first evaluation, before any feasible point is retained:
+# still INTERRUPTION with an empty optimum, not a throw
+infeasibleStop = ot.OptimizationProblem(ot.SymbolicFunction(["x"], ["x"]))
+infeasibleStop.setInequalityConstraint(ot.SymbolicFunction(["x"], ["-x"]))
+firstStop = ot.Cobyla(infeasibleStop)
+firstStop.setStartingPoint([1.0])
+firstStop.setCheckStatus(False)
+firstStop.setStopCallback(stopNow)
+firstStop.run()
+assert firstStop.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+assert firstStop.getResult().getOptimalPoint().getDimension() == 0

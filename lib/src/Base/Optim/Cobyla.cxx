@@ -185,42 +185,54 @@ void Cobyla::run()
     // retained optimum. Inconsistent histories (nothing replayed at all) or
     // an unsuccessful run still throw.
     const Bool replayExhausted = (result_.getInputSample().getSize() > 0) && !result_.getOptimalPoint().getDimension();
-    if (!solverSolution.getDimension() || !replayExhausted) throw;
-    // Raw violation of the solver's solution, same definition as the replay
-    Scalar solutionConstraintError = 0.0;
-    if (getProblem().hasBounds())
+    if (!solverSolution.getDimension() && userInterrupted && replayExhausted)
     {
-      const Interval bounds(getProblem().getBounds());
-      for (UnsignedInteger j = 0; j < dimension; ++j)
+      // The stop callback fired before any feasible point was retained:
+      // report INTERRUPTION with the empty optimum instead of throwing.
+      // The replay stamped a FAILURE status before throwing: restore
+      // INTERRUPTION, the solver itself was stopped by the user.
+      result_.setStatus(OptimizationResult::INTERRUPTION);
+      result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
+    }
+    else
+    {
+      if (!solverSolution.getDimension() || !replayExhausted) throw;
+      // Raw violation of the solver's solution, same definition as the replay
+      Scalar solutionConstraintError = 0.0;
+      if (getProblem().hasBounds())
       {
-        if (bounds.getFiniteLowerBound()[j]) solutionConstraintError = std::max(solutionConstraintError, bounds.getLowerBound()[j] - solverSolution[j]);
-        if (bounds.getFiniteUpperBound()[j]) solutionConstraintError = std::max(solutionConstraintError, solverSolution[j] - bounds.getUpperBound()[j]);
+        const Interval bounds(getProblem().getBounds());
+        for (UnsignedInteger j = 0; j < dimension; ++j)
+        {
+          if (bounds.getFiniteLowerBound()[j]) solutionConstraintError = std::max(solutionConstraintError, bounds.getLowerBound()[j] - solverSolution[j]);
+          if (bounds.getFiniteUpperBound()[j]) solutionConstraintError = std::max(solutionConstraintError, solverSolution[j] - bounds.getUpperBound()[j]);
+        }
       }
+      if (getProblem().hasEqualityConstraint()) solutionConstraintError = std::max(solutionConstraintError, solverSolutionEquality.normInf());
+      if (getProblem().hasInequalityConstraint())
+      {
+        Point violatedConstraints(solverSolutionInequality);
+        for (UnsignedInteger k = 0; k < violatedConstraints.getDimension(); ++k) violatedConstraints[k] = std::min(violatedConstraints[k], 0.0);
+        solutionConstraintError = std::max(solutionConstraintError, violatedConstraints.normInf());
+      }
+      // Rescue only a rounding-scale excess over the tolerance, not genuine
+      // infeasibility: evaluation rounding may push the raw residual slightly
+      // above maximumConstraintError, never orders of magnitude above it
+      const Scalar tolerance = getMaximumConstraintError() * (1.0 + std::sqrt(SpecFunc::Precision)) + SpecFunc::Precision;
+      if (!(solutionConstraintError <= tolerance)) throw;
+      // Report the solver's own solution: it satisfied the shifted constraints
+      // enforced during the run.
+      // The replay stamped a FAILURE status before throwing: restore SUCCESS,
+      // the solver itself converged normally.
+      result_.setStatus(OptimizationResult::SUCCESS);
+      result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
+      result_.setOptimalPoint(solverSolution);
+      result_.setOptimalValue(solverSolutionValue);
+      result_.setAbsoluteError(0.0);
+      result_.setRelativeError(0.0);
+      result_.setResidualError(0.0);
+      result_.setConstraintError(solutionConstraintError);
     }
-    if (getProblem().hasEqualityConstraint()) solutionConstraintError = std::max(solutionConstraintError, solverSolutionEquality.normInf());
-    if (getProblem().hasInequalityConstraint())
-    {
-      Point violatedConstraints(solverSolutionInequality);
-      for (UnsignedInteger k = 0; k < violatedConstraints.getDimension(); ++k) violatedConstraints[k] = std::min(violatedConstraints[k], 0.0);
-      solutionConstraintError = std::max(solutionConstraintError, violatedConstraints.normInf());
-    }
-    // Rescue only a rounding-scale excess over the tolerance, not genuine
-    // infeasibility: evaluation rounding may push the raw residual slightly
-    // above maximumConstraintError, never orders of magnitude above it
-    const Scalar tolerance = getMaximumConstraintError() * (1.0 + std::sqrt(SpecFunc::Precision)) + SpecFunc::Precision;
-    if (!(solutionConstraintError <= tolerance)) throw;
-    // Report the solver's own solution: it satisfied the shifted constraints
-    // enforced during the run.
-    // The replay stamped a FAILURE status before throwing: restore SUCCESS,
-    // the solver itself converged normally.
-    result_.setStatus(OptimizationResult::SUCCESS);
-    result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
-    result_.setOptimalPoint(solverSolution);
-    result_.setOptimalValue(solverSolutionValue);
-    result_.setAbsoluteError(0.0);
-    result_.setRelativeError(0.0);
-    result_.setResidualError(0.0);
-    result_.setConstraintError(solutionConstraintError);
   }
 
   // check for timeout
