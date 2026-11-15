@@ -162,9 +162,15 @@ void Cobyla::run()
     }
   }
 
+  // The stop callback flags INTERRUPTION on result_ while the solver runs;
+  // the rebuild below would wipe it: latch it first. The COBYLA_USERABORT
+  // return code cannot be used instead: evaluation failures share it.
+  const Bool userInterrupted = (result_.getStatus() == OptimizationResult::INTERRUPTION);
   result_ = OptimizationResult(getProblem());
   result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
-  if (returnCode == COBYLA_MAXFUN)
+  if (userInterrupted)
+    result_.setStatus(OptimizationResult::INTERRUPTION);
+  else if (returnCode == COBYLA_MAXFUN)
     result_.setStatus(OptimizationResult::MAXIMUMCALLS);
   else if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
     result_.setStatus(OptimizationResult::FAILURE);
@@ -227,7 +233,9 @@ void Cobyla::run()
     result_.setStatusMessage(OSS() << "Cobyla optimization timeout after " << timeDuration << "s");
   }
 
-  if (result_.getStatus() != OptimizationResult::SUCCESS)
+  // a user-requested stop is reported as INTERRUPTION without throwing,
+  // like Dlib/CMinpack: checkStatus only guards actual failures and timeouts
+  if ((result_.getStatus() != OptimizationResult::SUCCESS) && (result_.getStatus() != OptimizationResult::INTERRUPTION))
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "Solving problem by cobyla method failed (" << result_.getStatusMessage() << ")";
