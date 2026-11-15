@@ -26,6 +26,7 @@
 #include "openturns/RandomVectorImplementation.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/CovarianceMatrix.hxx"
+#include "openturns/EllipticalDistribution.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/IdentityFunction.hxx"
@@ -52,9 +53,26 @@ StandardEvent::StandardEvent(const RandomVector & antecedent,
   : RandomVector(new ThresholdEventImplementation(antecedent, op, threshold))
 {
   // StandardEvent can only be constructed from composite random vector whose antecedent has a spherical distribution. As we cannot check it, we just check that the distribution is elliptical
-  if (!antecedent.getAntecedent().getDistribution().isElliptical()) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << antecedent.getImplementation()->getAntecedent().getDistribution().getImplementation()->__str__();
-  CovarianceMatrix covariance(antecedent.getImplementation()->getAntecedent().getDistribution().getCovariance());
-  const UnsignedInteger dimension = antecedent.getImplementation()->getAntecedent().getDistribution().getDimension();
+  const Distribution distribution(antecedent.getImplementation()->getAntecedent().getDistribution());
+  if (!distribution.isElliptical()) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << distribution.getImplementation()->__str__();
+  const EllipticalDistribution * p_elliptical = dynamic_cast<const EllipticalDistribution *>(distribution.getImplementation().get());
+  if (p_elliptical)
+  {
+    // Standard spherical elliptical distributions (Normal, Student) are characterized by zero mean, unit sigma scales and identity correlation.
+    // The covariance cannot be used here: e.g. Student(nu, 0, 1) has covariance nu / (nu - 2) * I, and it is undefined for nu <= 2.
+    const Point mu(p_elliptical->getMu());
+    const Point sigma(p_elliptical->getSigma());
+    const CorrelationMatrix R(p_elliptical->getR());
+    const UnsignedInteger dimension = distribution.getDimension();
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      if ((mu[i] != 0.0) || (sigma[i] != 1.0)) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << distribution.getImplementation()->__str__();
+      for (UnsignedInteger j = 0; j < i; ++j) if (R(i, j) != 0.0) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << distribution.getImplementation()->__str__();
+    }
+    return;
+  }
+  CovarianceMatrix covariance(distribution.getCovariance());
+  const UnsignedInteger dimension = distribution.getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (covariance(i, i) != 1.0) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << antecedent.getImplementation()->getAntecedent().getDistribution().getImplementation()->__str__();

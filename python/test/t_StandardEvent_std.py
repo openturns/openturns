@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -84,3 +85,18 @@ try:
     myStandardEvent3 = ot.StandardEvent(output3, ot.Less(), 1.0)
 except Exception:
     print("Error trying to build myStandardEvent3")
+
+# Standard spherical Student antecedents must be accepted, even though
+# their covariance differs from the identity (or is undefined for nu <= 2)
+studentFunction = ot.SymbolicFunction(["x"], ["x"])
+for nu in [8.0, 1.5]:
+    studentVect = ot.CompositeRandomVector(
+        studentFunction, ot.RandomVector(ot.Student(nu))
+    )
+    ot.StandardEvent(studentVect, ot.Greater(), 0.0)
+# A non-unit scale must still be rejected
+with ott.assert_raises(TypeError):
+    scaledVect = ot.CompositeRandomVector(
+        studentFunction, ot.RandomVector(ot.Student(8.0, 0.0, 2.0))
+    )
+    ot.StandardEvent(scaledVect, ot.Greater(), 0.0)
