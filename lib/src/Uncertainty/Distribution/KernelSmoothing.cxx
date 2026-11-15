@@ -329,6 +329,11 @@ Distribution KernelSmoothing::buildWeighted(const Sample & sample,
   const UnsignedInteger dimension = sample.getDimension();
   if (bandwidth.getDimension() != dimension)
     throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+  // Check all values: getMin/getMax below skip non-finite values, so an
+  // explicit scan is needed to reject them
+  for (UnsignedInteger i = 0; i < sample.getSize(); ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      if (!std::isfinite(sample(i, j))) throw InvalidArgumentException(HERE) << "Error: cannot build a kernel smoothing estimate from a sample with non-finite values";
   const Point xmin(sample.getMin());
   const Point xmax(sample.getMax());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
