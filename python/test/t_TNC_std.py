@@ -58,3 +58,28 @@ algo.run()
 result = algo.getResult()
 print("result=", result.getOptimalPoint())
 print("multipliers=", result.computeLagrangeMultipliers())
+
+# user stop is reported as INTERRUPTION without throwing, even when it fires
+# before any feasible point is retained
+stopProblem = ot.OptimizationProblem(ot.SymbolicFunction(["x"], ["(x-1.0)^2"]))
+stopProblem.setBounds(ot.Interval([0.0], [2.0]))
+
+
+def stopNow():
+    return True
+
+
+stopSolver = ot.TNC(stopProblem)
+stopSolver.setStartingPoint([0.5])
+# enabled checkStatus also guards the final INTERRUPTION exclusion: an
+# unwanted throw would fail this test instead of only warning
+stopSolver.setCheckStatus(True)
+stopSolver.setStopCallback(stopNow)
+stopSolver.run()
+assert stopSolver.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+firstStop = ot.TNC(stopProblem)
+firstStop.setStartingPoint([5.0])
+firstStop.setCheckStatus(False)
+firstStop.setStopCallback(stopNow)
+firstStop.run()
+assert firstStop.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
