@@ -378,12 +378,14 @@ void HiGHS::run()
   // HiGHS>=1.13 names the callback data structs so they can be forward-declared
   // in a public header (ERGO-Code/HiGHS#2625); here the callback lives in the
   // .cxx so no header change is needed and it works with older HiGHS too.
+  // The running maximum is read by the callback during highs.run(): it must
+  // outlive the registration block below, hence the enclosing scope.
+  Scalar lastProgress = 0.0;
   if (progressCallback_.first || stopCallback_.first)
   {
     // counters in data_out are per-phase snapshots (eg IPM counts reset
     // when crossover starts), so clamp to a running maximum to keep
     // progress monotonic
-    Scalar lastProgress = 0.0;
     HighsCallbackFunctionType highsCallback = [this, &lastProgress](int, const std::string &,
         const HighsCallbackOutput * data_out, HighsCallbackInput * data_in, void *)
     {
