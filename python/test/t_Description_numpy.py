@@ -33,6 +33,11 @@ smp = ot.Sample(2, 2)
 smp.setDescription(np.array(["u", "v"]))
 assert list(smp.getDescription()) == ["u", "v"]
 
+# empty Descriptions compare as empty boolean arrays
+empty = ot.Description()
+np.testing.assert_array_equal(np.equal(empty, "a"), [])
+np.testing.assert_array_equal(np.not_equal(empty, "a"), [])
+
 # in-place ufuncs must fail loudly instead of writing to a temporary
 with ott.assert_raises(TypeError):
     np.add.at(desc, [0], "z")

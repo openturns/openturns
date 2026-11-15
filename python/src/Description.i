@@ -93,6 +93,24 @@ def _ot_ufunc_is_ot(value):
         return False
     return isinstance(value, _ot_types)
 
+def _ot_ufunc_convert_description(value):
+    """Convert a Description operand with explicit object dtype.
+
+    Plain asarray() infers a floating-point dtype for an empty Description,
+    which breaks string comparison; object dtype keeps string semantics.
+    """
+    try:
+        import openturns as _ot
+    except Exception:
+        return value
+    if isinstance(value, _ot.Description):
+        try:
+            import numpy as _np
+            return _np.asarray(list(value), dtype=object)
+        except Exception:
+            return value
+    return _ot_ufunc_convert(value)
+
 def _Description___iter__(self):
     for i in range(len(self)):
         yield self[i]
@@ -111,7 +129,13 @@ def __Description___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
     out = kwargs.get("out", None)
     if _ot_ufunc_out_is_ot(out):
         return NotImplemented
-    new_inputs = tuple(_ot_ufunc_convert(x) for x in inputs)
+    # Select the conversion before building the inputs: equal/not_equal on
+    # Descriptions use object dtype so empty ones keep string semantics
+    # instead of inferring a floating-point dtype; building the generic
+    # conversion first would allocate a fixed-width Unicode array only to
+    # discard it, scaling with element count times max string length
+    convert = _ot_ufunc_convert_description if ufunc in (_np.equal, _np.not_equal) else _ot_ufunc_convert
+    new_inputs = tuple(convert(x) for x in inputs)
     new_kwargs = dict(kwargs)
     # Only where (besides out, handled above) can carry an array-like
     # operand; converting every keyword would silently alter future kwargs.
