@@ -119,3 +119,30 @@ if ot.PlatformInfo.HasFeature("dlib"):
     once_algo.run()
     assert once_algo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
     assert once_algo.getResultCollection().getSize() == 1, "stop request was lost"
+
+# stop before any feasible point is retained: the empty local optimum must
+# not break the best-point update, and the stop is still latched
+infeasibleProblem = ot.OptimizationProblem(
+    ot.SymbolicFunction(["x", "y"], ["x + y"]),
+    ot.Function(),
+    ot.SymbolicFunction(["x", "y"], ["-x - y - 10.0"]),
+    bounds,
+)
+empty_calls = []
+
+
+def stop_once_empty():
+    empty_calls.append(1)
+    return len(empty_calls) == 1
+
+
+empty_inner = ot.Cobyla(infeasibleProblem)
+empty_inner.setCheckStatus(False)
+empty_algo = ot.MultiStart(empty_inner, small_sample)
+empty_algo.setMaximumCallsNumber(2000)
+empty_algo.setCheckStatus(False)
+empty_algo.setKeepResults(True)
+empty_algo.setStopCallback(stop_once_empty)
+empty_algo.run()
+assert empty_algo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+assert empty_algo.getResultCollection().getSize() == 1, "stop request was lost"
