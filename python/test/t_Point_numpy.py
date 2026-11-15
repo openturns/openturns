@@ -47,6 +47,11 @@ ott.assert_almost_equal(list(snapshot), [1.0, 2.0])
 # a fresh view after mutation reflects the new content
 ott.assert_almost_equal(list(np.asarray(pt2)), [1.0, 2.0, 3.0])
 
+# in-place ufuncs must fail loudly instead of writing to a temporary
+with ott.assert_raises(TypeError):
+    np.add.at(pt, [0], 1.0)
+assert list(pt) == [1.0, 2.0, 3.0]
+
 # fancy indexing with where() result still works
 idx = np.where(np.asarray(pt) == 1.0)[0]
 ott.assert_almost_equal(pt[list(idx)], [1.0])

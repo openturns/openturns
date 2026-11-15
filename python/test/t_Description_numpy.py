@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import numpy as np
 
 ot.TESTPREAMBLE()
@@ -31,5 +32,10 @@ assert list(desc2) == ["x", "y"]
 smp = ot.Sample(2, 2)
 smp.setDescription(np.array(["u", "v"]))
 assert list(smp.getDescription()) == ["u", "v"]
+
+# in-place ufuncs must fail loudly instead of writing to a temporary
+with ott.assert_raises(TypeError):
+    np.add.at(desc, [0], "z")
+assert list(desc) == ["a", "b", "a"]
 
 print("ok")

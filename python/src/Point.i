@@ -208,6 +208,10 @@ def __Point_getattribute(self, name):
 Point.__getattribute__ = __Point_getattribute
 
 def __Point___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+    if method == "at" and inputs and _ot_ufunc_is_ot(inputs[0]):
+        # In-place ufuncs write through the first operand: converting it
+        # to a temporary ndarray would silently drop the update
+        return NotImplemented
     out = kwargs.get("out", None)
     if _ot_ufunc_out_is_ot(out):
         return NotImplemented

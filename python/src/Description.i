@@ -84,6 +84,15 @@ def _ot_ufunc_out_is_ot(out):
             return True
     return False
 
+def _ot_ufunc_is_ot(value):
+    """Check whether a ufunc operand is an OpenTURNS object."""
+    try:
+        import openturns as _ot
+        _ot_types = (_ot.Point, _ot.Sample, _ot.Description)
+    except Exception:
+        return False
+    return isinstance(value, _ot_types)
+
 def _Description___iter__(self):
     for i in range(len(self)):
         yield self[i]
@@ -95,6 +104,10 @@ Description.__iter__ = _Description___iter__
 # element-wise comparison use numpy ufuncs, e.g. np.equal(desc, "a").
 def __Description___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
     import numpy as _np
+    if method == "at" and inputs and _ot_ufunc_is_ot(inputs[0]):
+        # In-place ufuncs write through the first operand: converting it
+        # to a temporary ndarray would silently drop the update
+        return NotImplemented
     out = kwargs.get("out", None)
     if _ot_ufunc_out_is_ot(out):
         return NotImplemented

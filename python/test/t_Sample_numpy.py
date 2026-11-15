@@ -29,6 +29,11 @@ np.testing.assert_allclose(np.add(smp, 1.0)[0], [2.0, 3.0])
 # fancy indexing with where() result still works
 ott.assert_almost_equal(smp[list(np.where(arr_s[:, 0] == 1.0)[0])][0], [1.0, 2.0])
 
+# in-place ufuncs must fail loudly instead of writing to a temporary
+with ott.assert_raises(TypeError):
+    np.add.at(smp, [0], [1.0, 1.0])
+ott.assert_almost_equal([list(row) for row in smp], [[1.0, 2.0], [2.0, 3.0], [1.0, 2.0]])
+
 # lifetime contract: the view borrows the internal buffer, so a
 # size-changing mutation may invalidate it; retain a copy instead
 smp2 = ot.Sample([[1.0, 2.0]])
