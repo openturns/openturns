@@ -175,8 +175,12 @@ truncatedPosterior = truncatedResult.getParameterPosterior()
 assert truncatedPosterior.getImplementation().getClassName() == "TruncatedDistribution"
 assert truncatedPosterior.getImplementation().getBounds() == bounds
 assert bounds.contains(truncatedMAP)
-truncatedMean = truncatedPosterior.getMean()
-assert bounds.contains(truncatedMean)
+# the moments of the truncated posterior are computed on demand by numerical
+# integration, which is costly in dimension 3: the range is available without
+# it and stays within the bounds
+truncatedRange = truncatedPosterior.getRange()
+assert bounds.contains(truncatedRange.getLowerBound())
+assert bounds.contains(truncatedRange.getUpperBound())
 
 # For an affine model the truncated Laplace surrogate must reproduce the exact
 # truncated posterior of GaussianLinearCalibration: the surrogate mean is

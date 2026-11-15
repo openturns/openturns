@@ -318,12 +318,13 @@ bounds, as a :class:`~openturns.TruncatedDistribution`:
 
 In both cases, the reported MAP is the mode of the truncated distribution,
 while its mean is different in general. The current
-:class:`~openturns.TruncatedDistribution` only computes its moments in
-reasonable time for dimensions up to about three, so this handling is not the
-default. Moreover, the truncated distribution is numerically representable only
-if the bounds leave a non-negligible probability under the Gaussian posterior;
-when the data are very informative and the MAP lies far outside the bounds, the
-``ActiveSet`` handling is more robust.
+:class:`~openturns.TruncatedDistribution` computes its moments by numerical
+integration, which is practical only up to about three dimensions, so this
+handling is not the default; the calibration result computes them only when
+they are requested. Moreover, the truncated distribution is numerically
+representable only if the bounds leave a non-negligible probability under the
+Gaussian posterior; when the data are very informative and the MAP lies far
+outside the bounds, the ``ActiveSet`` handling is more robust.
 
 .. _ill_conditioned_calibration:
 
