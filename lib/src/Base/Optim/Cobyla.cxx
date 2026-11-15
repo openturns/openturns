@@ -134,6 +134,34 @@ void Cobyla::run()
    */
   const int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
+  // The solver enforces the shifted constraints h +/- maximumConstraintError >= 0,
+  // so a successful run may converge exactly onto the relaxed boundary
+  // |h| == maximumConstraintError (e.g. nearest-point problems). The replay below
+  // judges the raw residuals strictly and may retain nothing because of rounding:
+  // recover the solver's own final center to report it in that case.
+  // The final center is a simplex vertex, hence an evaluated point which is
+  // found back in the history with exact floating point equality.
+  Point solverSolution;
+  Point solverSolutionValue;
+  Point solverSolutionEquality;
+  Point solverSolutionInequality;
+  if (returnCode == COBYLA_NORMAL)
+  {
+    const Point center(x);
+    const UnsignedInteger historySize = evaluationInputHistory_.getSize();
+    for (UnsignedInteger k = 0; k < historySize; ++k)
+    {
+      if (evaluationInputHistory_[k] == center)
+      {
+        solverSolution = center;
+        solverSolutionValue = evaluationOutputHistory_[k];
+        if (getProblem().hasEqualityConstraint()) solverSolutionEquality = equalityConstraintHistory_[k];
+        if (getProblem().hasInequalityConstraint()) solverSolutionInequality = inequalityConstraintHistory_[k];
+        break;
+      }
+    }
+  }
+
   result_ = OptimizationResult(getProblem());
   result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
   if (returnCode == COBYLA_MAXFUN)
@@ -141,7 +169,53 @@ void Cobyla::run()
   else if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
     result_.setStatus(OptimizationResult::FAILURE);
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  try
+  {
+    setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  }
+  catch (const InvalidArgumentException &)
+  {
+    // Only rescue the "no feasible point" outcome: replayed history with no
+    // retained optimum. Inconsistent histories (nothing replayed at all) or
+    // an unsuccessful run still throw.
+    const Bool replayExhausted = (result_.getInputSample().getSize() > 0) && !result_.getOptimalPoint().getDimension();
+    if (!solverSolution.getDimension() || !replayExhausted) throw;
+    // Raw violation of the solver's solution, same definition as the replay
+    Scalar solutionConstraintError = 0.0;
+    if (getProblem().hasBounds())
+    {
+      const Interval bounds(getProblem().getBounds());
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+      {
+        if (bounds.getFiniteLowerBound()[j]) solutionConstraintError = std::max(solutionConstraintError, bounds.getLowerBound()[j] - solverSolution[j]);
+        if (bounds.getFiniteUpperBound()[j]) solutionConstraintError = std::max(solutionConstraintError, solverSolution[j] - bounds.getUpperBound()[j]);
+      }
+    }
+    if (getProblem().hasEqualityConstraint()) solutionConstraintError = std::max(solutionConstraintError, solverSolutionEquality.normInf());
+    if (getProblem().hasInequalityConstraint())
+    {
+      Point violatedConstraints(solverSolutionInequality);
+      for (UnsignedInteger k = 0; k < violatedConstraints.getDimension(); ++k) violatedConstraints[k] = std::min(violatedConstraints[k], 0.0);
+      solutionConstraintError = std::max(solutionConstraintError, violatedConstraints.normInf());
+    }
+    // Rescue only a rounding-scale excess over the tolerance, not genuine
+    // infeasibility: evaluation rounding may push the raw residual slightly
+    // above maximumConstraintError, never orders of magnitude above it
+    const Scalar tolerance = getMaximumConstraintError() * (1.0 + std::sqrt(SpecFunc::Precision)) + SpecFunc::Precision;
+    if (!(solutionConstraintError <= tolerance)) throw;
+    // Report the solver's own solution: it satisfied the shifted constraints
+    // enforced during the run.
+    // The replay stamped a FAILURE status before throwing: restore SUCCESS,
+    // the solver itself converged normally.
+    result_.setStatus(OptimizationResult::SUCCESS);
+    result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
+    result_.setOptimalPoint(solverSolution);
+    result_.setOptimalValue(solverSolutionValue);
+    result_.setAbsoluteError(0.0);
+    result_.setRelativeError(0.0);
+    result_.setResidualError(0.0);
+    result_.setConstraintError(solutionConstraintError);
+  }
 
   // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
