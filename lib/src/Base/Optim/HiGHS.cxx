@@ -493,7 +493,9 @@ void HiGHS::run()
   qpIterationNumber_ = static_cast<UnsignedInteger>(std::max<HighsInt>(info.qp_iteration_count, 0));
   result_.setIterationNumber(simplexIterationNumber_ + ipmIterationNumber_ + crossoverIterationNumber_ + pdlpIterationNumber_ + qpIterationNumber_);
 
-  if (result_.getStatus() != OptimizationResult::SUCCESS)
+  // a user-requested stop is reported as INTERRUPTION without throwing,
+  // like Dlib/CMinpack: checkStatus only guards actual failures and timeouts
+  if ((result_.getStatus() != OptimizationResult::SUCCESS) && (result_.getStatus() != OptimizationResult::INTERRUPTION))
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "HiGHS failed (" << modelStatus << ")";
