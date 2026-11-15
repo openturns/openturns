@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 import sys
 
@@ -67,6 +68,62 @@ graph2 = result.drawResiduals()
 graph3 = result.drawObservationsVsInputs()
 graph4 = result.drawObservationsVsPredictions()
 graph5 = result.drawResidualsNormalPlot()
+
+# the output at the posterior mean is computed on demand: the residual
+# function returns one residual per observation and output component
+posteriorMean = result.getParameterPosterior().getMean()
+outputObservations = result.getOutputObservations()
+residuals = result.getResidualFunction()(posteriorMean)
+expectedOutput = ot.Sample(
+    [[outputObservations[i, 0] + residuals[i]] for i in range(outputObservations.getSize())]
+)
+ott.assert_almost_equal(result.getOutputAtPosteriorMean(), expectedOutput)
+
+# the output at the posterior mean keeps the observation layout of the result:
+# replacing the observations must not recompute it in the new layout
+prior = ot.Normal(2)
+posterior = ot.Normal(2)
+error = ot.Normal(2)
+observation = ot.Sample([[1.0, 2.0]])
+zeroResidual = ot.PythonFunction(2, 2, lambda x: [0.0, 0.0])
+transposable = ot.CalibrationResult(
+    prior,
+    posterior,
+    posterior.getMean(),
+    error,
+    observation,
+    observation,
+    zeroResidual,
+    True,
+)
+transposable.setInputObservations(ot.Sample([[0.0], [1.0]]))
+transposable.setOutputObservations(ot.Sample([[1.0], [2.0]]))
+outputAtPosteriorMean = transposable.getOutputAtPosteriorMean()
+assert outputAtPosteriorMean.getSize() == 1, outputAtPosteriorMean.getSize()
+assert outputAtPosteriorMean.getDimension() == 2, outputAtPosteriorMean.getDimension()
+# changing an input of the cached output must invalidate it
+identity = ot.PythonFunction(2, 2, lambda x: [x[0] + 1.0, x[1] + 1.0])
+cacheTest = ot.CalibrationResult(
+    prior,
+    posterior,
+    posterior.getMean(),
+    error,
+    observation,
+    observation,
+    zeroResidual,
+    True,
+)
+ott.assert_almost_equal(cacheTest.getOutputAtPosteriorMean(), [[1.0, 2.0]])
+cacheTest.setResidualFunction(identity)
+ott.assert_almost_equal(cacheTest.getOutputAtPosteriorMean(), [[2.0, 3.0]])
+cacheTest.setParameterPosterior(
+    ot.Normal([10.0, 20.0], [1.0, 1.0], ot.IdentityMatrix(2))
+)
+ott.assert_almost_equal(cacheTest.getOutputAtPosteriorMean(), [[12.0, 23.0]])
+transposable.setOutputAtPriorAndPosteriorMean(
+    ot.Sample([[0.0], [1.0]]), ot.Sample([[1.0], [2.0]])
+)
+transposable.drawObservationsVsInputs()
 
 # bootstrapped posterior is the MAP distribution, see issue #2889
 legends = [

@@ -58,12 +58,13 @@ Bounds can be set with :meth:`setBounds`. Their handling is selected by the
   bounds, which returns a :class:`~openturns.TruncatedDistribution`. This is
   the exact posterior of the linear-Gaussian model with bounds. The MAP is the
   mode of the truncated distribution, not its mean. The current
-  :class:`~openturns.TruncatedDistribution` only computes its moments in
-  reasonable time for dimensions up to about three, so this option is not the
-  default. Moreover, the truncated distribution is numerically representable
-  only if the bounds leave a non-negligible probability under the unconstrained
-  posterior; when the data are very informative and the MAP lies far outside
-  the bounds, the ``ActiveSet`` handling is more robust.
+  :class:`~openturns.TruncatedDistribution` computes its moments by numerical
+  integration, which is practical only up to about three dimensions, so this
+  option is not the default; the calibration result computes them only when
+  they are requested. Moreover, the truncated distribution is numerically
+  representable only if the bounds leave a non-negligible probability under
+  the unconstrained posterior; when the data are very informative and the MAP
+  lies far outside the bounds, the ``ActiveSet`` handling is more robust.
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
