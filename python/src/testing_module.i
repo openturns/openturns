@@ -51,7 +51,8 @@ def assert_raises(exception_class):
     """
     try:
         yield
-        raise AssertionError(f"{exception_class.__name__} not raised")
     except exception_class:
         pass
+    else:
+        raise AssertionError(f"{exception_class.__name__} not raised")
 %}

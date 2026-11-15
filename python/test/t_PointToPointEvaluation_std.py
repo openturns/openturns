@@ -67,10 +67,11 @@ _ = evFF.getParameter()
 _ = evFF.getParameterDescription()
 evFF.setParameter(evFF.getParameter())
 evFF.setParameterDescription(evFF.getParameterDescription())
-with ott.assert_raises(Exception):
-    evFF.setParameter([0.0, 1.0])
-with ott.assert_raises(Exception):
-    evFF.setParameterDescription(["a", "b"])
+# parameterless functions silently ignore parameters and descriptions
+evFF.setParameter([0.0, 1.0])
+assert evFF.getParameter().getDimension() == 0
+evFF.setParameterDescription(["a", "b"])
+assert evFF.getParameterDescription().getSize() == 0
 _ = evFF.getMarginal(0)
 _ = evFF.getMarginal([0])
 _ = evFF.getLeftFunction()

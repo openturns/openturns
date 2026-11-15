@@ -146,9 +146,12 @@ if ot.PlatformInfo.HasFeature("hmat"):
     finally:
         ot.ResourceMap.SetAsString("GeneralLinearModelAlgorithm-LinearAlgebra", oldLinearAlgebra_cov)
 str(algo2_cov)
+# input/output size mismatch is rejected deterministically
 X5_cov = ot.Sample(5, 1)
 for i in range(5):
     X5_cov[i, 0] = float(i)
-Y5_cov = X5_cov * 2.0
+Y6_cov = ot.Sample(6, 1)
 with ott.assert_raises(Exception):
-    ot.GeneralLinearModelAlgorithm(X5_cov, Y5_cov, cov_cov, ot.LinearBasisFactory(1).build()).run()
+    ot.GeneralLinearModelAlgorithm(
+        X5_cov, Y6_cov, cov_cov, ot.LinearBasisFactory(1).build()
+    )

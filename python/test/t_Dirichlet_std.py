@@ -260,9 +260,14 @@ for theta in ([1.0, 2.0, 3.0], [2.0, 6.0, 3.0, 4.0], [2.0, 6.0, 3.0, 4.0, 5.0]):
     with ott.assert_raises(Exception):
         dd.computeConditionalQuantile(0.5, ot.Point(dim, 0.1))
     with ott.assert_raises(Exception):
-        dd.computeConditionalQuantile(0.5, ot.Point(0, 0.0))
-    with ott.assert_raises(Exception):
         dd.computeConditionalQuantile(-0.1, ot.Point(0, 0.0))
+    # empty conditioning set: first-marginal quantile
+    ott.assert_almost_equal(
+        dd.computeConditionalQuantile(0.5, ot.Point(0, 0.0)),
+        dd.getMarginal(0).computeQuantile(0.5)[0],
+        1e-12,
+        0.0,
+    )
     with ott.assert_raises(Exception):
         dd.computeConditionalQuantile(0.5, [-0.1])
     with ott.assert_raises(Exception):

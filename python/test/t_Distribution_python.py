@@ -476,7 +476,7 @@ class NoCDFPy(ot.PythonDistribution):
 
 
 with ott.assert_raises(Exception):
-    ot.Distribution(NoCDFPy())
+    ot.Distribution(NoCDFPy()).computeCDF([0.5])
 
 
 class NoRangePy(ot.PythonDistribution):
