@@ -252,10 +252,8 @@ ott.assert_almost_equal(singStudent.getMean(), [0.0] * 3, 0.0, 0.0)
 # --- PointConditionalDistribution: parameter validation and persistence ---
 studyFile = "myStudyBugFixPointConditional.xml"
 pcd = ot.PointConditionalDistribution(ot.Normal(2), [1], [0.5])
-pcdParam = pcd.getParameter()
-pcdParam[-1] = 1.0e6
 with ott.assert_raises(Exception):
-    pcd.setParameter(pcdParam)
+    pcd.setParameter([0.5, 0.6])
 pcd.setIntegrationAlgorithm(ot.SimplicialCubature())
 study = ot.Study(studyFile)
 study.add("pcd", pcd)

@@ -79,8 +79,7 @@ _ = repr(myFunction)
 assert myFunction == myFunction
 assert not (myFunction == "dummy")
 assert myFunction != "dummy"
-with ott.assert_raises(Exception):
-    myFunction == ot.ConstantFunction(3, [1.0, 2.0])
+assert not (myFunction == ot.ConstantFunction(3, [1.0, 2.0]))
 assert myFunction.getCallsNumber() >= 1
 assert myFunction.getParameter().getDimension() == 0
 marginal1 = myFunction.getMarginal(1)

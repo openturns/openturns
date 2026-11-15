@@ -57,8 +57,7 @@ assert myFunction.isActualImplementation()
 assert myFunction == myFunction
 assert not (myFunction == "dummy")
 assert myFunction != "dummy"
-with ott.assert_raises(Exception):
-    myFunction == ot.ConstantEvaluation()
+assert not (myFunction == ot.ConstantEvaluation())
 secondPoint = ot.Point([1.0, 2.0, 3.0])
 sampleOut = myFunction(ot.Sample([inPoint, secondPoint]))
 assert sampleOut.getSize() == 2

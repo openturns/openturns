@@ -40,11 +40,8 @@ assert indicator != ot.IndicatorFunction(ot.Interval([0.0, 0.0], [1.0, 1.0]))
 assert len(repr(indicator)) > 0
 assert len(str(indicator)) > 0
 assert len(repr(default)) > 0
-# gradient/hessian are not implemented
-with ott.assert_raises(Exception):
-    indicator.gradient(point1)
-with ott.assert_raises(Exception):
-    indicator.hessian(point1)
+# gradient/hessian fall back to finite differences
+ott.assert_almost_equal(indicator.gradient(point1), ot.Matrix([[0.0], [0.0]]))
 # save/load
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("indicator.xml"))

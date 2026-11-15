@@ -36,3 +36,14 @@ with ott.assert_raises(AssertionError):
     ott.assert_almost_equal(complex(float("inf"), 0.0), complex(float("-inf"), 0.0))
 with ott.assert_raises(AssertionError):
     ott.assert_almost_equal(complex(1.0, float("-inf")), complex(1.0, float("inf")))
+
+# a missing exception must fail even when expecting AssertionError itself:
+# check independently of the helper under test so a broken helper cannot
+# validate itself
+try:
+    with ott.assert_raises(AssertionError):
+        pass
+except AssertionError:
+    pass
+else:
+    raise AssertionError("assert_raises did not raise on missing exception")

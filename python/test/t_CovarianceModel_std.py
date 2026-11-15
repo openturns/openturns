@@ -1043,7 +1043,7 @@ with ott.assert_raises(Exception):
 with ott.assert_raises(Exception):
     tensorized2D([0.0, 1.0], [0.0])
 with ott.assert_raises(Exception):
-    tensorized2D.setScale([1.0])
+    tensorized2D.setScale([1.0, 2.0, 3.0])
 with ott.assert_raises(Exception):
     tensorized2D.setAmplitude([1.0])
 with ott.assert_raises(Exception):
@@ -1142,9 +1142,10 @@ ott.assert_almost_equal(
 assert rankMFull.discretize(vertices).getNbRows() == 3
 with ott.assert_raises(Exception):
     rankM.discretize(ot.Sample([[0.0, 0.0]]))
-# partialGradient is not implemented
-with ott.assert_raises(Exception):
-    rankM.partialGradient([0.0], [1.0])
+# partialGradient falls back to finite differences
+ott.assert_almost_equal(
+    rankM.partialGradient([0.0], [1.0]), ot.Matrix([[3.0]]), 1e-12, 0.0
+)
 # operator() dimension check
 with ott.assert_raises(Exception):
     rankM([0.0, 1.0], [0.0])

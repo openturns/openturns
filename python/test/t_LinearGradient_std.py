@@ -77,8 +77,7 @@ assert myGradient.isActualImplementation()
 assert myGradient == myGradient
 assert not (myGradient == "dummy")
 assert myGradient != "dummy"
-with ott.assert_raises(Exception):
-    myGradient == ot.ConstantGradient()
+assert not (myGradient == ot.ConstantGradient())
 callsBefore = myGradient.getCallsNumber()
 ott.assert_almost_equal(myGradient.gradient(inPoint), expectedGradient)
 assert myGradient.getCallsNumber() == callsBefore + 1
