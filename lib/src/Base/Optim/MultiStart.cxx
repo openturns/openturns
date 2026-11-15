@@ -189,11 +189,13 @@ void MultiStart::run()
       }
       result_.setStatusMessage(localResult.getStatusMessage());
 
-      // update optimal point
+      // update optimal point; an interrupted local search may retain no
+      // optimum, in which case there is nothing to compare (reading y[0]
+      // below would be out of bounds)
       const Point x(localResult.getOptimalPoint());
       const Point y(localResult.getOptimalValue());
-      const Bool objectiveImproved = (!result_.getOptimalValue().getDimension())
-                                    || ((getProblem().isMinimization() && y[0] < result_.getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > result_.getOptimalValue()[0]));
+      const Bool objectiveImproved = (y.getDimension() > 0) && ((!result_.getOptimalValue().getDimension())
+                                    || ((getProblem().isMinimization() && y[0] < result_.getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > result_.getOptimalValue()[0])));
 
       if (objectiveImproved)
       {
