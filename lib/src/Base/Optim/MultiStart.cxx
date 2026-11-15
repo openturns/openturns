@@ -148,6 +148,7 @@ void MultiStart::run()
   if (stopCallback_.first) solver.setStopCallback(stopCallback_.first, stopCallback_.second);
   UnsignedInteger callsNumber = 0;
   UnsignedInteger successNumber = 0;
+  Bool localInterruption = false;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     LOGDEBUG(OSS() << "Running local search " << (i + 1) << "/" << size << " x0=" << Point(startingSample_[i]).__str__() << " calls=" << callsNumber << "/" << getMaximumCallsNumber());
@@ -167,6 +168,9 @@ void MultiStart::run()
       const OptimizationResult localResult(solver.getResult());
       ++ successNumber;
       LOGDEBUG(OSS() << "Local search succeeded with " << localResult.getStatusMessage());
+      // A one-time stop request surfaces as a local INTERRUPTION without
+      // throwing: latch it so the outer poll below does not lose it
+      localInterruption = (localResult.getStatus() == OptimizationResult::INTERRUPTION);
 
       if (keepResults_) resultCollection_.add(localResult);
 
@@ -235,7 +239,7 @@ void MultiStart::run()
     }
     if (stopCallback_.first)
     {
-      Bool stop = stopCallback_.first(stopCallback_.second);
+      Bool stop = localInterruption || stopCallback_.first(stopCallback_.second);
       if (stop)
       {
         LOGINFO(OSS() << "MultiStart was stopped by user");
