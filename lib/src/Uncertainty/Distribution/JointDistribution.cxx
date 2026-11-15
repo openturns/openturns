@@ -1373,7 +1373,7 @@ void JointDistribution::setParametersCollection(const PointCollection& parameter
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger parametersSize = dimension + (dimension > 1 ? 1 : 0);
-  if (parametersCollection.getSize() < parametersSize) throw InvalidArgumentException(HERE) << "The collection is too small(" << parametersCollection.getSize() << "). Expected (" << parametersSize << ")";
+  if (parametersCollection.getSize() != parametersSize) throw InvalidArgumentException(HERE) << "The collection has an invalid size(" << parametersCollection.getSize() << "). Expected (" << parametersSize << ")";
 
   // No partial update on error: work on copies before committing
   DistributionCollection newMarginals(dimension);

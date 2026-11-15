@@ -421,3 +421,12 @@ ott.assert_almost_equal([transInv.getParameter()[0]], [1.5])
 assert len(transInv.getParameterDescription()) == len(transInv.getParameter())
 transInv.setParameter(transInv.getParameter())
 ott.assert_almost_equal(list(transInv.getParameter())[1:], marginalParams)
+
+# surplus entries are rejected rather than silently ignored
+jd2 = ot.JointDistribution([ot.Normal(), ot.Normal()], ot.NormalCopula())
+with ott.assert_raises(TypeError):
+    jd2.setParametersCollection(
+        ot.PointCollection([[0.0, 1.0], [0.0, 1.0], [0.0], [0.0]])
+    )
+with ott.assert_raises(TypeError):
+    jd2.setParametersCollection(ot.PointCollection([[0.0, 1.0], [0.0, 1.0]]))
