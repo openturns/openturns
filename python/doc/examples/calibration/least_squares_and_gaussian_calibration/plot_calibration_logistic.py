@@ -277,8 +277,8 @@ print(thetaDistribution.computeBilateralConfidenceIntervalWithMarginalProbabilit
 
 # %%
 # In this example, we have considered a single observation in dimension 22.
-# In this case, the parametric model has has 22 outputs, which
-# create a large number of plots.
+# In this case, the parametric model has 22 outputs, which
+# creates a large number of plots.
 # Transpose samples to interpret the data as a Sample in dimension 1
 # with 22 observations.
 
@@ -313,6 +313,36 @@ ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 300)
 graph = calibrationResult.drawObservationsVsInputs()
 graph.setLegendPosition("upper left")
 view = otv.View(graph)
+
+# %%
+# However, it's important to note that the model used in the previous graph is actually a metamodel
+# (a linearized version of the physical model). The performance of the calibrated physical model
+# might differ in case the metamodel is not a good approximation of the model.
+# We now create a graph that shows the performance of the real calibrated model.
+
+# %%
+calibratedModel = ot.ParametricFunction(lm.model1D, [1, 2], calibrationResult.getParameter())
+graph = calibrationResult.drawObservationsVsModel(calibratedModel)
+graph.setLegendPosition("upper left")
+view = otv.View(graph)
+
+# %%
+# We compute the :math:`R^2` score of the metamodel with the :class:`~openturns.MetaModelValidation` class.
+
+# %%
+metamodel = calibrationResult.getParametricMetamodel()
+predictionsFromMetamodel = ot.Sample.BuildFromPoint(metamodel(calibrationResult.getParameter()))
+validation = ot.MetaModelValidation(calibrationResult.getOutputObservations(), predictionsFromMetamodel)
+print("R2 of metamodel:", validation.computeR2Score())
+
+# %%
+# And the score of the real model.
+predictionsFromModel = calibratedModel(timeObservations)
+validation = ot.MetaModelValidation(calibrationResult.getOutputObservations(), predictionsFromModel)
+print("R2 of model:", validation.computeR2Score())
+
+# %%
+# They are rather close. For some models, the difference can be much larger.
 
 # %%
 # As a metamodel, we can compare the predicted U.S. population

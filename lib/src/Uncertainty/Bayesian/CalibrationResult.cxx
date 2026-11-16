@@ -24,6 +24,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/VisualTest.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/ConstantFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -165,6 +166,16 @@ void CalibrationResult::setOutputAtPriorAndPosteriorMean(const Sample & outputAt
   outputAtPriorMean_ = outputAtPrior;
   outputAtPosteriorMean_ = outputAtPosterior;
   isAlreadyComputedOutputAtPosteriorMean_ = true;
+}
+
+/* Metamodel accessor */
+Function CalibrationResult::getParametricMetamodel() const
+{
+  // Convert outputObservations to a Point
+  const Point flattenedOutputObservations(outputObservations_.getImplementation()->data_begin(), outputObservations_.getImplementation()->data_end());
+
+  // metamodel = residual + output observations
+  return residualFunction_ + ConstantFunction(calibratedParameter_.getDimension(), flattenedOutputObservations);
 }
 
 /* String converter */
@@ -419,6 +430,59 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
       postCloud.setColor(posteriorColor_);
       postCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorPointStyle" ));
       graph.add(postCloud);
+
+      grid.setGraph(i, j, graph);
+    }
+  }
+  return grid;
+}
+
+GridLayout CalibrationResult::drawObservationsVsModel(const Function & model) const
+{
+  // Outputs predicted by the calibrated model
+  Function localModel(model);
+  localModel.setParameter(calibratedParameter_);
+  const Sample predictions(localModel(inputObservations_));
+
+  const UnsignedInteger inputDimension = inputObservations_.getDimension();
+  const UnsignedInteger outputDimension = outputObservations_.getDimension();
+  GridLayout grid(outputDimension, inputDimension);
+  const Description xDescription(inputObservations_.getDescription());
+  const Description yDescription(outputObservations_.getDescription());
+  for (UnsignedInteger i = 0; i < outputDimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+    {
+      const Bool upperRightGraph = (i == 0 && j == inputDimension - 1);
+      // Only the last row
+      String xTitle = (i == outputDimension - 1) ? xDescription[j] : "";
+      // Only the first column
+      String yTitle = (j == 0) ? yDescription[i] : "";
+      Graph graph("", xTitle, yTitle);
+      graph.setLegendPosition("topright");
+      const Sample inputObservations_j(inputObservations_.getMarginal(j));
+
+      // observation
+      Cloud obsCloud(inputObservations_j, outputObservations_.getMarginal(i));
+      if (upperRightGraph)
+      {
+        // Set the legend only for the first graph
+        obsCloud.setLegend("Observations");
+      }
+      obsCloud.setColor(observationColor_);
+      obsCloud.setPointStyle(ResourceMap::GetAsString("CalibrationResult-ObservationPointStyle" ));
+      graph.add(obsCloud);
+
+      // Calibrated model
+      Sample joinedSample(inputObservations_j);
+      joinedSample.stack(predictions.getMarginal(i));
+      joinedSample.sortAccordingToAComponentInPlace(0);
+      Curve curve(joinedSample);
+      if (upperRightGraph)
+      {
+        curve.setLegend("Calibrated model");
+      }
+      graph.add(curve);
 
       grid.setGraph(i, j, graph);
     }
