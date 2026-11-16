@@ -154,6 +154,18 @@ outputAtPosterior : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::CalibrationResult::getParametricMetamodel
+"
+Accessor to the metamodel. In case of linear calibrations, the metamodel is a linearized
+version of the real model.
+
+Returns
+-------
+metamodel : :class:`~openturns.Function`
+    A function which takes theta and outputs the corresponding predictions of the metamodel."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::CalibrationResult::drawParameterDistributions
 "Draw parameter prior/posterior.
 
@@ -184,6 +196,33 @@ grid : :class:`~openturns.GridLayout`
 
 Plot the observed output of the model depending on the observed input before
 and after calibration.
+
+Returns
+-------
+grid : :class:`~openturns.GridLayout`
+    Graph array.
+
+Notes
+-----
+In case of linear calibration, the method uses a metamodel (linearized version
+of the physical model). Use :meth:`drawObservationsVsModel` to check the
+performance of the real model."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::drawObservationsVsModel
+"Draw observations/model.
+
+Plot the observed output and the predictions of a calibrated model.
+This is useful to check the performance of the calibrated physical model
+(for linear calibrations, :meth:`drawObservationsVsInputs` uses a linearized
+metamodel, not the real model).
+
+Parameters
+----------
+model : :class:`~openturns.Function`
+    A parametric function. Its parameters are set to the calibrated values stored in the object.
+    The function is then applied to the input observations to compute the predictions.
 
 Returns
 -------

@@ -79,6 +79,9 @@ public:
   Sample getOutputAtPriorMean() const;
   Sample getOutputAtPosteriorMean() const;
 
+  /** Metamodel accessor */
+  Function getParametricMetamodel() const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -92,6 +95,7 @@ public:
   GridLayout drawParameterDistributions() const;
   GridLayout drawResiduals() const;
   GridLayout drawObservationsVsInputs() const;
+  GridLayout drawObservationsVsModel(const Function & model) const;
   GridLayout drawObservationsVsPredictions() const;
   GridLayout drawResidualsNormalPlot() const;
 
