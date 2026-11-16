@@ -61,6 +61,10 @@ public:
   Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
   Point getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
+  /** Pointwise indices for independent vector inputs and a scalar output field */
+  Field getPointwiseFirstOrderIndices() const;
+  Field getPointwiseTotalOrderIndices() const;
+
   /** Draw indices */
   Graph draw(const UnsignedInteger marginalIndex = 0) const;
 
@@ -72,6 +76,7 @@ public:
 
 protected:
   void setResult(const FieldFunctionalChaosResult & result);
+  Field computePointwiseIndices(const Bool total) const;
 
   FieldFunctionalChaosResult result_;
 

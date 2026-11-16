@@ -46,6 +46,7 @@
  * ActiveLearningReliabilityAlgorithm, ActiveLearningReliabilityResult, ActiveLearningReliabilityFunction, ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningGMMFunction, PythonActiveLearningReliabilityFunction (openturns.experimental)
 
 ==== API changes ====
+ * Added pointwise first/total Sobol indices for scalar vector-to-field chaos surrogates
  * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases
  * Added LeastSquaresMethod.getPseudoInverse: the Moore-Penrose pseudo-inverse of the weighted design matrix, equal to (A^T A)^{-1} A^T for full-column-rank designs, evaluated per decomposition (QR, Cholesky, SVD)
  * Added Sample.computePairwiseDistance: the symmetric matrix of Euclidean distances between sample points

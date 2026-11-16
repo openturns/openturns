@@ -22,6 +22,8 @@
 #include "openturns/FieldFunctionalChaosSobolIndices.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
+#include <limits>
+#include <cmath>
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -207,6 +209,92 @@ Point FieldFunctionalChaosSobolIndices::getTotalOrderIndices(const UnsignedInteg
   for (UnsignedInteger i = 0; i < blockNumber; ++ i)
     result[i] = getSobolTotalIndex(i, marginalIndex);
   return result;
+}
+
+Field FieldFunctionalChaosSobolIndices::getPointwiseFirstOrderIndices() const
+{
+  return computePointwiseIndices(false);
+}
+
+Field FieldFunctionalChaosSobolIndices::getPointwiseTotalOrderIndices() const
+{
+  return computePointwiseIndices(true);
+}
+
+Field FieldFunctionalChaosSobolIndices::computePointwiseIndices(const Bool total) const
+{
+  if (result_.getInputKLResultCollection().getSize())
+    throw NotYetImplementedException(HERE) << "Pointwise indices require vector inputs.";
+  const FieldFunctionalChaosResult::KarhunenLoeveResultCollection klResults(result_.getOutputKLResultCollection());
+  if (klResults.getSize() != 1)
+    throw NotYetImplementedException(HERE) << "Pointwise indices require exactly one scalar output field block.";
+  const ProcessSample modes(klResults[0].getScaledModesAsProcessSample());
+  if (modes.getDimension() != 1)
+    throw NotYetImplementedException(HERE) << "Pointwise indices require a scalar output field.";
+  const FunctionalChaosResult chaos(result_.getFCEResult());
+  const OrthogonalBasis basis(chaos.getOrthogonalBasis());
+  if (!chaos.getDistribution().hasIndependentCopula() || !basis.getMeasure().hasIndependentCopula())
+    throw InvalidArgumentException(HERE) << "Pointwise indices require independent inputs and a tensorized basis.";
+  const Sample coefficients(chaos.getCoefficients());
+  if (coefficients.getDimension() != modes.getSize())
+    throw InvalidArgumentException(HERE) << "Chaos coefficient dimension must match the number of KL modes.";
+  const Indices coefficientIndices(chaos.getIndices());
+  if (coefficientIndices.getSize() != coefficients.getSize())
+    throw InvalidArgumentException(HERE) << "Each chaos coefficient must have a basis index.";
+  const UnsignedInteger inputDimension = chaos.getDistribution().getDimension();
+  const Mesh mesh(modes.getMesh());
+  const UnsignedInteger vertexNumber = mesh.getVerticesNumber();
+  Sample values(vertexNumber, inputDimension);
+  Point variance(vertexNumber);
+  Point coefficientScale(vertexNumber);
+  const EnumerateFunction enumerateFunction(basis.getEnumerateFunction());
+
+  // Variance decomposition in an orthonormal product basis follows:
+  // I. M. Sobol, Sensitivity estimates for nonlinear mathematical models,
+  // Mathematical Modelling and Computational Experiments, 1, 407-414, 1993.
+  // For a KL-PCE output, reconstruct each chaos coefficient at the vertex
+  // BEFORE squaring; squaring individual modes loses pointwise cross terms.
+  for (UnsignedInteger i = 0; i < coefficients.getSize(); ++ i)
+  {
+    const Indices alpha(enumerateFunction(coefficientIndices[i]));
+    if (alpha.getSize() != inputDimension)
+      throw InvalidArgumentException(HERE) << "Basis dimension must match input dimension.";
+    Indices support;
+    for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+      if (alpha[j]) support.add(j);
+    if (!support.getSize()) continue; // the mean does not contribute to variance
+    for (UnsignedInteger vertex = 0; vertex < vertexNumber; ++ vertex)
+    {
+      Scalar coefficient = 0.0;
+      for (UnsignedInteger mode = 0; mode < modes.getSize(); ++ mode)
+        coefficient += coefficients(i, mode) * modes[mode](vertex, 0);
+      if (!std::isfinite(coefficient))
+        throw InvalidArgumentException(HERE) << "Reconstructed chaos coefficients must be finite.";
+      // Rescale the sum of squares to avoid overflow/underflow in ratios.
+      const Scalar magnitude = std::abs(coefficient);
+      if (magnitude == 0.0) continue;
+      if (magnitude > coefficientScale[vertex])
+      {
+        const Scalar ratio = coefficientScale[vertex] / magnitude;
+        const Scalar factor = ratio * ratio;
+        variance[vertex] *= factor;
+        for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+          values(vertex, j) *= factor;
+        coefficientScale[vertex] = magnitude;
+      }
+      const Scalar normalized = coefficient / coefficientScale[vertex];
+      const Scalar contribution = normalized * normalized;
+      variance[vertex] += contribution;
+      if (total || support.getSize() == 1)
+        for (UnsignedInteger j = 0; j < support.getSize(); ++ j)
+          values(vertex, support[j]) += contribution;
+    }
+  }
+  for (UnsignedInteger vertex = 0; vertex < vertexNumber; ++ vertex)
+    for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+      values(vertex, j) = variance[vertex] > 0.0 ? values(vertex, j) / variance[vertex] : std::numeric_limits<Scalar>::quiet_NaN();
+  values.setDescription(chaos.getDistribution().getDescription());
+  return Field(mesh, values);
 }
 
 Graph FieldFunctionalChaosSobolIndices::draw(const UnsignedInteger marginalIndex) const
