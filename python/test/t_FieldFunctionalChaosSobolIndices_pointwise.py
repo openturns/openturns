@@ -41,7 +41,9 @@ try:
         sensitivity = ot.FieldFunctionalChaosSobolIndices(result)
         first = sensitivity.getPointwiseFirstOrderIndices()
         total = sensitivity.getPointwiseTotalOrderIndices()
-        assert first.getMesh() == mesh
+        # Compare Mesh objects to avoid RegularGrid subclass equality dispatch.
+        assert first.getMesh() == ot.Mesh(mesh)
+        assert total.getMesh() == ot.Mesh(mesh)
         assert first.getDimension() == 2
         for vertex in range(mesh.getVerticesNumber()):
             t = mesh.getVertices()[vertex, 0]
