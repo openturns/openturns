@@ -21,8 +21,7 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
-
-#include <limits>
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +32,7 @@ static const Factory<KarhunenLoeveAlgorithmImplementation> Factory_KarhunenLoeve
 /* Default constructor */
 KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation()
   : PersistentObject()
-  , nbModes_(std::numeric_limits<UnsignedInteger>::max())
+  , nbModes_(SpecFunc::MaxUnsignedInteger)
 {
   // Nothing to do
 }
@@ -44,7 +43,7 @@ KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation(const
   : PersistentObject()
   , covariance_(covariance)
   , threshold_(threshold)
-  , nbModes_(std::numeric_limits<UnsignedInteger>::max())
+  , nbModes_(SpecFunc::MaxUnsignedInteger)
 {
   // Nothing to do
 }

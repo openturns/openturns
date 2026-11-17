@@ -21,6 +21,7 @@
 #include <cmath>
 #include "openturns/OTprivate.hxx"
 #include "openturns/Tuples.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -76,7 +77,7 @@ UnsignedInteger Tuples::getSize() const
   const UnsignedInteger dimension = bounds_.getSize();
   /* Size of the sample to be generated: bounds[0] * ... * bounds[dimension-1] */
   UnsignedInteger size = std::min(1UL, dimension);
-  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger maxUInt = SpecFunc::MaxUnsignedInteger;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     const UnsignedInteger bI = bounds_[i];

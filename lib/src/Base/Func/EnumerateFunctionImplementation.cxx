@@ -18,12 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <limits>
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/EnumerateFunctionImplementation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,7 +60,7 @@ Bool EnumerateFunctionImplementation::hasEqualBase(const EnumerateFunctionImplem
 /* Parameter constructor */
 EnumerateFunctionImplementation::EnumerateFunctionImplementation(const UnsignedInteger dimension)
   : PersistentObject()
-  , upperBound_(dimension, std::numeric_limits<UnsignedInteger>::max())
+  , upperBound_(dimension, SpecFunc::MaxUnsignedInteger)
   , dimension_(dimension)
 {
   if (!(dimension > 0))
@@ -172,7 +172,7 @@ void EnumerateFunctionImplementation::load(Advocate & adv)
   if (adv.hasAttribute( "upperBound_"))
     adv.loadAttribute( "upperBound_", upperBound_ );
   else
-    upperBound_ = Indices(getDimension(), std::numeric_limits<UnsignedInteger>::max());
+    upperBound_ = Indices(getDimension(), SpecFunc::MaxUnsignedInteger);
 }
 
 /* Returns the marginal enumerate function */

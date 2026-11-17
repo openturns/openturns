@@ -239,7 +239,7 @@ Bool computeBoxCDF(const Point & x,
 {
   const UnsignedInteger n = x.getSize();
   UnsignedInteger numberOfNodes = 1;
-  const UnsignedInteger maxUnsigned = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger maxUnsigned = SpecFunc::MaxUnsignedInteger;
   for (UnsignedInteger i = 0; i < n; ++i)
   {
     if (numberOfNodes > maxUnsigned / order) return false;

@@ -22,6 +22,7 @@
 #include "openturns/UniVariateDistributionPolynomialFactory.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -147,7 +148,7 @@ void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
   {
     marginalSizes_ = marginalSizes;
     size_ = 1;
-    const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
+    const UnsignedInteger maxUInt = SpecFunc::MaxUnsignedInteger;
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       const UnsignedInteger dI = marginalSizes_[i];
@@ -169,7 +170,7 @@ void GaussProductExperiment::setDistributionAndMarginalSizes(const Distribution 
 
   const UnsignedInteger dimension = distribution_.getDimension();
   size_ = 1;
-  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger maxUInt = SpecFunc::MaxUnsignedInteger;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     const UnsignedInteger dI = marginalSizes_[i];

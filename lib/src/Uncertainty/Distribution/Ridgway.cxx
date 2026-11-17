@@ -26,7 +26,6 @@
  */
 #include <cmath>
 #include <cstdint>
-#include <limits>
 #include <algorithm>
 
 #include "openturns/Ridgway.hxx"
@@ -138,7 +137,7 @@ void gibbsMove(Sample& eta,
 // instead of truncating them
 UnsignedInteger checkedPoolSize(const uint64_t count)
 {
-  if (count > std::numeric_limits<UnsignedInteger>::max())
+  if (count > SpecFunc::MaxUnsignedInteger)
     throw InvalidArgumentException(HERE) << "Number of uniform draws " << count << " exceeds the maximum pool size";
   return static_cast<UnsignedInteger>(count);
 }

@@ -19,11 +19,11 @@
  *
  */
 
-#include <limits>
 #include "openturns/FieldFunctionalChaosAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveSVDAlgorithm.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
+#include "openturns/SpecFunc.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -36,7 +36,7 @@ static const Factory<FieldFunctionalChaosAlgorithm> Factory_FieldFunctionalChaos
 /* Default constructor */
 FieldFunctionalChaosAlgorithm::FieldFunctionalChaosAlgorithm()
   : PersistentObject()
-  , nbModes_(std::numeric_limits<UnsignedInteger>::max())
+  , nbModes_(SpecFunc::MaxUnsignedInteger)
   , recompress_(ResourceMap::GetAsBool("FieldFunctionalChaosAlgorithm-DefaultRecompress"))
 {
   // Nothing to do

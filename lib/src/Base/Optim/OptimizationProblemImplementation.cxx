@@ -27,8 +27,6 @@
 #include "openturns/LinearEvaluation.hxx"
 #include "openturns/SpecFunc.hxx"
 
-#include <limits>
-
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimizationProblemImplementation)
@@ -93,7 +91,7 @@ SparseMatrix MergeConstraintRows(const SparseMatrix & constraintCoefficients,
                                  const Matrix & addedCoefficients,
                                  const UnsignedInteger dimension)
 {
-  const UnsignedInteger noRow = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger noRow = SpecFunc::MaxUnsignedInteger;
   const Indices rowIndices(constraintCoefficients.getRowIndices());
   const Indices columnPointer(constraintCoefficients.getColumnPointer());
   const Point values(constraintCoefficients.getValues());
@@ -545,7 +543,7 @@ Function OptimizationProblemImplementation::GetLinearEqualityConstraint(const Sp
   const Point upperBound(constraintBounds.getUpperBound());
   const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
   const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
-  const UnsignedInteger noRow = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger noRow = SpecFunc::MaxUnsignedInteger;
   Indices outputRowOf(rowDimension, noRow);
   UnsignedInteger outputDimension = 0;
   for (UnsignedInteger i = 0; i < rowDimension; ++i)
@@ -578,7 +576,7 @@ Function OptimizationProblemImplementation::GetLinearInequalityConstraint(const 
   const Point upperBound(constraintBounds.getUpperBound());
   const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
   const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
-  const UnsignedInteger noRow = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger noRow = SpecFunc::MaxUnsignedInteger;
   // L <= a.x is written a.x - L >= 0 and a.x <= U as U - a.x >= 0: each row
   // contributes its lower-bound output before its upper-bound one, as in the
   // dense helper
@@ -638,7 +636,7 @@ void OptimizationProblemImplementation::SetLinearEqualityConstraint(SparseMatrix
   const Point upperBound(constraintBounds.getUpperBound());
   const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
   const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
-  const UnsignedInteger noRow = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger noRow = SpecFunc::MaxUnsignedInteger;
   Indices newRowOf(rowDimension, noRow);
   Indices keptRows;
   for (UnsignedInteger i = 0; i < rowDimension; ++i)
@@ -685,7 +683,7 @@ void OptimizationProblemImplementation::SetLinearInequalityConstraint(SparseMatr
   const Point upperBound(constraintBounds.getUpperBound());
   const Interval::BoolCollection finiteLowerBound(constraintBounds.getFiniteLowerBound());
   const Interval::BoolCollection finiteUpperBound(constraintBounds.getFiniteUpperBound());
-  const UnsignedInteger noRow = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger noRow = SpecFunc::MaxUnsignedInteger;
   Indices newRowOf(rowDimension, noRow);
   Indices keptRows;
   for (UnsignedInteger i = 0; i < rowDimension; ++i)
