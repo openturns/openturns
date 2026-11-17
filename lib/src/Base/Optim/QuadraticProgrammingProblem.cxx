@@ -40,42 +40,17 @@ QuadraticProgrammingProblem::QuadraticProgrammingProblem()
 /* Parameter constructor */
 QuadraticProgrammingProblem::QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
                                    const Point & linearCost,
-                                   const Interval & bounds)
-  : OptimizationProblemImplementation()
-  , hessian_(hessian)
-  , linearCost_(linearCost)
-{
-  if (hessian_.getDimension() != linearCost_.getDimension())
-    throw InvalidDimensionException(HERE) << "Hessian dimension (" << hessian_.getDimension() << ") must match linear cost dimension (" << linearCost_.getDimension() << ")";
-  updateObjective();
-  setBounds(bounds);
-}
-
-/* Parameter constructor */
-QuadraticProgrammingProblem::QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
-                                   const Point & linearCost,
                                    const Interval & bounds,
                                    const Scalar constant)
-  : QuadraticProgrammingProblem(hessian, linearCost, bounds)
-{
-  setConstant(constant);
-}
-
-/* Parameter constructor */
-QuadraticProgrammingProblem::QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
-                                   const Point & linearCost,
-                                   const Interval & bounds,
-                                   const Matrix & constraintCoefficients,
-                                   const Interval & constraintBounds)
   : OptimizationProblemImplementation()
   , hessian_(hessian)
   , linearCost_(linearCost)
+  , constant_(constant)
 {
   if (hessian_.getDimension() != linearCost_.getDimension())
     throw InvalidDimensionException(HERE) << "Hessian dimension (" << hessian_.getDimension() << ") must match linear cost dimension (" << linearCost_.getDimension() << ")";
   updateObjective();
   setBounds(bounds);
-  setLinearConstraint(constraintCoefficients, constraintBounds);
 }
 
 /* Parameter constructor */
@@ -85,9 +60,16 @@ QuadraticProgrammingProblem::QuadraticProgrammingProblem(const SymmetricMatrix &
                                    const Matrix & constraintCoefficients,
                                    const Interval & constraintBounds,
                                    const Scalar constant)
-  : QuadraticProgrammingProblem(hessian, linearCost, bounds, constraintCoefficients, constraintBounds)
+  : OptimizationProblemImplementation()
+  , hessian_(hessian)
+  , linearCost_(linearCost)
+  , constant_(constant)
 {
-  setConstant(constant);
+  if (hessian_.getDimension() != linearCost_.getDimension())
+    throw InvalidDimensionException(HERE) << "Hessian dimension (" << hessian_.getDimension() << ") must match linear cost dimension (" << linearCost_.getDimension() << ")";
+  updateObjective();
+  setBounds(bounds);
+  setLinearConstraint(constraintCoefficients, constraintBounds);
 }
 
 

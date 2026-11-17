@@ -44,20 +44,8 @@ public:
   /** Constructor with parameters */
   QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
                    const Point & linearCost,
-                   const Interval & bounds);
-
-  /** Constructor with parameters */
-  QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
-                   const Point & linearCost,
                    const Interval & bounds,
-                   const Scalar constant);
-
-  /** Constructor with parameters */
-  QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
-                   const Point & linearCost,
-                   const Interval & bounds,
-                   const Matrix & constraintCoefficients,
-                   const Interval & constraintBounds);
+                   const Scalar constant = 0.0);
 
   /** Constructor with parameters */
   QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
@@ -65,7 +53,7 @@ public:
                    const Interval & bounds,
                    const Matrix & constraintCoefficients,
                    const Interval & constraintBounds,
-                   const Scalar constant);
+                   const Scalar constant = 0.0);
 
   /** Virtual constructor */
   QuadraticProgrammingProblem * clone() const override;
