@@ -104,13 +104,13 @@ Point InverseBoxCoxEvaluation::getShift() const
   return shift_;
 }
 
-struct InverseBoxCoxEvaluationComputeSamplePolicy
+struct InverseBoxCoxEvaluationComputeSampleBody
 {
   const Sample & input_;
   Sample & output_;
   const InverseBoxCoxEvaluation & evaluation_;
 
-  InverseBoxCoxEvaluationComputeSamplePolicy(const Sample & input,
+  InverseBoxCoxEvaluationComputeSampleBody(const Sample & input,
       Sample & output,
       const InverseBoxCoxEvaluation & evaluation)
     : input_(input)
@@ -131,7 +131,7 @@ struct InverseBoxCoxEvaluationComputeSamplePolicy
       } // j
     } // i
   } // operator ()
-}; /* end struct InverseBoxCoxEvaluationComputeSamplePolicy */
+}; /* end struct InverseBoxCoxEvaluationComputeSampleBody */
 
 /* Operator () */
 Sample InverseBoxCoxEvaluation::operator() (const Sample & inS) const
@@ -139,8 +139,8 @@ Sample InverseBoxCoxEvaluation::operator() (const Sample & inS) const
   if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getInputDimension());
-  const InverseBoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const InverseBoxCoxEvaluationComputeSampleBody body( inS, result, *this );
+  TBBImplementation::ParallelFor( 0, size, body );
   callsNumber_.fetchAndAdd(size);
   result.setDescription(getOutputDescription());
   return result;

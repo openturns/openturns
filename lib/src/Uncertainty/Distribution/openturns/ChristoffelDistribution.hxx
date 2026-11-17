@@ -65,8 +65,8 @@ public:
   friend class ChristoffelTensorSliceEvaluation;
 
   /** TBB policies evaluate the per-point cores directly */
-  friend struct ComputeChristoffelPolicy;
-  friend struct ComputeLogChristoffelPolicy;
+  friend struct ComputeChristoffelBody;
+  friend struct ComputeLogChristoffelBody;
 
   /** String converter */
   String __repr__() const override;

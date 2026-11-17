@@ -238,13 +238,13 @@ static void extract(const SymmetricMatrix & source, SymmetricMatrix & target)
 class LMGAndPMVDAlgorithm;
 
 /**
- * @class LMGAndPMVDTBBPolicy
+ * @class LMGAndPMVDTBBBody
  *
  * TBB body to compute the variances associated with combinations of input variables
  */
-struct LMGAndPMVDTBBPolicy
+struct LMGAndPMVDTBBBody
 {
-  LMGAndPMVDTBBPolicy(LMGAndPMVDAlgorithm & algo)
+  LMGAndPMVDTBBBody(LMGAndPMVDAlgorithm & algo)
     : algo_(algo)
   {
     // Nothing to do
@@ -288,7 +288,7 @@ public:
   void run()
   {
     // First step: compute the variance associated with every combination of input variables
-    const LMGAndPMVDTBBPolicy body(*this);
+    const LMGAndPMVDTBBBody body(*this);
     const UnsignedInteger threshold = ResourceMap::GetAsUnsignedInteger("CorrelationAnalysis-DimensionThresholdForLMGAndPMVDParallelization");
     TBBImplementation::ParallelForIf(dimension_ >= threshold, 1, numberOfCombinations_, body, 1024);
 
@@ -429,7 +429,7 @@ public:
 
 
 /* Compute variances associated with a range of combinations */
-void LMGAndPMVDTBBPolicy::operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
+void LMGAndPMVDTBBBody::operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
 {
   // Pre-allocate some matrices
   Collection<CovarianceMatrix> matrices2D;
@@ -464,7 +464,7 @@ void LMGAndPMVDTBBPolicy::operator()(const TBBImplementation::BlockedRange<Unsig
 }
 
 /* Get the list of indices contained in a combination */
-void LMGAndPMVDTBBPolicy::getIndices(const UnsignedInteger combination, const UnsignedInteger size, Indices & indices) const
+void LMGAndPMVDTBBBody::getIndices(const UnsignedInteger combination, const UnsignedInteger size, Indices & indices) const
 {
   UnsignedInteger i = 0;
   UnsignedInteger j = 0;
@@ -481,7 +481,7 @@ void LMGAndPMVDTBBPolicy::getIndices(const UnsignedInteger combination, const Un
 }
 
 /* Extract a subset of a square matrix */
-void LMGAndPMVDTBBPolicy::extract2D(const SquareMatrix & source, const Indices & indices, SquareMatrix & target) const
+void LMGAndPMVDTBBBody::extract2D(const SquareMatrix & source, const Indices & indices, SquareMatrix & target) const
 {
   const MatrixImplementation & sourceImpl = *source.getImplementation();
   MatrixImplementation & targetImpl = *target.getImplementation();
@@ -494,7 +494,7 @@ void LMGAndPMVDTBBPolicy::extract2D(const SquareMatrix & source, const Indices &
 }
 
 /* Extract a subset of a column matrix */
-void LMGAndPMVDTBBPolicy::extract1D(const Matrix & source, const Indices & indices, Matrix & target) const
+void LMGAndPMVDTBBBody::extract1D(const Matrix & source, const Indices & indices, Matrix & target) const
 {
   const MatrixImplementation & sourceImpl = *source.getImplementation();
   MatrixImplementation & targetImpl = *target.getImplementation();

@@ -92,14 +92,14 @@ String IntegrationStrategy::__repr__() const
 }
 
 
-struct IntegrationStrategyCoefficientsPolicy
+struct IntegrationStrategyCoefficientsBody
 {
   const Point & weightedOutput_;
   const Matrix & designMatrix_;
   const Indices & addedRanks_;
   Point & alpha_;
 
-  IntegrationStrategyCoefficientsPolicy(const Point & weightedOutput,
+  IntegrationStrategyCoefficientsBody(const Point & weightedOutput,
                                         const Matrix & designMatrix,
                                         const Indices & addedRanks,
                                         Point & alpha)
@@ -126,7 +126,7 @@ struct IntegrationStrategyCoefficientsPolicy
     } // j
   } // operator()
 
-}; /* end struct IntegrationStrategyCoefficientsPolicy */
+}; /* end struct IntegrationStrategyCoefficientsBody */
 
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis
@@ -172,8 +172,8 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
   Point weightedOutput(sampleSize);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
     weightedOutput[i] = weights_[i] * outputSample_(i, marginalIndex);
-  IntegrationStrategyCoefficientsPolicy policy(weightedOutput, designMatrix, addedRanks, addedAlpha);
-  TBBImplementation::ParallelFor( 0, addedSize, policy );
+  IntegrationStrategyCoefficientsBody body(weightedOutput, designMatrix, addedRanks, addedAlpha);
+  TBBImplementation::ParallelFor( 0, addedSize, body );
   alpha.add(addedAlpha);
   alpha_k_p_ = alpha;
   // The residual is the mean squared error between the model and the meta model.

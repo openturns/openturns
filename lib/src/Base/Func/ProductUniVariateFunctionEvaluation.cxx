@@ -100,13 +100,13 @@ Point ProductUniVariateFunctionEvaluation::operator() (const Point & inP) const
   return result;
 }
 
-struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
+struct ProductUniVariateFunctionEvaluationComputeSampleBody
 {
   const Sample & input_;
   Sample & output_;
   const ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection & functions_;
 
-  ProductUniVariateFunctionEvaluationComputeSamplePolicy(const Sample & input,
+  ProductUniVariateFunctionEvaluationComputeSampleBody(const Sample & input,
       Sample & output,
       const ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection & functions)
     : input_(input)
@@ -126,7 +126,7 @@ struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
       output_(i, 0) = value;
     } // i
   } // operator ()
-};  // struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
+};  // struct ProductUniVariateFunctionEvaluationComputeSampleBody
 
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
 Sample ProductUniVariateFunctionEvaluation::operator() (const Sample & inS) const
@@ -135,8 +135,8 @@ Sample ProductUniVariateFunctionEvaluation::operator() (const Sample & inS) cons
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getOutputDimension());
-  const ProductUniVariateFunctionEvaluationComputeSamplePolicy policy( inS, result, functions_ );
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  const ProductUniVariateFunctionEvaluationComputeSampleBody body( inS, result, functions_ );
+  TBBImplementation::ParallelFor(0, size, body, 1024);
   result.setDescription(getOutputDescription());
   callsNumber_.fetchAndAdd(size);
   return result;

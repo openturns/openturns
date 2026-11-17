@@ -80,11 +80,11 @@ public:
 protected:
   mutable KDTree tree_;
 
-  friend struct LVVoronoiScorePolicy;
+  friend struct LVVoronoiScoreBody;
   void computeVoronoiScore() const;
   mutable Point voronoiScore_;
 
-  friend struct LVLOLAScorePolicy;
+  friend struct LVLOLAScoreBody;
   void computeLOLAScore() const;
   mutable Point lolaScore_;
 

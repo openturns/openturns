@@ -218,14 +218,14 @@ Point P1LagrangeEvaluation::operator()( const Point & inP ) const
   return result;
 }
 
-class P1LagrangeEvaluationComputeSamplePolicy
+class P1LagrangeEvaluationComputeSampleBody
 {
   const Sample & input_;
   Sample & output_;
   const P1LagrangeEvaluation & lagrange_;
 
 public:
-  P1LagrangeEvaluationComputeSamplePolicy(const Sample & input,
+  P1LagrangeEvaluationComputeSampleBody(const Sample & input,
                                           Sample & output,
                                           const P1LagrangeEvaluation & lagrange)
     : input_(input)
@@ -240,7 +240,7 @@ public:
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       output_[i] = lagrange_.evaluate(input_[i]);
   } // operator ()
-};  // class P1LagrangeEvaluationComputeSamplePolicy
+};  // class P1LagrangeEvaluationComputeSampleBody
 
 /* Evaluation method */
 Point P1LagrangeEvaluation::evaluate( const Point & inP ) const
@@ -277,8 +277,8 @@ Sample P1LagrangeEvaluation::operator()( const Sample & inS ) const
   if (inS == mesh_.getVertices()) result = values_;
   else
   {
-    const P1LagrangeEvaluationComputeSamplePolicy policy(inS, result, *this);
-    TBBImplementation::ParallelFor(0, size, policy, 1024);
+    const P1LagrangeEvaluationComputeSampleBody body(inS, result, *this);
+    TBBImplementation::ParallelFor(0, size, body, 1024);
   } // The input sample is different from the mesh vertices
   callsNumber_.fetchAndAdd(size);
   return result;

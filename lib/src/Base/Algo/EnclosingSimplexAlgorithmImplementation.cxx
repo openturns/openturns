@@ -133,14 +133,14 @@ UnsignedInteger EnclosingSimplexAlgorithmImplementation::query(const Point & ) c
   throw NotYetImplementedException(HERE) << "In EnclosingSimplexAlgorithmImplementation::query(const Point & x) const";
 }
 
-/* TBBImplementation policy to speed-up query over a sample */
-struct EnclosingSimplexAlgorithmImplementationQueryPolicy
+/* TBBImplementation body to speed-up query over a sample */
+struct EnclosingSimplexAlgorithmImplementationQueryBody
 {
   const Sample & points_;
   Indices & indices_;
   const EnclosingSimplexAlgorithmImplementation & algorithm_;
 
-  EnclosingSimplexAlgorithmImplementationQueryPolicy(const Sample & points,
+  EnclosingSimplexAlgorithmImplementationQueryBody(const Sample & points,
       Indices & indices,
       const EnclosingSimplexAlgorithmImplementation & algorithm)
     : points_(points)
@@ -153,7 +153,7 @@ struct EnclosingSimplexAlgorithmImplementationQueryPolicy
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) indices_[i] = algorithm_.query(points_[i]);
   }
 
-}; /* end struct EnclosingSimplexAlgorithmImplementationQueryPolicy */
+}; /* end struct EnclosingSimplexAlgorithmImplementationQueryBody */
 
 /* Get the index of the enclosing simplex of the given points */
 Indices EnclosingSimplexAlgorithmImplementation::query(const Sample & sample) const
@@ -161,8 +161,8 @@ Indices EnclosingSimplexAlgorithmImplementation::query(const Sample & sample) co
   const UnsignedInteger size = sample.getSize();
   Indices result(size);
   if (size == 0) return result;
-  const EnclosingSimplexAlgorithmImplementationQueryPolicy policy( sample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const EnclosingSimplexAlgorithmImplementationQueryBody body( sample, result, *this );
+  TBBImplementation::ParallelFor( 0, size, body );
   return result;
 }
 

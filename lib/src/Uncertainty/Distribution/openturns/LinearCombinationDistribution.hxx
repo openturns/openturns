@@ -156,9 +156,9 @@ private:
   Complex computeDeltaCharacteristicFunction(const UnsignedInteger index) const;
 
   /** Compute the characteristic function of nD distributions by difference to a reference Normal distribution with the same mean and the same covariance */
-  friend struct AddPDFOn1DGridPolicy;
-  friend struct AddPDFOn2DGridPolicy;
-  friend struct AddPDFOn3DGridPolicy;
+  friend struct AddPDFOn1DGridBody;
+  friend struct AddPDFOn2DGridBody;
+  friend struct AddPDFOn3DGridBody;
   Complex computeDeltaCharacteristicFunction(const Point & x) const;
 
   /** Update cache of the characteristic function */
@@ -320,7 +320,7 @@ private:
   Scalar computeEquivalentNormalPDFSum(const Scalar x) const;
   Scalar computeEquivalentNormalCDFSum(const Scalar s, const Scalar t) const;
 
-  friend struct EquivalentNormalPDFSumPolicy;
+  friend struct EquivalentNormalPDFSumBody;
   friend struct DeltaContributionAccumulator;
   Scalar computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
                                        UnsignedInteger imax, UnsignedInteger & levelMax) const;

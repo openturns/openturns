@@ -142,7 +142,7 @@ Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedIn
   return firstOrderSensitivity;
 }
 
-struct BootstrapPolicy
+struct BootstrapBody
 {
   const SobolIndicesAlgorithmImplementation & sai_;
   const Indices & indices_;
@@ -150,7 +150,7 @@ struct BootstrapPolicy
   Sample & bsFO_;
   Sample & bsTO_;
 
-  BootstrapPolicy( const SobolIndicesAlgorithmImplementation & sai,
+  BootstrapBody( const SobolIndicesAlgorithmImplementation & sai,
                    const Indices & indices,
                    const UnsignedInteger size,
                    Sample & bsFO,
@@ -186,7 +186,7 @@ struct BootstrapPolicy
       bsTO_[k] = aggregatedTotal;
     }
   }
-}; /* end struct BootstrapPolicy */
+}; /* end struct BootstrapBody */
 
 /** void method that computes confidence interval */
 void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
@@ -218,8 +218,8 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
       Sample bsTOpartial(effectiveBlockSize, inputDimension);
       const RandomGenerator::UnsignedIntegerCollection randomIndices(RandomGenerator::IntegerGenerate(size * effectiveBlockSize, size));
       const Indices indices(randomIndices.begin(), randomIndices.end());
-      const BootstrapPolicy policy( *this, indices, size, bsFOpartial, bsTOpartial );
-      TBBImplementation::ParallelFor( 0, effectiveBlockSize, policy );
+      const BootstrapBody body( *this, indices, size, bsFOpartial, bsTOpartial );
+      TBBImplementation::ParallelFor( 0, effectiveBlockSize, body );
 
       bsFO.add(bsFOpartial);
       bsTO.add(bsTOpartial);

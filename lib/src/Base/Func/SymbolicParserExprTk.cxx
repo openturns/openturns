@@ -103,13 +103,13 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
 }
 
 
-struct SymbolicParserExprTkPolicy
+struct SymbolicParserExprTkBody
 {
   const SampleImplementation & input_;
   SampleImplementation & output_;
   const SymbolicParserExprTk & evaluation_;
 
-  SymbolicParserExprTkPolicy(const Sample & input,
+  SymbolicParserExprTkBody(const Sample & input,
                              Sample & output,
                              const SymbolicParserExprTk & evaluation)
     : input_(*input.getImplementation())
@@ -160,7 +160,7 @@ struct SymbolicParserExprTkPolicy
     }
   }
 
-}; /* end struct SymbolicParserExprTkPolicy */
+}; /* end struct SymbolicParserExprTkBody */
 
 
 Sample SymbolicParserExprTk::operator() (const Sample & inS) const
@@ -195,8 +195,8 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
     }
   }
 
-  const SymbolicParserExprTkPolicy policy(inS, result, *this);
-  TBBImplementation::ParallelFor(0, size, policy, smallSize_);
+  const SymbolicParserExprTkBody body(inS, result, *this);
+  TBBImplementation::ParallelFor(0, size, body, smallSize_);
   return result;
 }
 

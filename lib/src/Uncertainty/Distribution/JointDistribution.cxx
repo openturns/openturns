@@ -409,14 +409,14 @@ Point JointDistribution::getRealization() const
   return result;
 }
 
-struct ComposedDistributionComputeSamplePolicy
+struct ComposedDistributionComputeSampleBody
 {
   const Sample input_;
   Sample & output_;
   const Collection<Distribution> distributionCollection_;
   UnsignedInteger dimension_;
 
-  ComposedDistributionComputeSamplePolicy(const Sample & input,
+  ComposedDistributionComputeSampleBody(const Sample & input,
                                           Sample & output,
                                           const Collection<Distribution> & distributionCollection)
     : input_(input)
@@ -432,7 +432,7 @@ struct ComposedDistributionComputeSamplePolicy
         output_(i, j) = distributionCollection_[j].computeScalarQuantile(input_(i, j));
   }
 
-}; /* end struct ComposedDistributionComputeSamplePolicy */
+}; /* end struct ComposedDistributionComputeSampleBody */
 
 /* Get a sample of the distribution */
 Sample JointDistribution::getSample(const UnsignedInteger size) const
@@ -444,8 +444,8 @@ Sample JointDistribution::getSample(const UnsignedInteger size) const
     // of possible parallelism of the getSample() method of the core
     const Sample coreSample(core_.getSample(size));
     Sample result(size, dimension);
-    const ComposedDistributionComputeSamplePolicy policy(coreSample, result, distributionCollection_);
-    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy, 1024);
+    const ComposedDistributionComputeSampleBody body(coreSample, result, distributionCollection_);
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, body, 1024);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;

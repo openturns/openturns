@@ -123,8 +123,8 @@ protected:
   Description getFullParameterDescription() const override;
 
 
-  friend struct DiracCovarianceModelDiscretizePolicy;
-  friend struct DiracCovarianceModelDiscretizeAndFactorizePolicy;
+  friend struct DiracCovarianceModelDiscretizeBody;
+  friend struct DiracCovarianceModelDiscretizeAndFactorizeBody;
   mutable TriangularMatrix covarianceFactor_;
   void computeCovariance();
 

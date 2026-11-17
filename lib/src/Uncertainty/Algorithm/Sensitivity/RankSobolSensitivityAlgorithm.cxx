@@ -135,15 +135,15 @@ Sample RankSobolSensitivityAlgorithm::computeIndices() const
 }
 
 
-// Definition of bootstrap policy without replacement to compute confidence intervals
+// Definition of bootstrap body without replacement to compute confidence intervals
 // Parallelization is performed with TBB
-struct RankSobolBootstrapPolicy
+struct RankSobolBootstrapBody
 {
   const RankSobolSensitivityAlgorithm & sai_;
   const Sample & randomIndices_;
   Sample & bsFO_;
 
-  RankSobolBootstrapPolicy( const RankSobolSensitivityAlgorithm & sai,
+  RankSobolBootstrapBody( const RankSobolSensitivityAlgorithm & sai,
                             const Sample & randomIndices,
                             Sample & bsFO)
     : sai_(sai)
@@ -171,7 +171,7 @@ struct RankSobolBootstrapPolicy
     }
 
   }
-}; /* end struct BootstrapPolicy */
+}; /* end struct RankSobolBootstrapBody */
 
 
 // Draw of First indices only
@@ -314,8 +314,8 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
 
       const Sample randomIndices(kPermutation.getSample(effectiveBlockSize));
 
-      const RankSobolBootstrapPolicy policy(*this, randomIndices, bsFOpartial);
-      TBBImplementation::ParallelFor(0, effectiveBlockSize, policy);
+      const RankSobolBootstrapBody body(*this, randomIndices, bsFOpartial);
+      TBBImplementation::ParallelFor(0, effectiveBlockSize, body);
       bsFO.add(bsFOpartial);
     }
 

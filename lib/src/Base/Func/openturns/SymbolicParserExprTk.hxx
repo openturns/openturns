@@ -41,7 +41,7 @@ class SymbolicParserExprTk
 {
 
   CLASSNAME
-  friend struct SymbolicParserExprTkPolicy;
+  friend struct SymbolicParserExprTkBody;
 public:
   /** Default constructor */
   SymbolicParserExprTk();
