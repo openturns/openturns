@@ -50,7 +50,7 @@ linearCost : sequence of float
 bounds : :class:`~openturns.Interval`
     Bound constraints :math:`B = \{\vect{x} : \vect{\ell} \leq \vect{x} \leq \vect{u}\}`.
     An empty interval means no bounds.
-constant : float
+constant : float, optional
     The constant term :math:`d`. Default is 0.
 A : :class:`~openturns.Matrix`
     Linear constraint matrix :math:`\mat{A}`.
