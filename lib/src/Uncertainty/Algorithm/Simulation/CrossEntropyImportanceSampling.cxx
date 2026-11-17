@@ -353,7 +353,7 @@ Sample CrossEntropyImportanceSampling::getInputSample() const
   if (!keepSample_)
     throw InvalidArgumentException(HERE) << "CrossEntropyImportanceSampling keepSample was not set";
 
-  return getInputSample(getStepsNumber()-1, BOTH);
+  return getInputSample(getStepsNumber() - 1, BOTH);
 }
 
 Sample CrossEntropyImportanceSampling::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const

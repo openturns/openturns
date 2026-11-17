@@ -45,7 +45,7 @@ HODLRMatrixFactory* HODLRMatrixFactory::clone() const
 
 HODLRMatrix
 HODLRMatrixFactory::build(const Sample& sample, UnsignedInteger outputDimension,
-                           Bool symmetric, const HODLRMatrixParameters& parameters)
+                          Bool symmetric, const HODLRMatrixParameters& parameters)
 {
   const UnsignedInteger size = sample.getSize();
   const UnsignedInteger n = outputDimension * size;

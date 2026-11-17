@@ -89,10 +89,10 @@ Bool MatrixFisher::operator ==(const MatrixFisher & other) const
 {
   if (this == &other) return true;
   return (F_ == other.F_)
-      && (U_ == other.U_)
-      && (V_ == other.V_)
-      && (singularValues_ == other.singularValues_)
-      && (epsilon_ == other.epsilon_);
+         && (U_ == other.U_)
+         && (V_ == other.V_)
+         && (singularValues_ == other.singularValues_)
+         && (epsilon_ == other.epsilon_);
 }
 
 Bool MatrixFisher::equals(const DistributionImplementation & other) const
@@ -161,7 +161,7 @@ void MatrixFisher::computeMoments(const Bool withSecondMoments) const
   const UnsignedInteger baseOrder = ResourceMap::GetAsUnsignedInteger("MatrixFisher-QuadratureOrder");
   const Scalar growthFactor = ResourceMap::GetAsScalar("MatrixFisher-QuadratureGrowthFactor");
   const UnsignedInteger order = std::max(baseOrder,
-      static_cast<UnsignedInteger>(std::ceil(growthFactor * std::sqrt(std::max(1.0, traceBound)))));
+                                         static_cast<UnsignedInteger>(std::ceil(growthFactor * std::sqrt(std::max(1.0, traceBound)))));
   const GaussLegendre quadrature(Indices(3, order));
   const Sample nodes(quadrature.getNodes());
   const Point weights(quadrature.getWeights());
@@ -495,8 +495,8 @@ void MatrixFisher::computeCovariance() const
       for (UnsignedInteger k = 0; k < 3; ++k)
         for (UnsignedInteger l = 0; l < 3; ++l)
           cov(3 * i + j, 3 * k + l) =
-              expectedSquaredMatrix_(3 * i + j, 3 * k + l)
-              - expectedMatrix_(i, j) * expectedMatrix_(k, l);
+            expectedSquaredMatrix_(3 * i + j, 3 * k + l)
+            - expectedMatrix_(i, j) * expectedMatrix_(k, l);
   covariance_ = cov;
   isAlreadyComputedCovariance_ = true;
 }

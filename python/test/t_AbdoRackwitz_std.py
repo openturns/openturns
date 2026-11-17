@@ -62,4 +62,6 @@ algo.setCheckStatus(False)
 algo.run()
 result = algo.getResult()
 assert result.getStatus() == ot.OptimizationResult.FAILURE
-assert "maximum iteration number" in result.getStatusMessage(), result.getStatusMessage()
+assert (
+    "maximum iteration number" in result.getStatusMessage()
+), result.getStatusMessage()

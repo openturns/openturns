@@ -49,14 +49,14 @@ public:
 
   /** Constructor with parameters */
   explicit EventSimulationImplementation(const RandomVector & event,
-                           const HistoryStrategy & convergenceStrategy = Compact());
+                                         const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
   EventSimulationImplementation * clone() const override;
 
   /** Event accessor */
   RandomVector getEvent() const;
-  
+
   /** Event accessor */
   virtual void setEvent(const RandomVector & event);
 
@@ -80,13 +80,13 @@ public:
 
   /** Input accessor */
   virtual Sample getInputSample() const;
-  
+
   /** Setter keep sample */
   virtual void setKeepSample(const Bool);
 
   /** For save/load mechanism*/
   EventSimulationImplementation(const HistoryStrategy & convergenceStrategy = Compact());
-    
+
 protected:
 
   /** Result accessor */

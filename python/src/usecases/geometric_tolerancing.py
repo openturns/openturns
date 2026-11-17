@@ -44,7 +44,9 @@ class GeometricTolerancing:
             y = vertices[i, 1]
             values[i, 0] = x
             values[i, 1] = y
-            values[i, 2] = 0.05 * math.sin(2.0 * math.pi * x) * math.sin(2.0 * math.pi * y)
+            values[i, 2] = (
+                0.05 * math.sin(2.0 * math.pi * x) * math.sin(2.0 * math.pi * y)
+            )
         self.defect = otexp.PushForwardOverMesh(ot.Field(self.plate, values))
         self.location = ot.UniformOverMesh(self.plate)
 

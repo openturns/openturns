@@ -307,9 +307,7 @@ ott.assert_almost_equal(fittedSwapped.getMean()[0], 1.0, 1e-10, 0.0)
 sample = ot.Normal().getSample(100)
 weights = ot.Point([float(i) for i in range(100)])
 totalWeight = sum(range(100))
-weightedMean = (
-    sum(float(i) * sample[i, 0] for i in range(100)) / totalWeight
-)
+weightedMean = sum(float(i) * sample[i, 0] for i in range(100)) / totalWeight
 fittedFull = ks.buildWeighted(sample, weights)
 ott.assert_almost_equal(fittedFull.getMean()[0], weightedMean, 1e-9, 0.0)
 ott.assert_almost_equal(fittedFull.computeCDF(1e8), 1.0, 1e-6)
@@ -362,9 +360,7 @@ with ott.assert_raises(ValueError):
 # binning is not available in dimension > 2
 sample3d = ot.Normal(3).getSample(20)
 with ott.assert_raises(RuntimeError):
-    ot.KernelSmoothing().buildWeightedAsMixture(
-        sample3d, [1.0] * 20, [0.1] * 3
-    )
+    ot.KernelSmoothing().buildWeightedAsMixture(sample3d, [1.0] * 20, [0.1] * 3)
 
 # boundary correction on multidimensional samples
 ks2d = ot.KernelSmoothing(ot.Normal(), False)
@@ -489,9 +485,7 @@ bandwidthSample = ot.Normal().getSample(20)
 with ott.assert_raises(TypeError):
     ot.KernelSmoothing().build(bandwidthSample, [float("inf")])
 with ott.assert_raises(TypeError):
-    ot.KernelSmoothing().buildWeighted(
-        bandwidthSample, [1.0] * 20, [float("inf")]
-    )
+    ot.KernelSmoothing().buildWeighted(bandwidthSample, [1.0] * 20, [float("inf")])
 
 # --- KernelSmoothing: bandwidth validation and degenerate cache ---
 ks = ot.KernelSmoothing()

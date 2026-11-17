@@ -64,7 +64,7 @@ Scalar ManifoldImplementation::getEpsilon() const
 
 /* Check that a point has the ambient dimension */
 void ManifoldImplementation::checkAmbientDimension(const Point & point,
-                                     const String & where) const
+    const String & where) const
 {
   if (point.getDimension() != ambientDimension_) throw InvalidArgumentException(HERE) << "Error in " << where << ": the point must have dimension=" << ambientDimension_ << ", here dimension=" << point.getDimension();
 }

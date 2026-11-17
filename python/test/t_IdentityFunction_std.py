@@ -21,9 +21,7 @@ sampleIn = ot.Sample([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
 ott.assert_almost_equal(f(sampleIn), sampleIn, 1e-14, 1e-14)
 ott.assert_almost_equal(
     f.getGradient().gradient(x),
-    ot.Matrix(
-        [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
-    ),
+    ot.Matrix([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]),
     1e-14,
     1e-14,
 )

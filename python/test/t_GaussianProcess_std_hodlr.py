@@ -65,7 +65,7 @@ for k in range(5):
 x_test = normal.getRealization()
 y_dense = A * x_test
 y_gemv = ot.Point(n, 0.0)
-hodlr.gemv('N', 1.0, x_test, 0.0, y_gemv)
+hodlr.gemv("N", 1.0, x_test, 0.0, y_gemv)
 ott.assert_almost_equal(y_gemv, ot.Point(y_dense), 1.0e-5, 1.0e-5)
 print("  PASS")
 

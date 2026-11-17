@@ -65,7 +65,7 @@ public:
 #endif
 
   Scalar computeAsScalar(const Scalar tau) const override;
-/** Gradient */
+  /** Gradient */
   Matrix partialGradient(const Point & s,
                          const Point & t) const override;
 

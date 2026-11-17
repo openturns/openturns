@@ -122,7 +122,9 @@ SparseMatrix::SparseMatrix(const UnsignedInteger nbRows,
     std::stable_sort(columnEntries.begin(), columnEntries.end(),
                      [](const std::pair<UnsignedInteger, Scalar> & a,
                         const std::pair<UnsignedInteger, Scalar> & b)
-                     { return a.first < b.first; });
+    {
+      return a.first < b.first;
+    });
     UnsignedInteger k = 0;
     while (k < columnEntries.size())
     {

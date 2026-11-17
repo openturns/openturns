@@ -149,33 +149,33 @@ protected:
   static Bool HasLinearEqualityConstraint(const Interval & constraintBounds);
   static Bool HasLinearInequalityConstraint(const Interval & constraintBounds);
   static Function GetLinearEqualityConstraint(const Matrix & constraintCoefficients,
-                                              const Interval & constraintBounds,
-                                              const UnsignedInteger dimension);
+      const Interval & constraintBounds,
+      const UnsignedInteger dimension);
   static Function GetLinearInequalityConstraint(const Matrix & constraintCoefficients,
-                                                const Interval & constraintBounds,
-                                                const UnsignedInteger dimension);
+      const Interval & constraintBounds,
+      const UnsignedInteger dimension);
   static void SetLinearEqualityConstraint(Matrix & constraintCoefficients,
                                           Interval & constraintBounds,
                                           const Function & equalityConstraint,
                                           const UnsignedInteger dimension);
   static void SetLinearInequalityConstraint(Matrix & constraintCoefficients,
-                                            Interval & constraintBounds,
-                                            const Function & inequalityConstraint,
-                                            const UnsignedInteger dimension);
+      Interval & constraintBounds,
+      const Function & inequalityConstraint,
+      const UnsignedInteger dimension);
   static Function GetLinearEqualityConstraint(const SparseMatrix & constraintCoefficients,
-                                              const Interval & constraintBounds,
-                                              const UnsignedInteger dimension);
+      const Interval & constraintBounds,
+      const UnsignedInteger dimension);
   static Function GetLinearInequalityConstraint(const SparseMatrix & constraintCoefficients,
-                                                const Interval & constraintBounds,
-                                                const UnsignedInteger dimension);
+      const Interval & constraintBounds,
+      const UnsignedInteger dimension);
   static void SetLinearEqualityConstraint(SparseMatrix & constraintCoefficients,
                                           Interval & constraintBounds,
                                           const Function & equalityConstraint,
                                           const UnsignedInteger dimension);
   static void SetLinearInequalityConstraint(SparseMatrix & constraintCoefficients,
-                                            Interval & constraintBounds,
-                                            const Function & inequalityConstraint,
-                                            const UnsignedInteger dimension);
+      Interval & constraintBounds,
+      const Function & inequalityConstraint,
+      const UnsignedInteger dimension);
 
   // The objective function
   Function objective_;

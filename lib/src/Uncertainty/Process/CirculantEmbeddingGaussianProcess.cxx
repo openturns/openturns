@@ -573,44 +573,44 @@ void CirculantEmbeddingGaussianProcess::getRealizationND(Field & field) const
   const Indices strides(computeStrides(N));
   const Scalar normFactor = 1.0 / std::sqrt(totalSize);
 
-    if (outputDim == 1)
+  if (outputDim == 1)
+  {
+    // ---- Scalar output: eigenvalue approach ----
+    Collection<Complex> W(totalSize);
+    Indices index(d, 0);
+    for (UnsignedInteger flat = 0; flat < totalSize; ++flat)
     {
-      // ---- Scalar output: eigenvalue approach ----
-      Collection<Complex> W(totalSize);
-      Indices index(d, 0);
-      for (UnsignedInteger flat = 0; flat < totalSize; ++flat)
+      // Compute conjugate multi-index
+      Indices conjIndex(d);
+      for (UnsignedInteger dim = 0; dim < d; ++dim)
+        conjIndex[dim] = (N[dim] - index[dim]) % N[dim];
+
+      const UnsignedInteger conjFlat = flatIndex(conjIndex, strides);
+
+      if (flat < conjFlat)
       {
-        // Compute conjugate multi-index
-        Indices conjIndex(d);
-        for (UnsignedInteger dim = 0; dim < d; ++dim)
-          conjIndex[dim] = (N[dim] - index[dim]) % N[dim];
-
-        const UnsignedInteger conjFlat = flatIndex(conjIndex, strides);
-
-        if (flat < conjFlat)
-        {
-          const Scalar lambda = eigenvalues_[flat];
-          const Scalar factor = normFactor * std::sqrt(lambda / 2.0);
-          const Scalar realPart = factor * DistFunc::rNormal();
-          const Scalar imagPart = factor * DistFunc::rNormal();
-          W[flat] = Complex(realPart, imagPart);
-          W[conjFlat] = Complex(realPart, -imagPart);
-        }
-        else if (flat == conjFlat)
-        {
-          const Scalar lambda = eigenvalues_[flat];
-          W[flat] = Complex(normFactor * std::sqrt(lambda) * DistFunc::rNormal(), 0.0);
-        }
-        // else: flat > conjFlat, already set as conjugate
-
-        // Advance multi-index (dim 0 fastest)
-        UnsignedInteger dim = 0;
-        while (dim < d && ++index[dim] == N[dim])
-        {
-          index[dim] = 0;
-          ++dim;
-        }
+        const Scalar lambda = eigenvalues_[flat];
+        const Scalar factor = normFactor * std::sqrt(lambda / 2.0);
+        const Scalar realPart = factor * DistFunc::rNormal();
+        const Scalar imagPart = factor * DistFunc::rNormal();
+        W[flat] = Complex(realPart, imagPart);
+        W[conjFlat] = Complex(realPart, -imagPart);
       }
+      else if (flat == conjFlat)
+      {
+        const Scalar lambda = eigenvalues_[flat];
+        W[flat] = Complex(normFactor * std::sqrt(lambda) * DistFunc::rNormal(), 0.0);
+      }
+      // else: flat > conjFlat, already set as conjugate
+
+      // Advance multi-index (dim 0 fastest)
+      UnsignedInteger dim = 0;
+      while (dim < d && ++index[dim] == N[dim])
+      {
+        index[dim] = 0;
+        ++dim;
+      }
+    }
 
     // Forward FFT
     const Collection<Complex> Y(fftAlgorithm_.transform(W, N));

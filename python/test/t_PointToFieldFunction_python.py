@@ -133,7 +133,9 @@ cppParent = ot.PointToFieldFunction(
     ot.ParametricPointToFieldFunction(
         ot.PointToFieldFunction(
             ot.VertexValuePointToFieldFunction(
-                ot.LinearFunction([0.0, 0.0], [1.0, 2.0], ot.Matrix([[1.0, 0.0], [0.0, 1.0]])),
+                ot.LinearFunction(
+                    [0.0, 0.0], [1.0, 2.0], ot.Matrix([[1.0, 0.0], [0.0, 1.0]])
+                ),
                 mesh2d,
             )
         ),

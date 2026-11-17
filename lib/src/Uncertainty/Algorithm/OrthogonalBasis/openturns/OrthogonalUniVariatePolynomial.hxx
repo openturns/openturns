@@ -58,7 +58,7 @@ public:
   /** Affine coefficients accessors */
   Scalar getA() const;
   void setA(const Scalar a);
-  
+
   Scalar getB() const;
   void setB(const Scalar b);
 

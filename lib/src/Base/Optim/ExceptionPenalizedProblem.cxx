@@ -41,7 +41,7 @@ ExceptionPenalizedProblem::ExceptionPenalizedProblem()
 
 /* Constructor with parameters */
 ExceptionPenalizedProblem::ExceptionPenalizedProblem(const OptimizationProblem & problem,
-                                   const Scalar penalizedValue)
+    const Scalar penalizedValue)
   : OptimizationProblemImplementation()
   , problem_(problem)
   , penalizedValue_(penalizedValue)

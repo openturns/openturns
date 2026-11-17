@@ -61,7 +61,7 @@ public:
 
   /** Event accessor */
   RandomVector getEvent() const;
-  
+
   /** Event accessor */
   void setEvent(const RandomVector & event);
 
@@ -79,7 +79,7 @@ public:
 
   /** Input accessor */
   Sample getInputSample() const;
-  
+
   /** Setter keep sample */
   void setKeepSample(const Bool);
 

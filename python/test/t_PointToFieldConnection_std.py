@@ -65,8 +65,7 @@ assert len(str(myFunc)) > 0
 # accessors
 assert myFunc.getFieldFunction().getOutputDimension() == myFunc.getOutputDimension()
 assert (
-    myFunc.getPointToFieldFunction().getInputDimension()
-    == myFunc.getInputDimension()
+    myFunc.getPointToFieldFunction().getInputDimension() == myFunc.getInputDimension()
 )
 # evaluation on a sample (ProcessSample path)
 inDim = myFunc.getInputDimension()

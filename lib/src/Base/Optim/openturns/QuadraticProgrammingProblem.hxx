@@ -43,17 +43,17 @@ public:
 
   /** Constructor with parameters */
   QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
-                   const Point & linearCost,
-                   const Interval & bounds,
-                   const Scalar constant = 0.0);
+                              const Point & linearCost,
+                              const Interval & bounds,
+                              const Scalar constant = 0.0);
 
   /** Constructor with parameters */
   QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
-                   const Point & linearCost,
-                   const Interval & bounds,
-                   const Matrix & constraintCoefficients,
-                   const Interval & constraintBounds,
-                   const Scalar constant = 0.0);
+                              const Point & linearCost,
+                              const Interval & bounds,
+                              const Matrix & constraintCoefficients,
+                              const Interval & constraintBounds,
+                              const Scalar constant = 0.0);
 
   /** Virtual constructor */
   QuadraticProgrammingProblem * clone() const override;
@@ -91,8 +91,8 @@ public:
 
   /** Build a least-squares problem min ||A.x-b||^2 subject to bounds */
   static QuadraticProgrammingProblem FromLeastSquares(const Matrix & matrix,
-                                           const Point & rhs,
-                                           const Interval & bounds);
+      const Point & rhs,
+      const Interval & bounds);
 
   /** String converter */
   String __repr__() const override;

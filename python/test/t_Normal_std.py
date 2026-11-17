@@ -324,17 +324,13 @@ R2 = ot.CorrelationMatrix(2)
 R2[1, 0] = 0.5
 reference = ot.Normal([0.0, 0.0], [1.0, 2.0], R2)
 ott.assert_almost_equal(
-    degenerate.computeProbability(
-        ot.Interval([-1.0, -2.0, -0.1], [1.0, 2.0, 0.1])
-    ),
+    degenerate.computeProbability(ot.Interval([-1.0, -2.0, -0.1], [1.0, 2.0, 0.1])),
     reference.computeProbability(ot.Interval([-1.0, -2.0], [1.0, 2.0])),
     1.0e-14,
 )
 # An interval excluding the Dirac location has zero probability
 ott.assert_almost_equal(
-    degenerate.computeProbability(
-        ot.Interval([-1.0, -2.0, 0.1], [1.0, 2.0, 0.2])
-    ),
+    degenerate.computeProbability(ot.Interval([-1.0, -2.0, 0.1], [1.0, 2.0, 0.2])),
     0.0,
 )
 # setParametersCollection/setParameter must refresh Normal-specific state on

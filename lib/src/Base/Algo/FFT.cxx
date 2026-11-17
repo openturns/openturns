@@ -105,14 +105,14 @@ FFT::ComplexCollection FFT::transform(const ComplexCollection & collection,
 
 /* FFT ND transformation on real data */
 FFT::ComplexCollection FFT::transform(const Point & data,
-    const Indices & dimensions) const
+                                      const Indices & dimensions) const
 {
   return getImplementation()->transform(data, dimensions);
 }
 
 /* FFT ND transformation on complex data */
 FFT::ComplexCollection FFT::transform(const ComplexCollection & data,
-    const Indices & dimensions) const
+                                      const Indices & dimensions) const
 {
   return getImplementation()->transform(data, dimensions);
 }

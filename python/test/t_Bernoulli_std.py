@@ -51,7 +51,10 @@ ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [0.21]), 1e-12, 0.0)
 parameters = distribution.getParametersCollection()
 assert len(parameters) == 1
 ott.assert_almost_equal(parameters[0], [0.7], 0.0, 0.0)
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Bernoulli"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "Bernoulli"
+)
 ott.assert_almost_equal(distribution.getProbabilities(), [0.3, 0.7], 1e-12, 0.0)
 
 ot.Log.Show(ot.Log.TRACE)
@@ -59,7 +62,9 @@ validation = ott.DistributionValidation(distribution)
 validation.run()
 
 # --- Bernoulli: kurtosis sign, load recomputes range ---
-ott.assert_almost_equal(ot.Bernoulli(0.7).getKurtosis(), [1.761904761904762], 1e-12, 0.0)
+ott.assert_almost_equal(
+    ot.Bernoulli(0.7).getKurtosis(), [1.761904761904762], 1e-12, 0.0
+)
 ott.assert_almost_equal(ot.Bernoulli(0.5).getKurtosis(), [1.0], 1e-12, 0.0)
 studyFile = "myStudyBugFixBernoulli.xml"
 study = ot.Study(studyFile)

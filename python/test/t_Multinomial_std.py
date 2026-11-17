@@ -162,7 +162,9 @@ prob_1d = ot.Multinomial(1, [0.5])
 ott.assert_almost_equal(prob_1d.computeProbability(ot.Interval([0.53], [2.98])), 0.5)
 ott.assert_almost_equal(prob_1d.computeProbability(ot.Interval([-1.0], [2.98])), 1.0)
 prob_zero = ot.Multinomial(3, [0.0])
-ott.assert_almost_equal(prob_zero.computeProbability(ot.Interval([-4.0], [-1e-15])), 0.0)
+ott.assert_almost_equal(
+    prob_zero.computeProbability(ot.Interval([-4.0], [-1e-15])), 0.0
+)
 ott.assert_almost_equal(prob_zero.computeProbability(ot.Interval([-1.0], [1.0])), 1.0)
 
 # computeProbability with a strictly negative upper bound or a lower bound
@@ -252,8 +254,15 @@ def check_distribution(n, p, defective):
         rec = sum(m for y, m in mass if all(y[i] <= x[i] for i in range(len(p))))
         ott.assert_almost_equal(dist.computeCDF(x), rec, 1e-9, 1e-9)
     for x, ref in mass:
-        ott.assert_almost_equal(dist.computeProbability(ot.Interval(x, x)), ref, 1e-9, 1e-9)
-        ott.assert_almost_equal(dist.computeProbability(ot.Interval(len(p) * [0.0], x)), dist.computeCDF(x), 1e-9, 1e-9)
+        ott.assert_almost_equal(
+            dist.computeProbability(ot.Interval(x, x)), ref, 1e-9, 1e-9
+        )
+        ott.assert_almost_equal(
+            dist.computeProbability(ot.Interval(len(p) * [0.0], x)),
+            dist.computeCDF(x),
+            1e-9,
+            1e-9,
+        )
     for x, _ in mass:
         rec = sum(m for y, m in mass if all(y[i] > x[i] for i in range(len(p))))
         ott.assert_almost_equal(dist.computeSurvivalFunction(x), rec, 1e-9, 1e-9)
@@ -273,13 +282,25 @@ check_distribution(5, [0.0, 1.0], False)
 # Conditional methods against the reference binomial
 cond_ref = ot.Binomial(3, 0.5)
 for x in range(-3, 8):
-    ott.assert_almost_equal(distribution.computeConditionalCDF(float(x), [1.0, 1.0]),
-                            cond_ref.computeCDF(float(x)), 1e-12, 1e-12)
-    ott.assert_almost_equal(distribution.computeConditionalPDF(float(x), [1.0, 1.0]),
-                            cond_ref.computePDF(float(x)), 1e-12, 1e-12)
+    ott.assert_almost_equal(
+        distribution.computeConditionalCDF(float(x), [1.0, 1.0]),
+        cond_ref.computeCDF(float(x)),
+        1e-12,
+        1e-12,
+    )
+    ott.assert_almost_equal(
+        distribution.computeConditionalPDF(float(x), [1.0, 1.0]),
+        cond_ref.computePDF(float(x)),
+        1e-12,
+        1e-12,
+    )
 for q in (0.1, 0.5, 0.9):
-    ott.assert_almost_equal(distribution.computeConditionalQuantile(q, [1.0, 1.0]),
-                            cond_ref.computeQuantile(q)[0], 1e-12, 1e-12)
+    ott.assert_almost_equal(
+        distribution.computeConditionalQuantile(q, [1.0, 1.0]),
+        cond_ref.computeQuantile(q)[0],
+        1e-12,
+        1e-12,
+    )
 
 # Accessors round trips
 dist_acc = ot.Multinomial(7, [0.3, 0.4, 0.3])
@@ -298,7 +319,13 @@ ott.assert_almost_equal(dist_acc.getSmallA(), 20.0)
 dist_setn = ot.Multinomial(2, [0.5, 0.5])
 dist_setn.setN(4)
 for x, ref in [(a, pdf_formula(4, [0.5, 0.5], a)) for a in iter_atoms(4, 2, False)]:
-    rec = sum(m for y, m in [(a, pdf_formula(4, [0.5, 0.5], a)) for a in iter_atoms(4, 2, False)] if all(y[i] <= x[i] for i in range(2)))
+    rec = sum(
+        m
+        for y, m in [
+            (a, pdf_formula(4, [0.5, 0.5], a)) for a in iter_atoms(4, 2, False)
+        ]
+        if all(y[i] <= x[i] for i in range(2))
+    )
     ott.assert_almost_equal(dist_setn.computeCDF(x), rec, 1e-9, 1e-9)
 
 # Regression: below-mode cap in computeLocalPhi must not silently widen the
@@ -315,17 +342,13 @@ ott.assert_almost_equal(
 )
 # Box probability: [170,190]×full×full was 0.9997 (bug), now ≈ 9.07e-22
 ott.assert_almost_equal(
-    dist_reg.computeProbability(
-        ot.Interval([170.0, 0.0, 0.0], [190.0, 300.0, 300.0])
-    ),
+    dist_reg.computeProbability(ot.Interval([170.0, 0.0, 0.0], [190.0, 300.0, 300.0])),
     9.07e-22,
     1e-5,
     1e-5,
 )
 # Medium-size regression (n=40): cap 11 < mode 12 for cat-0, sum>40
 dist_reg2 = ot.Multinomial(40, [0.3, 0.3, 0.4])
-ott.assert_almost_equal(
-    dist_reg2.computeCDF([11.0, 30.0, 30.0]), 0.4406, 1e-4, 1e-4
-)
+ott.assert_almost_equal(dist_reg2.computeCDF([11.0, 30.0, 30.0]), 0.4406, 1e-4, 1e-4)
 
 print("OK")

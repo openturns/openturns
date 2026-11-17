@@ -115,9 +115,7 @@ graph_conditional_pdf = ot.Graph(
     "Conditional PDF of $X_1$ given $X_0 = x_0$", "$x_1$", "PDF", True, "best"
 )
 for x0 in [0.1, 0.5, 0.9]:
-    pdf_values = [
-        distribution.computeConditionalPDF(x1, [x0]) for x1 in x1_values
-    ]
+    pdf_values = [distribution.computeConditionalPDF(x1, [x0]) for x1 in x1_values]
     curve = ot.Curve(x1_values, pdf_values)
     curve.setLegend("$x_0 = %.1f$" % x0)
     graph_conditional_pdf.add(curve)
@@ -130,9 +128,7 @@ graph_conditional_cdf = ot.Graph(
     "Conditional CDF of $X_1$ given $X_0 = x_0$", "$x_1$", "CDF", True, "best"
 )
 for x0 in [0.1, 0.5, 0.9]:
-    cdf_values = [
-        distribution.computeConditionalCDF(x1, [x0]) for x1 in x1_values
-    ]
+    cdf_values = [distribution.computeConditionalCDF(x1, [x0]) for x1 in x1_values]
     curve = ot.Curve(x1_values, cdf_values)
     curve.setLegend("$x_0 = %.1f$" % x0)
     graph_conditional_cdf.add(curve)

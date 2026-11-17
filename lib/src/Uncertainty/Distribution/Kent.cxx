@@ -85,8 +85,8 @@ Bool Kent::operator ==(const Kent & other) const
 {
   if (this == &other) return true;
   return (kappa_ == other.kappa_)
-      && (beta_ == other.beta_)
-      && (gamma_ == other.gamma_);
+         && (beta_ == other.beta_)
+         && (gamma_ == other.gamma_);
 }
 
 Bool Kent::equals(const DistributionImplementation & other) const

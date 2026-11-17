@@ -17,7 +17,10 @@ mesh = mesher.build(set, ot.Interval([-1.0] * 2, [1.0] * 2))
 # meshed with the QEF (sharp-edge) placement
 disk1 = ot.SymbolicFunction(["x", "y"], ["(x+0.5)^2+y^2"])
 disk2 = ot.SymbolicFunction(["x", "y"], ["(x-0.5)^2+y^2"])
-lens = [ot.LevelSet(disk1, ot.LessOrEqual(), 1.0), ot.LevelSet(disk2, ot.LessOrEqual(), 1.0)]
+lens = [
+    ot.LevelSet(disk1, ot.LessOrEqual(), 1.0),
+    ot.LevelSet(disk2, ot.LessOrEqual(), 1.0),
+]
 lensMesher = ot.LevelSetMesher([20] * 2)
 lensMesher.setUseQEF(True)
 lensMesh = lensMesher.build(lens, ot.Interval([-1.6] * 2, [1.6] * 2))

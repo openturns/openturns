@@ -69,9 +69,7 @@ ott.assert_almost_equal(
     responseSurface.getEvaluation().getImplementation().getLinear(), linear
 )
 ott.assert_almost_equal(responseSurface.gradient(center), linear.transpose())
-ott.assert_almost_equal(
-    responseSurface.hessian(center), ot.SymmetricTensor(2, 3)
-)
+ott.assert_almost_equal(responseSurface.hessian(center), ot.SymmetricTensor(2, 3))
 inPoint = [0.1] * 2
 ott.assert_almost_equal(myFunc(inPoint), [0.00998334, 0.980067, 0.995321])
 ott.assert_almost_equal(responseSurface(inPoint), [0.0322237, 0.812239, 1.03617])

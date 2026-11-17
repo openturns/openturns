@@ -53,8 +53,8 @@ OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const Sample & re
 
 /* Constructor from recurrence coefficients */
 OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const Sample & recurrenceCoefficients,
-                                                               const Scalar a,
-                                                               const Scalar b)
+    const Scalar a,
+    const Scalar b)
   : UniVariatePolynomialImplementation()
   , recurrenceCoefficients_(recurrenceCoefficients.getImplementation()->getData())
   , a_(a)
@@ -220,7 +220,7 @@ void OrthogonalUniVariatePolynomial::setA(const Scalar a)
     coefficients_ = buildCoefficients();
   }
 }
-  
+
 Scalar OrthogonalUniVariatePolynomial::getB() const
 {
   return b_;

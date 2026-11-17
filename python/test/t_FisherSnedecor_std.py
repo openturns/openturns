@@ -108,7 +108,10 @@ ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [1.19515]), 1e-5, 0.0
 parameters = distribution.getParametersCollection()
 assert len(parameters) == 1
 ott.assert_almost_equal(parameters[0], [5.5, 10.5], 0.0, 0.0)
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "FisherSnedecor"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "FisherSnedecor"
+)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
@@ -124,7 +127,9 @@ study2.load()
 r = ot.FisherSnedecor(1.0, 1.0)
 study2.fillObject("fisher", r)
 ott.assert_almost_equal(r.getParameter(), [4.0, 5.0], 0.0, 0.0)
-ott.assert_almost_equal(r.computePDF([1.0]), ot.FisherSnedecor(4.0, 5.0).computePDF([1.0]), 1e-12, 0.0)
+ott.assert_almost_equal(
+    r.computePDF([1.0]), ot.FisherSnedecor(4.0, 5.0).computePDF([1.0]), 1e-12, 0.0
+)
 os.remove(studyFile)
 
 # Density at the support lower bound for d1 = 2: 1
@@ -141,12 +146,7 @@ ott.assert_almost_equal(
         m.lgamma(d1 - 1.0)
         + m.lgamma(d2 + 1.0)
         - m.lgamma(d1 + d2)
-        - 2.0
-        * (
-            m.lgamma(0.5 * d1)
-            + m.lgamma(0.5 * d2)
-            - m.lgamma(0.5 * (d1 + d2))
-        )
+        - 2.0 * (m.lgamma(0.5 * d1) + m.lgamma(0.5 * d2) - m.lgamma(0.5 * (d1 + d2)))
     ),
 )
 # The L2 norm of the PDF diverges for d1 <= 1

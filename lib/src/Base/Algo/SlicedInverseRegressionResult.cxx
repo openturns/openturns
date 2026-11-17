@@ -38,8 +38,8 @@ SlicedInverseRegressionResult::SlicedInverseRegressionResult()
 }
 
 SlicedInverseRegressionResult::SlicedInverseRegressionResult(const OT::Matrix & directions,
-                                                            const OT::Point & center,
-                                                            const OT::Point & eigenValues)
+    const OT::Point & center,
+    const OT::Point & eigenValues)
   : PersistentObject()
   , directions_(directions)
   , center_(center)

@@ -48,9 +48,13 @@ ott.assert_almost_equal(algo.getOmega(), 2.0)
 assert algo.getKind() == 1
 # small-theta series branch
 smallCos = ot.FilonQuadrature(5, 0.01, 0)
-ott.assert_almost_equal(smallCos.integrate(f, ot.Interval(0.5, 1.5)), [0.682488], 1e-4, 1e-4)
+ott.assert_almost_equal(
+    smallCos.integrate(f, ot.Interval(0.5, 1.5)), [0.682488], 1e-4, 1e-4
+)
 smallSin = ot.FilonQuadrature(5, 0.01, 1)
-ott.assert_almost_equal(smallSin.integrate(f, ot.Interval(0.5, 1.5)), [0.00724715], 1e-4, 1e-6)
+ott.assert_almost_equal(
+    smallSin.integrate(f, ot.Interval(0.5, 1.5)), [0.00724715], 1e-4, 1e-6
+)
 smallExp = ot.FilonQuadrature(5, 0.01, 2)
 assert smallExp.integrate(f, ot.Interval(0.5, 1.5)).getDimension() == 2
 with ott.assert_raises(Exception):

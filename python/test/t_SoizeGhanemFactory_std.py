@@ -15,9 +15,7 @@ factories = [
 ]
 x = [0.5] * 2
 kMax = 5
-ot.ResourceMap.SetAsUnsignedInteger(
-    "IteratedQuadrature-MaximumSubIntervals", 2048
-)
+ot.ResourceMap.SetAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals", 2048)
 ot.ResourceMap.SetAsScalar("IteratedQuadrature-MaximumError", 1.0e-6)
 for soize in factories:
     distribution = soize.getMeasure()
@@ -29,16 +27,12 @@ for soize in factories:
         for n in range(m + 1):
 
             def wrapper(x):
-                return (
-                    functions[m](x)
-                    * functions[n](x)[0]
-                    * distribution.computePDF(x)
-                )
+                return functions[m](x) * functions[n](x)[0] * distribution.computePDF(x)
 
             kernel = ot.PythonFunction(distribution.getDimension(), 1, wrapper)
-            value = ot.IteratedQuadrature().integrate(
-                kernel, distribution.getRange()
-            )[0]
+            value = ot.IteratedQuadrature().integrate(kernel, distribution.getRange())[
+                0
+            ]
             if abs(value) >= 1.0e-6:
                 M[m, n] = value
     ott.assert_almost_equal(M, ot.IdentityMatrix(kMax), 1e-5, 0.0)
@@ -47,9 +41,7 @@ for soize in factories:
 sgTensorProduct = ot.SoizeGhanemFactory(ot.JointDistribution(marginals))
 assert sgTensorProduct.isTensorProduct()
 # Test isTensorProduct(), case False
-sgTensorProduct = ot.SoizeGhanemFactory(
-    ot.JointDistribution(marginals, copula)
-)
+sgTensorProduct = ot.SoizeGhanemFactory(ot.JointDistribution(marginals, copula))
 assert not sgTensorProduct.isTensorProduct()
 
 # Test getMarginal

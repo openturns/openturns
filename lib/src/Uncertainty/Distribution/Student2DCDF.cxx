@@ -223,9 +223,9 @@ Scalar Student2DRectangularProbability(const Scalar nu,
   if (a1 >= b1 || a2 >= b2) return 0.0;
   // Inclusion-exclusion using the bivariate CDF.
   const Scalar prob = SpecFunc::Clip01((Student2DCDF(nu, b1, b2, rho, false)
-                                  - Student2DCDF(nu, a1, b2, rho, false))
-                                 - (Student2DCDF(nu, b1, a2, rho, false)
-                                    - Student2DCDF(nu, a1, a2, rho, false)));
+                                        - Student2DCDF(nu, a1, b2, rho, false))
+                                       - (Student2DCDF(nu, b1, a2, rho, false)
+                                          - Student2DCDF(nu, a1, a2, rho, false)));
   if (prob > 0.0) return prob;
   // Fallback to multivariate integration when prob == 0.0
   CorrelationMatrix R(2);

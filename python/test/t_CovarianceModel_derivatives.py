@@ -146,7 +146,9 @@ def check_nugget_gradient(model):
     s, _ = get_points(model)
     description = model.getFullParameterDescription()
     nugget_indices = [
-        index for index, name in enumerate(description) if name.lower() == "nuggetfactor"
+        index
+        for index, name in enumerate(description)
+        if name.lower() == "nuggetfactor"
     ]
     assert len(nugget_indices) == 1
     nugget_index = nugget_indices[0]

@@ -12,7 +12,9 @@ distribution = ot.GeneralizedExtremeValue(2.0, 1.5, -0.15)
 parameterDist = ot.Normal([2.0, 1.5, -0.15], [0.1, 0.1, 0.05])
 logLikelihood = -123.456
 
-result = ot.DistributionFactoryLikelihoodResult(distribution, parameterDist, logLikelihood)
+result = ot.DistributionFactoryLikelihoodResult(
+    distribution, parameterDist, logLikelihood
+)
 print("result=", result)
 print("repr=", repr(result))
 

@@ -75,13 +75,17 @@ ott.assert_almost_equal(copula.computeEntropy(), -0.561983, 1e-6, 0.0)
 
 # Confidence regions
 interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-ott.assert_almost_equal(interval.getLowerBound(), [0.016409256143060436, 0.016409256143060436], 1e-6, 0.0)
+ott.assert_almost_equal(
+    interval.getLowerBound(), [0.016409256143060436, 0.016409256143060436], 1e-6, 0.0
+)
 ott.assert_almost_equal(interval.getUpperBound(), [0.983591, 0.983591], 1e-6, 0.0)
 ott.assert_almost_equal(threshold, 0.967181, 1e-6, 0.0)
 levelSet, beta = copula.computeMinimumVolumeLevelSetWithThreshold(0.95)
 ott.assert_almost_equal(beta, 0.3845776461500415, 1e-6, 0.0)
 interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
-ott.assert_almost_equal(interval.getLowerBound(), [0.016409256143060436, 0.016409256143060436], 1e-6, 0.0)
+ott.assert_almost_equal(
+    interval.getLowerBound(), [0.016409256143060436, 0.016409256143060436], 1e-6, 0.0
+)
 ott.assert_almost_equal(interval.getUpperBound(), [0.983591, 0.983591], 1e-6, 0.0)
 ott.assert_almost_equal(beta, 0.967181, 1e-6, 0.0)
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
@@ -115,13 +119,19 @@ indices = [1, 0]
 assert indices == [1, 0]
 margins = copula.getMarginal(indices)
 assert margins.getImplementation().getClassName() == "GumbelCopula"
-ott.assert_almost_equal(margins.computePDF(ot.Point(2, 0.25)), 2.03487126151337, 1e-6, 0.0)
-ott.assert_almost_equal(margins.computeCDF(ot.Point(2, 0.25)), 0.160537715551504, 1e-6, 0.0)
+ott.assert_almost_equal(
+    margins.computePDF(ot.Point(2, 0.25)), 2.03487126151337, 1e-6, 0.0
+)
+ott.assert_almost_equal(
+    margins.computeCDF(ot.Point(2, 0.25)), 0.160537715551504, 1e-6, 0.0
+)
 quantile = ot.Point(margins.computeQuantile(0.95))
 ott.assert_almost_equal(quantile, [0.961872813046878, 0.961872813046878], 1e-6, 0.0)
 ott.assert_almost_equal(margins.computeCDF(quantile), 0.95, 1e-6, 0.0)
 marginsRealization = margins.getRealization()
-ott.assert_almost_equal(marginsRealization, [0.260889502037713, 0.19462456388763558], 1e-5, 0.0)
+ott.assert_almost_equal(
+    marginsRealization, [0.260889502037713, 0.19462456388763558], 1e-5, 0.0
+)
 
 ott.assert_almost_equal(
     copula.computeUpperTailDependenceMatrix(),
@@ -156,16 +166,24 @@ with ott.assert_raises(TypeError):
     copula.computeConditionalQuantile(-0.5, [0.3])
 
 # --- GumbelCopula: conditional edge cases, gradient at the boundary ---
-ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(0.5, [1.0]), 0.0, 0.0, 0.0)
-ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(0.5, [0.0]), 1.0, 0.0, 0.0)
-ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(0.0, [0.0]), 0.0, 0.0, 0.0)
+ott.assert_almost_equal(
+    ot.GumbelCopula(2.0).computeConditionalCDF(0.5, [1.0]), 0.0, 0.0, 0.0
+)
+ott.assert_almost_equal(
+    ot.GumbelCopula(2.0).computeConditionalCDF(0.5, [0.0]), 1.0, 0.0, 0.0
+)
+ott.assert_almost_equal(
+    ot.GumbelCopula(2.0).computeConditionalCDF(0.0, [0.0]), 0.0, 0.0, 0.0
+)
 ott.assert_almost_equal(
     ot.GumbelCopula(2.0).computeConditionalQuantile(0.5, [0.0]), 0.0, 0.0, 0.0
 )
 ott.assert_almost_equal(
     ot.GumbelCopula(2.0).computeConditionalQuantile(0.5, [1.0]), 1.0, 0.0, 0.0
 )
-ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(1.0, [1.0]), 1.0, 0.0, 0.0)
+ott.assert_almost_equal(
+    ot.GumbelCopula(2.0).computeConditionalCDF(1.0, [1.0]), 1.0, 0.0, 0.0
+)
 assert m.isfinite(ot.GumbelCopula(1.0).computePDFGradient([0.3, 0.4])[0])
 
 # --- GumbelCopula: entropy at independence is zero ---

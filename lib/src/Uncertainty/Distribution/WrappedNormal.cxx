@@ -36,7 +36,8 @@ CLASSNAMEINIT(WrappedNormal)
 
 static const Factory<WrappedNormal> Factory_WrappedNormal;
 
-namespace {
+namespace
+{
 
 // Enumerate the integer vectors m with (m - center)^T A (m - center) <= radiusSquare
 // by Cholesky recursion (Fincke-Pohst), where lower holds the lower Cholesky
@@ -142,7 +143,7 @@ Scalar LogWrappedNormalPDF1D(const Scalar x,
   }
   // Choose K such that the tail of the normal is below SpecFunc::Precision
   const UnsignedInteger kMax = std::max(UnsignedInteger(1),
-                                       static_cast<UnsignedInteger>(latticeHalfWidth));
+                                        static_cast<UnsignedInteger>(latticeHalfWidth));
   const Scalar logNormalization = std::log(sigma) + 0.5 * std::log(SpecFunc::TWOPI);
   Scalar logSum = -SpecFunc::Infinity;
   for (SignedInteger k = -static_cast<SignedInteger>(kMax); k <= static_cast<SignedInteger>(kMax); ++k)
@@ -258,9 +259,9 @@ Bool WrappedNormal::operator ==(const WrappedNormal & other) const
 {
   if (this == &other) return true;
   return (dimension_ == other.dimension_)
-      && (mu_ == other.mu_)
-      && (sigma_ == other.sigma_)
-      && (period_ == other.period_);
+         && (mu_ == other.mu_)
+         && (sigma_ == other.sigma_)
+         && (period_ == other.period_);
 }
 
 Bool WrappedNormal::equals(const DistributionImplementation & other) const
@@ -433,97 +434,97 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     const Bool tryDirect = (attempt == 0) ? (logCountDirect <= logCountFourier) : (logCountDirect > logCountFourier);
     if (tryDirect)
     {
-    // Direct sum over the k-ellipsoid
-    SymmetricMatrix shapeSym(d);
-    for (UnsignedInteger i = 0; i < d; ++i)
-      for (UnsignedInteger j = 0; j <= i; ++j)
-        shapeSym(i, j) = period_ * period_ * sigmaInv_(i, j);
-    CovarianceMatrix shapeCov(d);
-    for (UnsignedInteger i = 0; i < d; ++i)
-      for (UnsignedInteger j = 0; j <= i; ++j)
-        shapeCov(i, j) = shapeSym(i, j);
-    const TriangularMatrix chol(shapeCov.computeCholesky());
-    SquareMatrix lower(d);
-    for (UnsignedInteger i = 0; i < d; ++i)
-      for (UnsignedInteger j = 0; j <= i; ++j)
-        lower(i, j) = chol(i, j);
-    Point center(d);
-    for (UnsignedInteger i = 0; i < d; ++i)
-      center[i] = (mu_[i] - wrappedPoint[i]) / period_;
-    Sample latticePoints(0, d);
-    Point current(d);
-    UnsignedInteger nodeVisits = 0;
-    Bool truncated = false;
-    EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, nodeVisits, latticePoints, truncated);
-    if (truncated) continue;
-    for (UnsignedInteger t = 0; t < latticePoints.getSize(); ++t)
-    {
-      const Point latticePoint(latticePoints[t]);
-      Point diff(d);
+      // Direct sum over the k-ellipsoid
+      SymmetricMatrix shapeSym(d);
       for (UnsignedInteger i = 0; i < d; ++i)
-        diff[i] = wrappedPoint[i] - mu_[i] + latticePoint[i] * period_;
-
-      // Quadratic form
-      Scalar quad = 0.0;
+        for (UnsignedInteger j = 0; j <= i; ++j)
+          shapeSym(i, j) = period_ * period_ * sigmaInv_(i, j);
+      CovarianceMatrix shapeCov(d);
       for (UnsignedInteger i = 0; i < d; ++i)
-        for (UnsignedInteger j = 0; j < d; ++j)
-          quad += diff[i] * sigmaInv_(i, j) * diff[j];
+        for (UnsignedInteger j = 0; j <= i; ++j)
+          shapeCov(i, j) = shapeSym(i, j);
+      const TriangularMatrix chol(shapeCov.computeCholesky());
+      SquareMatrix lower(d);
+      for (UnsignedInteger i = 0; i < d; ++i)
+        for (UnsignedInteger j = 0; j <= i; ++j)
+          lower(i, j) = chol(i, j);
+      Point center(d);
+      for (UnsignedInteger i = 0; i < d; ++i)
+        center[i] = (mu_[i] - wrappedPoint[i]) / period_;
+      Sample latticePoints(0, d);
+      Point current(d);
+      UnsignedInteger nodeVisits = 0;
+      Bool truncated = false;
+      EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, nodeVisits, latticePoints, truncated);
+      if (truncated) continue;
+      for (UnsignedInteger t = 0; t < latticePoints.getSize(); ++t)
+      {
+        const Point latticePoint(latticePoints[t]);
+        Point diff(d);
+        for (UnsignedInteger i = 0; i < d; ++i)
+          diff[i] = wrappedPoint[i] - mu_[i] + latticePoint[i] * period_;
 
-      const Scalar logTerm = -0.5 * quad - logNormalization_;
-      logSum = SpecFunc::LogSumExp(logSum, logTerm);
-    }
-    evaluated = true;
+        // Quadratic form
+        Scalar quad = 0.0;
+        for (UnsignedInteger i = 0; i < d; ++i)
+          for (UnsignedInteger j = 0; j < d; ++j)
+            quad += diff[i] * sigmaInv_(i, j) * diff[j];
+
+        const Scalar logTerm = -0.5 * quad - logNormalization_;
+        logSum = SpecFunc::LogSumExp(logSum, logTerm);
+      }
+      evaluated = true;
     }
     else
     {
-    // Dual Fourier series over the m-ellipsoid:
-    // p(x) = (1/period^d) sum_m exp(-(2*pi*m/period)^T sigma (2*pi*m/period)/2) cos(2*pi*m.(x-mu)/period)
-    SymmetricMatrix shapeSym(d);
-    const Scalar omega = SpecFunc::TWOPI / period_;
-    for (UnsignedInteger i = 0; i < d; ++i)
-      for (UnsignedInteger j = 0; j <= i; ++j)
-        shapeSym(i, j) = omega * omega * sigma_(i, j);
-    CovarianceMatrix shapeCov(d);
-    for (UnsignedInteger i = 0; i < d; ++i)
-      for (UnsignedInteger j = 0; j <= i; ++j)
-        shapeCov(i, j) = shapeSym(i, j);
-    const TriangularMatrix chol(shapeCov.computeCholesky());
-    SquareMatrix lower(d);
-    for (UnsignedInteger i = 0; i < d; ++i)
-      for (UnsignedInteger j = 0; j <= i; ++j)
-        lower(i, j) = chol(i, j);
-    const Point center(d);
-    Sample latticePoints(0, d);
-    Point current(d);
-    UnsignedInteger nodeVisits = 0;
-    Bool truncated = false;
-    EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, nodeVisits, latticePoints, truncated);
-    if (truncated) continue;
-    const Scalar omegaSquare = omega * omega;
-    Scalar sum = 0.0;
-    for (UnsignedInteger t = 0; t < latticePoints.getSize(); ++t)
-    {
-      const Point mode(latticePoints[t]);
-      // Quadratic form m^T sigma m
-      Scalar quad = 0.0;
+      // Dual Fourier series over the m-ellipsoid:
+      // p(x) = (1/period^d) sum_m exp(-(2*pi*m/period)^T sigma (2*pi*m/period)/2) cos(2*pi*m.(x-mu)/period)
+      SymmetricMatrix shapeSym(d);
+      const Scalar omega = SpecFunc::TWOPI / period_;
       for (UnsignedInteger i = 0; i < d; ++i)
-        for (UnsignedInteger j = 0; j < d; ++j)
-          quad += mode[i] * sigma_(i, j) * mode[j];
-      // Phase 2*pi*m.(x-mu)/period
-      Scalar phase = 0.0;
+        for (UnsignedInteger j = 0; j <= i; ++j)
+          shapeSym(i, j) = omega * omega * sigma_(i, j);
+      CovarianceMatrix shapeCov(d);
       for (UnsignedInteger i = 0; i < d; ++i)
-        phase += mode[i] * (wrappedPoint[i] - mu_[i]);
-      sum += std::exp(-0.5 * omegaSquare * quad) * std::cos(omega * phase);
-    }
-    if (!(sum > 0.0))
-    {
-      // Truncation drove the alternating sum non-positive in the deep tails:
-      // the direct sum is the right tool there
-      LOGWARN("WrappedNormal: Fourier sum is non-positive, this point is out of scope");
-      return -SpecFunc::Infinity;
-    }
-    logSum = std::log(sum) - (1.0 * d) * std::log(period_);
-    evaluated = true;
+        for (UnsignedInteger j = 0; j <= i; ++j)
+          shapeCov(i, j) = shapeSym(i, j);
+      const TriangularMatrix chol(shapeCov.computeCholesky());
+      SquareMatrix lower(d);
+      for (UnsignedInteger i = 0; i < d; ++i)
+        for (UnsignedInteger j = 0; j <= i; ++j)
+          lower(i, j) = chol(i, j);
+      const Point center(d);
+      Sample latticePoints(0, d);
+      Point current(d);
+      UnsignedInteger nodeVisits = 0;
+      Bool truncated = false;
+      EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, nodeVisits, latticePoints, truncated);
+      if (truncated) continue;
+      const Scalar omegaSquare = omega * omega;
+      Scalar sum = 0.0;
+      for (UnsignedInteger t = 0; t < latticePoints.getSize(); ++t)
+      {
+        const Point mode(latticePoints[t]);
+        // Quadratic form m^T sigma m
+        Scalar quad = 0.0;
+        for (UnsignedInteger i = 0; i < d; ++i)
+          for (UnsignedInteger j = 0; j < d; ++j)
+            quad += mode[i] * sigma_(i, j) * mode[j];
+        // Phase 2*pi*m.(x-mu)/period
+        Scalar phase = 0.0;
+        for (UnsignedInteger i = 0; i < d; ++i)
+          phase += mode[i] * (wrappedPoint[i] - mu_[i]);
+        sum += std::exp(-0.5 * omegaSquare * quad) * std::cos(omega * phase);
+      }
+      if (!(sum > 0.0))
+      {
+        // Truncation drove the alternating sum non-positive in the deep tails:
+        // the direct sum is the right tool there
+        LOGWARN("WrappedNormal: Fourier sum is non-positive, this point is out of scope");
+        return -SpecFunc::Infinity;
+      }
+      logSum = std::log(sum) - (1.0 * d) * std::log(period_);
+      evaluated = true;
     }
   }
   if (!evaluated)

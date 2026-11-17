@@ -59,9 +59,15 @@ int main(int, char *[])
 
     // Build from sample
     SquareMatrix gamma(3);
-    gamma(0, 0) = 1.0; gamma(0, 1) = 0.0; gamma(0, 2) = 0.0;
-    gamma(1, 0) = 0.0; gamma(1, 1) = 1.0; gamma(1, 2) = 0.0;
-    gamma(2, 0) = 0.0; gamma(2, 1) = 0.0; gamma(2, 2) = 1.0;
+    gamma(0, 0) = 1.0;
+    gamma(0, 1) = 0.0;
+    gamma(0, 2) = 0.0;
+    gamma(1, 0) = 0.0;
+    gamma(1, 1) = 1.0;
+    gamma(1, 2) = 0.0;
+    gamma(2, 0) = 0.0;
+    gamma(2, 1) = 0.0;
+    gamma(2, 2) = 1.0;
     Kent trueDist(25.0, 0.5, gamma);
     UnsignedInteger size = 50000;
     Sample sample(trueDist.getSample(size));
@@ -101,9 +107,15 @@ int main(int, char *[])
       Point invalidParams(11);
       invalidParams[0] = 0.0;  // kappa must be > 0
       invalidParams[1] = 0.25;
-      invalidParams[2] = 1.0; invalidParams[3] = 0.0; invalidParams[4] = 0.0;
-      invalidParams[5] = 0.0; invalidParams[6] = 1.0; invalidParams[7] = 0.0;
-      invalidParams[8] = 0.0; invalidParams[9] = 0.0; invalidParams[10] = 1.0;
+      invalidParams[2] = 1.0;
+      invalidParams[3] = 0.0;
+      invalidParams[4] = 0.0;
+      invalidParams[5] = 0.0;
+      invalidParams[6] = 1.0;
+      invalidParams[7] = 0.0;
+      invalidParams[8] = 0.0;
+      invalidParams[9] = 0.0;
+      invalidParams[10] = 1.0;
       factory.buildAsKent(invalidParams);
       return ExitCode::Error;
     }

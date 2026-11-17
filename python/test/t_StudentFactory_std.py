@@ -25,7 +25,9 @@ for distribution in distributions:
     estimatedDistribution = factory.build(sample)
     print("distribution=", distribution)
     print("Estimated distribution=", estimatedDistribution)
-    ott.assert_almost_equal(estimatedDistribution.getParameter(), distribution.getParameter(), 0.2, 0.1)
+    ott.assert_almost_equal(
+        estimatedDistribution.getParameter(), distribution.getParameter(), 0.2, 0.1
+    )
 estimatedDistribution = factory.build()
 print("Default distribution=", estimatedDistribution)
 ott.assert_almost_equal(estimatedDistribution.getParameter(), [3.0, 0.0, 1.0])

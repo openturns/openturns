@@ -67,7 +67,7 @@ public:
 
   /** Constructor with parameters */
   explicit ExceptionPenalizedProblem(const OptimizationProblem & problem,
-                            const Scalar penalizedValue = std::sqrt(SpecFunc::MaxScalar));
+                                     const Scalar penalizedValue = std::sqrt(SpecFunc::MaxScalar));
 
   /** Virtual constructor */
   ExceptionPenalizedProblem * clone() const override;

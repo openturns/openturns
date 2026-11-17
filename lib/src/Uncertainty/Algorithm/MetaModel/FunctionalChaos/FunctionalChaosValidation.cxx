@@ -149,8 +149,8 @@ Sample FunctionalChaosValidation::ComputeMetamodelLeaveOneOutPredictions(
   const Bool useUniformWeights = (weights.getSize() == 1);
   if (!useUniformWeights && (weights.getSize() != sampleSize)) throw InvalidArgumentException(HERE) << "FunctionalChaosValidation: design weights size (" << weights.getSize() << ") must match the sample size (" << sampleSize << ") or be a single uniform value";
   LeastSquaresMethod leastSquaresMethod(useUniformWeights ?
-      LeastSquaresMethod::Build(methodName, designProxy, allIndices) :
-      LeastSquaresMethod::Build(methodName, designProxy, weights, allIndices));
+                                        LeastSquaresMethod::Build(methodName, designProxy, allIndices) :
+                                        LeastSquaresMethod::Build(methodName, designProxy, weights, allIndices));
   leastSquaresMethod.update(Indices(0), allIndices, Indices(0));
   const Point hMatrixDiag = leastSquaresMethod.getHDiag();
   const Sample cvPredictions(MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
@@ -183,8 +183,8 @@ Sample FunctionalChaosValidation::ComputeMetamodelKFoldPredictions(
   const Bool useUniformWeights = (weights.getSize() == 1);
   if (!useUniformWeights && (weights.getSize() != sampleSize)) throw InvalidArgumentException(HERE) << "FunctionalChaosValidation: design weights size (" << weights.getSize() << ") must match the sample size (" << sampleSize << ") or be a single uniform value";
   LeastSquaresMethod leastSquaresMethod(useUniformWeights ?
-    LeastSquaresMethod::Build(methodName, designProxy, allIndices) :
-    LeastSquaresMethod::Build(methodName, designProxy, weights, allIndices));
+                                        LeastSquaresMethod::Build(methodName, designProxy, allIndices) :
+                                        LeastSquaresMethod::Build(methodName, designProxy, weights, allIndices));
   leastSquaresMethod.update(Indices(0), allIndices, Indices(0));
   if (useUniformWeights)
   {

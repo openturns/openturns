@@ -579,7 +579,7 @@ Sample Sample::computeQuantilePerComponent(const Point & prob,
  * Method computeQuantile() gives the N-dimension quantile of the sample
  */
 Point Sample::computeQuantile(const Scalar prob,
-    const Bool tail) const
+                              const Bool tail) const
 {
   return getImplementation()->computeQuantile(prob, tail);
 }

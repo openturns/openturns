@@ -16,7 +16,9 @@ assert data.getDimension() == 6
 # All the tensors are symmetric positive definite
 for i in range(data.getSize()):
     row = data[i]
-    matrix = ot.SymmetricMatrix([[row[0], row[1], row[2]], [row[1], row[3], row[4]], [row[2], row[4], row[5]]])
+    matrix = ot.SymmetricMatrix(
+        [[row[0], row[1], row[2]], [row[1], row[3], row[4]], [row[2], row[4], row[5]]]
+    )
     copy = ot.SymmetricMatrix(matrix)
     eigen = copy.computeEV()[0]
     for value in eigen:

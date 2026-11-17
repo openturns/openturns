@@ -62,9 +62,7 @@ print(f"Target measure: {measure}")
 
 # The tensorized Legendre basis is orthonormal with respect to the product
 # uniform measure on [-1, 1]^2, not with respect to the target measure.
-initialBasis = ot.OrthogonalProductPolynomialFactory(
-    [ot.LegendreFactory()] * dimension
-)
+initialBasis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()] * dimension)
 print(f"Instrumental measure of the initial basis: {initialBasis.getMeasure()}")
 basisSize = 6
 
@@ -98,12 +96,9 @@ def computeGramMatrix(functions):
     gram = ot.SymmetricMatrix(len(functions))
     for i in range(len(functions)):
         for j in range(i + 1):
+
             def integrand(x, i=i, j=j):
-                return [
-                    functions[i](x)[0]
-                    * functions[j](x)[0]
-                    * measure.computePDF(x)
-                ]
+                return [functions[i](x)[0] * functions[j](x)[0] * measure.computePDF(x)]
 
             function = ot.PythonFunction(dimension, 1, integrand)
             gram[i, j] = integration.integrate(function, measure.getRange())[0]
@@ -191,7 +186,9 @@ print(f"Number of nodes: {len(nodes)}")
 print(f"Sum of weights: {sum(weights):.6f}")
 
 for k in range(n):
-    integral = sum(weights[i] * orthonormalFunctions[k](nodes[i])[0] for i in range(len(nodes)))
+    integral = sum(
+        weights[i] * orthonormalFunctions[k](nodes[i])[0] for i in range(len(nodes))
+    )
     print(f"Integral of phi_{k}: {integral:.3e}")
 
 # %%
@@ -230,9 +227,7 @@ christoffelBasis = ot.OrthogonalBasis(
 christoffel = otexp.ChristoffelDistribution(christoffelBasis, basisSize)
 sample = christoffel.getSample(1000)
 
-graph = christoffel.drawPDF(
-    [-1.0] * dimension, [1.0] * dimension, [101] * dimension
-)
+graph = christoffel.drawPDF([-1.0] * dimension, [1.0] * dimension, [101] * dimension)
 contour = graph.getDrawable(0).getImplementation()
 contour.setIsFilled(True)
 contour.setColorMapNorm("rank")
@@ -246,9 +241,7 @@ cloud.setColor("red")
 cloud.setLegend("Sample")
 graph.add(cloud)
 # White edges keep the red circles readable on the filled contours.
-view = otv.View(
-    graph, scatter_kw={"s": 18, "edgecolors": "white", "linewidths": 0.5}
-)
+view = otv.View(graph, scatter_kw={"s": 18, "edgecolors": "white", "linewidths": 0.5})
 
 # %%
 view.ShowAll()

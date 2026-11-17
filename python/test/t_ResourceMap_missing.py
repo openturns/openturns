@@ -114,9 +114,7 @@ assert not undoc_keys, f"undocumented resourcemap keys: {sorted(undoc_keys)}"
 # check the documented type and default value of the keys documented as
 # - ``Key`` (``Type``, default: ``value``): description
 # the pattern spans several lines to deal with wrapped entries
-doc_pattern = re.compile(
-    r"-\s+``([\w\-]+)``\s+\(`+(\w+)`+,\s*default:\s*`+([^`]+)`+"
-)
+doc_pattern = re.compile(r"-\s+``([\w\-]+)``\s+\(`+(\w+)`+,\s*default:\s*`+([^`]+)`+")
 
 
 def cast_docstring_value(key, vtype, value):
@@ -141,7 +139,9 @@ for docstring_file in docstring_files:
             if key in skipped_keys:
                 continue
             if key not in resourcemap_content:
-                raise ValueError(f"{docstring_file.name}: key={key} is not a ResourceMap key")
+                raise ValueError(
+                    f"{docstring_file.name}: key={key} is not a ResourceMap key"
+                )
             if resourcemap_types[key] != vtype:
                 raise ValueError(
                     f"{docstring_file.name}: key={key} DOC={vtype} RM={resourcemap_types[key]}"

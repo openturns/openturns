@@ -130,7 +130,10 @@ assert cornerDistance < 1e-6, "QEF must recover the box corner"
 # Collection of level sets = intersection: lens of two unit disks
 disk1 = ot.SymbolicFunction(["x", "y"], ["(x+0.5)^2+y^2"])
 disk2 = ot.SymbolicFunction(["x", "y"], ["(x-0.5)^2+y^2"])
-lens = [ot.LevelSet(disk1, ot.LessOrEqual(), 1.0), ot.LevelSet(disk2, ot.LessOrEqual(), 1.0)]
+lens = [
+    ot.LevelSet(disk1, ot.LessOrEqual(), 1.0),
+    ot.LevelSet(disk2, ot.LessOrEqual(), 1.0),
+]
 lensBB = ot.Interval([-1.6] * 2, [1.6] * 2)
 lensMesher = ot.LevelSetMesher([16] * 2)
 lensLegacy = lensMesher.build(lens, lensBB)
@@ -138,7 +141,9 @@ lensMesher.setUseQEF(True)
 lensQEF = lensMesher.build(lens, lensBB)
 lensMesher.setUseQEF(False)
 lensExact = 2.0 * m.pi / 3.0 - m.sqrt(3.0) / 2.0
-assert abs(lensQEF.getVolume() - lensExact) <= abs(lensLegacy.getVolume() - lensExact), "QEF must be at least as accurate"
+assert abs(lensQEF.getVolume() - lensExact) <= abs(
+    lensLegacy.getVolume() - lensExact
+), "QEF must be at least as accurate"
 ott.assert_almost_equal(lensQEF.getVolume(), lensExact, 1e-2, 1e-2)
 tipDistance = min((v - [0.0, m.sqrt(3.0) / 2.0]).norm() for v in lensQEF.getVertices())
 assert tipDistance < 1e-4, "lens tip must be recovered"
@@ -148,8 +153,12 @@ singleMesh = ot.LevelSetMesher([16] * 2).build(
     ot.LevelSet(ot.SymbolicFunction(["x", "y"], ["x^2+y^2"]), ot.LessOrEqual(), 1.0),
     ot.Interval([-1.5] * 2, [1.5] * 2),
 )
-circleCollection = [ot.LevelSet(ot.SymbolicFunction(["x", "y"], ["x^2+y^2"]), ot.LessOrEqual(), 1.0)]
-collectionMesh = ot.LevelSetMesher([16] * 2).build(circleCollection, ot.Interval([-1.5] * 2, [1.5] * 2))
+circleCollection = [
+    ot.LevelSet(ot.SymbolicFunction(["x", "y"], ["x^2+y^2"]), ot.LessOrEqual(), 1.0)
+]
+collectionMesh = ot.LevelSetMesher([16] * 2).build(
+    circleCollection, ot.Interval([-1.5] * 2, [1.5] * 2)
+)
 assert collectionMesh == singleMesh, "1-element collection must match single build"
 
 # Collection built from a field with one column per level set
@@ -169,7 +178,9 @@ ott.assert_almost_equal(lensFieldMesh.getVertices(), lensQEF.getVertices(), 1e-4
 # Field with fewer columns than level sets: values are re-evaluated (warn path)
 oneColumn = disk1(supportVertices)
 lensFieldMismatch = lensMesher.build(lens, ot.Field(supportMesh, oneColumn))
-ott.assert_almost_equal(lensFieldMismatch.getVertices(), lensLegacy.getVertices(), 1e-4, 1e-4)
+ott.assert_almost_equal(
+    lensFieldMismatch.getVertices(), lensLegacy.getVertices(), 1e-4, 1e-4
+)
 
 # default value read in ResourceMap: on enables QEF at construction
 ot.ResourceMap.SetAsBool("LevelSetMesher-UseQEF", True)
@@ -178,13 +189,17 @@ assert defaultOnMesher.getUseQEF(), "default must follow the ResourceMap key"
 defaultOnMesh = defaultOnMesher.build(boxLevelSet2D, boxBB2D)
 ott.assert_almost_equal(defaultOnMesh.getVolume(), 1.0, 1e-9, 1e-9)
 ot.ResourceMap.SetAsBool("LevelSetMesher-UseQEF", False)
-assert not ot.LevelSetMesher([6] * 2).getUseQEF(), "default must follow the ResourceMap key"
+assert not ot.LevelSetMesher(
+    [6] * 2
+).getUseQEF(), "default must follow the ResourceMap key"
 
 # Empty collection and dimension mismatch raise
 with ott.assert_raises(Exception):
     ot.LevelSetMesher([4] * 2).build([], lensBB)
 with ott.assert_raises(Exception):
-    badLevelSet = ot.LevelSet(ot.SymbolicFunction(["x", "y", "z"], ["x^2+y^2+z^2"]), ot.LessOrEqual(), 1.0)
+    badLevelSet = ot.LevelSet(
+        ot.SymbolicFunction(["x", "y", "z"], ["x^2+y^2+z^2"]), ot.LessOrEqual(), 1.0
+    )
     ot.LevelSetMesher([4] * 2).build([lens[0], badLevelSet], lensBB)
 # Validation of the bounding-box overloads
 with ott.assert_raises(Exception):
@@ -203,7 +218,9 @@ with ott.assert_raises(Exception):
 ot.ResourceMap.SetAsBool("LevelSetMesher-SolveEquation", True)
 
 # Adaptive background refinement: 3D box, dropped-cell strips recovered
-refBoxFunction = ot.PythonFunction(3, 1, lambda X: [max(abs(X[0]), abs(X[1]), abs(X[2])) - 0.5])
+refBoxFunction = ot.PythonFunction(
+    3, 1, lambda X: [max(abs(X[0]), abs(X[1]), abs(X[2])) - 0.5]
+)
 refBoxLevelSet = ot.LevelSet(refBoxFunction, ot.LessOrEqual(), 0.0)
 refBoxBB = ot.Interval([-1.0] * 3, [1.0] * 3)
 refBoxMesher = ot.LevelSetMesher([6] * 3)

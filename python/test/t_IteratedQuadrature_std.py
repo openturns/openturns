@@ -53,7 +53,9 @@ print("2D ball volume with GaussLegendre=", value2)
 ott.assert_almost_equal(value2, m.pi, 1e-3, 1e-3)
 
 # Test the integrate(f, interval) overload (1D)
-algo.setAlgorithm(ot.GaussKronrod(20, 1.0e-6, ot.GaussKronrodRule(ot.GaussKronrodRule.G3K7)))
+algo.setAlgorithm(
+    ot.GaussKronrod(20, 1.0e-6, ot.GaussKronrodRule(ot.GaussKronrodRule.G3K7))
+)
 f1d = ot.SymbolicFunction(["x"], ["sin(x)"])
 value1d = algo.integrate(f1d, ot.Interval(-1.0, 1.0))
 ref1d = -m.cos(1.0) + m.cos(-1.0)  # = 2*sin(1) via antiderivative
@@ -96,7 +98,10 @@ with ott.assert_raises(TypeError):
 # Test with check=False: mismatched lower/upper bound counts
 with ott.assert_raises(TypeError):
     lower_bad4 = [ot.SymbolicFunction(["x0"], ["-1.0"])]
-    upper_bad4 = [ot.SymbolicFunction(["x0"], ["1.0"]), ot.SymbolicFunction(["x0", "x1"], ["1.0"])]
+    upper_bad4 = [
+        ot.SymbolicFunction(["x0"], ["1.0"]),
+        ot.SymbolicFunction(["x0", "x1"], ["1.0"]),
+    ]
     integrand_bad4 = ot.SymbolicFunction(["x0", "x1"], ["1.0"])
     algo.integrate(integrand_bad4, -1.0, 1.0, lower_bad4, upper_bad4, False)
 
@@ -114,7 +119,9 @@ def py_integrand(x):
     return [x[0] * x[0] + x[1] * x[1]]
 
 
-algo.setAlgorithm(ot.GaussKronrod(20, 1.0e-6, ot.GaussKronrodRule(ot.GaussKronrodRule.G3K7)))
+algo.setAlgorithm(
+    ot.GaussKronrod(20, 1.0e-6, ot.GaussKronrodRule(ot.GaussKronrodRule.G3K7))
+)
 py_f = ot.PythonFunction(2, 1, py_integrand)
 lower_py = [ot.SymbolicFunction(["x0"], ["-sqrt(max(0.0, 1.0 - x0^2))"])]
 upper_py = [ot.SymbolicFunction(["x0"], ["sqrt(max(0.0, 1.0 - x0^2))"])]

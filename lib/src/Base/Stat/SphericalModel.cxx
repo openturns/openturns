@@ -242,7 +242,7 @@ void SphericalModel::load(Advocate & adv)
 
 /** Gradient wrt the first input point */
 Matrix SphericalModel::partialGradient(const Point & s,
-    const Point & t) const
+                                       const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "SphericalModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "SphericalModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;

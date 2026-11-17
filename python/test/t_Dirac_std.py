@@ -124,7 +124,9 @@ for i in range(dim):
     for j in range(i + 1):
         if abs(sampleCovariance[i, j]) < 1.0e-16:
             sampleCovariance[i, j] = 0.0
-ott.assert_almost_equal(sampleCovariance, ot.CovarianceMatrix(dim, [0.0] * 16), 0.0, 0.0)
+ott.assert_almost_equal(
+    sampleCovariance, ot.CovarianceMatrix(dim, [0.0] * 16), 0.0, 0.0
+)
 
 # Define a point
 point = ot.Point(dim, 0.0)

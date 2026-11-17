@@ -170,7 +170,7 @@ UnsignedInteger ProductEvaluation::getOutputDimension() const
 Bool ProductEvaluation::isParallel() const
 {
   return leftEvaluation_.getImplementation()->isParallel()
-      && rightEvaluation_.getImplementation()->isParallel();
+         && rightEvaluation_.getImplementation()->isParallel();
 }
 
 /* Method save() stores the object through the StorageManager */

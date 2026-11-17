@@ -89,7 +89,10 @@ ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [0.0962368]), 1e-5, 0
 parameters = distribution.getParametersCollection()
 assert len(parameters) == 1
 ott.assert_almost_equal(parameters[0], [1.5, 4.5], 0.0, 0.0)
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Burr"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "Burr"
+)
 
 # computeProba test with bound far away
 p = distribution.computeProbability(

@@ -40,8 +40,6 @@ try:
     assert math.isfinite(theta)
     assert -1.0 <= theta <= 1.0
     # without fallback the unbracketed edge would be returned instead
-    ott.assert_almost_equal(
-        theta, defaultEstimated.getTheta(), 1e-9, 0.0
-    )
+    ott.assert_almost_equal(theta, defaultEstimated.getTheta(), 1e-9, 0.0)
 finally:
     ot.ResourceMap.SetAsScalar("AliMikhailHaqCopulaFactory-ThetaEpsilon", 1.0e-14)

@@ -216,7 +216,9 @@ def execute(
     b'42'
     """
 
-    warnings.warn("-- openturns.coupling_tools.execute is deprecated, use subprocess.run")
+    warnings.warn(
+        "-- openturns.coupling_tools.execute is deprecated, use subprocess.run"
+    )
 
     # split cmd if not in a shell before passing it to os.execvp()
     process_args = cmd

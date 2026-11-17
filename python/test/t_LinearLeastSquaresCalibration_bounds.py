@@ -151,12 +151,8 @@ gSpec = ot.SymbolicFunction(["a", "b", "x"], ["a + b*x"])
 modelSpec = ot.ParametricFunction(gSpec, [0, 1], [0.0, 0.0])
 xSpec = ot.Sample([[1.0], [2.0], [3.0], [4.0]])
 ySpec = ot.Sample([[6.0], [5.0], [7.0], [10.0]])
-algoSpec = ot.LinearLeastSquaresCalibration(
-    modelSpec, xSpec, ySpec, [0.0, 0.0], "SVD"
-)
-algoSpec.setBounds(
-    ot.Interval([0.0, 2.0], [0.0, 5.0], [False, True], [False, True])
-)
+algoSpec = ot.LinearLeastSquaresCalibration(modelSpec, xSpec, ySpec, [0.0, 0.0], "SVD")
+algoSpec.setBounds(ot.Interval([0.0, 2.0], [0.0, 5.0], [False, True], [False, True]))
 algoSpec.run()
 ott.assert_almost_equal(
     algoSpec.getResult().getParameterMAP(), [2.0, 2.0], boundedMapRtol
@@ -222,9 +218,7 @@ gShift = ot.SymbolicFunction(["x", "a"], ["a * x"])
 modelShift = ot.ParametricFunction(gShift, [1], [0.0])
 xShift = ot.Sample([[1.0], [1.0], [1.0]])
 yShift = ot.Sample([[1.0e6], [1.0e6], [1.0e6]])
-algoShift = ot.LinearLeastSquaresCalibration(
-    modelShift, xShift, yShift, [0.0], "SVD"
-)
+algoShift = ot.LinearLeastSquaresCalibration(modelShift, xShift, yShift, [0.0], "SVD")
 algoShift.setBounds(ot.Interval([-2.0e6], [2.0e6]))
 algoShift.run()
 ott.assert_almost_equal(algoShift.getResult().getParameterMAP(), [1.0e6], 1e-6)
@@ -238,9 +232,7 @@ algoShiftOneSided = ot.LinearLeastSquaresCalibration(
 )
 algoShiftOneSided.setBounds(ot.Interval([0.0], [1.0e30], [True], [False]))
 algoShiftOneSided.run()
-ott.assert_almost_equal(
-    algoShiftOneSided.getResult().getParameterMAP(), [1.0e6], 1e-6
-)
+ott.assert_almost_equal(algoShiftOneSided.getResult().getParameterMAP(), [1.0e6], 1e-6)
 
 # a design whose smallest singular value is below the square root of the
 # machine precision: its normal matrix cannot represent the direction it
@@ -255,9 +247,7 @@ for illObservations in ([1.0, 1e-9, 0.1], [1.0, 2e-9, 0.1]):
         illModel, illX, illY, [0.0, 0.0], "SVD"
     )
     reference.run()
-    bounded = ot.LinearLeastSquaresCalibration(
-        illModel, illX, illY, [0.0, 0.0], "SVD"
-    )
+    bounded = ot.LinearLeastSquaresCalibration(illModel, illX, illY, [0.0, 0.0], "SVD")
     bounded.setBounds(ot.Interval([-3.0, -3.0], [3.0, 3.0]))
     bounded.run()
     ott.assert_almost_equal(
@@ -272,9 +262,7 @@ active = ot.LinearLeastSquaresCalibration(
 )
 active.setBounds(ot.Interval([-3.0, 0.0], [3.0, 1.5]))
 active.run()
-ott.assert_almost_equal(
-    active.getResult().getParameterMAP(), [-0.5, 1.5], 1e-6, 1e-6
-)
+ott.assert_almost_equal(active.getResult().getParameterMAP(), [-0.5, 1.5], 1e-6, 1e-6)
 
 # a residual component that no design column can cancel (a constant offset on
 # an extra observation) must not scale the release tolerance of the active-set
@@ -321,9 +309,7 @@ ott.assert_almost_equal(
 )
 # a coordinate sitting on a bound must stay free when the step is blocked by
 # another coordinate, instead of being frozen at its current value
-blocked = ot.LinearLeastSquaresCalibration(
-    splitModel, illX, splitY, [0.0, 0.0], "SVD"
-)
+blocked = ot.LinearLeastSquaresCalibration(splitModel, illX, splitY, [0.0, 0.0], "SVD")
 blocked.setBounds(ot.Interval([0.0, 0.0], [3.0, 3.0]))
 blocked.run()
 ott.assert_almost_equal(blocked.getResult().getParameterMAP(), [0.0, 1.0], 1e-6, 1e-6)

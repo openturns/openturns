@@ -459,7 +459,7 @@ Point CalibrationAlgorithmImplementation::SolveBoundedLeastSquaresByActiveSet(co
       if ((freeSolution[k] < lowerBound[column]) || (freeSolution[k] > upperBound[column]))
       {
         const Scalar reached = freeSolution[k] < lowerBound[column]
-          ? lowerBound[column] : upperBound[column];
+                               ? lowerBound[column] : upperBound[column];
         step = std::min(step, (reached - solution[column]) / (freeSolution[k] - solution[column]));
       }
     }

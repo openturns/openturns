@@ -458,42 +458,42 @@ OT_API Scalar qDickeyFullerNoConstant(const Scalar p,
 
 // For N-dimensional Normal orthant probability (Ridgway SMC algorithm)
 OT_API Scalar pNormalOrthantND(const Point & a, const Point & b,
-                                const TriangularMatrix & L,
-                                const UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
-                                const Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"));
+                               const TriangularMatrix & L,
+                               const UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
+                               const Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"));
 OT_API Scalar pNormalOrthantND(const Point & a, const Point & b,
-                                const Point & mu, const TriangularMatrix & L,
-                                const UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
-                                const Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"));
+                               const Point & mu, const TriangularMatrix & L,
+                               const UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
+                               const Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"));
 // For N-dimensional Student orthant probability (Ridgway SMC algorithm)
 OT_API Scalar pStudentOrthantND(const Point & a, const Point & b,
-                                 const TriangularMatrix & L,
-                                 const Scalar nu,
-                                 const UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
-                                 const Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"),
-                                 const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize"));
+                                const TriangularMatrix & L,
+                                const Scalar nu,
+                                const UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
+                                const Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"),
+                                const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize"));
 OT_API Scalar pStudentOrthantND(const Point & a, const Point & b,
-                                 const Point & mu, const TriangularMatrix & L,
-                                 const Scalar nu,
-                                 const UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
-                                 const Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"),
-                                 const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize"));
+                                const Point & mu, const TriangularMatrix & L,
+                                const Scalar nu,
+                                const UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
+                                const Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"),
+                                const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize"));
 // For N-dimensional Normal rectangular probability
 OT_API Scalar pNormalND(const Point & a, const Point & b,
-                         const TriangularMatrix & L,
-                         const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+                        const TriangularMatrix & L,
+                        const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 OT_API Scalar pNormalND(const Point & a, const Point & b,
-                         const Point & mu, const TriangularMatrix & L,
-                         const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+                        const Point & mu, const TriangularMatrix & L,
+                        const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 // For N-dimensional Student rectangular probability
 OT_API Scalar pStudentND(const Point & a, const Point & b,
-                          const TriangularMatrix & L,
-                          const Scalar nu,
-                          const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+                         const TriangularMatrix & L,
+                         const Scalar nu,
+                         const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 OT_API Scalar pStudentND(const Point & a, const Point & b,
-                          const Point & mu, const TriangularMatrix & L,
-                          const Scalar nu,
-                          const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+                         const Point & mu, const TriangularMatrix & L,
+                         const Scalar nu,
+                         const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 
 } /* DistFunc */
 

@@ -135,7 +135,7 @@ private:
 
   /** Intermediate sampling algorithm */
   Point getCosSample(const UnsignedInteger size) const;
-  
+
   /** The main parameter set of the distribution */
   Point mu_;
   Scalar kappa_;

@@ -358,8 +358,11 @@ Scalar Multinomial::computeCDF(const Point & point) const
     return Multinomial(n_, pReduced).computeCDF(xReduced);
   }
   // Evaluation of P(W=n) using Poisson's formula
-  return PoissonFormula::computeCDF([&](const Complex & z) { return computeGlobalPhi(z, kPoint); },
-                                    n_, r_, normalizationCDF_, getClassName());
+  return PoissonFormula::computeCDF([&](const Complex & z)
+  {
+    return computeGlobalPhi(z, kPoint);
+  },
+  n_, r_, normalizationCDF_, getClassName());
 }
 
 /* Compute the probability content of an interval */
@@ -438,8 +441,11 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   }
   // Diametral term
   const Scalar poisLogPDF = DistFunc::logdPoisson(n_, n_);
-  return PoissonFormula::computeProbability([&](const Complex & z) { return computeGlobalPhi(z, a, b); },
-                                            nA, r, logCoefNorm, poisLogPDF);
+  return PoissonFormula::computeProbability([&](const Complex & z)
+  {
+    return computeGlobalPhi(z, a, b);
+  },
+  nA, r, logCoefNorm, poisLogPDF);
 }
 
 /* Get the survival function of the distribution */

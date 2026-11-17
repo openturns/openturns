@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class SlicedInverseRegressionResult
  *
- * Result from SIR algorithm 
+ * Result from SIR algorithm
  */
 class OT_API SlicedInverseRegressionResult
   : public PersistentObject
@@ -50,7 +50,7 @@ public:
 
   Matrix getDirections() const;
   Point getEigenvalues() const;
-  
+
   Function getTransformation() const;
 
   /** String converter */

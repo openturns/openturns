@@ -11,13 +11,11 @@ factory = otexp.BinghamFactory()
 # Default build
 default = factory.build()
 assert default.getDimension() == 3
-assert ot.Distribution(default).getImplementation().getClassName() == \
-    "Bingham"
+assert ot.Distribution(default).getImplementation().getClassName() == "Bingham"
 
 # Build from a uniform sample on the sphere: the estimated concentrations
 # must be close to zero (sample noise only)
-gamma = ot.SquareMatrix([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0],
-                         [0.0, 0.0, 1.0]])
+gamma = ot.SquareMatrix([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
 uniform = otexp.Bingham([0.0, 0.0, 0.0], gamma)
 ot.RandomGenerator.SetSeed(0)
 sample = uniform.getSample(2000)
@@ -27,8 +25,7 @@ assert estimated.getDimension() == 3
 zi = estimated.getImplementation().getZeta()
 for z in zi:
     assert abs(z) < 0.3, "zeta=%s" % zi
-assert ot.Distribution(estimated).getImplementation().getClassName() == \
-    "Bingham"
+assert ot.Distribution(estimated).getImplementation().getClassName() == "Bingham"
 
 # Build from a concentrated sample: the estimated distribution must be able
 # to describe the anisotropic scatter of the sample
@@ -51,8 +48,7 @@ ott.assert_almost_equal(est_cov, sample_cov, 5e-2, 0.0)
 dist = otexp.Bingham([1.0, 0.5, 0.0], gamma)
 param = dist.getParameter()
 estimated2 = factory.build(param)
-ott.assert_almost_equal(estimated2.getImplementation().getParameter(),
-                        param, 1e-9, 0.0)
+ott.assert_almost_equal(estimated2.getImplementation().getParameter(), param, 1e-9, 0.0)
 
 # buildAsBingham variants
 native = factory.buildAsBingham(sample)
@@ -60,8 +56,7 @@ assert ot.Distribution(native).getImplementation().getClassName() == "Bingham"
 native_param = factory.buildAsBingham(param)
 ott.assert_almost_equal(native_param.getParameter(), param, 1e-9, 0.0)
 native_default = factory.buildAsBingham()
-assert ot.Distribution(native_default).getImplementation().getClassName() == \
-    "Bingham"
+assert ot.Distribution(native_default).getImplementation().getClassName() == "Bingham"
 
 # Build from a concentrated sample: moment matching recovers the parameters
 reference = otexp.Bingham([2.0, 1.0, 0.0], gamma)
@@ -74,7 +69,10 @@ for estimatedZeta, trueZeta in zip(recoveredZeta, [2.0, 1.0, 0.0]):
     assert abs(estimatedZeta - trueZeta) < 0.3, "zeta=%s" % recoveredZeta
 # The estimated second moments match the sample scatter
 recoveredMoments = [recovered.getCovariance()[i, i] for i in range(3)]
-sampleMoments = [bigSample.computeCovariance()[i, i] + bigSample.computeMean()[i] ** 2 for i in range(3)]
+sampleMoments = [
+    bigSample.computeCovariance()[i, i] + bigSample.computeMean()[i] ** 2
+    for i in range(3)
+]
 for estimatedMoment, sampleMoment in zip(recoveredMoments, sampleMoments):
     ott.assert_almost_equal(estimatedMoment, sampleMoment, 0.1, 2e-2)
 

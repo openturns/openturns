@@ -58,9 +58,7 @@ assert inequalityMixed.getInputDimension() == 2
 assert inequalityMixed.getOutputDimension() == 1
 ott.assert_almost_equal(equalityMixed([0.75, 1.75]), [0.0])
 ott.assert_almost_equal(equalityMixed([0.0, 0.0]), [-2.5])
-ott.assert_almost_equal(
-    equalityMixed.gradient([0.0, 0.0]), ot.Matrix([[1.0], [1.0]])
-)
+ott.assert_almost_equal(equalityMixed.gradient([0.0, 0.0]), ot.Matrix([[1.0], [1.0]]))
 ott.assert_almost_equal(inequalityMixed([0.0, 0.0]), [1.0])
 ott.assert_almost_equal(inequalityMixed([1.0, 1.5]), [1.5])
 ott.assert_almost_equal(
@@ -78,12 +76,8 @@ mixedProblem.setEqualityConstraint(
 )
 assert mixedProblem.hasEqualityConstraint()
 assert mixedProblem.hasInequalityConstraint()
-ott.assert_almost_equal(
-    mixedProblem.getEqualityConstraint()([0.0, 0.0]), [-1.0]
-)
-ott.assert_almost_equal(
-    mixedProblem.getEqualityConstraint()([1.0, 1.0]), [0.0]
-)
+ott.assert_almost_equal(mixedProblem.getEqualityConstraint()([0.0, 0.0]), [-1.0])
+ott.assert_almost_equal(mixedProblem.getEqualityConstraint()([1.0, 1.0]), [0.0])
 ott.assert_almost_equal(mixedProblem.getInequalityConstraint()([0.0, 0.0]), [1.0])
 
 # a generic Function known to be linear is accepted through isLinear()
@@ -110,9 +104,7 @@ largeOffsetProblem.setInequalityConstraint(
 largeOffsetInequality = largeOffsetProblem.getInequalityConstraint()
 ott.assert_almost_equal(largeOffsetInequality([0.0]), [1.0e12])
 ott.assert_almost_equal(largeOffsetInequality([-2.0e12]), [-1.0e12])
-ott.assert_almost_equal(
-    largeOffsetInequality.gradient([0.0]), ot.Matrix([[1.0]])
-)
+ott.assert_almost_equal(largeOffsetInequality.gradient([0.0]), ot.Matrix([[1.0]]))
 
 # nonlinear functions and input dimension mismatches are rejected
 for setter in (
@@ -201,8 +193,10 @@ ott.assert_almost_equal(
 # the equality and inequality constraint functions are read from a sparse
 # problem row by row, without densifying its coefficients
 mixedSparse = otexp.LinearProgrammingProblem(
-    [1.0, 1.0], ot.Interval([0.0, 0.0], [10.0, 10.0]),
-    otexp.SparseMatrix.FromDenseMatrix(mixedA), mixedLU,
+    [1.0, 1.0],
+    ot.Interval([0.0, 0.0], [10.0, 10.0]),
+    otexp.SparseMatrix.FromDenseMatrix(mixedA),
+    mixedLU,
 )
 assert mixedSparse.hasEqualityConstraint()
 assert mixedSparse.hasInequalityConstraint()
@@ -329,7 +323,9 @@ nonlinearProblem.setInequalityConstraint(
 )
 nonlinearProblem.setBounds(ot.Interval([0.0, 0.0], [4.0, 4.0]))
 nonlinearLocation = [1.0, 2.0]
-nonlinearLinear = otexp.LinearProgrammingProblem.Linearize(nonlinearProblem, nonlinearLocation)
+nonlinearLinear = otexp.LinearProgrammingProblem.Linearize(
+    nonlinearProblem, nonlinearLocation
+)
 assert nonlinearLinear.getLinearCost() == [2.0, 1.0]
 # f(x0) - g(x0).x0 = 3 - 4
 ott.assert_almost_equal(nonlinearLinear.getConstant(), -1.0)

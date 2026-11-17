@@ -39,14 +39,18 @@ assert distribution.getRange() == ot.Interval([0.0] * 3, [1.0, 1.0, 0.0])
 
 # PDF on the mesh is the inverse of the intrinsic volume
 ott.assert_almost_equal(distribution.computePDF([0.2, 0.3, 0.0]), 2.0, 1e-12, 0.0)
-ott.assert_almost_equal(distribution.computeLogPDF([0.2, 0.3, 0.0]), 0.6931471805599453, 1e-12, 0.0)
+ott.assert_almost_equal(
+    distribution.computeLogPDF([0.2, 0.3, 0.0]), 0.6931471805599453, 1e-12, 0.0
+)
 
 # PDF off the mesh is zero
 ott.assert_almost_equal(distribution.computePDF([1.5, 0.0, 0.0]), 0.0, 0.0, 1e-12)
 ott.assert_almost_equal(distribution.computePDF([0.5, 0.5, 0.5]), 0.0, 0.0, 1e-12)
 # A point too far from the mesh is not considered on the mesh
 ott.assert_almost_equal(distribution.computePDF([0.2, 0.3, 1.0e-9]), 0.0, 0.0, 1e-12)
-ott.assert_almost_equal(distribution.computeLogPDF([1.5, 0.0, 0.0]), -float("inf"), 0.0, 0.0)
+ott.assert_almost_equal(
+    distribution.computeLogPDF([1.5, 0.0, 0.0]), -float("inf"), 0.0, 0.0
+)
 
 # The mean and the covariance of the uniform on the right triangle, the
 # third coordinate being deterministic equal to zero
@@ -54,7 +58,8 @@ mean = distribution.getMean()
 ott.assert_almost_equal(mean, [1.0 / 3.0, 1.0 / 3.0, 0.0], 1e-12, 0.0)
 covariance = distribution.getCovariance()
 expectedCovariance = ot.CovarianceMatrix(
-    [[1.0 / 18.0, -1.0 / 36.0, 0.0], [-1.0 / 36.0, 1.0 / 18.0, 0.0], [0.0, 0.0, 0.0]])
+    [[1.0 / 18.0, -1.0 / 36.0, 0.0], [-1.0 / 36.0, 1.0 / 18.0, 0.0], [0.0, 0.0, 0.0]]
+)
 ott.assert_almost_equal(covariance, expectedCovariance, 1e-12, 0.0)
 
 # The realizations lie on the mesh
@@ -86,8 +91,7 @@ assert segment.getIntrinsicDimension() == 1
 ott.assert_almost_equal(segmentMesh.computeSimplicesVolume(), [5.0**0.5], 1e-12, 0.0)
 ott.assert_almost_equal(segment.getVolume(), 5.0**0.5, 1e-12, 0.0)
 ott.assert_almost_equal(segment.getMean(), [1.0, 0.5, 0.0], 1e-12, 0.0)
-ott.assert_almost_equal(
-    segment.computePDF([1.0, 0.5, 0.0]), 1.0 / 5.0**0.5, 1e-12, 0.0)
+ott.assert_almost_equal(segment.computePDF([1.0, 0.5, 0.0]), 1.0 / 5.0**0.5, 1e-12, 0.0)
 ott.assert_almost_equal(segment.computePDF([1.0, 0.5, 0.5]), 0.0, 0.0, 1e-12)
 
 # Uniform over a triangulated square embedded in R^3

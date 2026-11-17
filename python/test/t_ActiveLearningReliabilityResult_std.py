@@ -28,9 +28,7 @@ index = -ot.Normal().computeCDF(probability)
 probabilityHistory = [0.12, 0.10, probability]
 indexHistory = [-ot.Normal().computeCDF(p) for p in probabilityHistory]
 probabilityCI = ot.Interval([0.07], [0.11])
-indexCI = ot.Interval(
-    [-ot.Normal().computeCDF(0.07)], [-ot.Normal().computeCDF(0.11)]
-)
+indexCI = ot.Interval([-ot.Normal().computeCDF(0.07)], [-ot.Normal().computeCDF(0.11)])
 
 # constructor and accessors
 result = otexp.ActiveLearningReliabilityResult(

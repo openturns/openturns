@@ -113,7 +113,7 @@ void BlockIndependentDistribution::setDistributionCollection(const DistributionC
 
   // Check if the collection is not empty
   const UnsignedInteger size = coll2.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Collection of distributions is empty"; 
+  if (size == 0) throw InvalidArgumentException(HERE) << "Collection of distributions is empty";
   Description description(0);
   UnsignedInteger dimension = 0;
   // Compute the dimension, build the description and check the independence

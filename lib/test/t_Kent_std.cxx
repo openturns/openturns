@@ -43,9 +43,15 @@ int main(int, char *[])
 
     // Parameterized constructor
     SquareMatrix gamma(3);
-    gamma(0, 0) = 1.0; gamma(0, 1) = 0.0; gamma(0, 2) = 0.0;
-    gamma(1, 0) = 0.0; gamma(1, 1) = 1.0; gamma(1, 2) = 0.0;
-    gamma(2, 0) = 0.0; gamma(2, 1) = 0.0; gamma(2, 2) = 1.0;
+    gamma(0, 0) = 1.0;
+    gamma(0, 1) = 0.0;
+    gamma(0, 2) = 0.0;
+    gamma(1, 0) = 0.0;
+    gamma(1, 1) = 1.0;
+    gamma(1, 2) = 0.0;
+    gamma(2, 0) = 0.0;
+    gamma(2, 1) = 0.0;
+    gamma(2, 2) = 1.0;
     Kent dist(25.0, 0.5, gamma);
     fullprint << "Kent(25, 0.5, I)=" << dist << std::endl;
     assert_almost_equal(dist.getKappa(), 25.0, 0.0, 0.0);
@@ -65,7 +71,9 @@ int main(int, char *[])
 
     // PDF and log-PDF at a point on the sphere
     Point point(3);
-    point[0] = 1.0; point[1] = 0.0; point[2] = 0.0;
+    point[0] = 1.0;
+    point[1] = 0.0;
+    point[2] = 0.0;
     Scalar pdf = dist.computePDF(point);
     Scalar logpdf = dist.computeLogPDF(point);
     fullprint << "PDF(1,0,0)=" << pdf << std::endl;
@@ -74,7 +82,9 @@ int main(int, char *[])
 
     // PDF at off-sphere point should be 0
     Point offSphere(3);
-    offSphere[0] = 0.5; offSphere[1] = 0.0; offSphere[2] = 0.0;
+    offSphere[0] = 0.5;
+    offSphere[1] = 0.0;
+    offSphere[2] = 0.0;
     assert_almost_equal(dist.computePDF(offSphere), 0.0, 0.0, 0.0);
 
     // getRealization
@@ -122,9 +132,15 @@ int main(int, char *[])
     // setGamma
     Scalar theta = 0.5;
     SquareMatrix rotGamma(3);
-    rotGamma(0, 0) = std::cos(theta); rotGamma(0, 1) = -std::sin(theta); rotGamma(0, 2) = 0.0;
-    rotGamma(1, 0) = std::sin(theta); rotGamma(1, 1) = std::cos(theta);  rotGamma(1, 2) = 0.0;
-    rotGamma(2, 0) = 0.0;             rotGamma(2, 1) = 0.0;              rotGamma(2, 2) = 1.0;
+    rotGamma(0, 0) = std::cos(theta);
+    rotGamma(0, 1) = -std::sin(theta);
+    rotGamma(0, 2) = 0.0;
+    rotGamma(1, 0) = std::sin(theta);
+    rotGamma(1, 1) = std::cos(theta);
+    rotGamma(1, 2) = 0.0;
+    rotGamma(2, 0) = 0.0;
+    rotGamma(2, 1) = 0.0;
+    rotGamma(2, 2) = 1.0;
     dist2.setGamma(rotGamma);
     SquareMatrix gotGamma(dist2.getGamma());
     assert_almost_equal(gotGamma(0, 0), std::cos(theta), 0.0, 0.0);
@@ -167,9 +183,15 @@ int main(int, char *[])
     try
     {
       SquareMatrix badGamma(3);
-      badGamma(0, 0) = 2.0; badGamma(0, 1) = 0.0; badGamma(0, 2) = 0.0;
-      badGamma(1, 0) = 0.0; badGamma(1, 1) = 1.0; badGamma(1, 2) = 0.0;
-      badGamma(2, 0) = 0.0; badGamma(2, 1) = 0.0; badGamma(2, 2) = 1.0;
+      badGamma(0, 0) = 2.0;
+      badGamma(0, 1) = 0.0;
+      badGamma(0, 2) = 0.0;
+      badGamma(1, 0) = 0.0;
+      badGamma(1, 1) = 1.0;
+      badGamma(1, 2) = 0.0;
+      badGamma(2, 0) = 0.0;
+      badGamma(2, 1) = 0.0;
+      badGamma(2, 2) = 1.0;
       Kent badDist(1.0, 0.25, badGamma);
       return ExitCode::Error;
     }
@@ -182,8 +204,10 @@ int main(int, char *[])
     try
     {
       SquareMatrix badGamma(2);
-      badGamma(0, 0) = 1.0; badGamma(0, 1) = 0.0;
-      badGamma(1, 0) = 0.0; badGamma(1, 1) = 1.0;
+      badGamma(0, 0) = 1.0;
+      badGamma(0, 1) = 0.0;
+      badGamma(1, 0) = 0.0;
+      badGamma(1, 1) = 1.0;
       Kent badDist(1.0, 0.25, badGamma);
       return ExitCode::Error;
     }
@@ -252,9 +276,15 @@ int main(int, char *[])
     try
     {
       SquareMatrix badGamma(3);
-      badGamma(0, 0) = 2.0; badGamma(0, 1) = 0.0; badGamma(0, 2) = 0.0;
-      badGamma(1, 0) = 0.0; badGamma(1, 1) = 1.0; badGamma(1, 2) = 0.0;
-      badGamma(2, 0) = 0.0; badGamma(2, 1) = 0.0; badGamma(2, 2) = 1.0;
+      badGamma(0, 0) = 2.0;
+      badGamma(0, 1) = 0.0;
+      badGamma(0, 2) = 0.0;
+      badGamma(1, 0) = 0.0;
+      badGamma(1, 1) = 1.0;
+      badGamma(1, 2) = 0.0;
+      badGamma(2, 0) = 0.0;
+      badGamma(2, 1) = 0.0;
+      badGamma(2, 2) = 1.0;
       dist.setGamma(badGamma);
       return ExitCode::Error;
     }

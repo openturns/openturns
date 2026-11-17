@@ -42,8 +42,17 @@ class PythonLARS:
     ones, 1/n, so it also covers the unweighted case.
     """
 
-    def __init__(self, input_sample, output_sample, distribution, basis,
-                 basisSize, fittingAlgorithm, methodName="SVD", weight=None):
+    def __init__(
+        self,
+        input_sample,
+        output_sample,
+        distribution,
+        basis,
+        basisSize,
+        fittingAlgorithm,
+        methodName="SVD",
+        weight=None,
+    ):
         self.input_sample = input_sample
         self.output_sample = output_sample
         self.distribution = distribution
@@ -156,7 +165,9 @@ class PythonLARS:
                 for s in range(sample_size):
                     for j in range(len(marginal_selection)):
                         psiAk[s, j] = fullX[s, marginal_selection[j]]
-                        psiAkW[s, j] = self.weightSqrt[s] * fullX[s, marginal_selection[j]]
+                        psiAkW[s, j] = (
+                            self.weightSqrt[s] * fullX[s, marginal_selection[j]]
+                        )
                 GA = psiAkW.transpose() * psiAkW
                 g = GA.solveLinearSystem(sC)
 
@@ -209,18 +220,21 @@ class PythonLARS:
         self.final_functions = [functions[idx] for idx in sorted_indices]
         self.transformation = transformation
         self.result = ot.FunctionalChaosResult(
-            self.input_sample, self.output_sample, self.distribution,
-            self.transformation, self.transformation.inverse(),
-            self.basis, self.active_indices, self.coefficient_sample,
+            self.input_sample,
+            self.output_sample,
+            self.distribution,
+            self.transformation,
+            self.transformation.inverse(),
+            self.basis,
+            self.active_indices,
+            self.coefficient_sample,
             self.final_functions,
         )
 
 
 def designMatrix(input_sample, basis, basis_size, distribution):
     """Rows of the basis evaluated on the standardized input sample."""
-    transformation = ot.DistributionTransformation(
-        distribution, basis.getMeasure()
-    )
+    transformation = ot.DistributionTransformation(distribution, basis.getMeasure())
     proxy = ot.DesignProxy(
         transformation(input_sample),
         [basis.build(i) for i in range(basis_size)],
@@ -228,8 +242,9 @@ def designMatrix(input_sample, basis, basis_size, distribution):
     return ot.Matrix(proxy.computeDesign(ot.Indices(range(basis_size))))
 
 
-def checkStatesAreMinimizers(label, phi, output, weight, indices_history,
-                             coefficients_history, tolerance=1.0e-12):
+def checkStatesAreMinimizers(
+    label, phi, output, weight, indices_history, coefficients_history, tolerance=1.0e-12
+):
     """At each recorded state, the coefficients minimize the weighted problem.
 
     The LARS recursion records, at every step, the least squares solution
@@ -255,13 +270,14 @@ def checkStatesAreMinimizers(label, phi, output, weight, indices_history,
             accumulator = 0.0
             for i in range(size):
                 residual = values[i] - sum(
-                    phi[i, active[m]] * coefficients[m]
-                    for m in range(len(active))
+                    phi[i, active[m]] * coefficients[m] for m in range(len(active))
                 )
                 accumulator += phi[i, active[j]] * weight[i] * residual
             worst = max(worst, abs(accumulator) / (scale * len(active)))
-    print(f"{label}: normal equations residual over "
-          f"{len(indices_history)} states = {worst:.3e}")
+    print(
+        f"{label}: normal equations residual over "
+        f"{len(indices_history)} states = {worst:.3e}"
+    )
     assert worst < tolerance, (
         f"{label}: the recorded states are not the minimizers of the weighted "
         f"least squares problem, residual={worst:.3e}"
@@ -315,8 +331,13 @@ print("=" * 60)
 print("C++ SparseExpansion with LARS selection")
 print("=" * 60)
 algo_cpp = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, "QR", fittingAlgorithm
+    inputSample,
+    outputSample,
+    distribution,
+    productBasis,
+    basisSize,
+    "QR",
+    fittingAlgorithm,
 )
 algo_cpp.setSelectionMethod("LARS")
 algo_cpp.run()
@@ -328,7 +349,9 @@ print("Number of active functions:", result_cpp.getIndices().getSize())
 for i in range(dimension):
     s1 = sobol_cpp.getSobolIndex(i)
     st = sobol_cpp.getSobolTotalIndex(i)
-    print(f"  X{i + 1}: S1={s1:.6f} (ref={sob_1_ref[i]:.6f}), ST={st:.6f} (ref={sob_T1_ref[i]:.6f})")
+    print(
+        f"  X{i + 1}: S1={s1:.6f} (ref={sob_1_ref[i]:.6f}), ST={st:.6f} (ref={sob_T1_ref[i]:.6f})"
+    )
 
 # --- defining condition of the recorded states, uniform weights ---
 # Checked on the C++ history alone: at every state it records, the
@@ -340,7 +363,10 @@ uniformWeight = ot.Point(samplingSize, 1.0 / samplingSize)
 checkStatesAreMinimizers(
     "C++ LARS, uniform weights",
     designMatrix(inputSample, productBasis, basisSize, distribution),
-    outputSample, uniformWeight, cppHistory, cppCoefficients,
+    outputSample,
+    uniformWeight,
+    cppHistory,
+    cppCoefficients,
 )
 
 # --- second implementation, for comparison ---
@@ -349,8 +375,13 @@ print("=" * 60)
 print("Python LARS, second implementation")
 print("=" * 60)
 algo_py = PythonLARS(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, fittingAlgorithm, "QR"
+    inputSample,
+    outputSample,
+    distribution,
+    productBasis,
+    basisSize,
+    fittingAlgorithm,
+    "QR",
 )
 algo_py.run()
 result_py = algo_py.result
@@ -361,7 +392,9 @@ print("Number of active functions:", result_py.getIndices().getSize())
 for i in range(dimension):
     s1 = sobol_py.getSobolIndex(i)
     st = sobol_py.getSobolTotalIndex(i)
-    print(f"  X{i + 1}: S1={s1:.6f} (ref={sob_1_ref[i]:.6f}), ST={st:.6f} (ref={sob_T1_ref[i]:.6f})")
+    print(
+        f"  X{i + 1}: S1={s1:.6f} (ref={sob_1_ref[i]:.6f}), ST={st:.6f} (ref={sob_T1_ref[i]:.6f})"
+    )
 
 # --- Compare ---
 print()
@@ -377,7 +410,9 @@ print(f"Same active set: {cpp_indices == py_indices}")
 for i in range(dimension):
     s1_cpp = sobol_cpp.getSobolIndex(i)
     s1_py = sobol_py.getSobolIndex(i)
-    print(f"X{i + 1} S1: C++={s1_cpp:.6f}, Python={s1_py:.6f}, diff={abs(s1_cpp - s1_py):.6e}")
+    print(
+        f"X{i + 1} S1: C++={s1_cpp:.6f}, Python={s1_py:.6f}, diff={abs(s1_cpp - s1_py):.6e}"
+    )
 
 # --- Selection path, uniform weights ---
 # Consistency between the two implementations: every state they have in
@@ -388,8 +423,10 @@ for i in range(dimension):
 # resolve. Agreement here is evidence, not proof: the defining condition
 # checked above is what certifies the states.
 compared = min(len(cppHistory), len(algo_py.selection_history))
-print(f"C++ recorded {len(cppHistory) - 1} LARS iterations, "
-      f"Python {len(algo_py.selection_history) - 1}, comparing {compared - 1}")
+print(
+    f"C++ recorded {len(cppHistory) - 1} LARS iterations, "
+    f"Python {len(algo_py.selection_history) - 1}, comparing {compared - 1}"
+)
 assert compared > 5
 assert algo_py.selection_history[0] == [0]
 for k in range(1, compared):
@@ -416,8 +453,10 @@ quadratureBasisSize = enumerateFunction.getStrataCumulatedCardinal(quadratureDeg
 quadratureInput, quadratureWeight = ot.GaussProductExperiment(
     distribution, (7, 7, 7)
 ).generateWithWeights()
-print(f"quadrature design: size={quadratureInput.getSize()} basisSize={quadratureBasisSize}"
-      f" weight ratio={max(quadratureWeight) / min(quadratureWeight):.1f}")
+print(
+    f"quadrature design: size={quadratureInput.getSize()} basisSize={quadratureBasisSize}"
+    f" weight ratio={max(quadratureWeight) / min(quadratureWeight):.1f}"
+)
 # the weights are the quadrature weights of a density, they sum to 1
 ott.assert_almost_equal(sum(quadratureWeight), 1.0, 1.0e-12, 0.0)
 quadratureTransformation = ot.DistributionTransformation(
@@ -428,7 +467,9 @@ quadratureProxy = ot.DesignProxy(
     [productBasis.build(i) for i in range(quadratureBasisSize)],
 )
 quadratureMethod = ot.LeastSquaresMethod.Build(
-    "QR", quadratureProxy, quadratureWeight,
+    "QR",
+    quadratureProxy,
+    quadratureWeight,
     ot.Indices(range(quadratureBasisSize)),
 )
 quadratureMethod.update([], ot.Indices(range(quadratureBasisSize)), [])
@@ -438,7 +479,8 @@ for i in range(quadratureBasisSize):
     ott.assert_almost_equal(
         [gramOfBasis[i, j] for j in range(quadratureBasisSize)],
         [1.0 if i == j else 0.0 for j in range(quadratureBasisSize)],
-        1.0e-12, 1.0e-12,
+        1.0e-12,
+        1.0e-12,
     )
 print("Weighted Gram matrix of the full basis is the identity")
 quadratureOutput = model(quadratureInput)
@@ -446,8 +488,14 @@ quadraturePhi = designMatrix(
     quadratureInput, productBasis, quadratureBasisSize, distribution
 )
 algo_cpp_weighted = otexp.SparseExpansion(
-    quadratureInput, quadratureWeight, quadratureOutput, distribution,
-    productBasis, quadratureBasisSize, "QR", fittingAlgorithm
+    quadratureInput,
+    quadratureWeight,
+    quadratureOutput,
+    distribution,
+    productBasis,
+    quadratureBasisSize,
+    "QR",
+    fittingAlgorithm,
 )
 algo_cpp_weighted.setSelectionMethod("LARS")
 algo_cpp_weighted.run()
@@ -462,20 +510,31 @@ weightedCoefficients = result_cpp_weighted.getCoefficientsHistory()
 # here, so the margin is about eleven orders of magnitude.
 checkStatesAreMinimizers(
     "C++ LARS, quadrature weights",
-    quadraturePhi, quadratureOutput, quadratureWeight,
-    weightedHistory, weightedCoefficients,
+    quadraturePhi,
+    quadratureOutput,
+    quadratureWeight,
+    weightedHistory,
+    weightedCoefficients,
 )
 
 # --- consistency with the second implementation, quadrature weights ---
 algo_py_weighted = PythonLARS(
-    quadratureInput, quadratureOutput, distribution,
-    productBasis, quadratureBasisSize, fittingAlgorithm, "QR", quadratureWeight
+    quadratureInput,
+    quadratureOutput,
+    distribution,
+    productBasis,
+    quadratureBasisSize,
+    fittingAlgorithm,
+    "QR",
+    quadratureWeight,
 )
 algo_py_weighted.run()
 weightedCompared = min(len(weightedHistory), len(algo_py_weighted.selection_history))
-print(f"C++ recorded {len(weightedHistory) - 1} LARS iterations with quadrature "
-      f"weights, Python {len(algo_py_weighted.selection_history) - 1}, "
-      f"comparing {weightedCompared - 1}")
+print(
+    f"C++ recorded {len(weightedHistory) - 1} LARS iterations with quadrature "
+    f"weights, Python {len(algo_py_weighted.selection_history) - 1}, "
+    f"comparing {weightedCompared - 1}"
+)
 assert weightedCompared > 3
 for k in range(1, weightedCompared):
     assert algo_py_weighted.selection_history[k] == list(weightedHistory[k]), (
@@ -492,26 +551,40 @@ print(f"Weighted LARS path: {weightedCompared - 1} iterations agree")
 # same implementation on the same nodes with uniform weights departs from
 # the weighted path almost immediately.
 algo_py_uniform_on_quadrature = PythonLARS(
-    quadratureInput, quadratureOutput, distribution,
-    productBasis, quadratureBasisSize, fittingAlgorithm, "QR"
+    quadratureInput,
+    quadratureOutput,
+    distribution,
+    productBasis,
+    quadratureBasisSize,
+    fittingAlgorithm,
+    "QR",
 )
 algo_py_uniform_on_quadrature.run()
 firstDifference = next(
     (
         k
-        for k in range(1, min(len(algo_py_uniform_on_quadrature.selection_history), len(weightedHistory)))
-        if algo_py_uniform_on_quadrature.selection_history[k] != list(weightedHistory[k])
+        for k in range(
+            1,
+            min(
+                len(algo_py_uniform_on_quadrature.selection_history),
+                len(weightedHistory),
+            ),
+        )
+        if algo_py_uniform_on_quadrature.selection_history[k]
+        != list(weightedHistory[k])
     ),
     None,
 )
-assert firstDifference is not None and firstDifference <= 3, (
-    f"the weighted and the uniform paths agree up to iteration {firstDifference}"
-)
+assert (
+    firstDifference is not None and firstDifference <= 3
+), f"the weighted and the uniform paths agree up to iteration {firstDifference}"
 print(f"The weighted path departs from the uniform one at iteration {firstDifference}")
 # The weighted selection must differ from the uniform-weights selection of the
 # Monte Carlo design above
 assert list(result_cpp_weighted.getIndices()) != cpp_indices
-print(f"C++ active indices with quadrature weights: {sorted(result_cpp_weighted.getIndices())}")
+print(
+    f"C++ active indices with quadrature weights: {sorted(result_cpp_weighted.getIndices())}"
+)
 
 # Assert C++ LARS produces reasonable Sobol indices.
 # The C++ implementation uses cross-validation stopping, while the Python
@@ -534,22 +607,25 @@ for i in range(dimension):
 quadratureValues = quadratureOutput.asPoint()
 quadratureSize = quadratureInput.getSize()
 weightSum = sum(quadratureWeight)
-weightedMean = sum(
-    quadratureWeight[i] * quadratureValues[i] for i in range(quadratureSize)
-) / weightSum
+weightedMean = (
+    sum(quadratureWeight[i] * quadratureValues[i] for i in range(quadratureSize))
+    / weightSum
+)
 quadratureVariance = sum(
     quadratureWeight[i] * (quadratureValues[i] - weightedMean) ** 2
     for i in range(quadratureSize)
 )
-weightedResiduals = quadratureValues - result_cpp_weighted.getMetaModel()(
-    quadratureInput
-).asPoint()
+weightedResiduals = (
+    quadratureValues - result_cpp_weighted.getMetaModel()(quadratureInput).asPoint()
+)
 quadratureL2 = sum(
     quadratureWeight[i] * weightedResiduals[i] ** 2 for i in range(quadratureSize)
 )
 relativeL2 = quadratureL2 / quadratureVariance
-print(f"weighted L2 error^2 = {quadratureL2:.6e}, variance = {quadratureVariance:.6f},"
-      f" relative = {relativeL2:.4e}")
+print(
+    f"weighted L2 error^2 = {quadratureL2:.6e}, variance = {quadratureVariance:.6f},"
+    f" relative = {relativeL2:.4e}"
+)
 # the sparse weighted model explains more than 95% of the variance
 assert relativeL2 < 0.05
 
@@ -560,16 +636,20 @@ sobolWeighted = ot.FunctionalChaosSobolIndices(result_cpp_weighted)
 for i in range(dimension):
     s1 = sobolWeighted.getSobolIndex(i)
     st = sobolWeighted.getSobolTotalIndex(i)
-    print(f"  weighted X{i + 1}: S1={s1:.6f} (ref={sob_1_ref[i]:.6f}),"
-          f" ST={st:.6f} (ref={sob_T1_ref[i]:.6f})")
+    print(
+        f"  weighted X{i + 1}: S1={s1:.6f} (ref={sob_1_ref[i]:.6f}),"
+        f" ST={st:.6f} (ref={sob_T1_ref[i]:.6f})"
+    )
     ott.assert_almost_equal(s1, sob_1_ref[i], 0.15, 0.05)
     ott.assert_almost_equal(st, sob_T1_ref[i], 0.15, 0.05)
 # the second variable enters additively, so its total index equals its main
 # index; the third one only through an interaction, so the expansion must not
 # invent a main effect for it
 ott.assert_almost_equal(
-    sobolWeighted.getSobolTotalIndex(1), sobolWeighted.getSobolIndex(1),
-    1.0e-12, 1.0e-12,
+    sobolWeighted.getSobolTotalIndex(1),
+    sobolWeighted.getSobolIndex(1),
+    1.0e-12,
+    1.0e-12,
 )
 ott.assert_almost_equal(sobolWeighted.getSobolIndex(2), 0.0, 1.0e-12, 1.0e-12)
 

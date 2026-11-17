@@ -193,9 +193,7 @@ x0 = max(farVertices1[0][0], farVertices2[0][0])
 x1 = min(farVertices1[1][0], farVertices2[1][0])
 y0 = max(farVertices1[0][1], farVertices2[0][1])
 y1 = min(farVertices1[2][1], farVertices2[2][1])
-ott.assert_almost_equal(
-    farIntersection.getVolume(), (x1 - x0) * (y1 - y0), 1e-9, 1e-9
-)
+ott.assert_almost_equal(farIntersection.getVolume(), (x1 - x0) * (y1 - y0), 1e-9, 1e-9)
 
 # Grid candidate path (above Mesh-GridThreshold pairs): same geometry as
 # the dense product path, here [0, 1]^2 of volume 1.0
@@ -204,7 +202,7 @@ boxB = ot.IntervalMesher([8] * 2).build(ot.Interval([0.0] * 2, [2.0] * 2))
 assert (
     boxA.getSimplicesNumber() * boxB.getSimplicesNumber()
     > ot.ResourceMap.GetAsUnsignedInteger("Mesh-GridThreshold")
-), "test must take the grid path"
+), ("test must take the grid path")
 gridInter = boxA.intersect(boxB)
 ott.assert_almost_equal(gridInter.getVolume(), 1.0, 1e-9, 1e-9)
 gridThreshold = ot.ResourceMap.GetAsUnsignedInteger("Mesh-GridThreshold")
@@ -212,7 +210,9 @@ ot.ResourceMap.SetAsUnsignedInteger("Mesh-GridThreshold", 1000000)
 denseInter = boxA.intersect(boxB)
 ot.ResourceMap.SetAsUnsignedInteger("Mesh-GridThreshold", gridThreshold)
 ott.assert_almost_equal(denseInter.getVolume(), gridInter.getVolume(), 1e-12, 1e-12)
-assert denseInter.getSimplicesNumber() == gridInter.getSimplicesNumber(), "grid/dense simplex mismatch"
+assert (
+    denseInter.getSimplicesNumber() == gridInter.getSimplicesNumber()
+), "grid/dense simplex mismatch"
 
 # Mesh inequality tests
 assert m1 != m2, "different meshes"

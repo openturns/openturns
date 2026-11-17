@@ -92,7 +92,10 @@ ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [3.0]), 1e-12, 0.0)
 parameters = distribution.getParametersCollection()
 assert len(parameters) == 1
 ott.assert_almost_equal(parameters[0], [1.5], 0.0, 0.0)
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Gamma"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "Gamma"
+)
 
 # Specific to this distribution
 nu = distribution.getNu()
@@ -131,7 +134,9 @@ study2.load()
 r = ot.ChiSquare(1.0)
 study2.fillObject("chisquare", r)
 ott.assert_almost_equal(r.getParameter(), [3.0], 0.0, 0.0)
-ott.assert_almost_equal(r.computePDF([2.0]), ot.ChiSquare(3.0).computePDF([2.0]), 1e-12, 0.0)
+ott.assert_almost_equal(
+    r.computePDF([2.0]), ot.ChiSquare(3.0).computePDF([2.0]), 1e-12, 0.0
+)
 os.remove(studyFile)
 
 # Roughness: analytic value Gamma(nu-1) / (2^nu * Gamma(nu/2)^2)

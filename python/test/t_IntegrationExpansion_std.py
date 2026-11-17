@@ -504,7 +504,13 @@ for doe in doeList:
     # Check the constructors with activeFunctions
     activeFunctions = list(range(min(basisSize, 20)))
     algo = ot.IntegrationExpansion(
-        inputSample, weights, outputSample, distribution, productBasis, basisSize, activeFunctions
+        inputSample,
+        weights,
+        outputSample,
+        distribution,
+        productBasis,
+        basisSize,
+        activeFunctions,
     )
     algo.run()
     assert algo.getActiveFunctions() == activeFunctions
@@ -515,7 +521,12 @@ for doe in doeList:
     ott.assert_almost_equal(err, 0.0, rtol, atol)
     if wMin == wMax:
         algo = ot.IntegrationExpansion(
-            inputSample, outputSample, distribution, productBasis, basisSize, activeFunctions
+            inputSample,
+            outputSample,
+            distribution,
+            productBasis,
+            basisSize,
+            activeFunctions,
         )
         algo.run()
         assert algo.getActiveFunctions() == activeFunctions

@@ -264,7 +264,7 @@ Matrix MaternModel::partialGradient(const Point & s,
 
 /* Hessian */
 SymmetricMatrix MaternModel::partialHessian(const Point & s,
-                                            const Point & t) const
+    const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;

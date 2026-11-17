@@ -30,8 +30,14 @@ assert matrix1.getRowIndices() == [1, 0, 3, 2], "row indices"
 ott.assert_almost_equal(matrix1.getValues(), [8.0, 5.0, 9.0, 2.0])
 ott.assert_almost_equal(
     matrix1.asDenseMatrix(),
-    ot.Matrix([[0.0, 0.0, 5.0, 0.0, 0.0], [8.0, 0.0, 0.0, 0.0, 0.0],
-               [0.0, 0.0, 0.0, 0.0, 2.0], [0.0, 0.0, 9.0, 0.0, 0.0]]),
+    ot.Matrix(
+        [
+            [0.0, 0.0, 5.0, 0.0, 0.0],
+            [8.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 2.0],
+            [0.0, 0.0, 9.0, 0.0, 0.0],
+        ]
+    ),
 )
 
 # negative indices are counted from the end, as for a dense matrix
@@ -42,9 +48,7 @@ negativeMatrix[-1, -1] = 4.0
 assert negativeMatrix[3, 4] == 4.0, "negative index assignment"
 
 # canonical triplet constructor: unsorted rows are sorted and duplicates summed
-matrix2 = otexp.SparseMatrix(
-    3, 2, [2, 0, 0, 1], [1, 0, 0, 0], [2.0, 3.0, 1.0, 4.0]
-)
+matrix2 = otexp.SparseMatrix(3, 2, [2, 0, 0, 1], [1, 0, 0, 0], [2.0, 3.0, 1.0, 4.0])
 assert matrix2.getNbNonZeros() == 3, "non zeros"
 assert matrix2.getColumnPointer() == [0, 2, 3], "column pointer"
 assert matrix2.getRowIndices() == [0, 1, 2], "row indices"
@@ -59,9 +63,7 @@ assert (
 ), "string converter"
 
 # duplicate coordinates are summed in input order, whatever their values
-cancelling = otexp.SparseMatrix(
-    1, 1, [0, 0, 0], [0, 0, 0], [1e16, -1e16, 1.0]
-)
+cancelling = otexp.SparseMatrix(1, 1, [0, 0, 0], [0, 0, 0], [1e16, -1e16, 1.0])
 assert cancelling[0, 0] == 1.0, "duplicates are summed in input order"
 
 # the string converter has no trailing comma when the last columns are empty
@@ -205,7 +207,9 @@ beforeNonZeros = matrix1.getNbNonZeros()
 with ott.assert_raises(TypeError):
     matrix1[0, 0] = None
 ott.assert_almost_equal(matrix1.asDenseMatrix(), beforeDense)
-assert matrix1.getNbNonZeros() == beforeNonZeros, "a rejected value stored a coefficient"
+assert (
+    matrix1.getNbNonZeros() == beforeNonZeros
+), "a rejected value stored a coefficient"
 
 # the column pointer has one entry per column plus the end marker: the maximum
 # column dimension would wrap its size to zero and leave no storage for it
@@ -306,7 +310,9 @@ if ot.PlatformInfo.HasFeature("libxml2"):
     )
     unchangedMatrix = otexp.SparseMatrix(3, 2)
     unchangedMatrix[1, 0] = 5.0
-    assertRejectedStudy(replaceIndices(overflowContent, columnPointerId, []), unchangedMatrix)
+    assertRejectedStudy(
+        replaceIndices(overflowContent, columnPointerId, []), unchangedMatrix
+    )
     # a failed load leaves the target matrix unchanged
     assert unchangedMatrix.getNbNonZeros() == 1, "unchanged non zeros"
     assert unchangedMatrix[1, 0] == 5.0, "unchanged value"
@@ -336,7 +342,9 @@ if ot.PlatformInfo.HasFeature("libxml2"):
         replaceValues(savedContent, valuesId, [4.0, 4.0]), otexp.SparseMatrix()
     )
     wrongSizeContent = re.sub(
-        r'(<object class="SparseMatrix"[^>]*size_=")\d+(")', r"\g<1>2\g<2>", savedContent
+        r'(<object class="SparseMatrix"[^>]*size_=")\d+(")',
+        r"\g<1>2\g<2>",
+        savedContent,
     )
     assertRejectedStudy(wrongSizeContent, otexp.SparseMatrix())
     assertRejectedStudy(

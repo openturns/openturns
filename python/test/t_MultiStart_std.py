@@ -84,7 +84,9 @@ cb_algo.run()
 assert cb_algo.getResult().getStatus() == ot.OptimizationResult.SUCCESS
 assert len(progress_calls) > 0, "progress callback was not invoked"
 assert all(0.0 <= p <= 100.0 for p in progress_calls), "progress out of range"
-assert all(b >= a for a, b in zip(progress_calls, progress_calls[1:])), "progress not monotonic"
+assert all(
+    b >= a for a, b in zip(progress_calls, progress_calls[1:])
+), "progress not monotonic"
 
 # user stop interrupts the current local search, not just between restarts
 inner = ot.TNC(problem)

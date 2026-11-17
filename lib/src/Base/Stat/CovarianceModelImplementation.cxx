@@ -865,7 +865,7 @@ struct CovarianceModelDiscretizeDiagonalPolicy
       // lower-triangle slot used as canonical storage by SymmetricMatrix
       for (UnsignedInteger k = 0; k < outputDimension_; ++k)
         output_(jBase + k, iBase + k) = marginals_[k].getImplementation()->computeAsScalar(
-          input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
+                                          input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
     }
   }
 
@@ -1025,7 +1025,7 @@ struct CrossCovarianceDiagonalFunctor
       const UnsignedInteger iBase = iLocal * dimension_;
       for (UnsignedInteger k = 0; k < dimension_; ++k)
         output_(iBase + k, jBase + k) = marginals_[k].getImplementation()->computeAsScalar(
-          firstSample_.data_begin() + iLocal * firstInputDimension_, secondSample_.data_begin() + jLocal * secondInputDimension_);
+                                          firstSample_.data_begin() + iLocal * firstInputDimension_, secondSample_.data_begin() + jLocal * secondInputDimension_);
     }
   }
 };

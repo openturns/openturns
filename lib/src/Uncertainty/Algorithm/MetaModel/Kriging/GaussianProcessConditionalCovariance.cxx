@@ -110,9 +110,9 @@ Matrix GaussianProcessConditionalCovariance::solveTriangularSystem(const Matrix 
 }
 
 Graph GaussianProcessConditionalCovariance::draw(const Scalar xMin,
-                                                 const Scalar xMax,
-                                                 const UnsignedInteger pointsNumber,
-                                                 const Scalar confidenceLevel) const
+    const Scalar xMax,
+    const UnsignedInteger pointsNumber,
+    const Scalar confidenceLevel) const
 {
   // Check that pointsNumber is at least 2
   if (pointsNumber < 2)
@@ -167,22 +167,22 @@ Graph GaussianProcessConditionalCovariance::draw(const Sample & xi, const Scalar
     lowerBound(i, 0) = conditionalMean(i, 0) - scaledStandardDeviation;
     upperBound(i, 0) = conditionalMean(i, 0) + scaledStandardDeviation;
   }
-   // Graph with 1D cloud
-   Graph graph("", "x", "y", true, "topright");
-   // First the mean curve as a line
-   Curve meanCurve(sortedXi, conditionalMean);
-   meanCurve.setColor("blue");
-   meanCurve.setLegend("mean");
-   graph.add(meanCurve);
-   // Then the bounds as a polygon
-   Polygon boundsPoly(Polygon::FillBetween(sortedXi, lowerBound, upperBound));
-   boundsPoly.setColor("forestgreen");
-   boundsPoly.setAlpha(0.3);
-   OSS oss;
-   oss << confidenceLevel * 100 << "% bounds";
-   boundsPoly.setLegend(oss.str());
-   graph.add(boundsPoly);
-   return graph;
+  // Graph with 1D cloud
+  Graph graph("", "x", "y", true, "topright");
+  // First the mean curve as a line
+  Curve meanCurve(sortedXi, conditionalMean);
+  meanCurve.setColor("blue");
+  meanCurve.setLegend("mean");
+  graph.add(meanCurve);
+  // Then the bounds as a polygon
+  Polygon boundsPoly(Polygon::FillBetween(sortedXi, lowerBound, upperBound));
+  boundsPoly.setColor("forestgreen");
+  boundsPoly.setAlpha(0.3);
+  OSS oss;
+  oss << confidenceLevel * 100 << "% bounds";
+  boundsPoly.setLegend(oss.str());
+  graph.add(boundsPoly);
+  return graph;
 }
 
 /* Compute mean of new points conditionally to observations */

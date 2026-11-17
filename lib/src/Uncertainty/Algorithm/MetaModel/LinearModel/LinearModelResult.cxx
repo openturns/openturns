@@ -93,20 +93,20 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Point & cookDistances,
                                      const Scalar residualsVariance)
   : LinearModelResult(
-    inputSample, 
-    basis, 
-    design, 
-    outputSample, 
-    metaModel, 
-    coefficients,
-    basis.__str__(),
-    BuildDefaultCoefficientsNames(basis),
-    sampleResiduals, 
-    standardizedResiduals, 
-    diagonalGramInverse, 
-    leverages, 
-    cookDistances, 
-    residualsVariance)
+      inputSample,
+      basis,
+      design,
+      outputSample,
+      metaModel,
+      coefficients,
+      basis.__str__(),
+      BuildDefaultCoefficientsNames(basis),
+      sampleResiduals,
+      standardizedResiduals,
+      diagonalGramInverse,
+      leverages,
+      cookDistances,
+      residualsVariance)
 {
   // Nothing to do
 }

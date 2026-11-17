@@ -46,7 +46,7 @@ public:
 
   /** Default constructor */
   ActiveLearningReliabilityFunctionImplementation(const Scalar reliabilityThreshold,
-                                    const Scalar learningThreshold);
+      const Scalar learningThreshold);
 
 
   /** Virtual constructor */

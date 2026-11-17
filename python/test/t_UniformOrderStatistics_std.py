@@ -17,7 +17,9 @@ assert distribution.isContinuous()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
-ott.assert_almost_equal(oneRealization, [0.128996, 0.204795, 0.217965, 0.4246], 1e-5, 0.0)
+ott.assert_almost_equal(
+    oneRealization, [0.128996, 0.204795, 0.217965, 0.4246], 1e-5, 0.0
+)
 
 # Define a point
 point = [0.1, 0.15, 0.25, 0.45]

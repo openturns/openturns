@@ -33,9 +33,9 @@ static const Factory<DivFreeModel> Factory_DivFreeModel;
 
 /** Helper: compute the Hessian of the underlying scalar model */
 static SquareMatrix computeHessian(const CovarianceModel & model,
-                                    const Point & s,
-                                    const Point & t,
-                                    const UnsignedInteger inputDimension)
+                                   const Point & s,
+                                   const Point & t,
+                                   const UnsignedInteger inputDimension)
 {
   SquareMatrix hessian(inputDimension);
   const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
@@ -235,7 +235,7 @@ Bool DivFreeModel::isDiagonal() const
 
 /* Gradient */
 Matrix DivFreeModel::partialGradient(const Point & s,
-                                      const Point & t) const
+                                     const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
@@ -358,7 +358,7 @@ SymmetricMatrix DivFreeModel::partialHessian(const Point & s,
 
 /* Parameter gradient: C = H - tr(H) I, so dC/dp = dH/dp - tr(dH/dp) I */
 Matrix DivFreeModel::parameterGradient(const Point & s,
-    const Point & t) const
+                                       const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;

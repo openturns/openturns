@@ -65,7 +65,9 @@ for dim in range(1, 2):
         interval,
         beta,
     ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
-    ott.assert_almost_equal(interval.getLowerBound(), [1.1540077688761149e-06], 1e-12, 0.0)
+    ott.assert_almost_equal(
+        interval.getLowerBound(), [1.1540077688761149e-06], 1e-12, 0.0
+    )
     ott.assert_almost_equal(interval.getUpperBound(), [0.995712], 1e-6, 0.0)
     ott.assert_almost_equal(beta, 0.95, 1e-12, 0.0)
     (
@@ -102,8 +104,12 @@ for dim in range(1, 2):
 
     x = 0.6
     y = [0.2] * (dim - 1)
-    ott.assert_almost_equal(distribution.computeConditionalPDF(x, y), 0.442267, 1e-6, 0.0)
-    ott.assert_almost_equal(distribution.computeConditionalCDF(x, y), 0.727715, 1e-6, 0.0)
+    ott.assert_almost_equal(
+        distribution.computeConditionalPDF(x, y), 0.442267, 1e-6, 0.0
+    )
+    ott.assert_almost_equal(
+        distribution.computeConditionalCDF(x, y), 0.727715, 1e-6, 0.0
+    )
     ott.assert_almost_equal(
         distribution.computeConditionalQuantile(x, y), 0.329133, 1e-6, 0.0
     )
@@ -135,16 +141,26 @@ for dim in range(1, 2):
     # Extract the marginals
     for i in range(dim):
         margin = distribution.getMarginal(i)
-        ott.assert_almost_equal(margin.computePDF(ot.Point(1, 0.5)), 0.45353967, 1e-7, 0.0)
-        ott.assert_almost_equal(margin.computeCDF(ot.Point(1, 0.5)), 0.6831129, 1e-7, 0.0)
+        ott.assert_almost_equal(
+            margin.computePDF(ot.Point(1, 0.5)), 0.45353967, 1e-7, 0.0
+        )
+        ott.assert_almost_equal(
+            margin.computeCDF(ot.Point(1, 0.5)), 0.6831129, 1e-7, 0.0
+        )
         ott.assert_almost_equal(margin.computeQuantile(0.95), [0.982959], 1e-6, 0.0)
-        ott.assert_almost_equal(margin.getRealization(), [0.2406935108379952], 1e-12, 0.0)
+        ott.assert_almost_equal(
+            margin.getRealization(), [0.2406935108379952], 1e-12, 0.0
+        )
     if dim >= 2:
         # Extract a 2-D marginal
         indices = [1, 0]
         margins = distribution.getMarginal(indices)
-        ott.assert_almost_equal(margins.computePDF(ot.Point(2, 0.5)), 0.45353967, 1e-7, 0.0)
-        ott.assert_almost_equal(margins.computeCDF(ot.Point(2, 0.5)), 0.6831129, 1e-7, 0.0)
+        ott.assert_almost_equal(
+            margins.computePDF(ot.Point(2, 0.5)), 0.45353967, 1e-7, 0.0
+        )
+        ott.assert_almost_equal(
+            margins.computeCDF(ot.Point(2, 0.5)), 0.6831129, 1e-7, 0.0
+        )
         quantile = margins.computeQuantile(0.95)
         ott.assert_almost_equal(quantile, [0.982959], 1e-6, 0.0)
         ott.assert_almost_equal(margins.computeCDF(quantile), 0.95, 1e-6, 0.0)
@@ -297,9 +313,7 @@ sequentialCDF = ot.Dirichlet([2.0, 3.0, 4.0, 5.0]).computeSequentialConditionalC
 assert sequentialCDF[2] == 1.0
 assert sequentialCDF[0] < 1.0
 assert list(
-    ot.Dirichlet([2.0, 3.0, 4.0, 5.0]).computeSequentialConditionalCDF(
-        [-0.1, 0.5, 0.5]
-    )
+    ot.Dirichlet([2.0, 3.0, 4.0, 5.0]).computeSequentialConditionalCDF([-0.1, 0.5, 0.5])
 ) == [0.0, 0.0, 0.0]
 
 # Density on the closed simplex: the boundary value follows the exponents
@@ -404,9 +418,7 @@ assert 0.0 < ot.Dirichlet([2.0, 2.0, 5.0]).computeCDF([0.2, 0.2]) < 1.0
 ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumIntegerBeta", 128)
 # A near-boundary point makes the convolution below the representable range.
 assert (
-    0.0
-    <= ot.Dirichlet([2.0, 2.0, 128.0]).computeCDF([1.0 - 1.0e-15, 1.0e-16])
-    <= 1.0
+    0.0 <= ot.Dirichlet([2.0, 2.0, 128.0]).computeCDF([1.0 - 1.0e-15, 1.0e-16]) <= 1.0
 )
 
 # The Exton series is rejected for large beta, and the upper-corner
@@ -417,9 +429,7 @@ assert 0.0 < ot.Dirichlet([2.0, 2.0, 300.0]).computeCDF([0.01, 0.01]) < 1.0
 ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 7)
 ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumQuadratureDimension", 10)
 assert (
-    0.0
-    <= ot.Dirichlet([2.0, 2.0, 2.0, 1000001.0]).computeCDF([0.6, 0.3, 0.5])
-    <= 1.0
+    0.0 <= ot.Dirichlet([2.0, 2.0, 2.0, 1000001.0]).computeCDF([0.6, 0.3, 0.5]) <= 1.0
 )
 
 # Normal approximation: large shapes, with the other methods disabled.
@@ -488,13 +498,7 @@ ott.assert_almost_equal(
         + m.lgamma(5.0)
         + m.lgamma(7.0)
         - m.lgamma(15.0)
-        - 2.0
-        * (
-            m.lgamma(2.0)
-            + m.lgamma(3.0)
-            + m.lgamma(4.0)
-            - m.lgamma(9.0)
-        )
+        - 2.0 * (m.lgamma(2.0) + m.lgamma(3.0) + m.lgamma(4.0) - m.lgamma(9.0))
     ),
 )
 # The L2 norm of the PDF diverges when a concentration is <= 0.5

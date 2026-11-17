@@ -130,20 +130,36 @@ print("logPDF outside range (y>=b)=", distribution.computeLogPDF([100.0, 1.0]))
 # Test CDF/survival edge cases
 ott.assert_almost_equal(distribution.computeCDF([-0.1, 1.0]), 0.0), "CDF y<=a"
 ott.assert_almost_equal(distribution.computeCDF([1.0, -100.0]), 0.0), "CDF x<<0"
-ott.assert_almost_equal(distribution.computeCDF([1.0, 100.0]), 0.7618966944464557), "CDF x>>0"
+ott.assert_almost_equal(
+    distribution.computeCDF([1.0, 100.0]), 0.7618966944464557
+), "CDF x>>0"
 ott.assert_almost_equal(distribution.computeCDF([100.0, 100.0]), 1.0), "CDF x>>0,y>>0"
-ott.assert_almost_equal(distribution.computeSurvivalFunction([100.0, 1.0]), 0.0), "Survival y>b="
-ott.assert_almost_equal(distribution.computeSurvivalFunction([1.0, 100.0]), 0.0), "Survival x>>0"
-ott.assert_almost_equal(distribution.computeSurvivalFunction([1.0, -100.0]), 0.238103305554), "Survival x<<0"
-ott.assert_almost_equal(distribution.computeSurvivalFunction([-0.1, -100.0]), 1.0), "Survival x<<0,y<a"
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction([100.0, 1.0]), 0.0
+), "Survival y>b="
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction([1.0, 100.0]), 0.0
+), "Survival x>>0"
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction([1.0, -100.0]), 0.238103305554
+), "Survival x<<0"
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction([-0.1, -100.0]), 1.0
+), "Survival x<<0,y<a"
 
 # Test computeProbability
 interval = ot.Interval([0.5, 0.0], [1.5, 2.0])
-ott.assert_almost_equal(distribution.computeProbability(interval), 0.3028653231821), "Probability(0.5<=y<=1.5, 0<=x<=2)"
+ott.assert_almost_equal(
+    distribution.computeProbability(interval), 0.3028653231821
+), "Probability(0.5<=y<=1.5, 0<=x<=2)"
 empty_interval = ot.Interval([0.5, 2.0], [0.4, 3.0])
-ott.assert_almost_equal(distribution.computeProbability(empty_interval), 0.0), "Probability empty"
+ott.assert_almost_equal(
+    distribution.computeProbability(empty_interval), 0.0
+), "Probability empty"
 full_interval = distribution.getRange()
-ott.assert_almost_equal(distribution.computeProbability(full_interval), 1.0), "Probability full"
+ott.assert_almost_equal(
+    distribution.computeProbability(full_interval), 1.0
+), "Probability full"
 
 # Test getMarginal with invalid index
 with ott.assert_raises(TypeError):
@@ -159,7 +175,16 @@ dist2.setMu(1.0)
 dist2.setKappa(2.0)
 dist2.setAlpha(3.0)
 dist2.setBeta(4.0)
-print("Setters with same value: mu=", dist2.getMu(), "kappa=", dist2.getKappa(), "alpha=", dist2.getAlpha(), "beta=", dist2.getBeta())
+print(
+    "Setters with same value: mu=",
+    dist2.getMu(),
+    "kappa=",
+    dist2.getKappa(),
+    "alpha=",
+    dist2.getAlpha(),
+    "beta=",
+    dist2.getBeta(),
+)
 
 # Test setters with invalid values
 with ott.assert_raises(TypeError):
@@ -174,7 +199,16 @@ dist2.setMu(2.0)
 dist2.setKappa(3.0)
 dist2.setAlpha(4.0)
 dist2.setBeta(5.0)
-print("Setters new values: mu=", dist2.getMu(), "kappa=", dist2.getKappa(), "alpha=", dist2.getAlpha(), "beta=", dist2.getBeta())
+print(
+    "Setters new values: mu=",
+    dist2.getMu(),
+    "kappa=",
+    dist2.getKappa(),
+    "alpha=",
+    dist2.getAlpha(),
+    "beta=",
+    dist2.getBeta(),
+)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)

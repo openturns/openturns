@@ -270,9 +270,7 @@ view = otv.View(graph_LN)
 # approximation converges very quickly and does not require many polynomials to get spectral convergence.
 #
 # We construct the surrogate model as before, using only the polynomials up to degree 5.
-basis_N = ot.OrthogonalProductPolynomialFactory(
-    [ot.HermiteFactory()]
-)
+basis_N = ot.OrthogonalProductPolynomialFactory([ot.HermiteFactory()])
 basis_size_N = 6
 chaos_algo_N = ot.LeastSquaresExpansion(
     input_train, output_train, dist_X, basis_N, basis_size_N

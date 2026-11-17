@@ -48,7 +48,7 @@ public:
 
   /** Parameter constructor with recorded (mu, sigma) scales */
   InverseNatafEllipticalDistributionGradient(const SquareMatrix & inverseCholesky,
-                                             const Point & parameters);
+      const Point & parameters);
 
   /** Virtual constructor */
   InverseNatafEllipticalDistributionGradient * clone() const override;

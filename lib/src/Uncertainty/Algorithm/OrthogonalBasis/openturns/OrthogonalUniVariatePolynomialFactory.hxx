@@ -88,13 +88,13 @@ public:
 
   /** Affine coefficients accessors */
   Scalar getA() const;
- protected:
+protected:
   void setA(const Scalar a);
- public:
+public:
   Scalar getB() const;
- protected:
+protected:
   void setB(const Scalar b);
- public:
+public:
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

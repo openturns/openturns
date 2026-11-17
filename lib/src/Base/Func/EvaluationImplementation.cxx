@@ -73,10 +73,10 @@ Bool EvaluationImplementation::equals(const EvaluationImplementation & ) const
 Bool EvaluationImplementation::hasEqualBase(const EvaluationImplementation & other) const
 {
   return (parameter_ == other.parameter_)
-      && (inputDescription_ == other.inputDescription_)
-      && (outputDescription_ == other.outputDescription_)
-      && (parameterDescription_ == other.parameterDescription_)
-      && (checkOutput_ == other.checkOutput_);
+         && (inputDescription_ == other.inputDescription_)
+         && (outputDescription_ == other.outputDescription_)
+         && (parameterDescription_ == other.parameterDescription_)
+         && (checkOutput_ == other.checkOutput_);
 }
 
 Bool EvaluationImplementation::operator !=(const EvaluationImplementation & other) const

@@ -64,26 +64,26 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 namespace FastGaussQuadrature
 {
-  /** Polished Gauss quadrature: eigenvalues-only tridiagonal solve + Newton
-   *  refinement + Christoffel weight recovery.
-   *
-   *  gamma and b must be the recurrence coefficients of the orthonormal
-   *  polynomials, i.e. satisfy x * p_j(x) = b_{j+1} * p_{j+1}(x) +
-   *  gamma_j * p_j(x) + b_j * p_{j-1}(x) with b_0 = 0, p_{-1} = 0, p_0 = 1.
-   *
-   *  @param gamma  diagonal of the Jacobi matrix, length n
-   *  @param b      off-diagonal of the Jacobi matrix, length n; b[0] is unused,
-   *                b[i] for i=1..n-1 are the sub/super-diagonal entries
-   *  @param n      number of quadrature nodes (> 0)
-   *  @param nodes  output: refined nodes (length n), strictly increasing
-   *  @param weights output: quadrature weights (length n), positive and
-   *                 normalized to sum to 1
-   */
-  OT_API void PolishedSolve(const Scalar * gamma,
-                     const Scalar * b,
-                     const UnsignedInteger n,
-                     Scalar * nodes,
-                     Scalar * weights);
+/** Polished Gauss quadrature: eigenvalues-only tridiagonal solve + Newton
+ *  refinement + Christoffel weight recovery.
+ *
+ *  gamma and b must be the recurrence coefficients of the orthonormal
+ *  polynomials, i.e. satisfy x * p_j(x) = b_{j+1} * p_{j+1}(x) +
+ *  gamma_j * p_j(x) + b_j * p_{j-1}(x) with b_0 = 0, p_{-1} = 0, p_0 = 1.
+ *
+ *  @param gamma  diagonal of the Jacobi matrix, length n
+ *  @param b      off-diagonal of the Jacobi matrix, length n; b[0] is unused,
+ *                b[i] for i=1..n-1 are the sub/super-diagonal entries
+ *  @param n      number of quadrature nodes (> 0)
+ *  @param nodes  output: refined nodes (length n), strictly increasing
+ *  @param weights output: quadrature weights (length n), positive and
+ *                 normalized to sum to 1
+ */
+OT_API void PolishedSolve(const Scalar * gamma,
+                          const Scalar * b,
+                          const UnsignedInteger n,
+                          Scalar * nodes,
+                          Scalar * weights);
 } // namespace FastGaussQuadrature
 
 END_NAMESPACE_OPENTURNS

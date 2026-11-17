@@ -54,7 +54,8 @@ assert myGradient == myGradient
 assert not (myGradient == "dummy")
 assert myGradient != "dummy"
 assert not (
-    myGradient == ot.ConstantHessian(ot.SymmetricTensor(inputDimension, outputDimension))
+    myGradient
+    == ot.ConstantHessian(ot.SymmetricTensor(inputDimension, outputDimension))
 )
 callsBefore = myGradient.getCallsNumber()
 ott.assert_almost_equal(myGradient.gradient(inPoint), constant)

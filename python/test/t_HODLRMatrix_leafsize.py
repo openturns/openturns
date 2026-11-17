@@ -69,7 +69,7 @@ def sweep(leaf):
     hodlr = factory.build(vertices, 1, True, params)
 
     t0 = time.time()
-    hodlr.assembleReal(kernel, 'L')
+    hodlr.assembleReal(kernel, "L")
     t_assembly = time.time() - t0
 
     t0 = time.time()
@@ -118,9 +118,7 @@ if best_leaf is None and err <= accuracy_target:
 # --- Assertions ---
 
 # There must exist at least one leaf size that meets accuracy
-assert best_leaf is not None, (
-    f"No leaf size met accuracy target {accuracy_target:.0e}"
-)
+assert best_leaf is not None, f"No leaf size met accuracy target {accuracy_target:.0e}"
 
 print(f"\nBest leaf size (largest meeting {accuracy_target:.0e} accuracy): {best_leaf}")
 
@@ -132,9 +130,9 @@ for leaf, err, ratio, _ in small_leaves:
 
 # The dense fallback (leaf >= n/2) should give ratio close to 1.0 and perfect accuracy
 dense_results = [r for r in results if r[2] > 0.99]
-assert len(dense_results) > 0, (
-    "At least one large leaf size should give near-dense ratio"
-)
+assert (
+    len(dense_results) > 0
+), "At least one large leaf size should give near-dense ratio"
 for leaf, err, ratio, _ in dense_results:
     ott.assert_almost_equal(err, 0.0, 1.0e-10, 1.0e-10)
 
@@ -143,9 +141,9 @@ for leaf, err, ratio, _ in dense_results:
 half = len(results) // 2
 early_min_ratio = min(r[2] for r in results[:half])
 late_min_ratio = min(r[2] for r in results[half:])
-assert early_min_ratio <= late_min_ratio, (
-    "Best compression should occur at smaller leaf sizes"
-)
+assert (
+    early_min_ratio <= late_min_ratio
+), "Best compression should occur at smaller leaf sizes"
 
 # All solve errors should be finite
 for leaf, err, ratio, _ in results:

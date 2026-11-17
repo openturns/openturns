@@ -11,8 +11,9 @@ factory = otexp.RiemannianGaussianFactory()
 # Default build
 default = factory.build()
 assert default.getDimension() == 3
-assert ot.Distribution(default).getImplementation().getClassName() == \
-    "RiemannianGaussian"
+assert (
+    ot.Distribution(default).getImplementation().getClassName() == "RiemannianGaussian"
+)
 
 # Build from a sample of flattened SPD matrices (n = 2, d = 3)
 mean = ot.SymmetricMatrix([[2.0, 0.0], [0.0, 1.0]])
@@ -34,25 +35,29 @@ for i in range(3):
     ott.assert_almost_equal(sigma_est[i, i], 1.0, 0.15, 0.0)
     for j in range(i + 1, 3):
         ott.assert_almost_equal(sigma_est[i, j], 0.0, 0.0, 0.1)
-assert ot.Distribution(estimated).getImplementation().getClassName() == \
-    "RiemannianGaussian"
+assert (
+    ot.Distribution(estimated).getImplementation().getClassName()
+    == "RiemannianGaussian"
+)
 
 # Build from parameters
 dist = otexp.RiemannianGaussian(mean, sigma)
 param = dist.getParameter()
 estimated2 = factory.build(param)
-ott.assert_almost_equal(estimated2.getImplementation().getParameter(),
-                        param, 1e-9, 0.0)
+ott.assert_almost_equal(estimated2.getImplementation().getParameter(), param, 1e-9, 0.0)
 
 # buildAsRiemannianGaussian variants
 native = factory.buildAsRiemannianGaussian(sample)
-assert ot.Distribution(native).getImplementation().getClassName() == \
-    "RiemannianGaussian"
+assert (
+    ot.Distribution(native).getImplementation().getClassName() == "RiemannianGaussian"
+)
 native_param = factory.buildAsRiemannianGaussian(param)
 ott.assert_almost_equal(native_param.getParameter(), param, 1e-9, 0.0)
 native_default = factory.buildAsRiemannianGaussian()
-assert ot.Distribution(native_default).getImplementation().getClassName() == \
-    "RiemannianGaussian"
+assert (
+    ot.Distribution(native_default).getImplementation().getClassName()
+    == "RiemannianGaussian"
+)
 
 # Invalid samples: dimension must be n (n + 1) / 2
 with ott.assert_raises(TypeError):

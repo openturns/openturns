@@ -50,8 +50,7 @@ for i in range(coeffs.getSize()):
 
 # Full constructor without weights (uniform weights)
 algo = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, methodName
+    inputSample, outputSample, distribution, productBasis, basisSize, methodName
 )
 algo.run()
 result = algo.getResult()
@@ -77,8 +76,7 @@ print("Simplified constructor without weights: OK")
 
 # Check setActiveFunctions / getActiveFunctions
 algo = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, methodName
+    inputSample, outputSample, distribution, productBasis, basisSize, methodName
 )
 algo.setActiveFunctions(ot.Indices(range(3)))
 assert algo.getActiveFunctions() == ot.Indices([0, 1, 2])
@@ -91,8 +89,7 @@ print("setActiveFunctions ensures index 0: OK")
 
 # Check constructor with active functions
 algo = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, methodName
+    inputSample, outputSample, distribution, productBasis, basisSize, methodName
 )
 algo.setActiveFunctions(ot.Indices([0, 1, 2]))
 algo.run()
@@ -141,13 +138,11 @@ print("History output index: OK")
 # Check exception: duplicate active functions are rejected at construction
 with ott.assert_raises(TypeError):
     ot.LeastSquaresExpansion(
-        inputSample, outputSample, distribution,
-        productBasis, basisSize, [0, 1, 1]
+        inputSample, outputSample, distribution, productBasis, basisSize, [0, 1, 1]
     )
 with ott.assert_raises(TypeError):
     otexp.SparseExpansion(
-        inputSample, outputSample, distribution,
-        productBasis, basisSize, [0, 1, 1]
+        inputSample, outputSample, distribution, productBasis, basisSize, [0, 1, 1]
     )
 print("Exception duplicate active functions: OK")
 
@@ -158,8 +153,7 @@ print("algo.__repr__: ", algo.__repr__())
 # Check different decomposition methods
 for methodName in ["SVD", "QR", "Cholesky"]:
     algo = otexp.SparseExpansion(
-        inputSample, outputSample, distribution,
-        productBasis, basisSize, methodName
+        inputSample, outputSample, distribution, productBasis, basisSize, methodName
     )
     algo.run()
     result = algo.getResult()
@@ -169,8 +163,7 @@ for methodName in ["SVD", "QR", "Cholesky"]:
 # Check serialization (save/load)
 if ot.PlatformInfo.HasFeature("libxml2"):
     algo = otexp.SparseExpansion(
-        inputSample, outputSample, distribution,
-        productBasis, basisSize, methodName
+        inputSample, outputSample, distribution, productBasis, basisSize, methodName
     )
     algo.setFittingAlgorithm(ot.KFold())
     algo.run()
@@ -191,8 +184,8 @@ if ot.PlatformInfo.HasFeature("libxml2"):
             resultLoaded.getCoefficients(), result.getCoefficients()
         )
         assert (
-            algoLoaded.getFittingAlgorithm().getImplementation()
-            .getClassName() == "KFold"
+            algoLoaded.getFittingAlgorithm().getImplementation().getClassName()
+            == "KFold"
         )
         print("Serialization: OK")
     finally:
@@ -207,8 +200,7 @@ wrongBasis = ot.OrthogonalProductPolynomialFactory(
 )
 with ott.assert_raises(TypeError):
     otexp.SparseExpansion(
-        inputSample, outputSample, distribution,
-        wrongBasis, basisSize, methodName
+        inputSample, outputSample, distribution, wrongBasis, basisSize, methodName
     )
 print("Exception basis dimension: OK")
 
@@ -221,8 +213,7 @@ print("Exception basis size zero: OK")
 
 # Check exception: active functions index out of range
 algo = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, methodName
+    inputSample, outputSample, distribution, productBasis, basisSize, methodName
 )
 with ott.assert_raises(TypeError):
     algo.setActiveFunctions(ot.Indices([basisSize + 1]))
@@ -230,8 +221,7 @@ print("Exception active functions out of range: OK")
 
 # Check useTransformation
 algo = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, methodName
+    inputSample, outputSample, distribution, productBasis, basisSize, methodName
 )
 algo.setUseTransformation(True)
 assert algo.getUseTransformation()
@@ -243,8 +233,7 @@ print("useTransformation accessor: OK")
 # k=1: stop on first increase (more aggressive)
 ot.ResourceMap.SetAsUnsignedInteger("SparseExpansion-ConsecutiveIncreases", 1)
 algo_k1 = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, methodName
+    inputSample, outputSample, distribution, productBasis, basisSize, methodName
 )
 algo_k1.run()
 result_k1 = algo_k1.getResult()
@@ -253,8 +242,7 @@ n_active_k1 = result_k1.getIndices().getSize()
 # k=5: allow 5 consecutive increases (more tolerant)
 ot.ResourceMap.SetAsUnsignedInteger("SparseExpansion-ConsecutiveIncreases", 5)
 algo_k5 = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, methodName
+    inputSample, outputSample, distribution, productBasis, basisSize, methodName
 )
 algo_k5.run()
 result_k5 = algo_k5.getResult()
@@ -263,8 +251,7 @@ n_active_k5 = result_k5.getIndices().getSize()
 # Restore default
 ot.ResourceMap.SetAsUnsignedInteger("SparseExpansion-ConsecutiveIncreases", 2)
 algo_default = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, methodName
+    inputSample, outputSample, distribution, productBasis, basisSize, methodName
 )
 algo_default.run()
 result_default = algo_default.getResult()
@@ -278,8 +265,7 @@ print("SparseExpansion-ConsecutiveIncreases: OK")
 
 # Check LARS selection method
 algo = otexp.SparseExpansion(
-    inputSample, outputSample, distribution,
-    productBasis, basisSize, methodName
+    inputSample, outputSample, distribution, productBasis, basisSize, methodName
 )
 algo.setSelectionMethod("LARS")
 assert algo.getSelectionMethod() == "LARS"
@@ -297,8 +283,7 @@ print("Exception invalid selection method: OK")
 # Check LARS with different decomposition methods
 for methodName in ["SVD", "QR", "Cholesky"]:
     algo = otexp.SparseExpansion(
-        inputSample, outputSample, distribution,
-        productBasis, basisSize, methodName
+        inputSample, outputSample, distribution, productBasis, basisSize, methodName
     )
     algo.setSelectionMethod("LARS")
     algo.run()

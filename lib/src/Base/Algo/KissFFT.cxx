@@ -158,8 +158,8 @@ KissFFT::ComplexCollection KissFFT::inverseTransform(const ComplexCollection & c
 }
 
 KissFFT::ComplexCollection KissFFT::fftND(const ComplexCollection & data,
-                                const Indices & dimensions,
-                                const Bool isIFFT) const
+    const Indices & dimensions,
+    const Bool isIFFT) const
 {
   const UnsignedInteger nDims = dimensions.getSize();
   UnsignedInteger totalSize = 1;

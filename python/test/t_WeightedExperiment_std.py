@@ -9,12 +9,20 @@ distribution2 = ot.Normal(2)
 size = 10
 
 # MonteCarloExperiment
-assert ot.MonteCarloExperiment(distribution, size) == ot.MonteCarloExperiment(distribution, size), "MCE==MCE"
-assert ot.MonteCarloExperiment(distribution, size) != ot.MonteCarloExperiment(distribution2, size), "MCE!=MCE dist"
-assert ot.MonteCarloExperiment(distribution, size) != ot.MonteCarloExperiment(distribution, size + 1), "MCE!=MCE size"
+assert ot.MonteCarloExperiment(distribution, size) == ot.MonteCarloExperiment(
+    distribution, size
+), "MCE==MCE"
+assert ot.MonteCarloExperiment(distribution, size) != ot.MonteCarloExperiment(
+    distribution2, size
+), "MCE!=MCE dist"
+assert ot.MonteCarloExperiment(distribution, size) != ot.MonteCarloExperiment(
+    distribution, size + 1
+), "MCE!=MCE size"
 
 # LHSExperiment
-assert ot.LHSExperiment(distribution, size) == ot.LHSExperiment(distribution, size), "LHS==LHS"
+assert ot.LHSExperiment(distribution, size) == ot.LHSExperiment(
+    distribution, size
+), "LHS==LHS"
 lhs1 = ot.LHSExperiment(distribution, size)
 lhs1.setAlwaysShuffle(True)
 lhs2 = ot.LHSExperiment(distribution, size)
@@ -23,23 +31,39 @@ assert lhs1 != lhs2, "LHS!=LHS shuffle"
 
 # LowDiscrepancyExperiment
 seq = ot.SobolSequence(4)
-assert ot.LowDiscrepancyExperiment(seq, distribution, size) == ot.LowDiscrepancyExperiment(seq, distribution, size), "LDE==LDE"
-assert ot.LowDiscrepancyExperiment(seq, distribution, size) != ot.LowDiscrepancyExperiment(ot.HaltonSequence(4), distribution, size), "LDE!=LDE seq"
+assert ot.LowDiscrepancyExperiment(
+    seq, distribution, size
+) == ot.LowDiscrepancyExperiment(seq, distribution, size), "LDE==LDE"
+assert ot.LowDiscrepancyExperiment(
+    seq, distribution, size
+) != ot.LowDiscrepancyExperiment(
+    ot.HaltonSequence(4), distribution, size
+), "LDE!=LDE seq"
 
 # FixedExperiment
 sample = ot.Normal(4).getSample(5)
 w = ot.Point(5, 1.0)
 assert ot.FixedExperiment(sample, w) == ot.FixedExperiment(sample, w), "FE==FE"
-assert ot.FixedExperiment(sample, w) != ot.FixedExperiment(sample * 2.0, w), "FE!=FE sample"
+assert ot.FixedExperiment(sample, w) != ot.FixedExperiment(
+    sample * 2.0, w
+), "FE!=FE sample"
 
 # ImportanceSamplingExperiment
 impDist = ot.Normal(4)
-assert ot.ImportanceSamplingExperiment(distribution, impDist, size) == ot.ImportanceSamplingExperiment(distribution, impDist, size), "ISE==ISE"
-assert ot.ImportanceSamplingExperiment(distribution, impDist, size) != ot.ImportanceSamplingExperiment(distribution, impDist, size + 1), "ISE!=ISE size"
+assert ot.ImportanceSamplingExperiment(
+    distribution, impDist, size
+) == ot.ImportanceSamplingExperiment(distribution, impDist, size), "ISE==ISE"
+assert ot.ImportanceSamplingExperiment(
+    distribution, impDist, size
+) != ot.ImportanceSamplingExperiment(distribution, impDist, size + 1), "ISE!=ISE size"
 
 # GaussProductExperiment
-assert ot.GaussProductExperiment(distribution) == ot.GaussProductExperiment(distribution), "GPE==GPE"
-assert ot.GaussProductExperiment(distribution) != ot.GaussProductExperiment(distribution2), "GPE!=GPE dist"
+assert ot.GaussProductExperiment(distribution) == ot.GaussProductExperiment(
+    distribution
+), "GPE==GPE"
+assert ot.GaussProductExperiment(distribution) != ot.GaussProductExperiment(
+    distribution2
+), "GPE!=GPE dist"
 
 # Handle equality
 w1 = ot.WeightedExperiment(ot.MonteCarloExperiment(distribution, size))

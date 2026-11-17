@@ -103,22 +103,28 @@ for i, distribution in enumerate(coll):
     ott.assert_almost_equal(
         distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 1e-6
     )
-    ott.assert_almost_equal(distribution.computeEntropy(), expectedEntropy[i], 1e-6, 1e-6)
+    ott.assert_almost_equal(
+        distribution.computeEntropy(), expectedEntropy[i], 1e-6, 1e-6
+    )
 
     # Confidence regions
-    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
-        0.95
+    interval, threshold = (
+        distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
     )
     ott.assert_almost_equal(interval.getLowerBound(), [expectedMVLower[i]], 1e-5, 0.0)
     ott.assert_almost_equal(interval.getUpperBound(), [expectedMVUpper[i]], 1e-5, 0.0)
     ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     ott.assert_almost_equal(beta, expectedMVBeta[i], 1e-5, 0.0)
-    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
-        0.95
+    interval, beta = (
+        distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
     )
-    ott.assert_almost_equal(interval.getLowerBound(), [expectedBilateralLower[i]], 1e-5, 0.0)
-    ott.assert_almost_equal(interval.getUpperBound(), [expectedBilateralUpper[i]], 1e-5, 0.0)
+    ott.assert_almost_equal(
+        interval.getLowerBound(), [expectedBilateralLower[i]], 1e-5, 0.0
+    )
+    ott.assert_almost_equal(
+        interval.getUpperBound(), [expectedBilateralUpper[i]], 1e-5, 0.0
+    )
     ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
     (
         interval,
@@ -126,8 +132,12 @@ for i, distribution in enumerate(coll):
     ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, False
     )
-    ott.assert_almost_equal(interval.getLowerBound(), [expectedUnilateralLower[i]], 1e-5, 0.0)
-    ott.assert_almost_equal(interval.getUpperBound(), [expectedUnilateralUpper[i]], 1e-5, 0.0)
+    ott.assert_almost_equal(
+        interval.getLowerBound(), [expectedUnilateralLower[i]], 1e-5, 0.0
+    )
+    ott.assert_almost_equal(
+        interval.getUpperBound(), [expectedUnilateralUpper[i]], 1e-5, 0.0
+    )
     ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
     (
         interval,
@@ -135,8 +145,12 @@ for i, distribution in enumerate(coll):
     ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, True
     )
-    ott.assert_almost_equal(interval.getLowerBound(), [expectedSurvivalLower[i]], 1e-5, 0.0)
-    ott.assert_almost_equal(interval.getUpperBound(), [expectedSurvivalUpper[i]], 1e-5, 0.0)
+    ott.assert_almost_equal(
+        interval.getLowerBound(), [expectedSurvivalLower[i]], 1e-5, 0.0
+    )
+    ott.assert_almost_equal(
+        interval.getUpperBound(), [expectedSurvivalUpper[i]], 1e-5, 0.0
+    )
     ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 
     # Define a point, right part of the support
@@ -201,7 +215,9 @@ for a, m, b in [(-0.5, 1.5, 2.5), (-0.5, -0.5, 2.5), (-0.5, 2.5, 2.5)]:
     # PDF and DDF at left boundary: right-sided values, nonzero for m == a
     if m == a:
         ott.assert_almost_equal(dist.computePDF(a), 2.0 / (b - a), 1e-12, 0.0)
-        ott.assert_almost_equal(dist.computeDDF(a), -2.0 / (b - a) / (b - a), 1e-12, 0.0)
+        ott.assert_almost_equal(
+            dist.computeDDF(a), -2.0 / (b - a) / (b - a), 1e-12, 0.0
+        )
     else:
         ott.assert_almost_equal(dist.computePDF(a), 0.0)
         ott.assert_almost_equal(dist.computeDDF(a), 2.0 / (b - a) / (m - a), 1e-12, 0.0)

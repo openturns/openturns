@@ -311,8 +311,20 @@ assert composed.getDescription() == ["a", "b", "X0", "X1", "X2"], "wrong descrip
 # check setParameter preserves custom description
 composed.setDescription(["y0", "y1", "y2", "y3", "y4"])
 composed.setParameter(composed.getParameter())
-assert composed.getDescription() == ["y0", "y1", "y2", "y3", "y4"], "description lost by setParameter"
-assert list(composed.getCore().getDescription()) == ["y0", "y1", "y2", "y3", "y4"], "core description lost by setParameter"
+assert composed.getDescription() == [
+    "y0",
+    "y1",
+    "y2",
+    "y3",
+    "y4",
+], "description lost by setParameter"
+assert list(composed.getCore().getDescription()) == [
+    "y0",
+    "y1",
+    "y2",
+    "y3",
+    "y4",
+], "core description lost by setParameter"
 
 # Create and print a composed distribution with different
 # complexities and print them

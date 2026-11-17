@@ -18,8 +18,13 @@ covModel = ot.MaternModel([0.2], [1.0], 2.5)
 
 # Dense reference matrix (the HMAT path does not apply any nugget)
 A = np.array(
-    [[covModel.computeAsScalar(ot.Point(vertices[i]), ot.Point(vertices[j])) for j in range(n)]
-     for i in range(n)]
+    [
+        [
+            covModel.computeAsScalar(ot.Point(vertices[i]), ot.Point(vertices[j]))
+            for j in range(n)
+        ]
+        for i in range(n)
+    ]
 )
 
 

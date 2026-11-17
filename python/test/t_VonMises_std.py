@@ -144,7 +144,10 @@ ott.assert_almost_equal(kendall, ot.CorrelationMatrix(1), 0.0, 0.0)
 parameters = distribution.getParametersCollection()
 assert len(parameters) == 1
 ott.assert_almost_equal(parameters[0], [-0.5, 1.5], 0.0, 0.0)
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "VonMises"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "VonMises"
+)
 ott.assert_almost_equal(distribution.getCircularMean(), distribution.getMu())
 ott.assert_almost_equal(distribution.getCircularVariance(), 0.403866761169, 1e-9, 0.0)
 cv = distribution.getCircularVariance()

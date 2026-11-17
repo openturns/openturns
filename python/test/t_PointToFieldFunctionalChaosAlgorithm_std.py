@@ -98,7 +98,8 @@ dim = 3
 mesh = ot.IntervalMesher([20] * dim).build(ot.Interval(dim))
 c = [2, 3, 5]
 g = ot.SymbolicFunction(
-    [f"x{i + 1}" for i in range(dim)] + ["z"], [" + ".join([f"x{i + 1}*{c[i]}*0.5" for i in range(dim)]) + " + z"]
+    [f"x{i + 1}" for i in range(dim)] + ["z"],
+    [" + ".join([f"x{i + 1}*{c[i]}*0.5" for i in range(dim)]) + " + z"],
 )
 print(g)
 model = ot.VertexValuePointToFieldFunction(g, mesh)

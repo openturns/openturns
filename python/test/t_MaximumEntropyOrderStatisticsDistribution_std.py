@@ -113,7 +113,11 @@ print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
 
 # with Beta(i, n-i+1) marginals the distribution is the joint order statistics of a uniform sample
-collBeta = [ot.Beta(1.0, 3.0, 0.0, 1.0), ot.Beta(2.0, 2.0, 0.0, 1.0), ot.Beta(3.0, 1.0, 0.0, 1.0)]
+collBeta = [
+    ot.Beta(1.0, 3.0, 0.0, 1.0),
+    ot.Beta(2.0, 2.0, 0.0, 1.0),
+    ot.Beta(3.0, 1.0, 0.0, 1.0),
+]
 betaDist = ot.MaximumEntropyOrderStatisticsDistribution(collBeta, False)
 ott.assert_almost_equal(betaDist.computeConditionalCDF(0.5, [0.7]), 0.0)
 ott.assert_almost_equal(betaDist.computeConditionalPDF(0.5, [0.2]), 1.5625)
@@ -137,7 +141,12 @@ for indices in ([0, 1], [0, 2], [1, 2]):
 # check setParameter preserves custom description
 distribution.setDescription(["z0", "z1", "z2", "z3"])
 distribution.setParameter(distribution.getParameter())
-assert distribution.getDescription() == ["z0", "z1", "z2", "z3"], "description lost by setParameter"
+assert distribution.getDescription() == [
+    "z0",
+    "z1",
+    "z2",
+    "z3",
+], "description lost by setParameter"
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)

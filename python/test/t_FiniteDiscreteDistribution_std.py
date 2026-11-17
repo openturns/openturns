@@ -64,7 +64,10 @@ assert list(distribution.getParameterDescription()) == [
 parameter[-1] = 0.3
 distribution.setParameter(parameter)
 ott.assert_almost_equal(
-    distribution.getParameter(), [1.0, 2.0, 3.0, 0.340909, 0.113636, 0.545455], 1e-5, 0.0
+    distribution.getParameter(),
+    [1.0, 2.0, 3.0, 0.340909, 0.113636, 0.545455],
+    1e-5,
+    0.0,
 )
 
 # To prevent automatic compaction
@@ -107,8 +110,17 @@ validation.run()
 # integrates the PDF over the range of the distribution, used to return -1
 # here (ie 4 * 0 - 1)
 ties = ot.FiniteDiscreteDistribution(
-    [[0.0, 0.0], [0.0, 1.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0],
-     [1.0, 1.0], [2.0, 2.0], [2.0, 2.0], [3.0, 1.0]],
+    [
+        [0.0, 0.0],
+        [0.0, 1.0],
+        [0.0, 1.0],
+        [1.0, 0.0],
+        [1.0, 1.0],
+        [1.0, 1.0],
+        [2.0, 2.0],
+        [2.0, 2.0],
+        [3.0, 1.0],
+    ],
     [0.05, 0.1, 0.15, 0.2, 0.05, 0.1, 0.15, 0.1, 0.1],
 )
 # probabilities are renormalized so not independent
@@ -129,10 +141,16 @@ distinctValidation.run()
 
 # Comonotonic and countermonotonic atoms
 ott.assert_almost_equal(
-    ot.FiniteDiscreteDistribution([[0.0, 0.0], [1.0, 1.0], [2.0, 2.0]]).getKendallTau()[0, 1], 1.0
+    ot.FiniteDiscreteDistribution([[0.0, 0.0], [1.0, 1.0], [2.0, 2.0]]).getKendallTau()[
+        0, 1
+    ],
+    1.0,
 )
 ott.assert_almost_equal(
-    ot.FiniteDiscreteDistribution([[0.0, 3.0], [1.0, 2.0], [2.0, 1.0]]).getKendallTau()[0, 1], -1.0
+    ot.FiniteDiscreteDistribution([[0.0, 3.0], [1.0, 2.0], [2.0, 1.0]]).getKendallTau()[
+        0, 1
+    ],
+    -1.0,
 )
 
 # A stored support above Distribution-MaximumSupportSizeForRankCorrelation
@@ -140,7 +158,9 @@ ott.assert_almost_equal(
 spearmanLimit = ot.ResourceMap.GetAsUnsignedInteger(
     "Distribution-MaximumSupportSizeForRankCorrelation"
 )
-ot.ResourceMap.SetAsUnsignedInteger("Distribution-MaximumSupportSizeForRankCorrelation", 2)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "Distribution-MaximumSupportSizeForRankCorrelation", 2
+)
 ott.assert_almost_equal(
     ot.FiniteDiscreteDistribution(
         [[0.0, 0.0], [1.0, 1.0], [2.0, 2.0]]

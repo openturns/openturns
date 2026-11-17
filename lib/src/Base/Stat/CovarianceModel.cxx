@@ -132,7 +132,7 @@ Matrix CovarianceModel::partialGradient(const Point & s,
 
 /* Hessian */
 SymmetricMatrix CovarianceModel::partialHessian(const Point & s,
-                                                const Point & t) const
+    const Point & t) const
 {
   return getImplementation()->partialHessian(s, t);
 }

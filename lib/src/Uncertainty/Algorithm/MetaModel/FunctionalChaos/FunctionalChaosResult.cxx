@@ -457,16 +457,16 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "coefficientsHistory_", coefficientsHistory_ );
     adv.loadAttribute( "errorHistory_", errorHistory_ );
     if (adv.hasAttribute("historyCutPoints_"))
-      {
-	adv.loadAttribute( "historyCutPoints_", historyCutPoints_ );
-      }
+    {
+      adv.loadAttribute( "historyCutPoints_", historyCutPoints_ );
+    }
     else
-      {
-	// Legacy studies store a single unpartitioned history:
-	// mark it with a single cut point, the getters below
-	// return the whole history for output 0 in that case
-	historyCutPoints_ = Indices(1, 0);
-      }
+    {
+      // Legacy studies store a single unpartitioned history:
+      // mark it with a single cut point, the getters below
+      // return the whole history for output 0 in that case
+      historyCutPoints_ = Indices(1, 0);
+    }
   }
   if (adv.hasAttribute("isLeastSquares_"))
   {
@@ -526,10 +526,10 @@ void FunctionalChaosResult::setSelectionHistory(const Collection<Indices> & indi
   if (historyCutPoints.getSize() != metaModel_.getOutputDimension() + 1) throw InvalidArgumentException(HERE) << "Error: the given history cut points size=" << historyCutPoints.getSize() << " must be equal to " << metaModel_.getOutputDimension() + 1;
   if (!historyCutPoints.isIncreasing()) throw InvalidArgumentException(HERE) << "Error: the given history cut points must be non-decreasing";
   if (historyCutPoints.getSize() > 0)
-    {
-      const UnsignedInteger lastCutPoint = historyCutPoints[historyCutPoints.getSize() - 1];
+  {
+    const UnsignedInteger lastCutPoint = historyCutPoints[historyCutPoints.getSize() - 1];
     if (indicesHistory.getSize() != lastCutPoint) throw InvalidArgumentException(HERE) << "Error: the total number of history entries=" << indicesHistory.getSize() << " must equal the last cut point=" << lastCutPoint;
-    }
+  }
   indicesHistory_ = indicesHistory;
   coefficientsHistory_ = coefficientsHistory;
   historyCutPoints_ = historyCutPoints;
@@ -542,7 +542,7 @@ Graph FunctionalChaosResult::drawSelectionHistory(const UnsignedInteger outputIn
   // extract the relevant part of the histories
   const Collection<Indices> outputIndicesHistory(getIndicesHistory(outputIndex));
   const Collection<Point> outputCoefficientsHistory(getCoefficientsHistory(outputIndex));
-  
+
   const UnsignedInteger size = outputIndicesHistory.getSize();
   if (!size)
     throw InvalidArgumentException(HERE) << "No selection history available";

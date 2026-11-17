@@ -90,10 +90,10 @@ Student::Student(const Scalar nu,
 Student::Student(const Scalar nu,
                  const Point & mean,
                  const CovarianceMatrix & C)
-: EllipticalDistribution(mean,
-                         Point(mean.getDimension(), 1.0),
-                         CorrelationMatrix(mean.getDimension()),
-                         1.0)
+  : EllipticalDistribution(mean,
+                           Point(mean.getDimension(), 1.0),
+                           CorrelationMatrix(mean.getDimension()),
+                           1.0)
 
 {
   const UnsignedInteger dimension = mean.getDimension();
@@ -456,7 +456,11 @@ Scalar Student::computeConditionalPDF(const Scalar xj, const Point & xcond) cons
   // Identify non-degenerate conditioning dimensions
   Bool hasDegenerate = false;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (sigma_[i] == 0.0) { hasDegenerate = true; break; }
+    if (sigma_[i] == 0.0)
+    {
+      hasDegenerate = true;
+      break;
+    }
   if (hasDegenerate)
   {
     Indices activeIndices;
@@ -560,7 +564,11 @@ Scalar Student::computeConditionalCDF(const Scalar xj, const Point & xcond) cons
   // Identify non-degenerate conditioning dimensions
   Bool hasDegenerate = false;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (sigma_[i] == 0.0) { hasDegenerate = true; break; }
+    if (sigma_[i] == 0.0)
+    {
+      hasDegenerate = true;
+      break;
+    }
   if (hasDegenerate)
   {
     Indices activeIndices;
@@ -657,7 +665,11 @@ Scalar Student::computeConditionalQuantile(const Scalar p, const Point & xcond) 
   // Identify non-degenerate conditioning dimensions
   Bool hasDegenerate = false;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (sigma_[i] == 0.0) { hasDegenerate = true; break; }
+    if (sigma_[i] == 0.0)
+    {
+      hasDegenerate = true;
+      break;
+    }
   if (hasDegenerate)
   {
     Indices activeIndices;

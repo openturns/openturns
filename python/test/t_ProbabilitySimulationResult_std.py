@@ -10,12 +10,13 @@ ot.TESTPREAMBLE()
 X = ot.RandomVector(ot.Normal())
 Y = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["X"]), X)
 event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
-implementation = ot.ProbabilitySimulationResultImplementation(
-    event, 0.1, 0.01, 100, 10
-)
+implementation = ot.ProbabilitySimulationResultImplementation(event, 0.1, 0.01, 100, 10)
 result = ot.ProbabilitySimulationResult(implementation)
 
-assert result.getImplementation().getClassName() == "ProbabilitySimulationResultImplementation"
+assert (
+    result.getImplementation().getClassName()
+    == "ProbabilitySimulationResultImplementation"
+)
 assert_almost_equal(result.getProbabilityEstimate(), 0.1)
 assert_almost_equal(result.getVarianceEstimate(), 0.01)
 assert result.getOuterSampling() == 100
@@ -34,9 +35,7 @@ assert_almost_equal(result.getProbabilityEstimate(), 0.1)
 
 # the variance setter applies the constructor validation: negative values
 # and NaN are rejected instead of silently corrupting the estimate
-validated = ot.ProbabilitySimulationResultImplementation(
-    event, 0.1, 0.01, 100, 10
-)
+validated = ot.ProbabilitySimulationResultImplementation(event, 0.1, 0.01, 100, 10)
 validated.setVarianceEstimate(0.25)
 assert_almost_equal(validated.getVarianceEstimate(), 0.25)
 with assert_raises(TypeError):

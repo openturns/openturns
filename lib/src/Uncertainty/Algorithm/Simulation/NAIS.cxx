@@ -353,7 +353,7 @@ Sample NAIS::getInputSample() const
   if (!keepSample_)
     throw InvalidArgumentException(HERE) << "NAIS keepSample was not set";
 
-  return getInputSample(getStepsNumber()-1, BOTH);
+  return getInputSample(getStepsNumber() - 1, BOTH);
 }
 
 Sample NAIS::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const

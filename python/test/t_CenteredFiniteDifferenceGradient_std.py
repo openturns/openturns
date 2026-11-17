@@ -54,9 +54,7 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(ValueError):
     ot.FiniteDifferenceGradient(ot.ConstantStep(ot.Point(3, eps)), evaluation)
 with ott.assert_raises(TypeError):
-    ot.FiniteDifferenceGradient(
-        ot.ConstantStep(ot.Point([eps, 0.0])), evaluation
-    )
+    ot.FiniteDifferenceGradient(ot.ConstantStep(ot.Point([eps, 0.0])), evaluation)
 with ott.assert_raises(RuntimeError):
     gradient.gradient(inPoint)
 assert gradient == ot.FiniteDifferenceGradient(epsilon, evaluation)

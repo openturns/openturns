@@ -3,6 +3,7 @@
 import openturns as ot
 
 import openturns.testing as ott
+
 distribution = ot.Gumbel(0.5, 2.5)
 size = 10000
 sample = distribution.getSample(size)

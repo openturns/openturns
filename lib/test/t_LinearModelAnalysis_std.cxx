@@ -160,7 +160,7 @@ int main(int, char *[])
 
   {
     fullprint << "Test checkSampleSize exception" << std::endl;
-    
+
     // Create a small sample
     UnsignedInteger size = 5;
     Sample x(size, 1);
@@ -186,7 +186,7 @@ int main(int, char *[])
     }
     catch (const InvalidArgumentException & ex)
     {
-      fullprint << "Caught expected InvalidArgumentException: " << ex.what()<< std::endl;
+      fullprint << "Caught expected InvalidArgumentException: " << ex.what() << std::endl;
     }
 
     // Reset ResourceMap to default values
@@ -210,7 +210,7 @@ int main(int, char *[])
     try
     {
       // The model expects dimension 1, we provide dimension 2
-      Point x0(2, 0.0); 
+      Point x0(2, 0.0);
       analysis.getPredictionDistribution(x0);
       throw TestFailed("InvalidArgumentException not thrown for invalid x0 dimension");
     }
@@ -227,8 +227,10 @@ int main(int, char *[])
     UnsignedInteger size = 2;
     Sample x(size, 1);
     Sample y(size, 1);
-    x[0][0] = 1.0; x[1][0] = 2.0;
-    y[0][0] = 1.1; y[1][0] = 2.1;
+    x[0][0] = 1.0;
+    x[1][0] = 2.0;
+    y[0][0] = 1.1;
+    y[1][0] = 2.1;
 
     LinearModelAlgorithm algo(x, y);
     LinearModelResult result(algo.getResult());

@@ -1280,13 +1280,17 @@ private:
         Scalar lo = distribution_.getRange().getLowerBound()[0];
         Scalar hi = distribution_.getRange().getUpperBound()[0];
         Brent solver;
-        auto checkSide = [&](Scalar a, Scalar b, const String & side) {
-          try {
+        auto checkSide = [&](Scalar a, Scalar b, const String & side)
+        {
+          try
+          {
             const Scalar xRoot = solver.solve(f, level, a, b);
             const Scalar pdfRoot = distribution_.computePDF(xRoot);
             LOGTRACE(OSS() << "threshold=" << threshold << " pdf(" << side << ")=" << pdfRoot);
             assert_almost_equal(threshold, pdfRoot, 1e-2, 1e-2, OSS() << "threshold(pdf " << side << ") " << distribution_.__repr__());
-          } catch (...) {
+          }
+          catch (...)
+          {
             LOGTRACE(OSS() << "threshold check skipped on side " << side << " (boundary at support)");
           }
         };

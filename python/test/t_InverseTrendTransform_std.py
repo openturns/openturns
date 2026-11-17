@@ -53,12 +53,12 @@ ott.assert_almost_equal(fromImpl.getTrendFunction()([0.0]), myFunc([0.0]), 1e-12
 cloned = ot.InverseTrendTransform(myInverseTrendFunc)
 assert isinstance(repr(myInverseTrendFunc), str)
 assert isinstance(str(myInverseTrendFunc), str)
-ott.assert_almost_equal(
-    cloned.getTrendFunction()([0.0]), myFunc([0.0]), 1e-12, 1e-12
-)
+ott.assert_almost_equal(cloned.getTrendFunction()([0.0]), myFunc([0.0]), 1e-12, 1e-12)
 inverse = myInverseTrendFunc.getInverse()
 assert inverse.getInputDimension() == myInverseTrendFunc.getInputDimension()
-ott.assert_almost_equal(myInverseTrendFunc.getTrendFunction()([0.5]), myFunc([0.5]), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    myInverseTrendFunc.getTrendFunction()([0.5]), myFunc([0.5]), 1e-12, 1e-12
+)
 # save/load round-trip
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("testInverseTrendTransform.xml"))

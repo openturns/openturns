@@ -53,7 +53,7 @@ public:
 
   /* return infill Sample */
   Sample getInfillSample(const Sample & inputSample,
-                        const Sample & criterionValues) const override;
+                         const Sample & criterionValues) const override;
 
   /** String converter */
   String __repr__() const override;

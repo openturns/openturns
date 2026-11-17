@@ -54,11 +54,11 @@ public:
 
   /** Parameter constructor */
   explicit ExceptionPenalizedEvaluation(const Evaluation & evaluation,
-                               const Scalar penalizedValue = std::sqrt(SpecFunc::MaxScalar));
+                                        const Scalar penalizedValue = std::sqrt(SpecFunc::MaxScalar));
 
   /** Parameter constructor with per-output penalized values */
   ExceptionPenalizedEvaluation(const Evaluation & evaluation,
-                      const Point & penalizedValue);
+                               const Point & penalizedValue);
 
   /** Virtual constructor */
   ExceptionPenalizedEvaluation * clone() const override;

@@ -218,8 +218,8 @@ void HODLRMatrixImplementation::assemble(const HODLRRealAssemblyFunction& f, cha
 }
 
 void HODLRMatrixImplementation::assemble(const HODLRRealAssemblyFunction& f,
-                                         const HODLRMatrixParameters& parameters,
-                                         char symmetry)
+    const HODLRMatrixParameters& parameters,
+    char symmetry)
 {
   if (n_ == 0)
     throw InvalidArgumentException(HERE) << "Empty HODLRMatrix";
@@ -261,10 +261,10 @@ void HODLRMatrixImplementation::assemble(const HODLRRealAssemblyFunction& f,
   isFactorized_ = false;
 
   p_node_ = new HODLRNode(p_evaluator_, diagonal_.data(), 0, n_,
-                        parameters.getMinLeafSize(),
-                        parameters.getMaxRank(),
-                        parameters.getAssemblyEpsilon(),
-                        parameters.getRecompressionEpsilon());
+                          parameters.getMinLeafSize(),
+                          parameters.getMaxRank(),
+                          parameters.getAssemblyEpsilon(),
+                          parameters.getRecompressionEpsilon());
 
   LOGDEBUG(OSS() << "HODLRMatrixImplementation::assemble done, n=" << n_);
 }
@@ -320,7 +320,7 @@ void HODLRMatrixImplementation::factorize()
     catch (const InternalException&)
     {
       LOGDEBUG(OSS() << "HODLRMatrix::factorize attempt " << iteration
-                << " failed, regularizationShift=" << regularizationShift);
+               << " failed, regularizationShift=" << regularizationShift);
       if (regularizationShift == 0.0)
         regularizationShift = regularizationEpsilon;
       else
@@ -363,11 +363,11 @@ void HODLRMatrixImplementation::factorize()
     const Scalar warnThreshold = ResourceMap::GetAsScalar("HODLRMatrix-RegularizationWarnThreshold");
     if ((maxDiag > 0.0) && (shiftAccumulated_ / maxDiag >= warnThreshold))
       LOGWARN(OSS() << "HODLRMatrix: the Cholesky factorization required a regularization shift of "
-             << shiftAccumulated_ << " (ratio " << shiftAccumulated_ / maxDiag
-             << " of the diagonal, threshold " << warnThreshold
-             << "). The factorized matrix is A + shift * I, so the solve() and logDeterminant() "
-             << "results are for the regularized matrix and may be inaccurate. Add a nugget or "
-             << "increase the HODLRMatrix-RegularizationEpsilon / -Nugget values.");
+              << shiftAccumulated_ << " (ratio " << shiftAccumulated_ / maxDiag
+              << " of the diagonal, threshold " << warnThreshold
+              << "). The factorized matrix is A + shift * I, so the solve() and logDeterminant() "
+              << "results are for the regularized matrix and may be inaccurate. Add a nugget or "
+              << "increase the HODLRMatrix-RegularizationEpsilon / -Nugget values.");
   }
   LOGDEBUG(OSS() << "HODLRMatrix::factorize() done, log_det=" << logDet_);
 }
@@ -749,15 +749,15 @@ void HODLRMatrixImplementation::load(Advocate & adv)
   }
   if (p_node_ && !p_evaluator_)
     LOGWARN(OSS() << "HODLRMatrix: loaded a factorized operator, but its assembly function is not "
-                  << "serializable so the matrix cannot be re-assembled or re-factorized; "
-                  << "solving, gemv and logDeterminant are available");
+            << "serializable so the matrix cannot be re-assembled or re-factorized; "
+            << "solving, gemv and logDeterminant are available");
 }
 
 // --- HODLRCovarianceAssemblyFunction ---
 
 HODLRCovarianceAssemblyFunction::HODLRCovarianceAssemblyFunction(
-    const CovarianceModel& covarianceModel,
-    const Sample& vertices)
+  const CovarianceModel& covarianceModel,
+  const Sample& vertices)
   : HODLRRealAssemblyFunction()
   , covarianceModel_(covarianceModel)
   , implementation_(covarianceModel.getImplementation())

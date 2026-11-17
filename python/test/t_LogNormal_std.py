@@ -151,5 +151,12 @@ ott.assert_almost_equal(bounded.computeQuantile(1.0, True)[0], lower, 0.0, 0.0)
 for native in ([0.0, 1.0, 0.0], [-1.0, 0.5, -0.5], [-1.0, 0.246, -2.0]):
     inv = ot.LogNormalMuErrorFactor().inverse(native)
     ott.assert_almost_equal(ot.LogNormalMuErrorFactor(*inv).evaluate(), native)
-    ott.assert_almost_equal(ot.LogNormalMuSigma(*ot.LogNormalMuSigma().inverse(native)).evaluate(), native)
-    ott.assert_almost_equal(ot.LogNormalMuSigmaOverMu(*ot.LogNormalMuSigmaOverMu().inverse(native)).evaluate(), native)
+    ott.assert_almost_equal(
+        ot.LogNormalMuSigma(*ot.LogNormalMuSigma().inverse(native)).evaluate(), native
+    )
+    ott.assert_almost_equal(
+        ot.LogNormalMuSigmaOverMu(
+            *ot.LogNormalMuSigmaOverMu().inverse(native)
+        ).evaluate(),
+        native,
+    )

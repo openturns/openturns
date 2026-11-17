@@ -75,9 +75,7 @@ for tau in (0.5, 1.5, 3.0):
 constantCollection = ot.SquareMatrixCollection(timeGrid.getN())
 for i in range(timeGrid.getN()):
     constantCollection[i] = covariance
-modelCollection = ot.UserDefinedStationaryCovarianceModel(
-    timeGrid, constantCollection
-)
+modelCollection = ot.UserDefinedStationaryCovarianceModel(timeGrid, constantCollection)
 for i in range(0, timeGrid.getN(), 7):
     tau = timeGrid.getValue(i)
     diff = modelSingle(tau) - modelCollection(tau)
@@ -87,9 +85,7 @@ for i in range(0, timeGrid.getN(), 7):
 # Extra coverage: error branches, accessors, symmetry, persistence
 
 with ott.assert_raises(Exception):
-    ot.UserDefinedStationaryCovarianceModel(
-        timeGrid, ot.SquareMatrixCollection(3)
-    )
+    ot.UserDefinedStationaryCovarianceModel(timeGrid, ot.SquareMatrixCollection(3))
 mismatched = ot.SquareMatrixCollection(size)
 for i in range(size):
     mismatched[i] = ot.SquareMatrix(1)
@@ -110,9 +106,9 @@ ott.assert_almost_equal(
 assert myModel == ot.UserDefinedStationaryCovarianceModel(
     timeGrid, covarianceCollection
 )
-assert not (myModel != ot.UserDefinedStationaryCovarianceModel(
-    timeGrid, covarianceCollection
-))
+assert not (
+    myModel != ot.UserDefinedStationaryCovarianceModel(timeGrid, covarianceCollection)
+)
 assert myModel != modelSingle
 assert myModel.getTimeGrid() == timeGrid
 assert len(repr(myModel)) > 0

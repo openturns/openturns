@@ -7,11 +7,15 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 # The ResourceMap keys
-assert ot.ResourceMap.GetAsUnsignedInteger(
-    "UniformOverMeshFactory-NearestNeighbors") == 12
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger("UniformOverMeshFactory-NearestNeighbors") == 12
+)
 ott.assert_almost_equal(
     ot.ResourceMap.GetAsScalar("UniformOverMeshFactory-MinimumAreaFactor"),
-    1.0e-3, 1e-12, 0.0)
+    1.0e-3,
+    1e-12,
+    0.0,
+)
 
 factory = otexp.UniformOverMeshFactory()
 print("Factory ", factory)

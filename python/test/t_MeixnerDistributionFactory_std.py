@@ -39,6 +39,4 @@ momentEstimate = factory.buildAsMeixnerDistribution(sample)
 ott.assert_almost_equal(
     momentEstimate.getCovariance()[0, 0], sample.computeVariance()[0], 1e-9, 0.0
 )
-ott.assert_almost_equal(
-    momentEstimate.getMean()[0], sample.computeMean()[0], 1e-9, 0.0
-)
+ott.assert_almost_equal(momentEstimate.getMean()[0], sample.computeMean()[0], 1e-9, 0.0)

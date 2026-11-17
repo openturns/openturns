@@ -111,13 +111,18 @@ _ = ev.getRightEvaluation()
 assert ev.isLinear() == (f2.isLinear() and h1.isLinear())
 _ = ev.isLinearlyDependent(0)
 ott.assert_almost_equal(ev(x), ot.ComposedFunction(f2, h1)(x), 1e-14, 1e-14)
-ott.assert_almost_equal(ev(ot.Sample([x, x])), ot.ComposedFunction(f2, h1)(ot.Sample([x, x])), 1e-14, 1e-14)
+ott.assert_almost_equal(
+    ev(ot.Sample([x, x])), ot.ComposedFunction(f2, h1)(ot.Sample([x, x])), 1e-14, 1e-14
+)
 with ott.assert_raises(Exception):
     ev([1.0])
 with ott.assert_raises(Exception):
     ev.getMarginal(10)
 with ott.assert_raises(Exception):
-    ot.ComposedEvaluation(f2.getEvaluation(), ot.SymbolicFunction(["a"], ["a", "2*a", "3*a"]).getEvaluation())
+    ot.ComposedEvaluation(
+        f2.getEvaluation(),
+        ot.SymbolicFunction(["a"], ["a", "2*a", "3*a"]).getEvaluation(),
+    )
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("composed_eval.xml"))
 study.add("ev", ot.Function(ev))
@@ -134,7 +139,9 @@ assert cg.isActualImplementation()
 _ = cg.getParameter()
 _ = cg.getCallsNumber()
 ott.assert_almost_equal(cg.gradient(x), cfRef.gradient(x), 1e-12, 1e-12)
-ott.assert_almost_equal(cfRef.getGradient().gradient(x), cfRef.gradient(x), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    cfRef.getGradient().gradient(x), cfRef.gradient(x), 1e-12, 1e-12
+)
 _ = str(cfRef.getGradient())
 assert cfRef.getGradient() == cfRef.getGradient()
 assert not (cfRef.getGradient() != cfRef.getGradient())
@@ -142,14 +149,32 @@ _ = cfRef.getGradient().getCallsNumber()
 with ott.assert_raises(Exception):
     cg.gradient(ot.Point([1.0]))
 with ott.assert_raises(Exception):
-    ot.ComposedGradient(ot.SymbolicFunction(["a", "b", "c"], ["a"]).getGradient(), h1.getEvaluation(), h1.getGradient())
+    ot.ComposedGradient(
+        ot.SymbolicFunction(["a", "b", "c"], ["a"]).getGradient(),
+        h1.getEvaluation(),
+        h1.getGradient(),
+    )
 with ott.assert_raises(Exception):
-    ot.ComposedGradient(f2.getGradient(), ot.SymbolicFunction(["a", "b", "c"], ["a", "b"]).getEvaluation(), h1.getGradient())
+    ot.ComposedGradient(
+        f2.getGradient(),
+        ot.SymbolicFunction(["a", "b", "c"], ["a", "b"]).getEvaluation(),
+        h1.getGradient(),
+    )
 with ott.assert_raises(Exception):
-    ot.ComposedGradient(f2.getGradient(), ot.SymbolicFunction(["x1", "x2"], ["a", "b", "c"]).getEvaluation(), h1.getGradient())
+    ot.ComposedGradient(
+        f2.getGradient(),
+        ot.SymbolicFunction(["x1", "x2"], ["a", "b", "c"]).getEvaluation(),
+        h1.getGradient(),
+    )
 
 # ComposedHessian direct coverage
-ch = ot.ComposedHessian(f2.getGradient(), f2.getHessian(), h1.getEvaluation(), h1.getGradient(), h1.getHessian())
+ch = ot.ComposedHessian(
+    f2.getGradient(),
+    f2.getHessian(),
+    h1.getEvaluation(),
+    h1.getGradient(),
+    h1.getHessian(),
+)
 _ = repr(ch)
 _ = str(ch)
 assert ch.getInputDimension() == h1.getInputDimension()
@@ -167,13 +192,23 @@ with ott.assert_raises(Exception):
     ch.hessian(ot.Point([1.0]))
 badRight = ot.SymbolicFunction(["a", "b", "c"], ["a", "b"]).getEvaluation()
 with ott.assert_raises(Exception):
-    ot.ComposedHessian(f2.getGradient(), f2.getHessian(), badRight, h1.getGradient(), h1.getHessian())
+    ot.ComposedHessian(
+        f2.getGradient(), f2.getHessian(), badRight, h1.getGradient(), h1.getHessian()
+    )
 badLeftGrad = ot.SymbolicFunction(["a", "b", "c"], ["a"]).getGradient()
 with ott.assert_raises(Exception):
-    ot.ComposedHessian(badLeftGrad, f2.getHessian(), h1.getEvaluation(), h1.getGradient(), h1.getHessian())
+    ot.ComposedHessian(
+        badLeftGrad,
+        f2.getHessian(),
+        h1.getEvaluation(),
+        h1.getGradient(),
+        h1.getHessian(),
+    )
 badLeftHess = ot.SymbolicFunction(["a", "b", "c"], ["a"]).getHessian()
 with ott.assert_raises(Exception):
-    ot.ComposedHessian(badLeftGrad, badLeftHess, h1.getEvaluation(), h1.getGradient(), h1.getHessian())
+    ot.ComposedHessian(
+        badLeftGrad, badLeftHess, h1.getEvaluation(), h1.getGradient(), h1.getHessian()
+    )
 
 # ComposedFunction indirect paths
 _ = repr(cfRef)
@@ -183,9 +218,13 @@ assert not (cfRef != cfRef)
 _ = cfRef.getCallsNumber()
 _ = cfRef.getEvaluation().getCallsNumber()
 ott.assert_almost_equal(cfRef(x), f2(h1(x)), 1e-12, 1e-12)
-ott.assert_almost_equal(cfRef(ot.Sample([x, x])), ot.Sample([cfRef(x), cfRef(x)]), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    cfRef(ot.Sample([x, x])), ot.Sample([cfRef(x), cfRef(x)]), 1e-12, 1e-12
+)
 ott.assert_almost_equal(cfRef.getEvaluation()(x), cfRef(x), 1e-12, 1e-12)
-ott.assert_almost_equal(cfRef.getEvaluation()(ot.Sample([x, x])), cfRef(ot.Sample([x, x])), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    cfRef.getEvaluation()(ot.Sample([x, x])), cfRef(ot.Sample([x, x])), 1e-12, 1e-12
+)
 _ = cfRef.getMarginal(0)(x)
 with ott.assert_raises(Exception):
     cfRef(ot.Point([1.0]))

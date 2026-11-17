@@ -57,7 +57,9 @@ expansionSize = experiment.getSpaceDimension()
 
 
 def computeProjection(level):
-    nodes, weights = ot.GaussProductExperiment(measure, [level] * 3).generateWithWeights()
+    nodes, weights = ot.GaussProductExperiment(
+        measure, [level] * 3
+    ).generateWithWeights()
     projection = ot.LeastSquaresExpansion(
         nodes, ot.Point(weights), model(nodes), measure, basis, expansionSize
     )

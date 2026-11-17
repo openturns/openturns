@@ -396,7 +396,7 @@ Scalar CumulativeDistributionNetwork::computeFactorLogCDF(const Distribution & d
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       const Scalar cdf = cached ? univariateMarginals[j].computeCDF(localPoint[j])
-                        : distribution.getMarginal(j).computeCDF(localPoint[j]);
+                         : distribution.getMarginal(j).computeCDF(localPoint[j]);
       if (!(cdf > 0.0)) return -SpecFunc::Infinity;
       logCDF += std::log(cdf);
     }
@@ -473,14 +473,14 @@ Scalar CumulativeDistributionNetwork::computeFactorPartialLog(const UnsignedInte
       if (derivativeFlags[j])
       {
         const Scalar logPDF = cached ? marginals[j].computeLogPDF(localPoint[j])
-                             : distribution.getMarginal(j).computeLogPDF(localPoint[j]);
+                              : distribution.getMarginal(j).computeLogPDF(localPoint[j]);
         if (logPDF == -SpecFunc::Infinity) return -SpecFunc::Infinity;
         logValue += logPDF;
       }
       else
       {
         const Scalar cdf = cached ? marginals[j].computeCDF(localPoint[j])
-                          : distribution.getMarginal(j).computeCDF(localPoint[j]);
+                           : distribution.getMarginal(j).computeCDF(localPoint[j]);
         if (!(cdf > 0.0)) return -SpecFunc::Infinity;
         logValue += std::log(cdf);
       }

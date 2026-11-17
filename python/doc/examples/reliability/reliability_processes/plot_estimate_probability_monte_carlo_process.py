@@ -103,7 +103,7 @@ print("p_exact=%.5f" % pexact)
 # Create the Monte-Carlo algorithm
 
 # Define the total number of simulations
-K = 10 ** 4
+K = 10**4
 montecarlo = ot.ProbabilitySimulationAlgorithm(event)
 montecarlo.setMaximumOuterSampling(K)
 montecarlo.setBlockSize(1)

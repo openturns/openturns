@@ -107,21 +107,31 @@ with ott.assert_raises(Exception):
 oldScaleFactor_cov = ot.ResourceMap.GetAsScalar(
     "GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor"
 )
-ot.ResourceMap.SetAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor", 0.0)
+ot.ResourceMap.SetAsScalar(
+    "GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor", 0.0
+)
 try:
     with ott.assert_raises(Exception):
-        ot.GeneralLinearModelAlgorithm(X_cov, Y_cov, cov_cov, ot.LinearBasisFactory(1).build())
+        ot.GeneralLinearModelAlgorithm(
+            X_cov, Y_cov, cov_cov, ot.LinearBasisFactory(1).build()
+        )
 finally:
     ot.ResourceMap.SetAsScalar(
         "GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor", oldScaleFactor_cov
     )
 Xc_cov = ot.Sample(10, ot.Point([5.0]))
 Yc_cov = ot.Sample(10, ot.Point([1.0]))
-ac_cov = ot.GeneralLinearModelAlgorithm(Xc_cov, Yc_cov, cov_cov, ot.LinearBasisFactory(1).build())
+ac_cov = ot.GeneralLinearModelAlgorithm(
+    Xc_cov, Yc_cov, cov_cov, ot.LinearBasisFactory(1).build()
+)
 ac_cov.run()
 with ott.assert_raises(Exception):
-    ot.GeneralLinearModelAlgorithm(X_cov, Y_cov, cov_cov, ot.Basis([ot.SymbolicFunction(["x"], ["x", "x"])]))
-algo2_cov = ot.GeneralLinearModelAlgorithm(X_cov, Y_cov, cov_cov, ot.LinearBasisFactory(1).build())
+    ot.GeneralLinearModelAlgorithm(
+        X_cov, Y_cov, cov_cov, ot.Basis([ot.SymbolicFunction(["x"], ["x", "x"])])
+    )
+algo2_cov = ot.GeneralLinearModelAlgorithm(
+    X_cov, Y_cov, cov_cov, ot.LinearBasisFactory(1).build()
+)
 assert algo2_cov.getOptimizationAlgorithm().getClassName() != ""
 assert algo2_cov.getOptimizationBounds().getDimension() >= 1
 assert algo2_cov.getOptimizeParameters()
@@ -137,14 +147,20 @@ algo2_cov.setNoise([1e-6] * 20)
 algo2_cov.run()
 assert len(algo2_cov.getNoise()) == 20
 if ot.PlatformInfo.HasFeature("hmat"):
-    oldLinearAlgebra_cov = ot.ResourceMap.GetAsString("GeneralLinearModelAlgorithm-LinearAlgebra")
+    oldLinearAlgebra_cov = ot.ResourceMap.GetAsString(
+        "GeneralLinearModelAlgorithm-LinearAlgebra"
+    )
     ot.ResourceMap.SetAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "HMAT")
     try:
         with ott.assert_raises(Exception):
-            ah_cov = ot.GeneralLinearModelAlgorithm(X_cov, Y_cov, cov_cov, ot.LinearBasisFactory(1).build())
+            ah_cov = ot.GeneralLinearModelAlgorithm(
+                X_cov, Y_cov, cov_cov, ot.LinearBasisFactory(1).build()
+            )
             ah_cov.setNoise([1e-6] * 20)
     finally:
-        ot.ResourceMap.SetAsString("GeneralLinearModelAlgorithm-LinearAlgebra", oldLinearAlgebra_cov)
+        ot.ResourceMap.SetAsString(
+            "GeneralLinearModelAlgorithm-LinearAlgebra", oldLinearAlgebra_cov
+        )
 str(algo2_cov)
 # input/output size mismatch is rejected deterministically
 X5_cov = ot.Sample(5, 1)

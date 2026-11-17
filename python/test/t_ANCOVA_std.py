@@ -98,14 +98,10 @@ dim = 3
 enumerateFunction = ot.LinearEnumerateFunction(dim)
 polyCol = [0.0] * dim
 for i in range(dim):
-    polyCol[i] = ot.UniVariateDistributionPolynomialFactory(
-        distribution.getMarginal(i)
-    )
+    polyCol[i] = ot.UniVariateDistributionPolynomialFactory(distribution.getMarginal(i))
 
 # Chaos definition
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    polyCol, enumerateFunction
-)
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyCol, enumerateFunction)
 indexMax = enumerateFunction.getStrataCumulatedCardinal(1)
 strategy = ot.FixedStrategy(multivariateBasis, indexMax)
 
@@ -121,8 +117,7 @@ chaos = ot.FunctionalChaosAlgorithm(
 )
 chaos.run()
 chaos_sparse = ot.FunctionalChaosAlgorithm(
-    input_sample, output_sample, distribution,
-    strategy, evaluationStrategy_sparse
+    input_sample, output_sample, distribution, strategy, evaluationStrategy_sparse
 )
 chaos_sparse.run()
 

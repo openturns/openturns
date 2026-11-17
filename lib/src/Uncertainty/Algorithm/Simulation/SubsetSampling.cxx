@@ -78,8 +78,8 @@ void SubsetSampling::setEvent(const RandomVector & event)
   const UnsignedInteger outputDimension = composedEvent.getFunction().getOutputDimension();
   if (outputDimension > 1)
     throw InvalidArgumentException(HERE)
-      << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension="
-      << outputDimension;
+        << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension="
+        << outputDimension;
 
   EventSimulationImplementation::setEvent(composedEvent);
   setInitialExperiment(initialExperiment_);
@@ -575,7 +575,7 @@ Sample SubsetSampling::getInputSample() const
   if (!keepSample_)
     throw InvalidArgumentException(HERE) << "SubsetSampling keepSample was not set";
 
-  return getInputSample(getStepsNumber()-1, BOTH);
+  return getInputSample(getStepsNumber() - 1, BOTH);
 }
 
 Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool status) const

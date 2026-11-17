@@ -38,7 +38,7 @@ class OT_API ActiveLearningEFFFunction
 
   CLASSNAME
 public:
- /** Default constructor */
+  /** Default constructor */
   ActiveLearningEFFFunction();
 
   /** Default constructor */

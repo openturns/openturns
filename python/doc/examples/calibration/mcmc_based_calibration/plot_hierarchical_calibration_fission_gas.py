@@ -106,7 +106,9 @@ mu_desc = [f"$\\mu$_{{{label}}}" for label in desc]
 # Let us prepare a random vector to sample the conditional posterior
 # distribution of :math:`\sigma_{\mathrm{diff}}^2` and :math:`\sigma_{\mathrm{crack}}^2`.
 
-sigma_square_rv = ot.RandomVector(ot.TruncatedDistribution(ot.InverseGamma(), ot.Interval(0.0, 1.0)))
+sigma_square_rv = ot.RandomVector(
+    ot.TruncatedDistribution(ot.InverseGamma(), ot.Interval(0.0, 1.0))
+)
 sigma_square_desc = [f"$\\sigma$_{{{label}}}^2" for label in desc]
 
 
@@ -514,11 +516,11 @@ prior = ot.JointDistribution(
         ot.Uniform(lbs[1], ubs[1]),
         ot.TruncatedDistribution(
             ot.InverseGamma(0.01, 1e7),
-            ot.Interval(lbs_sigma_square[0], ubs_sigma_square[0])
+            ot.Interval(lbs_sigma_square[0], ubs_sigma_square[0]),
         ),
         ot.TruncatedDistribution(
             ot.InverseGamma(0.01, 1e7),
-            ot.Interval(lbs_sigma_square[1], ubs_sigma_square[1])
+            ot.Interval(lbs_sigma_square[1], ubs_sigma_square[1]),
         ),
     ]
 )

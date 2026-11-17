@@ -925,12 +925,12 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
     const Scalar constraintTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaConstraintTolerance");
     const Scalar feasibilityTolerance = constraintTolerance * std::max(1.0, (upperBound - lowerBound).norm());
     if (!PushForwardDistributionFunctions::checkCoAreaSupport(kernel, origin,
-                                                               antecedentRange.getLowerBound(),
-                                                               antecedentRange.getUpperBound(),
-                                                               antecedentRange.getFiniteLowerBound(),
-                                                               antecedentRange.getFiniteUpperBound(),
-                                                               feasibilityTolerance,
-                                                               constraintTolerance))
+        antecedentRange.getLowerBound(),
+        antecedentRange.getUpperBound(),
+        antecedentRange.getFiniteLowerBound(),
+        antecedentRange.getFiniteUpperBound(),
+        feasibilityTolerance,
+        constraintTolerance))
       // The fibre does not meet the support of the antecedent: its density is
       // zero, even though the point belongs to the algebraic image
       return 0.0;

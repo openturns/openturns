@@ -46,7 +46,9 @@ mySamplingAlgo.setMaximumCoefficientOfVariation(0.1)
 
 
 mySamplingAlgo.run()
-ott.assert_almost_equal(mySamplingAlgo.getResult().getProbabilityEstimate(), 0.1533152, 1.0e-4, 1.0e-4)
+ott.assert_almost_equal(
+    mySamplingAlgo.getResult().getProbabilityEstimate(), 0.1533152, 1.0e-4, 1.0e-4
+)
 
 
 # Ticket #3210: Strange differences between PostAnalyticalControlledImportanceSampling and PostAnalyticalImportanceSampling
@@ -80,4 +82,6 @@ for i, comp in enumerate([ot.Less(), ot.Greater()]):
             ref = threshold
         else:
             ref = 1.0 - threshold
-        ott.assert_almost_equal(algo.getResult().getProbabilityEstimate(), ref, 5e-2, 5e-2)
+        ott.assert_almost_equal(
+            algo.getResult().getProbabilityEstimate(), ref, 5e-2, 5e-2
+        )
