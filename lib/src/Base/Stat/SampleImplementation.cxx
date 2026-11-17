@@ -1273,7 +1273,7 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
       if (smallCase) result[i] = kendallSmallN(&x[0], &y[0], size);
       else result[i] = kendallNlogN(&x[0], &y[0], size);
     }
-  });
+  }, 1024);
   index = 0;
   for (UnsignedInteger i = 0; i < dimension_ - 1; ++i)
   {

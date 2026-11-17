@@ -75,7 +75,7 @@ Indices ClassifierImplementation::classify(const Sample & inS) const
   TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) result[i] = classify(inS[i]);
-  });
+  }, 1024);
   return result;
 }
 
@@ -95,7 +95,7 @@ Point ClassifierImplementation::grade(const Sample & inS, const Indices & hClass
   TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) result[i] = grade(inS[i], hClass[i]);
-  });
+  }, 1024);
   return result;
 }
 

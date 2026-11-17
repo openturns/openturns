@@ -122,7 +122,7 @@ Sample InverseBoxCoxEvaluation::operator() (const Sample & inS) const
         else result(i, j) = pow(lambda_j * x + 1.0, 1.0 / lambda_j) - getShift()[j];
       } // j
     } // i
-  });
+  }, 1024);
   callsNumber_.fetchAndAdd(size);
   result.setDescription(getOutputDescription());
   return result;

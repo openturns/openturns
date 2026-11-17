@@ -181,7 +181,7 @@ KissFFT::ComplexCollection KissFFT::fftND(const ComplexCollection & data,
     };
 
     const FFTBodyND body{work, result, fft, dimSize, stride};
-    TBBImplementation::ParallelFor( 0, numFFTs, body );
+    TBBImplementation::ParallelFor( 0, numFFTs, body, 1024);
     stride *= dimSize;
     if (dim < nDims - 1) work = result;
   }

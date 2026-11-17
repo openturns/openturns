@@ -94,7 +94,7 @@ DomainImplementation::BoolCollection DomainImplementation::contains(const Sample
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       result[i] = contains(sample[i]);
-  });
+  }, 1024);
   return result;
 }
 

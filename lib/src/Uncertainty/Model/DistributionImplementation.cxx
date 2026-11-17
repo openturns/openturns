@@ -769,7 +769,7 @@ Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger si
   u.getImplementation()->setData(RandomGenerator::Generate(dimension_ * size));
   Sample result(size, dimension_);
   const DistributionSequentialConditionalQuantileBody body(*this, u, result);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, body, 1024);
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
@@ -781,7 +781,7 @@ Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) co
   const Sample u(sequence.generate(size));
   Sample result(size, dimension_);
   const DistributionSequentialConditionalQuantileBody body(*this, u, result);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, body, 1024);
   result.setName(getName());
   result.setDescription(getDescription());
   return result;

@@ -316,7 +316,7 @@ Mesh BoundaryMesher::build(const Mesh & mesh,
   if (offset != 0.0)
   {
     const ComputeNormalBody body(vertices, boundaryFaces, boundaryVertices.getSize() - boundaryVerticesReserve, offset, boundaryVertices, boundarySimplices);
-    TBBImplementation::ParallelFor(0, boundaryFaces.getSize(), body);
+    TBBImplementation::ParallelFor(0, boundaryFaces.getSize(), body, 1024);
   } // offset != 0
   // Return the boundary mesh
   Mesh boundary(boundaryVertices, boundarySimplices, false);

@@ -123,7 +123,7 @@ Sample BoxCoxEvaluation::operator() (const Sample & inS) const
         else result(i, j) = std::expm1(lambda_j * logX) / lambda_j;
       } // j
     } // i
-  });
+  }, 1024);
   callsNumber_.fetchAndAdd(size);
   result.setDescription(getOutputDescription());
   return result;

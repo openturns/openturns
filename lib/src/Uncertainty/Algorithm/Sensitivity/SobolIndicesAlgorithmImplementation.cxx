@@ -195,7 +195,7 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
           // Add to sample
           bsTOpartial[k] = aggregatedTotal;
         }
-      });
+      }, 1024);
 
       bsFO.add(bsFOpartial);
       bsTO.add(bsTOpartial);

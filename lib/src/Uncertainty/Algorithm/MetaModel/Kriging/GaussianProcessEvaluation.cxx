@@ -288,12 +288,12 @@ Sample GaussianProcessEvaluation::operator()(const Sample & inS) const
   if (dimension == 1)
   {
     const GaussianProcessEvaluationSampleFunctor1D functor( inS, result, *this);
-    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor, 1024);
   }
   else
   {
     const GaussianProcessEvaluationSampleFunctor functor( inS, result, *this );
-    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor, 1024);
   }
 
   // Evaluate the basis part sequentially

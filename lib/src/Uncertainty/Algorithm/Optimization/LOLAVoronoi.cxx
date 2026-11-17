@@ -272,7 +272,7 @@ void LOLAVoronoi::computeLOLAScore() const
 
   lolaScore_.resize(x_.getSize());
   const LVLOLAScoreBody body(*this, previousSize);
-  TBBImplementation::ParallelFor(0, x_.getSize(), body);
+  TBBImplementation::ParallelFor(0, x_.getSize(), body, 1024);
 }
 
 Sample LOLAVoronoi::generate(const UnsignedInteger size) const
