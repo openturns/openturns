@@ -25,7 +25,9 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 #include <cmath>
+#ifdef OPENTURNS_HAVE_BOOST
 #include <boost/math/special_functions/airy.hpp>
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,7 +44,10 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 // Large rules use the Townsend-Trogdon-Olver Airy path, small ones the
-// polished eigensolver; threshold from the ResourceMap
+// polished eigensolver; threshold from the ResourceMap.
+// The Airy path needs Boost and is skipped without it: large rules then
+// use the polished eigensolver directly.
+#ifdef OPENTURNS_HAVE_BOOST
 
 // Exact first 10 Airy Ai roots (used by the Gatteschi initial guesses)
 static const Scalar AiryRootsExact[10] = {-2.338107410459762, -4.087949444130970, -5.520559828095555, -6.786708090071765, -7.944133587120863, -9.022650853340979, -10.040174341558084, -11.008524303733260, -11.936015563236262, -12.828776752865757};
@@ -262,6 +267,8 @@ static Bool ComputeNodesAndWeightsAsymptotic(const UnsignedInteger n,
   return true;
 }
 
+#endif /* OPENTURNS_HAVE_BOOST */
+
 /**
  * @namespace FastHermite
  *
@@ -303,6 +310,7 @@ void ComputeNodesAndWeights(const UnsignedInteger n,
   for (UnsignedInteger j = 1; j < n; ++j)
     b[j] = std::sqrt((1.0 * j));
 
+#ifdef OPENTURNS_HAVE_BOOST
   // Large rules use the Townsend-Trogdon-Olver Airy path, small ones the
   // polished eigensolver; threshold from the ResourceMap.
   // Above the threshold the relative accuracy is better than 5e-13 and
@@ -314,6 +322,7 @@ void ComputeNodesAndWeights(const UnsignedInteger n,
     if (ComputeNodesAndWeightsAsymptotic(n, nodes, weights)) return;
     // fall through to the polished eigensolver on asymptotic failure
   }
+#endif
   FastGaussQuadrature::PolishedSolve(gamma.data(), b.data(), n, nodes, weights);
 }
 } // namespace FastHermite
