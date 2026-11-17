@@ -4,9 +4,6 @@
 Base class to define an algorithm to find simplices containing
 a list of points.
 
-Available constructors:
-    EnclosingSimplexAlgorithm(*vertices, simplices*)
-
 Parameters
 ----------
 vertices : :class:`~openturns.Sample`
