@@ -607,7 +607,8 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
 }
 
 /* Anderson-Darling statistics computation */
-namespace {
+namespace
+{
 Scalar ComputeAndersonDarlingStatistics(const Sample & sample,
                                         const Distribution & distribution)
 {

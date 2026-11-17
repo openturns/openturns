@@ -41,9 +41,7 @@ covarianceModel = ot.MaternModel([1.0, 1.0], [1.0], 2.5)
 # %%
 interval = ot.Interval([-2.0] * 2, [2.0] * 2)
 sourceMesh = ot.IntervalMesher([16, 16]).build(interval)
-process = otexp.CirculantEmbeddingGaussianProcess(covarianceModel,
-                                                  interval,
-                                                  [16, 16])
+process = otexp.CirculantEmbeddingGaussianProcess(covarianceModel, interval, [16, 16])
 process.setMesh(sourceMesh)
 
 # %%
@@ -92,8 +90,10 @@ def build_unit_disk_mesh(n_rings=8, n_theta=32):
 
 
 diskMesh = build_unit_disk_mesh()
-print("unit disk mesh: %d vertices, %d simplices" % (
-    diskMesh.getVerticesNumber(), diskMesh.getSimplicesNumber()))
+print(
+    "unit disk mesh: %d vertices, %d simplices"
+    % (diskMesh.getVerticesNumber(), diskMesh.getSimplicesNumber())
+)
 
 # %%
 # The simulated process is then interpolated onto the unit disk, giving a

@@ -13,8 +13,7 @@ factory = otexp.WrappedNormalFactory()
 # Default build
 default = factory.build()
 assert default.getDimension() == 2
-assert ot.Distribution(default).getImplementation().getClassName() == \
-    "WrappedNormal"
+assert ot.Distribution(default).getImplementation().getClassName() == "WrappedNormal"
 
 # The default period comes from the ResourceMap key
 ott.assert_almost_equal(
@@ -34,10 +33,8 @@ estimated = factory.build(sample)
 assert estimated.getDimension() == 1
 experimental_estimated = factory.buildAsWrappedNormal(sample)
 ott.assert_almost_equal(experimental_estimated.getMu()[0], mu, 0.1, 0.0)
-ott.assert_almost_equal(experimental_estimated.getPeriod(),
-                        2.0 * math.pi, 1e-9, 0.0)
-assert ot.Distribution(estimated).getImplementation().getClassName() == \
-    "WrappedNormal"
+ott.assert_almost_equal(experimental_estimated.getPeriod(), 2.0 * math.pi, 1e-9, 0.0)
+assert ot.Distribution(estimated).getImplementation().getClassName() == "WrappedNormal"
 
 # Build from a sample on the torus (dimension 2)
 reference2 = otexp.WrappedNormal([0.1, -0.2], ot.CovarianceMatrix(2))
@@ -56,18 +53,18 @@ assert constant.getSigma()[0, 0] > 0.0
 dist = otexp.WrappedNormal([mu], sigma)
 param = dist.getParameter()
 estimated3 = factory.build(param)
-ott.assert_almost_equal(estimated3.getImplementation().getParameter(),
-                        param, 1e-9, 0.0)
+ott.assert_almost_equal(estimated3.getImplementation().getParameter(), param, 1e-9, 0.0)
 
 # buildAsWrappedNormal variants
 native = factory.buildAsWrappedNormal(sample)
-assert ot.Distribution(native).getImplementation().getClassName() == \
-    "WrappedNormal"
+assert ot.Distribution(native).getImplementation().getClassName() == "WrappedNormal"
 native_param = factory.buildAsWrappedNormal(param)
 ott.assert_almost_equal(native_param.getParameter(), param, 1e-9, 0.0)
 native_default = factory.buildAsWrappedNormal()
-assert ot.Distribution(native_default).getImplementation().getClassName() == \
-    "WrappedNormal"
+assert (
+    ot.Distribution(native_default).getImplementation().getClassName()
+    == "WrappedNormal"
+)
 
 # Invalid samples
 with ott.assert_raises(TypeError):

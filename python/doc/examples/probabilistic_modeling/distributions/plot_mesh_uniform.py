@@ -57,8 +57,10 @@ print("Volume of the mesh: ", distribution.getVolume())
 # %%
 ot.RandomGenerator.SetSeed(0)
 sample = distribution.getSample(500)
-print("The sample points belong to the mesh: ",
-      all(distribution.computePDF(point) > 0.0 for point in sample))
+print(
+    "The sample points belong to the mesh: ",
+    all(distribution.computePDF(point) > 0.0 for point in sample),
+)
 
 # %%
 # Estimate the mesh from the sample
@@ -73,8 +75,7 @@ print("The sample points belong to the mesh: ",
 # %%
 factory = otexp.UniformOverMeshFactory()
 estimated = factory.buildAsUniformOverMesh(sample)
-print("Number of estimated simplices: ",
-      estimated.getMesh().getSimplicesNumber())
+print("Number of estimated simplices: ", estimated.getMesh().getSimplicesNumber())
 print("Estimated volume: ", estimated.getVolume())
 
 # %%
@@ -85,8 +86,10 @@ print("Estimated volume: ", estimated.getVolume())
 
 # %%
 print("Reference volume: ", distribution.getVolume())
-print("Covered sample points ratio: ",
-      sum(estimated.computePDF(point) > 0.0 for point in sample[:100]) / 100.0)
+print(
+    "Covered sample points ratio: ",
+    sum(estimated.computePDF(point) > 0.0 for point in sample[:100]) / 100.0,
+)
 
 # %%
 # Draw a new sample from the estimated distribution and display it. The
@@ -95,10 +98,12 @@ print("Covered sample points ratio: ",
 # %%
 ot.RandomGenerator.SetSeed(1)
 estimatedSample = estimated.getSample(200)
-cloud = ot.Cloud(estimatedSample.getMarginal([0, 1]), "blue", "fsquare",
-                 "Estimated sample")
-graph = ot.Graph("Uniform distribution on a triangulated surface",
-                 "x", "y", True, "topright")
+cloud = ot.Cloud(
+    estimatedSample.getMarginal([0, 1]), "blue", "fsquare", "Estimated sample"
+)
+graph = ot.Graph(
+    "Uniform distribution on a triangulated surface", "x", "y", True, "topright"
+)
 graph.add(cloud)
 view = otv.View(graph)
 otv.View.ShowAll()

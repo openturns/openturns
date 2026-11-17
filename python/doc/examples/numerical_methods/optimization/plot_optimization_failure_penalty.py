@@ -32,6 +32,7 @@ import openturns.viewer as otv
 # This failing region sits in the middle of the search space,
 # so any space-filling search cannot avoid stepping into it.
 
+
 # %%
 def failing_py(x):
     if (x[0] - 0.5) ** 2 + (x[1] - 0.5) ** 2 < 0.375**2:
@@ -194,7 +195,11 @@ okSample = ot.Sample(
     [inputSample[i] for i in range(inputSample.getSize()) if outputSample[i, 0] < 1.0e6]
 )
 failedPenalizedSample = ot.Sample(
-    [inputSample[i] for i in range(inputSample.getSize()) if outputSample[i, 0] >= 1.0e6]
+    [
+        inputSample[i]
+        for i in range(inputSample.getSize())
+        if outputSample[i, 0] >= 1.0e6
+    ]
 )
 cloud = ot.Cloud(okSample)
 cloud.setColor("blue")

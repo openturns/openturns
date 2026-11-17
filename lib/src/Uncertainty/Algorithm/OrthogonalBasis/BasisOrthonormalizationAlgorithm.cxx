@@ -96,7 +96,7 @@ public:
   String __repr__() const override
   {
     return OSS() << "class=FixedMeasureExperiment"
-                 << " size=" << getSize();
+           << " size=" << getSize();
   }
 
   void save(Advocate & adv) const override

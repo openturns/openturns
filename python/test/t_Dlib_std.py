@@ -62,7 +62,9 @@ algo.run()
 ott.assert_almost_equal(algo.getResult().getOptimalPoint(), unboundedPref, 5e-2)
 assert len(progress_calls) > 0, "progress callback was not invoked"
 assert all(0.0 <= p <= 100.0 for p in progress_calls), "progress out of range"
-assert all(b >= a for a, b in zip(progress_calls, progress_calls[1:])), "progress not monotonic"
+assert all(
+    b >= a for a, b in zip(progress_calls, progress_calls[1:])
+), "progress not monotonic"
 
 stop_algo = ot.Dlib(unboundedProblem, "bfgs")
 stop_algo.setStartingPoint(start)

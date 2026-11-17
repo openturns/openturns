@@ -58,7 +58,10 @@ static Description BuildConsistentMarginalParameterDescription(const Distributio
 {
   const UnsignedInteger dimension = marginal.getParameter().getDimension();
   Description description;
-  try { description = marginal.getParameterDescription(); }
+  try
+  {
+    description = marginal.getParameterDescription();
+  }
   catch (const NotYetImplementedException &) { /* fall through to the default below */ }
   if (description.getSize() != dimension)
   {

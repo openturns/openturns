@@ -54,26 +54,27 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection<Complex> ComplexCollection;
 
-namespace {
-  ComplexMatrix fftMatrix(const FFT& algo, const ComplexMatrix& mat)
-  {
-    const UnsignedInteger rows = mat.getNbRows();
-    const UnsignedInteger cols = mat.getNbColumns();
-    const ComplexCollection& flat = *mat.getImplementation();
-    ComplexCollection resultFlat = algo.transform(flat, {rows, cols});
-    ComplexMatrixImplementation impl(rows, cols, resultFlat.begin(), resultFlat.end());
-    return ComplexMatrix(impl);
-  }
+namespace
+{
+ComplexMatrix fftMatrix(const FFT& algo, const ComplexMatrix& mat)
+{
+  const UnsignedInteger rows = mat.getNbRows();
+  const UnsignedInteger cols = mat.getNbColumns();
+  const ComplexCollection& flat = *mat.getImplementation();
+  ComplexCollection resultFlat = algo.transform(flat, {rows, cols});
+  ComplexMatrixImplementation impl(rows, cols, resultFlat.begin(), resultFlat.end());
+  return ComplexMatrix(impl);
+}
 
-  ComplexTensor fftTensor(const FFT& algo, const ComplexTensor& tensor)
-  {
-    const UnsignedInteger rows = tensor.getNbRows();
-    const UnsignedInteger cols = tensor.getNbColumns();
-    const UnsignedInteger sheets = tensor.getNbSheets();
-    const ComplexCollection& flat = *tensor.getImplementation();
-    ComplexCollection resultFlat = algo.transform(flat, {rows, cols, sheets});
-    return ComplexTensor(rows, cols, sheets, resultFlat.begin(), resultFlat.end());
-  }
+ComplexTensor fftTensor(const FFT& algo, const ComplexTensor& tensor)
+{
+  const UnsignedInteger rows = tensor.getNbRows();
+  const UnsignedInteger cols = tensor.getNbColumns();
+  const UnsignedInteger sheets = tensor.getNbSheets();
+  const ComplexCollection& flat = *tensor.getImplementation();
+  ComplexCollection resultFlat = algo.transform(flat, {rows, cols, sheets});
+  return ComplexTensor(rows, cols, sheets, resultFlat.begin(), resultFlat.end());
+}
 }
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<Distribution>)

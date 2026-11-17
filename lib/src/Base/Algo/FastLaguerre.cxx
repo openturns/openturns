@@ -61,8 +61,8 @@ static Scalar RecurrenceStartRatio(const UnsignedInteger n,
 
 // Log-derivative ratio by continued fraction
 static Scalar ContinuedFractionStartRatio(const UnsignedInteger n,
-                                          const Scalar alpha,
-                                          const Scalar x)
+    const Scalar alpha,
+    const Scalar x)
 {
   Scalar alphai = alpha + 1.0;
   const Scalar bp = -(1.0 + alpha / x);
@@ -163,9 +163,9 @@ static Bool TaylorStep(const UnsignedInteger n,
 // first forward steps overshoot the sparse nodes above the starting point),
 // in which case the caller falls back to the polished eigensolver.
 static Bool ComputeNodesAndWeightsIterative(const UnsignedInteger n,
-                                            const Scalar k,
-                                            Point & nodes,
-                                            Point & weights)
+    const Scalar k,
+    Point & nodes,
+    Point & weights)
 {
   const Scalar alpha = k - 1.0;
   Point xc;
@@ -382,50 +382,50 @@ static Bool ComputeNodesAndWeightsIterative(const UnsignedInteger n,
  */
 namespace FastLaguerre
 {
-  void ComputeNodesAndWeights(const UnsignedInteger n,
-                              const Scalar k,
-                              Scalar * nodes,
-                              Scalar * weights)
+void ComputeNodesAndWeights(const UnsignedInteger n,
+                            const Scalar k,
+                            Scalar * nodes,
+                            Scalar * weights)
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be > 0";
+  if (k <= 0.0) throw InvalidArgumentException(HERE) << "Error: k must be > 0";
+  if (n == 1)
   {
-    if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be > 0";
-    if (k <= 0.0) throw InvalidArgumentException(HERE) << "Error: k must be > 0";
-    if (n == 1)
+    nodes[0] = k;
+    weights[0] = 1.0;
+    return;
+  }
+
+  // Symmetric recurrence coefficients for orthonormal Laguerre polynomials:
+  // gamma_j = 2*j + k, b_j = sqrt(j * (j + k - 1)), b_0 = 0
+  Point gamma(n);
+  Point b(n, 0.0);
+  for (UnsignedInteger j = 0; j < n; ++j)
+    gamma[j] = 2.0 * j + k;
+  for (UnsignedInteger j = 1; j < n; ++j)
+    b[j] = std::sqrt(j * (j + k - 1.0));
+
+  // Large rules use the Gil-Segura-Temme iterative path, small ones the
+  // polished eigensolver; threshold from the ResourceMap (minimum 5,
+  // the iterative sweeps assume at least 3 found nodes).
+  // Above the threshold the relative accuracy is better than 5e-13 and
+  // the iterative path is faster.
+  // A failed iterative sweep (incomplete node count or invalid rule)
+  // falls back to the polished eigensolver.
+  const UnsignedInteger iterativeThreshold = ResourceMap::GetAsUnsignedInteger("FastLaguerre-IterativeThreshold");
+  if ((n >= iterativeThreshold) && (n >= 5))
+  {
+    Point trialNodes;
+    Point trialWeights;
+    if (ComputeNodesAndWeightsIterative(n, k, trialNodes, trialWeights))
     {
-      nodes[0] = k;
-      weights[0] = 1.0;
+      std::copy(trialNodes.begin(), trialNodes.end(), nodes);
+      std::copy(trialWeights.begin(), trialWeights.end(), weights);
       return;
     }
-
-    // Symmetric recurrence coefficients for orthonormal Laguerre polynomials:
-    // gamma_j = 2*j + k, b_j = sqrt(j * (j + k - 1)), b_0 = 0
-    Point gamma(n);
-    Point b(n, 0.0);
-    for (UnsignedInteger j = 0; j < n; ++j)
-      gamma[j] = 2.0 * j + k;
-    for (UnsignedInteger j = 1; j < n; ++j)
-      b[j] = std::sqrt(j * (j + k - 1.0));
-
-    // Large rules use the Gil-Segura-Temme iterative path, small ones the
-    // polished eigensolver; threshold from the ResourceMap (minimum 5,
-    // the iterative sweeps assume at least 3 found nodes).
-    // Above the threshold the relative accuracy is better than 5e-13 and
-    // the iterative path is faster.
-    // A failed iterative sweep (incomplete node count or invalid rule)
-    // falls back to the polished eigensolver.
-    const UnsignedInteger iterativeThreshold = ResourceMap::GetAsUnsignedInteger("FastLaguerre-IterativeThreshold");
-    if ((n >= iterativeThreshold) && (n >= 5))
-    {
-      Point trialNodes;
-      Point trialWeights;
-      if (ComputeNodesAndWeightsIterative(n, k, trialNodes, trialWeights))
-      {
-        std::copy(trialNodes.begin(), trialNodes.end(), nodes);
-        std::copy(trialWeights.begin(), trialWeights.end(), weights);
-        return;
-      }
-    }
-    FastGaussQuadrature::PolishedSolve(gamma.data(), b.data(), n, nodes, weights);
   }
+  FastGaussQuadrature::PolishedSolve(gamma.data(), b.data(), n, nodes, weights);
+}
 } // namespace FastLaguerre
 
 END_NAMESPACE_OPENTURNS

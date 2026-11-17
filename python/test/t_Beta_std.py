@@ -117,7 +117,10 @@ ott.assert_almost_equal(
 )
 ott.assert_almost_equal(ot.Beta(2.0, 1.0, 0.0, 1.0).computeDDF([1.0]), [0.0], 0.0, 0.0)
 assert (
-    ot.Beta(0.5, 0.5, -1.0, 1.0).getStandardRepresentative().getImplementation().getClassName()
+    ot.Beta(0.5, 0.5, -1.0, 1.0)
+    .getStandardRepresentative()
+    .getImplementation()
+    .getClassName()
     == "Arcsine"
 )
 with ott.assert_raises(Exception):

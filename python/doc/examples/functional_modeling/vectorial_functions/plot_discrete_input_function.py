@@ -12,6 +12,7 @@ Such variables cannot be handled like continuous ones when computing
 derivatives, because an infinitesimal change of a discrete variable is
 meaningless.
 """
+
 # %%
 # Definition using the input as an index
 # ======================================

@@ -40,7 +40,9 @@ size_der = 20
 locations_der = [10.0 * i / (size_der - 1.0) for i in range(size_der)]
 values_der = [ref([x])[0] for x in locations_der]
 derivatives_der = [ref_der([x])[0] for x in locations_der]
-evaluation_der = ot.PiecewiseHermiteEvaluation(locations_der, values_der, derivatives_der)
+evaluation_der = ot.PiecewiseHermiteEvaluation(
+    locations_der, values_der, derivatives_der
+)
 # Interior derivative
 for x in [0.5, 2.5, 5.0, 7.5, 9.5]:
     d = evaluation_der.derivate([x])[0]
@@ -73,28 +75,20 @@ for x in [0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0]:
 locationsH = [0.0, 1.0, 2.0]
 valuesH = [[0.0], [1.0], [8.0]]
 derivativesH = [[0.0], [2.0], [8.0]]
-evaluationH = ot.PiecewiseHermiteEvaluation(
-    locationsH, valuesH, derivativesH
-)
+evaluationH = ot.PiecewiseHermiteEvaluation(locationsH, valuesH, derivativesH)
 assert evaluationH.getInputDimension() == 1
 assert evaluationH.getOutputDimension() == 1
 assert list(evaluationH.getLocations()) == locationsH
 ott.assert_almost_equal(evaluationH.getValues(), valuesH, 1e-14, 1e-14)
-ott.assert_almost_equal(
-    evaluationH.getDerivatives(), derivativesH, 1e-14, 1e-14
-)
+ott.assert_almost_equal(evaluationH.getDerivatives(), derivativesH, 1e-14, 1e-14)
 assert evaluationH.getEnableExtrapolation()
 ott.assert_almost_equal(evaluationH([0.5]), [0.25], 1e-14, 1e-14)
-ott.assert_almost_equal(
-    evaluationH([[0.5], [1.5]]), [[0.25], [3.75]], 1e-14, 1e-14
-)
+ott.assert_almost_equal(evaluationH([[0.5], [1.5]]), [[0.25], [3.75]], 1e-14, 1e-14)
 ott.assert_almost_equal(evaluationH.derivate([0.5]), [1.0], 1e-12, 1e-12)
 evaluationH.setEnableExtrapolation(True)
 ott.assert_almost_equal(evaluationH([-1.0]), [0.0], 1e-14, 1e-14)
 ott.assert_almost_equal(evaluationH.derivate([-1.0]), [0.0], 1e-14, 1e-14)
-ott.assert_almost_equal(
-    evaluationH([[10.0]]), [[8.0]], 1e-14, 1e-14
-)
+ott.assert_almost_equal(evaluationH([[10.0]]), [[8.0]], 1e-14, 1e-14)
 evaluationH.setEnableExtrapolation(False)
 assert not evaluationH.getEnableExtrapolation()
 _ = repr(evaluationH)
@@ -125,9 +119,7 @@ with ott.assert_raises(Exception):
 with ott.assert_raises(Exception):
     ot.PiecewiseHermiteEvaluation([0.0, 0.0], [1.0, 1.0], [0.0, 0.0])
 with ott.assert_raises(Exception):
-    ot.PiecewiseHermiteEvaluation(
-        [0.0, 1.0], [[1.0], [2.0]], [[1.0], [2.0], [3.0]]
-    )
+    ot.PiecewiseHermiteEvaluation([0.0, 1.0], [[1.0], [2.0]], [[1.0], [2.0], [3.0]])
 with ott.assert_raises(Exception):
     evaluationH.setDerivatives([])
 with ott.assert_raises(Exception):
@@ -147,23 +139,17 @@ with ott.assert_raises(Exception):
 # setLocations reorders values and derivatives along sorted locations
 evaluationH.setLocations([2.0, 0.0, 1.0])
 assert list(evaluationH.getLocations()) == [0.0, 1.0, 2.0]
-ott.assert_almost_equal(
-    evaluationH.getValues(), [[1.0], [8.0], [0.0]], 1e-14, 1e-14
-)
+ott.assert_almost_equal(evaluationH.getValues(), [[1.0], [8.0], [0.0]], 1e-14, 1e-14)
 ott.assert_almost_equal(
     evaluationH.getDerivatives(), [[2.0], [8.0], [0.0]], 1e-14, 1e-14
 )
 evaluationH.setValues([[1.0], [8.0], [0.0]])
 evaluationH.setDerivatives([[2.0], [8.0], [0.0]])
-evaluationH.setLocationsValuesAndDerivatives(
-    [0.0, 1.0], [[1.0], [2.0]], [[1.0], [1.0]]
-)
+evaluationH.setLocationsValuesAndDerivatives([0.0, 1.0], [[1.0], [2.0]], [[1.0], [1.0]])
 assert list(evaluationH.getLocations()) == [0.0, 1.0]
 ott.assert_almost_equal(evaluationH([0.5]), [1.5], 1e-14, 1e-14)
 # Single-location shortcut returns the stored value everywhere
 singleH = ot.PiecewiseHermiteEvaluation([1.0], [2.0], [3.0])
 ott.assert_almost_equal(singleH([5.0]), [2.0], 1e-14, 1e-14)
-ott.assert_almost_equal(
-    singleH([[0.0], [5.0]]), [[2.0], [2.0]], 1e-14, 1e-14
-)
+ott.assert_almost_equal(singleH([[0.0], [5.0]]), [[2.0], [2.0]], 1e-14, 1e-14)
 ott.assert_almost_equal(singleH.derivate([0.5]), [0.0], 1e-14, 1e-14)

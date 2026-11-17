@@ -68,7 +68,8 @@ class HODLRCorrectedEvaluator : public HODLREntryEvaluator
 {
 public:
   /** Data for a single low-rank correction term */
-  struct Correction {
+  struct Correction
+  {
     UnsignedInteger offset;
     UnsignedInteger size;
     UnsignedInteger rank;
@@ -79,9 +80,9 @@ public:
 
   /** Create a flattened evaluator with one or more corrections */
   HODLRCorrectedEvaluator(Pointer<const HODLREntryEvaluator> original,
-                           UnsignedInteger offset,
-                           UnsignedInteger size,
-                           const Collection<Correction>& corrections)
+                          UnsignedInteger offset,
+                          UnsignedInteger size,
+                          const Collection<Correction>& corrections)
     : original_(original)
     , offset_(offset)
     , size_(size)
@@ -91,21 +92,21 @@ public:
 
   /** Create a flattened evaluator from an existing one + a new correction */
   static Pointer<HODLRCorrectedEvaluator> flatten(
-      const HODLRCorrectedEvaluator& existing,
-      const Matrix& newU1,
-      const Matrix& newK,
-      Scalar newLambda,
-      UnsignedInteger newOffset,
-      UnsignedInteger newSize);
+    const HODLRCorrectedEvaluator& existing,
+    const Matrix& newU1,
+    const Matrix& newK,
+    Scalar newLambda,
+    UnsignedInteger newOffset,
+    UnsignedInteger newSize);
 
   /** Create a flattened evaluator with a single correction (first level) */
   static Pointer<HODLRCorrectedEvaluator> create(
-      Pointer<const HODLREntryEvaluator> original,
-      UnsignedInteger offset,
-      UnsignedInteger size,
-      const Matrix& U1,
-      const Matrix& K,
-      Scalar lambda);
+    Pointer<const HODLREntryEvaluator> original,
+    UnsignedInteger offset,
+    UnsignedInteger size,
+    const Matrix& U1,
+    const Matrix& K,
+    Scalar lambda);
 
   Scalar operator()(UnsignedInteger i, UnsignedInteger j) const override
   {
@@ -139,11 +140,26 @@ public:
     return original_->getSize();
   }
 
-  const Pointer<const HODLREntryEvaluator> getOriginal() const { return original_; }
-  const Collection<Correction>& getCorrections() const { return corrections_; }
-  UnsignedInteger getOffset() const { return offset_; }
-  UnsignedInteger getSizeLocal() const { return size_; }
-  UnsignedInteger getNumCorrections() const { return corrections_.getSize(); }
+  const Pointer<const HODLREntryEvaluator> getOriginal() const
+  {
+    return original_;
+  }
+  const Collection<Correction>& getCorrections() const
+  {
+    return corrections_;
+  }
+  UnsignedInteger getOffset() const
+  {
+    return offset_;
+  }
+  UnsignedInteger getSizeLocal() const
+  {
+    return size_;
+  }
+  UnsignedInteger getNumCorrections() const
+  {
+    return corrections_.getSize();
+  }
 
 private:
   Pointer<const HODLREntryEvaluator> original_;  // ALWAYS root original
@@ -210,20 +226,32 @@ public:
   void applyFactorTranspose(Matrix& y, const Matrix& x) const;
 
   static void recompressLowRank(Matrix& Uout, Matrix& Vout,
-      UnsignedInteger startRow, UnsignedInteger nRows,
-      UnsignedInteger startCol, UnsignedInteger nCols,
-      const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
-      Scalar tolerance);
+                                UnsignedInteger startRow, UnsignedInteger nRows,
+                                UnsignedInteger startCol, UnsignedInteger nCols,
+                                const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
+                                Scalar tolerance);
 
-  Scalar getLogDeterminant() const { return logDet_; }
-  UnsignedInteger getTotalRank() const { return totalRank_; }
-  UnsignedInteger getNumLeaves() const { return numLeaves_; }
+  Scalar getLogDeterminant() const
+  {
+    return logDet_;
+  }
+  UnsignedInteger getTotalRank() const
+  {
+    return totalRank_;
+  }
+  UnsignedInteger getNumLeaves() const
+  {
+    return numLeaves_;
+  }
   size_t getNnz() const;
   void setShift(Scalar shift);
   // Largest diagonal shift applied locally to heal a non-SPD leaf during the
   // last factorization (0 if none was needed). Propagated up the tree so the
   // callers can report the actual regularization used.
-  Scalar getMaxLeafShift() const { return maxLeafShift_; }
+  Scalar getMaxLeafShift() const
+  {
+    return maxLeafShift_;
+  }
 
   // Persistence of the assembled and factorized tree. Each node is its own
   // PersistentObject and its own XML element, because the alternative -- writing

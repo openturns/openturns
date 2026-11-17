@@ -59,14 +59,18 @@ def test_two_dimensional():
     outputSample = model(inputSample)
 
     sampleSize = 5
-    inputValidSample = ot.JointDistribution(2 * [ot.Uniform(0, 10.0)]).getSample(sampleSize)
+    inputValidSample = ot.JointDistribution(2 * [ot.Uniform(0, 10.0)]).getSample(
+        sampleSize
+    )
 
     covarianceModel = ot.SquaredExponential([5.0, 3.0], [1.0])
     basis = ot.ConstantBasisFactory(inputDimension).build()
 
     # LAPACK reference
     ot.ResourceMap.SetAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK")
-    fit_lapack = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+    fit_lapack = ot.GaussianProcessFitter(
+        inputSample, outputSample, covarianceModel, basis
+    )
     fit_lapack.setOptimizeParameters(False)
     fit_lapack.run()
     gpr_lapack = ot.GaussianProcessRegression(fit_lapack.getResult())
@@ -76,7 +80,9 @@ def test_two_dimensional():
 
     # HODLR
     ot.ResourceMap.SetAsString("GaussianProcessFitter-LinearAlgebra", "HODLR")
-    fit_hodlr = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+    fit_hodlr = ot.GaussianProcessFitter(
+        inputSample, outputSample, covarianceModel, basis
+    )
     fit_hodlr.setOptimizeParameters(False)
     fit_hodlr.run()
     gpr_hodlr = ot.GaussianProcessRegression(fit_hodlr.getResult())

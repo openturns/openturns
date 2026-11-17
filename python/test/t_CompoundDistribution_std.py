@@ -187,9 +187,7 @@ atoms.add(ot.Dirac(0.5))
 atoms.add(ot.Binomial(3, 0.5))
 atoms.add(ot.Uniform(3.0, 4.0))
 conditioning = ot.JointDistribution(atoms)
-link = ot.SymbolicFunction(
-    ["y0", "y1", "y2", "y3"], ["y0+y1+y2+y3", "1.0"]
-)
+link = ot.SymbolicFunction(["y0", "y1", "y2", "y3"], ["y0+y1+y2+y3", "1.0"])
 conditioned = ot.Normal()
 compound = ot.CompoundDistribution(conditioned, conditioning, link)
 print("distribution=", compound)
@@ -225,9 +223,15 @@ validation.run()
 
 # --- CompoundDistribution keeps its link function ---
 # deterministic discretization: the host file above leaves MC/32 nodes set
-ot.ResourceMap.SetAsString("CompoundDistribution-ContinuousDiscretizationMethod", "GaussProduct")
-ot.ResourceMap.SetAsUnsignedInteger("CompoundDistribution-MarginalIntegrationNodesNumber", 48)
-ot.ResourceMap.SetAsUnsignedInteger("CompoundDistribution-MaximumIntegrationNodesNumber", 100000)
+ot.ResourceMap.SetAsString(
+    "CompoundDistribution-ContinuousDiscretizationMethod", "GaussProduct"
+)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "CompoundDistribution-MarginalIntegrationNodesNumber", 48
+)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "CompoundDistribution-MaximumIntegrationNodesNumber", 100000
+)
 link1d = ot.SymbolicFunction(["y"], ["y", "1.0"])
 compound = ot.CompoundDistribution(ot.Normal(), ot.Exponential(1.0), link1d)
 pdfBefore = compound.computePDF([0.0])

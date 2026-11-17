@@ -81,7 +81,9 @@ same = ot.QuadraticFunction(center, constant, linear, quadratic)
 assert myFunction == same
 assert not (myFunction != same)
 oneD = ot.QuadraticFunction([0.0], [0.0], ot.Matrix(1, 1), ot.SymmetricTensor(1, 1))
-assert oneD == ot.QuadraticFunction([0.0], [0.0], ot.Matrix(1, 1), ot.SymmetricTensor(1, 1))
+assert oneD == ot.QuadraticFunction(
+    [0.0], [0.0], ot.Matrix(1, 1), ot.SymmetricTensor(1, 1)
+)
 assert len(repr(myFunction)) > 0
 assert len(str(myFunction)) > 0
 # error branches of the underlying evaluation

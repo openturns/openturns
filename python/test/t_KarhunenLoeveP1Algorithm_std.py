@@ -32,22 +32,32 @@ if ot.PlatformInfo.HasFeature("spectra"):
         lambd2 = result2.getEigenvalues()
         ott.assert_almost_equal(lambd2, lambd)
     finally:
-        ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", oldSolver)
+        ot.ResourceMap.SetAsString(
+            "KarhunenLoeveP1Algorithm-EigenvaluesSolver", oldSolver
+        )
 
 # check the HODLR storage variant against the DENSE reference
 if ot.PlatformInfo.HasFeature("spectra"):
     oldSolver = ot.ResourceMap.GetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver")
-    oldStorage = ot.ResourceMap.GetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage")
+    oldStorage = ot.ResourceMap.GetAsString(
+        "KarhunenLoeveP1Algorithm-CovarianceMatrixStorage"
+    )
     ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "SPECTRA")
-    ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "HODLR")
+    ot.ResourceMap.SetAsString(
+        "KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "HODLR"
+    )
     try:
         algo.run()
         resultHODLR = algo.getResult()
         lambdHODLR = resultHODLR.getEigenvalues()
         ott.assert_almost_equal(lambdHODLR, lambd2)
     finally:
-        ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", oldSolver)
-        ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", oldStorage)
+        ot.ResourceMap.SetAsString(
+            "KarhunenLoeveP1Algorithm-EigenvaluesSolver", oldSolver
+        )
+        ot.ResourceMap.SetAsString(
+            "KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", oldStorage
+        )
 
 R = ot.CorrelationMatrix(2)
 R[0, 1] = 0.5
@@ -115,7 +125,9 @@ with ott.assert_raises(Exception):
     ot.ResourceMap.SetAsString(
         "KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "BOGUS"
     )
-oldSolverCheck = ot.ResourceMap.GetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver")
+oldSolverCheck = ot.ResourceMap.GetAsString(
+    "KarhunenLoeveP1Algorithm-EigenvaluesSolver"
+)
 ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "BOGUS")
 try:
     with ott.assert_raises(Exception):
@@ -124,10 +136,10 @@ finally:
     ot.ResourceMap.SetAsString(
         "KarhunenLoeveP1Algorithm-EigenvaluesSolver", oldSolverCheck
     )
-oldStorageCheck = ot.ResourceMap.GetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage")
-ot.ResourceMap.SetAsString(
-    "KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "HMAT"
+oldStorageCheck = ot.ResourceMap.GetAsString(
+    "KarhunenLoeveP1Algorithm-CovarianceMatrixStorage"
 )
+ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "HMAT")
 try:
     with ott.assert_raises(Exception):
         algoCheck.run()

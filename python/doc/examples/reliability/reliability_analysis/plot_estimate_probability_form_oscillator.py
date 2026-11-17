@@ -164,8 +164,14 @@ description = distribution.getDescription()
 description.add("")
 standardSpaceLimitState.setDescription(description)
 grid = standardSpaceLimitState.drawCrossCuts(
-    designPointStandardSpace, xMin, xMax, [nX] * distribution.getDimension(),
-    False, True, -5.0, 50.0,
+    designPointStandardSpace,
+    xMin,
+    xMax,
+    [nX] * distribution.getDimension(),
+    False,
+    True,
+    -5.0,
+    50.0,
 )
 view = otv.View(grid, contour_kw={"cmap": "hsv", "levels": 55})
 axes = view.getAxes()
@@ -286,8 +292,14 @@ description = distribution.getDescription()
 description.add("")
 standardSpaceLimitState.setDescription(description)
 grid = standardSpaceLimitState.drawCrossCuts(
-    designPointStandardSpace, xMin, xMax, [nX] * distribution.getDimension(),
-    False, True, -5.0, 50.0,
+    designPointStandardSpace,
+    xMin,
+    xMax,
+    [nX] * distribution.getDimension(),
+    False,
+    True,
+    -5.0,
+    50.0,
 )
 view = otv.View(grid, contour_kw={"cmap": "hsv", "levels": 55})
 axes = view.getAxes()

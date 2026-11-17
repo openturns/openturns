@@ -135,7 +135,10 @@ ott.assert_almost_equal(
 # parameterGradient matches centered finite differences with fresh distributions
 eps = 1e-5
 factor = 1.0 / (2.0 * eps)
-for side, trans, evalPoint in (("forward", transform, point), ("inverse", inverseTransform, transformedPoint)):
+for side, trans, evalPoint in (
+    ("forward", transform, point),
+    ("inverse", inverseTransform, transformedPoint),
+):
     fd = ot.Matrix(6, dim)
     for k in range(2 * dim):
         muP = list(meanPoint)
@@ -233,10 +236,14 @@ ott.assert_almost_equal(degenerate.computeCDF([0.0]), 1.0)
 degenerateTransform = degenerate.getIsoProbabilisticTransformation()
 ott.assert_almost_equal(degenerateTransform.getParameter(), [0.0, 0.0])
 ott.assert_almost_equal(degenerateTransform([1.0]), [0.0])
-ott.assert_almost_equal(degenerateTransform.parameterGradient([1.0]), ot.Matrix([[0.0], [0.0]]))
+ott.assert_almost_equal(
+    degenerateTransform.parameterGradient([1.0]), ot.Matrix([[0.0], [0.0]])
+)
 degenerateInverse = degenerate.getInverseIsoProbabilisticTransformation()
 ott.assert_almost_equal(degenerateInverse([1.0]), [0.0])
-ott.assert_almost_equal(degenerateInverse.parameterGradient([1.0]), ot.Matrix([[1.0], [0.0]]))
+ott.assert_almost_equal(
+    degenerateInverse.parameterGradient([1.0]), ot.Matrix([[1.0], [0.0]])
+)
 # re-setting the same degenerate parameters keeps the zero map
 degenerateTransform.setParameter([0.0, 0.0])
 ott.assert_almost_equal(degenerateTransform([1.0]), [0.0])

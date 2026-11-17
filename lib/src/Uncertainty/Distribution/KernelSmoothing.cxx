@@ -608,9 +608,17 @@ TruncatedDistribution KernelSmoothing::buildWeightedAsTruncatedDistribution(cons
   {
     const Scalar x = newSampleData[i];
     // lower < 0
-    if (doLower && (x <= xMin - h * lower)) { newSampleData.add(2.0 * xMin - x); newWeights.add(weights[i]); }
+    if (doLower && (x <= xMin - h * lower))
+    {
+      newSampleData.add(2.0 * xMin - x);
+      newWeights.add(weights[i]);
+    }
     // upper > 0
-    if (doUpper && (x >= xMax - h * upper)) { newSampleData.add(2.0 * xMax - x); newWeights.add(weights[i]); }
+    if (doUpper && (x >= xMax - h * upper))
+    {
+      newSampleData.add(2.0 * xMax - x);
+      newWeights.add(weights[i]);
+    }
   }
   // Now, work on the extended sample
   SampleImplementation newSample(newSampleData.getSize(), 1);
@@ -628,7 +636,8 @@ TruncatedDistribution KernelSmoothing::buildWeightedAsTruncatedDistribution(cons
 }
 
 /* Build a Normal kernel mixture based on the given sample. If no bandwidth has already been set, Silverman's rule is used */
-Distribution KernelSmoothing::build(const Sample & sample) const{
+Distribution KernelSmoothing::build(const Sample & sample) const
+{
   // For 1D sample, use the rule that give the best tradeoff between speed and precision
   if (sample.getDimension() == 1)
   {

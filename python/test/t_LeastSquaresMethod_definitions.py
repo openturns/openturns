@@ -94,9 +94,7 @@ def normalEquationsResidual(coefficients):
     for j in range(inputDimension):
         accumulator = 0.0
         for i in range(sampleSize):
-            accumulator += (
-                design[i, j] * weight[i] * (target[i] - prediction[i])
-            )
+            accumulator += design[i, j] * weight[i] * (target[i] - prediction[i])
         worst = max(worst, abs(accumulator))
     return worst
 
@@ -146,9 +144,7 @@ for methodName in ("SVD", "QR", "Cholesky"):
     residualScale = 0.0
     prediction = predict(beta)
     for i in range(sampleSize):
-        residualScale = max(
-            residualScale, abs(weight[i] * (target[i] - prediction[i]))
-        )
+        residualScale = max(residualScale, abs(weight[i] * (target[i] - prediction[i])))
     residualScale *= inputDimension
     print(
         f"{methodName}: normal equations residual = "
@@ -192,12 +188,8 @@ for methodName in ("SVD", "QR", "Cholesky"):
     ott.assert_almost_equal(
         method.solveNormalGram(rhs), directGramSolve, 1.0e-9, 1.0e-9
     )
-    ott.assert_almost_equal(
-        computedGramInverse, gramInverse, 1.0e-9, 1.0e-9
-    )
-    ott.assert_almost_equal(
-        method.getGramInverseTrace(), gramTrace, 1.0e-9, 1.0e-9
-    )
+    ott.assert_almost_equal(computedGramInverse, gramInverse, 1.0e-9, 1.0e-9)
+    ott.assert_almost_equal(method.getGramInverseTrace(), gramTrace, 1.0e-9, 1.0e-9)
     ott.assert_almost_equal(
         method.getGramInverseDiag(), gramInverseDiag, 1.0e-9, 1.0e-9
     )

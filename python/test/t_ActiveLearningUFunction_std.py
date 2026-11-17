@@ -104,7 +104,5 @@ if HAVE_LIBXML2:
     assert loaded.getReliabilityThreshold() == 0.0
     assert loaded.getLearningThreshold() == 2.0
     assert not loaded.isMaximization()
-    ott.assert_almost_equal(
-        loaded(pool, inputSample), criterion(pool, inputSample)
-    )
+    ott.assert_almost_equal(loaded(pool, inputSample), criterion(pool, inputSample))
     os.remove(fileName)

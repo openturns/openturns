@@ -49,7 +49,8 @@ void openblas_set_num_threads(int num_threads);
 #endif
 END_C_DECLS
 
-namespace {
+namespace
+{
 
 // Optional assembly profile, same key as the factorization profile. The
 // factorization timers cannot answer "where does the assembly go": on the large
@@ -141,8 +142,10 @@ struct FactorTiming
                    leaf * 1e3, nLeaf, leafCorr * 1e3, leafCorrected * 1e3, nLeafCorrected,
                    W * 1e3, Kgram * 1e3, UK * 1e3, dpotrf * 1e3);
       std::sort(blocks.begin(), blocks.end(),
-                [](const BlockTiming& a, const BlockTiming& b)
-                { return a.copy + a.qr + a.gram + a.syevd + a.final > b.copy + b.qr + b.gram + b.syevd + b.final; });
+                [](const BlockTiming & a, const BlockTiming & b)
+      {
+        return a.copy + a.qr + a.gram + a.syevd + a.final > b.copy + b.qr + b.gram + b.syevd + b.final;
+      });
       for (const auto& b : blocks)
         std::fprintf(stderr, "[FTb] nR %u nC %u tR %u kt %u k1 %u ro %u  copy %.2f QR %.2f Gram %.2f syevd %.2f final %.2f  tot %.2f ms\n",
                      b.nRows, b.nCols, b.totalRank, b.kept, b.k1, b.rankOut,
@@ -157,7 +160,8 @@ struct FactorTiming
 
 }  // namespace
 
-namespace {
+namespace
+{
 
 void HODLRDgemm(const char* transa, const char* transb, int* m, int* n, int* k,
                 double* alpha, double* a, int* lda, double* b, int* ldb,
@@ -376,9 +380,9 @@ HODLRNode::HODLRNode(Pointer<const HODLREntryEvaluator> eval,
     // A[child1, child0] = U_[1] * V_[0]^T
     // Max-element (partial-pivoting) ACA.
     rank_ = lowRankApproxPartialPivot(
-        start_ + half, size_ - half,
-        start_, half,
-        tolerance, U_[1], V_[0]);
+              start_ + half, size_ - half,
+              start_, half,
+              tolerance, U_[1], V_[0]);
 
     // Fall back to dense when the block is not low-rank: if the ACA reached
     // the full rank min(rows, cols), store the block exactly as U_[1] = A01
@@ -432,9 +436,9 @@ HODLRNode::HODLRNode(Pointer<const HODLREntryEvaluator> eval,
     // Single aggregated warning at the root instead of one per block.
     if ((parent == nullptr) && (numStarvedBlocks_ > 0))
       LOGWARN(OSS() << "HODLRMatrix: " << numStarvedBlocks_ << " off-diagonal block(s) reached the full rank "
-             << "at the assembly tolerance " << tolerance_ << " and are stored as dense factors; "
-             << "accuracy is preserved but the storage/factor cost is not reduced for these blocks. "
-             << "Consider loosening HODLRMatrix-AssemblyEpsilon or increasing HODLRMatrix-MinLeafSize");
+              << "at the assembly tolerance " << tolerance_ << " and are stored as dense factors; "
+              << "accuracy is preserved but the storage/factor cost is not reduced for these blocks. "
+              << "Consider loosening HODLRMatrix-AssemblyEpsilon or increasing HODLRMatrix-MinLeafSize");
   }
   else
   {
@@ -680,7 +684,7 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     if (needed <= bufferCols)
       return;
     const UnsignedInteger grown =
-        std::max(needed, std::max(UnsignedInteger(1), 2 * bufferCols));
+      std::max(needed, std::max(UnsignedInteger(1), 2 * bufferCols));
     Udata.resize(grown * nRows);
     Vdata.resize(grown * nCols);
     bufferCols = grown;
@@ -962,8 +966,8 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     // never has to deal with an empty U/V pair.
     if ((maxRank_ > 0) && (maxRank_ < maxRankBound))
       LOGWARN(OSS() << "HODLRMatrix: rank-starved block (" << nRows << "x" << nCols
-             << ") reached the max rank " << maxRank_ << " before the assembly tolerance; "
-             << "accuracy may be degraded. Set HODLRMatrix-MaxRank to 0 for adaptive (tolerance-driven) rank");
+              << ") reached the max rank " << maxRank_ << " before the assembly tolerance; "
+              << "accuracy may be degraded. Set HODLRMatrix-MaxRank to 0 for adaptive (tolerance-driven) rank");
     Uout = Matrix(nRows, maxRank);
     Vout = Matrix(nCols, maxRank);
     MatrixImplementation& UoutImpl = *Uout.getImplementation();
@@ -1007,17 +1011,17 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
 
   if ((maxRank_ > 0) && (rank >= maxRank_) && (rank < maxRankBound))
     LOGWARN(OSS() << "HODLRMatrix: rank-starved block (" << nRows << "x" << nCols
-           << ") reached the max rank " << maxRank_ << " before the assembly tolerance; "
-           << "accuracy may be degraded. Set HODLRMatrix-MaxRank to 0 for adaptive (tolerance-driven) rank");
+            << ") reached the max rank " << maxRank_ << " before the assembly tolerance; "
+            << "accuracy may be degraded. Set HODLRMatrix-MaxRank to 0 for adaptive (tolerance-driven) rank");
 
   return rank;
 }
 
 void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
-    UnsignedInteger startRow, UnsignedInteger nRows,
-    UnsignedInteger startCol, UnsignedInteger nCols,
-    const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
-    Scalar tolerance)
+                                  UnsignedInteger startRow, UnsignedInteger nRows,
+                                  UnsignedInteger startCol, UnsignedInteger nCols,
+                                  const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
+                                  Scalar tolerance)
 {
   // Recompress the low-rank block A01' = Uout * Vout^T - sum_k (UK_k * U1_k^T)
   // where Uout/Vout approximate the pure kernel block (from the initial ACA)
@@ -1148,7 +1152,9 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
         order[c] = c;
       std::sort(order.begin(), order.end(),
                 [&weights](UnsignedInteger a, UnsignedInteger b)
-                { return weights[a] < weights[b]; });
+      {
+        return weights[a] < weights[b];
+      });
       Collection<char> drop(totalRank, 0);
       Scalar dropped = 0.0;
       UnsignedInteger nDropped = 0;
@@ -1463,12 +1469,12 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
 // --- HODLRCorrectedEvaluator factory implementations ---
 
 Pointer<HODLRCorrectedEvaluator> HODLRCorrectedEvaluator::create(
-    Pointer<const HODLREntryEvaluator> original,
-    UnsignedInteger offset,
-    UnsignedInteger size,
-    const Matrix& U1,
-    const Matrix& K,
-    Scalar lambda)
+  Pointer<const HODLREntryEvaluator> original,
+  UnsignedInteger offset,
+  UnsignedInteger size,
+  const Matrix& U1,
+  const Matrix& K,
+  Scalar lambda)
 {
   const UnsignedInteger nRows = U1.getNbRows();
   const UnsignedInteger rank = K.getNbRows();
@@ -1480,9 +1486,9 @@ Pointer<HODLRCorrectedEvaluator> HODLRCorrectedEvaluator::create(
     int l = static_cast<int>(rank);
     double one = 1.0, zero = 0.0;
     HODLRDgemm("N", "N", &m, &k, &l, &one,
-           const_cast<double*>(&U1(0, 0)), &m,
-           const_cast<double*>(&K(0, 0)), &l,
-           &zero, &UK(0, 0), &m);
+               const_cast<double*>(&U1(0, 0)), &m,
+               const_cast<double*>(&K(0, 0)), &l,
+               &zero, &UK(0, 0), &m);
   }
 
   Correction corr;
@@ -1502,12 +1508,12 @@ Pointer<HODLRCorrectedEvaluator> HODLRCorrectedEvaluator::create(
 }
 
 Pointer<HODLRCorrectedEvaluator> HODLRCorrectedEvaluator::flatten(
-    const HODLRCorrectedEvaluator& existing,
-    const Matrix& newU1,
-    const Matrix& newK,
-    Scalar newLambda,
-    UnsignedInteger newOffset,
-    UnsignedInteger newSize)
+  const HODLRCorrectedEvaluator& existing,
+  const Matrix& newU1,
+  const Matrix& newK,
+  Scalar newLambda,
+  UnsignedInteger newOffset,
+  UnsignedInteger newSize)
 {
   // Build UK = newU1 * newK via dgemm
   const UnsignedInteger nRows = newU1.getNbRows();
@@ -1520,9 +1526,9 @@ Pointer<HODLRCorrectedEvaluator> HODLRCorrectedEvaluator::flatten(
     int l = static_cast<int>(rank);
     double one = 1.0, zero = 0.0;
     HODLRDgemm("N", "N", &m, &k, &l, &one,
-           const_cast<double*>(&newU1(0, 0)), &m,
-           const_cast<double*>(&newK(0, 0)), &l,
-           &zero, &UK(0, 0), &m);
+               const_cast<double*>(&newU1(0, 0)), &m,
+               const_cast<double*>(&newK(0, 0)), &l,
+               &zero, &UK(0, 0), &m);
   }
 
   // Copy existing corrections
@@ -1654,9 +1660,9 @@ void HODLRNode::computeCholesky(const Collection<HODLRCorrectedEvaluator::Correc
       double one = 1.0, zero = 0.0;
       const auto t0 = std::chrono::steady_clock::now();
       HODLRDgemm("N", "N", &m, &k, &l, &one,
-             const_cast<double*>(&U_[1](0, 0)), &m,
-             const_cast<double*>(&K_(0, 0)), &l,
-             &zero, &UK(0, 0), &m);
+                 const_cast<double*>(&U_[1](0, 0)), &m,
+                 const_cast<double*>(&K_(0, 0)), &l,
+                 &zero, &UK(0, 0), &m);
       g_factorTiming.UK += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
     }
 
@@ -1795,9 +1801,9 @@ void HODLRNode::factorizeLeafCholesky(const Collection<HODLRCorrectedEvaluator::
     for (const auto& corr : corrections)
     {
       const SignedInteger localOffset =
-          static_cast<SignedInteger>(corr.offset) - static_cast<SignedInteger>(leafStart);
+        static_cast<SignedInteger>(corr.offset) - static_cast<SignedInteger>(leafStart);
       const SignedInteger localEnd =
-          localOffset + static_cast<SignedInteger>(corr.size);
+        localOffset + static_cast<SignedInteger>(corr.size);
       if (localEnd <= 0) continue;   // correction entirely before leaf
       if (localOffset >= static_cast<SignedInteger>(n)) break;  // correction beyond leaf
 
@@ -1818,9 +1824,9 @@ void HODLRNode::factorizeLeafCholesky(const Collection<HODLRCorrectedEvaluator::
       int ldU1 = static_cast<int>(corr.size);
       int ldS = static_cast<int>(n);
       HODLRDgemm("N", "T", &m, &nMat, &k, &neg,
-             const_cast<double*>(&corr.UK(ukRowOffset, 0)), &ldUK,
-             const_cast<double*>(&corr.U1(ukRowOffset, 0)), &ldU1,
-             &one, &Sfact[i0 + i0 * n], &ldS);
+                 const_cast<double*>(&corr.UK(ukRowOffset, 0)), &ldUK,
+                 const_cast<double*>(&corr.U1(ukRowOffset, 0)), &ldU1,
+                 &one, &Sfact[i0 + i0 * n], &ldS);
     }
     g_factorTiming.leafCorr += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
     ++g_factorTiming.nLeafCorr;
@@ -1898,9 +1904,9 @@ void HODLRNode::factorizeLeafCholesky(const Collection<HODLRCorrectedEvaluator::
     {
       if (corr.lambda == 0.0) continue;
       const SignedInteger localOffset =
-          static_cast<SignedInteger>(corr.offset) - static_cast<SignedInteger>(leafStart);
+        static_cast<SignedInteger>(corr.offset) - static_cast<SignedInteger>(leafStart);
       const SignedInteger localEnd =
-          localOffset + static_cast<SignedInteger>(corr.size);
+        localOffset + static_cast<SignedInteger>(corr.size);
       if (localEnd <= 0) continue;   // correction entirely before leaf
       if (localOffset >= static_cast<SignedInteger>(n)) break;  // correction beyond leaf
       const UnsignedInteger i0 = static_cast<UnsignedInteger>(std::max(SignedInteger(0), localOffset));
@@ -1953,7 +1959,10 @@ void HODLRNode::factorizeLeafCholesky(const Collection<HODLRCorrectedEvaluator::
       for (UnsignedInteger i = 0; i < n; ++i)
       {
         const Scalar v = Sfact[i + i * n];   // sqrt(pivot)
-        if (v < minPivot) { minPivot = v; }
+        if (v < minPivot)
+        {
+          minPivot = v;
+        }
       }
       const Bool healOK = (minPivot * minPivot >= pivotFloor);
       if (healOK)
@@ -1988,7 +1997,7 @@ void HODLRNode::factorizeLeafCholesky(const Collection<HODLRCorrectedEvaluator::
                                     << ", Schur complement numerically corrupted (required lambda "
                                     << healLambda << " exceeds " << corruptionCapFactor << "x the kernel diagonal " << kernelDiagMax << ")";
     }
-    }
+  }
   if (info != 0)
     throw InternalException(HERE) << "Leaf Cholesky factorization failed, info=" << info
                                   << ", not SPD even with lambda=" << healLambda;
@@ -2003,7 +2012,7 @@ void HODLRNode::factorizeLeafCholesky(const Collection<HODLRCorrectedEvaluator::
 }
 
 void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1, Scalar lambda,
-                                               const Collection<HODLRCorrectedEvaluator::Correction>& corrections)
+    const Collection<HODLRCorrectedEvaluator::Correction>& corrections)
 {
   // Directly assemble A11' = A11 - sum corrections - U1 * K * U1^T + lambda * I
   // Uses the ORIGINAL evaluator (p_eval_) for A11 entries, computes
@@ -2029,9 +2038,9 @@ void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1
   for (const auto& corr : corrections)
   {
     const SignedInteger localOffset =
-        static_cast<SignedInteger>(corr.offset) - static_cast<SignedInteger>(leafStart);
+      static_cast<SignedInteger>(corr.offset) - static_cast<SignedInteger>(leafStart);
     const SignedInteger localEnd =
-        localOffset + static_cast<SignedInteger>(corr.size);
+      localOffset + static_cast<SignedInteger>(corr.size);
     if (localEnd <= 0) continue;
     if (localOffset >= static_cast<SignedInteger>(n)) break;
 
@@ -2050,9 +2059,9 @@ void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1
     int ldU1 = static_cast<int>(corr.size);
     int ldS = static_cast<int>(n);
     HODLRDgemm("N", "T", &m, &nMat, &k, &neg,
-           const_cast<double*>(&corr.UK(ukRowOffset, 0)), &ldUK,
-           const_cast<double*>(&corr.U1(ukRowOffset, 0)), &ldU1,
-           &one, &Sfact[i0 + i0 * n], &ldS);
+               const_cast<double*>(&corr.UK(ukRowOffset, 0)), &ldUK,
+               const_cast<double*>(&corr.U1(ukRowOffset, 0)), &ldU1,
+               &one, &Sfact[i0 + i0 * n], &ldS);
 
     if (corr.lambda != 0.0)
       for (UnsignedInteger ii = i0; ii < i1; ++ii)
@@ -2070,9 +2079,9 @@ void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1
       int l = static_cast<int>(rank);
       double one = 1.0, zero = 0.0;
       HODLRDgemm("N", "N", &m, &k, &l, &one,
-             const_cast<double*>(&U1(0, 0)), &m,
-             const_cast<double*>(&K(0, 0)), &l,
-             &zero, &temp(0, 0), &m);
+                 const_cast<double*>(&U1(0, 0)), &m,
+                 const_cast<double*>(&K(0, 0)), &l,
+                 &zero, &temp(0, 0), &m);
     }
     // Sfact -= temp * U1^T  (n x n)
     {
@@ -2081,9 +2090,9 @@ void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1
       int l = static_cast<int>(n);
       double neg = -1.0, one = 1.0;
       HODLRDgemm("N", "T", &m, &l, &k, &neg,
-             &temp(0, 0), &m,
-             const_cast<double*>(&U1(0, 0)), &m,
-             &one, const_cast<Scalar *>(Sfact.data()), &m);
+                 &temp(0, 0), &m,
+                 const_cast<double*>(&U1(0, 0)), &m,
+                 &one, const_cast<Scalar *>(Sfact.data()), &m);
     }
   }
 
@@ -2158,7 +2167,7 @@ void HODLRNode::applyInverseFactor(Matrix& x) const
     int nrhs_int = static_cast<int>(nrhs);
     double one = 1.0;
     HODLRDtrsm("L", "L", "N", "N", &n, &nrhs_int, &one,
-           const_cast<double*>(&(*Sfactor_.getImplementation())[0]), &n, x_data, &n);
+               const_cast<double*>(&(*Sfactor_.getImplementation())[0]), &n, x_data, &n);
     return;
   }
 
@@ -2237,7 +2246,7 @@ void HODLRNode::applyInverseFactorTranspose(Matrix& x) const
     int nrhs_int = static_cast<int>(nrhs);
     double one = 1.0;
     HODLRDtrsm("L", "L", "T", "N", &n, &nrhs_int, &one,
-           const_cast<double*>(&(*Sfactor_.getImplementation())[0]), &n, x_data, &n);
+               const_cast<double*>(&(*Sfactor_.getImplementation())[0]), &n, x_data, &n);
     return;
   }
 
@@ -2485,7 +2494,7 @@ size_t HODLRNode::getNnz() const
   else
   {
     size_t nnz = static_cast<size_t>(U_[0].getNbRows()) * U_[0].getNbColumns()
-               + static_cast<size_t>(U_[1].getNbRows()) * U_[1].getNbColumns();
+                 + static_cast<size_t>(U_[1].getNbRows()) * U_[1].getNbColumns();
     if (p_child0_) nnz += p_child0_->getNnz();
     if (p_child1_) nnz += p_child1_->getNnz();
     return nnz;

@@ -63,8 +63,7 @@ outputSample = myModel(inputSample)
 inputDimension = inputSample.getDimension()
 enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 productBasis = ot.OrthogonalProductPolynomialFactory(
-    [distribution.getMarginal(i) for i in range(inputDimension)],
-    enumerateFunction
+    [distribution.getMarginal(i) for i in range(inputDimension)], enumerateFunction
 )
 
 # %%

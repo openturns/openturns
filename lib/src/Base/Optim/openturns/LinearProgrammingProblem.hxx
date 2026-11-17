@@ -45,13 +45,13 @@ public:
 
   /** Constructor with parameters */
   LinearProgrammingProblem(const Point & cost, const Interval & bounds,
-                const Matrix & constraintCoefficients, const Interval & constraintBounds,
-                const Scalar constant = 0.0);
+                           const Matrix & constraintCoefficients, const Interval & constraintBounds,
+                           const Scalar constant = 0.0);
 
   /** Constructor with sparse constraint coefficients */
   LinearProgrammingProblem(const Point & cost, const Interval & bounds,
-                const SparseMatrix & constraintCoefficients, const Interval & constraintBounds,
-                const Scalar constant = 0.0);
+                           const SparseMatrix & constraintCoefficients, const Interval & constraintBounds,
+                           const Scalar constant = 0.0);
 
   /** Virtual constructor */
   LinearProgrammingProblem * clone() const override;
@@ -97,7 +97,7 @@ public:
 
   /** From problem linearization */
   static LinearProgrammingProblem Linearize(const OptimizationProblem & problem,
-                                 const Point & location);
+      const Point & location);
 
 private:
 

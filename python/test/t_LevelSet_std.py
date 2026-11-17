@@ -111,9 +111,7 @@ assert len(str(levelSet1)) > 0
 with ott.assert_raises(Exception):
     ot.LevelSet(ot.SymbolicFunction(["x"], ["x", "x"]), ot.Less(), 0.0)
 # accessors and their error paths
-ls_acc = ot.LevelSet(
-    ot.SymbolicFunction(["x", "y"], ["x + y"]), ot.LessOrEqual(), 1.0
-)
+ls_acc = ot.LevelSet(ot.SymbolicFunction(["x", "y"], ["x + y"]), ot.LessOrEqual(), 1.0)
 assert ls_acc.getOperator() == ot.LessOrEqual()
 ls_acc.setOperator(ot.Greater())
 assert ls_acc.getOperator() == ot.Greater()

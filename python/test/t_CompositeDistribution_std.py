@@ -143,9 +143,9 @@ assert pdf == 0.0, f"Expected a zero value for the PDF, got PDF={pdf}"
 # verify PDF at segment endpoints is correctly computed (not excluded by strict <)
 # Increasing function f(x)=x, Uniform(0,1) -> PDF should be 1.0 at both range endpoints
 antecedent = ot.Uniform(0.0, 1.0)
-f_inc = ot.SymbolicFunction(['x'], ['x'])
+f_inc = ot.SymbolicFunction(["x"], ["x"])
 d_inc = ot.CompositeDistribution(f_inc, antecedent)
-eps = ot.ResourceMap.GetAsScalar('Distribution-DefaultQuantileEpsilon')
+eps = ot.ResourceMap.GetAsScalar("Distribution-DefaultQuantileEpsilon")
 lb = antecedent.getRange().getLowerBound()[0] + eps
 ub = antecedent.getRange().getUpperBound()[0] - eps
 pdf_lb = d_inc.computePDF([f_inc([lb])[0]])
@@ -154,7 +154,7 @@ ott.assert_almost_equal(pdf_lb, 1.0)
 ott.assert_almost_equal(pdf_ub, 1.0)
 
 # Decreasing function f(x)=1-x, Uniform(0,1) -> PDF should be 1.0 at both range endpoints
-f_dec = ot.SymbolicFunction(['x'], ['1-x'])
+f_dec = ot.SymbolicFunction(["x"], ["1-x"])
 d_dec = ot.CompositeDistribution(f_dec, antecedent)
 pdf_ub2 = d_dec.computePDF([f_dec([lb])[0]])
 pdf_lb2 = d_dec.computePDF([f_dec([ub])[0]])
@@ -196,7 +196,9 @@ ott.assert_almost_equal(distZ.computePDF([1.2]), expected.computePDF([1.2]))
 # solver precision scaled to the outer composite range, see issue #1479
 smallAnt = ot.Uniform(0.0, 1e-3)
 bigAnt = ot.CompositeDistribution(ot.SymbolicFunction(["x"], ["1e6 * x"]), smallAnt)
-assert bigAnt.getRange().getUpperBound()[0] > 10.0, "a relatively large range was expected"
+assert (
+    bigAnt.getRange().getUpperBound()[0] > 10.0
+), "a relatively large range was expected"
 scaled = ot.CompositeDistribution(ot.SymbolicFunction(["x"], ["x"]), bigAnt)
 scale = ot.ResourceMap.GetAsScalar("CompositeDistribution-SolverEpsilon")
 anteRange = scaled.getAntecedent().getRange()
@@ -214,11 +216,17 @@ assert d_assign != d1, "setFunction should update the distribution"
 
 # Constructor argument checks
 with ott.assert_raises(TypeError):
-    ot.CompositeDistribution(ot.SymbolicFunction(["x", "y"], ["x+y"]), ot.Normal())  # wrong input dim
+    ot.CompositeDistribution(
+        ot.SymbolicFunction(["x", "y"], ["x+y"]), ot.Normal()
+    )  # wrong input dim
 with ott.assert_raises(TypeError):
-    ot.CompositeDistribution(ot.SymbolicFunction("x", ["x", "x^2"]), ot.Normal())  # wrong output dim
+    ot.CompositeDistribution(
+        ot.SymbolicFunction("x", ["x", "x^2"]), ot.Normal()
+    )  # wrong output dim
 with ott.assert_raises(TypeError):
-    ot.CompositeDistribution(ot.SymbolicFunction("x", "x^2"), ot.Normal(2))  # wrong antecedent dim
+    ot.CompositeDistribution(
+        ot.SymbolicFunction("x", "x^2"), ot.Normal(2)
+    )  # wrong antecedent dim
 
 # Analytic reference: x^2 with X~N(0,1) is exactly a Chi2(1) distribution
 # (up to numerical precision of the truncated antecedent range)
@@ -226,11 +234,22 @@ f_sq = ot.SymbolicFunction("x", "x^2")
 d_sq = ot.CompositeDistribution(f_sq, ot.Normal())
 chi2 = ot.ChiSquare(1.0)
 for x_point in [0.1, 0.5, 1.0, 2.0, 4.0]:
-    ott.assert_almost_equal(d_sq.computePDF(x_point), chi2.computePDF(x_point), 1e-5, 1e-5)
-    ott.assert_almost_equal(d_sq.computeCDF(x_point), chi2.computeCDF(x_point), 1e-5, 1e-5)
-    ott.assert_almost_equal(d_sq.computeSurvivalFunction(x_point), chi2.computeSurvivalFunction(x_point), 1e-5, 1e-5)
+    ott.assert_almost_equal(
+        d_sq.computePDF(x_point), chi2.computePDF(x_point), 1e-5, 1e-5
+    )
+    ott.assert_almost_equal(
+        d_sq.computeCDF(x_point), chi2.computeCDF(x_point), 1e-5, 1e-5
+    )
+    ott.assert_almost_equal(
+        d_sq.computeSurvivalFunction(x_point),
+        chi2.computeSurvivalFunction(x_point),
+        1e-5,
+        1e-5,
+    )
 ott.assert_almost_equal(d_sq.getMean()[0], chi2.getMean()[0], 1e-4, 1e-4)
-ott.assert_almost_equal(d_sq.getStandardDeviation()[0], chi2.getStandardDeviation()[0], 1e-4, 1e-4)
+ott.assert_almost_equal(
+    d_sq.getStandardDeviation()[0], chi2.getStandardDeviation()[0], 1e-4, 1e-4
+)
 ott.assert_almost_equal(d_sq.getSkewness()[0], chi2.getSkewness()[0], 1e-4, 1e-4)
 ott.assert_almost_equal(d_sq.getKurtosis()[0], chi2.getKurtosis()[0], 1e-4, 1e-4)
 
@@ -239,16 +258,24 @@ f_exp = ot.SymbolicFunction("x", "exp(x)")
 d_exp = ot.CompositeDistribution(f_exp, ot.Normal())
 logn = ot.LogNormal(0.0, 1.0)
 ott.assert_almost_equal(d_exp.getMean()[0], logn.getMean()[0], 1e-4, 1e-4)
-ott.assert_almost_equal(d_exp.getStandardDeviation()[0], logn.getStandardDeviation()[0], 1e-4, 1e-4)
+ott.assert_almost_equal(
+    d_exp.getStandardDeviation()[0], logn.getStandardDeviation()[0], 1e-4, 1e-4
+)
 
 # Analytic reference: identity with X~N(0,1) is exactly N(0,1)
 f_id = ot.SymbolicFunction("x", "x")
 d_id = ot.CompositeDistribution(f_id, ot.Normal())
 norm = ot.Normal()
 for x_point in [-2.0, -1.0, 0.0, 1.0, 2.0]:
-    ott.assert_almost_equal(d_id.computePDF(x_point), norm.computePDF(x_point), 1e-5, 1e-5)
-    ott.assert_almost_equal(d_id.computeCDF(x_point), norm.computeCDF(x_point), 1e-5, 1e-5)
-    ott.assert_almost_equal(d_id.computeQuantile(0.75)[0], norm.computeQuantile(0.75)[0], 1e-5, 1e-5)
+    ott.assert_almost_equal(
+        d_id.computePDF(x_point), norm.computePDF(x_point), 1e-5, 1e-5
+    )
+    ott.assert_almost_equal(
+        d_id.computeCDF(x_point), norm.computeCDF(x_point), 1e-5, 1e-5
+    )
+    ott.assert_almost_equal(
+        d_id.computeQuantile(0.75)[0], norm.computeQuantile(0.75)[0], 1e-5, 1e-5
+    )
 
 # getSingularities: must return images of critical points (where f'=0)
 # x^2: f'(x)=2x=0 at x=0, singularity at y=f(0)=0
@@ -281,14 +308,18 @@ ott.assert_almost_equal(sing_id.getSize(), 0)
 # Explicit partition: a refinement point inside a monotonic region is not a
 # singularity. Here identity g(x)=x with an extra bound at 0 (not a critical
 # point), so the singularities must stay empty.
-d_id_expl = ot.CompositeDistribution(f_id, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0])
+d_id_expl = ot.CompositeDistribution(
+    f_id, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0]
+)
 sing_id_expl = d_id_expl.getSingularities()
 ott.assert_almost_equal(sing_id_expl.getSize(), 0)
 
 # Stationary critical point: g(x)=x^3 on [-1,0,1], derivative 3x^2=0 at x=0.
 # With antecedent PDF positive near 0, the push-forward PDF diverges at y=0.
 f_cube = ot.SymbolicFunction("x", "x^3")
-d_cube = ot.CompositeDistribution(f_cube, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0])
+d_cube = ot.CompositeDistribution(
+    f_cube, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0]
+)
 sing_cube = d_cube.getSingularities()
 ott.assert_almost_equal(sing_cube.getSize(), 1)
 ott.assert_almost_equal(sing_cube[0], 0.0)
@@ -296,7 +327,9 @@ ott.assert_almost_equal(sing_cube[0], 0.0)
 # Explicit partition with a constant segment: g(x)=max(x,0) on Uniform(-1,1)
 # maps the half-mass below 0 to the single value 0, creating an atom there.
 f_pos = ot.SymbolicFunction("x", "max(x, 0)")
-d_pos = ot.CompositeDistribution(f_pos, ot.Uniform(-1.0, 1.0), [-1.0, 0.0, 1.0], [0.0, 0.0, 1.0])
+d_pos = ot.CompositeDistribution(
+    f_pos, ot.Uniform(-1.0, 1.0), [-1.0, 0.0, 1.0], [0.0, 0.0, 1.0]
+)
 ott.assert_almost_equal(d_pos.computeProbability(ot.Interval([0.0], [0.0])), 0.5)
 ott.assert_almost_equal(d_pos.computeProbability(ot.Interval([-0.1], [0.1])), 0.55)
 ott.assert_almost_equal(d_pos.computeProbability(ot.Interval([-1.0], [0.0])), 0.5)
@@ -326,7 +359,9 @@ ott.assert_almost_equal(sing_disc[0], 0.0)
 # Y in {-8, -1, 0, 1, 8}. Atom at y=-1 (X=-1), y=0 (X=0), y=1 (X=1).
 disc2 = ot.UserDefined([[-2.0], [-1.0], [0.0], [1.0], [2.0]], [0.2] * 5)
 f_cube = ot.SymbolicFunction("x", "x^3")
-d_disc2 = ot.CompositeDistribution(f_cube, disc2, [-2.0, -1.0, 1.0, 2.0], [-8.0, -1.0, 1.0, 8.0])
+d_disc2 = ot.CompositeDistribution(
+    f_cube, disc2, [-2.0, -1.0, 1.0, 2.0], [-8.0, -1.0, 1.0, 8.0]
+)
 # P(Y=-1) = P(X=-1) = 0.2
 ott.assert_almost_equal(d_disc2.computeProbability(ot.Interval([-1.0], [-1.0])), 0.2)
 # P(Y=1) = P(X=1) = 0.2
@@ -340,7 +375,9 @@ ott.assert_almost_equal(d_disc2.computeProbability(ot.Interval([-1.0], [0.5])), 
 ott.assert_almost_equal(d_disc.computeProbability(ot.Interval([0.0], [1.0])), 1.0)
 # Continuous endpoint: identity with explicit partition must not include the
 # full left segment when the interval starts at the shared bound
-d_id_expl2 = ot.CompositeDistribution(f_id, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0])
+d_id_expl2 = ot.CompositeDistribution(
+    f_id, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0]
+)
 ott.assert_almost_equal(
     d_id_expl2.computeProbability(ot.Interval([0.0], [0.5])),
     norm.computeProbability(ot.Interval([0.0], [0.5])),
@@ -357,7 +394,9 @@ assert pdf_sing == 0.0, f"x^2 PDF at singularity should vanish, got {pdf_sing}"
 # computeProbability: segment-wise summation avoids GK divergence at singular endpoints
 # x^2 P[0,1] = P(-1<=X<=1) for X~N(0,1)
 p_sq = d_sq.computeProbability(ot.Interval([0.0], [1.0]))
-ott.assert_almost_equal(p_sq, norm.computeProbability(ot.Interval([-1.0], [1.0])), 1e-6, 1e-8)
+ott.assert_almost_equal(
+    p_sq, norm.computeProbability(ot.Interval([-1.0], [1.0])), 1e-6, 1e-8
+)
 
 # Full range probability should be 1.0
 p_full = d_sin.computeProbability(ot.Interval([-2.0], [2.0]))

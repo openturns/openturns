@@ -14,20 +14,18 @@ def hessian_point(value):
     nb_sheets = value.getNbSheets()
     dim = value.getNbRows()
     return ot.Point(
-        [value[i, j, k] for k in range(nb_sheets) for i in range(dim) for j in range(dim)]
+        [
+            value[i, j, k]
+            for k in range(nb_sheets)
+            for i in range(dim)
+            for j in range(dim)
+        ]
     )
 
 
 def expected_hessian_point(sheets):
     """Flatten a list of nested sheets into the expected hessian Point."""
-    return ot.Point(
-        [
-            value
-            for sheet in sheets
-            for row in sheet
-            for value in row
-        ]
-    )
+    return ot.Point([value for sheet in sheets for row in sheet for value in row])
 
 
 # Product
@@ -152,7 +150,8 @@ for label, div in {
     "function / function": mf1 / mg1,
     "function / implementation": mf1 / mg1.getImplementation(),
     "implementation / function": mf1.getImplementation() / mg1,
-    "implementation / implementation": mf1.getImplementation() / mg1.getImplementation(),
+    "implementation / implementation": mf1.getImplementation()
+    / mg1.getImplementation(),
 }.items():
     ott.assert_almost_equal(div(mPoint), mRef(mPoint), RTOL, ATOL)
     print("division multi-output {}: ok".format(label))
@@ -182,7 +181,10 @@ f2 = ot.SymbolicFunction(inVar, formula)
 mySum = f1 + f2
 ott.assert_almost_equal(mySum(inPoint), [33.94, 23.72], RTOL, ATOL)
 ott.assert_almost_equal(
-    mySum.gradient(inPoint), ot.Matrix([[2.0, -0.7], [7.8, 10.4], [8.6, 7.9]]), RTOL, ATOL
+    mySum.gradient(inPoint),
+    ot.Matrix([[2.0, -0.7], [7.8, 10.4], [8.6, 7.9]]),
+    RTOL,
+    ATOL,
 )
 ott.assert_almost_equal(
     hessian_point(mySum.hessian(inPoint)),
@@ -198,7 +200,10 @@ ott.assert_almost_equal(
 myDiff = f1 - f2
 ott.assert_almost_equal(myDiff(inPoint), [20.14, -13.8], RTOL, ATOL)
 ott.assert_almost_equal(
-    myDiff.gradient(inPoint), ot.Matrix([[0.0, 3.3], [5.8, -8.0], [6.6, -5.9]]), RTOL, ATOL
+    myDiff.gradient(inPoint),
+    ot.Matrix([[0.0, 3.3], [5.8, -8.0], [6.6, -5.9]]),
+    RTOL,
+    ATOL,
 )
 ott.assert_almost_equal(
     hessian_point(myDiff.hessian(inPoint)),
@@ -216,7 +221,10 @@ ott.assert_almost_equal(
 myNeg = -f1
 ott.assert_almost_equal(myNeg(inPoint), [-27.04, -4.96], RTOL, ATOL)
 ott.assert_almost_equal(
-    myNeg.gradient(inPoint), ot.Matrix([[-1.0, -1.3], [-6.8, -1.2], [-7.6, -1.0]]), RTOL, ATOL
+    myNeg.gradient(inPoint),
+    ot.Matrix([[-1.0, -1.3], [-6.8, -1.2], [-7.6, -1.0]]),
+    RTOL,
+    ATOL,
 )
 ott.assert_almost_equal(
     hessian_point(myNeg.hessian(inPoint)),
@@ -237,9 +245,7 @@ sp = ot.Point([3.0, 1.0])
 ott.assert_almost_equal((3.0 * sf)(sp), [12.0, 9.0], RTOL, ATOL)
 ott.assert_almost_equal((sf * 3.0)(sp), [12.0, 9.0], RTOL, ATOL)
 # gradient of 3*f is 3 times the gradient of f
-ott.assert_almost_equal(
-    (3.0 * sf).gradient(sp), 3.0 * sf.gradient(sp), RTOL, ATOL
-)
+ott.assert_almost_equal((3.0 * sf).gradient(sp), 3.0 * sf.gradient(sp), RTOL, ATOL)
 # f * 0 gives zero function
 ott.assert_almost_equal((sf * 0.0)(sp), [0.0, 0.0], RTOL, ATOL)
 # f * 1 returns the function unchanged (values, gradient, hessian)

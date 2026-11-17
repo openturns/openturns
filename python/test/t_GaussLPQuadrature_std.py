@@ -12,9 +12,7 @@ ot.TESTPREAMBLE()
 
 def makeBasis(functions, measure):
     """Expose a collection of functions and its measure as an OrthogonalBasis."""
-    return ot.OrthogonalBasis(
-        otexp.FiniteOrthogonalFunctionFactory(functions, measure)
-    )
+    return ot.OrthogonalBasis(otexp.FiniteOrthogonalFunctionFactory(functions, measure))
 
 
 # The production defaults target high accuracy. The bases used here are of low
@@ -104,9 +102,7 @@ assert len(rawWeights) == len(rawNodes)
 assert all(value >= 0.0 for value in rawWeights)
 ott.assert_almost_equal(sum(rawWeights), 1.0, 1e-3, 1e-3)
 for k, expected in enumerate([1.0, 3.0, 28.0 / 3.0]):
-    integral = sum(
-        rawWeights[i] * rawNodes[i][0] ** k for i in range(len(rawNodes))
-    )
+    integral = sum(rawWeights[i] * rawNodes[i][0] ** k for i in range(len(rawNodes)))
     ott.assert_almost_equal(integral, expected, 1e-3, 1e-3)
 
 
@@ -138,8 +134,7 @@ assert len(anchorOnlyWeights) == len(anchorOnlyNodes)
 assert all(value > 0.0 for value in anchorOnlyWeights)
 for anchorOnlyNode in anchorOnlyNodes:
     distance = min(
-        (anchorOnlyNode - gaussAnchors[i]).norm()
-        for i in range(gaussAnchors.getSize())
+        (anchorOnlyNode - gaussAnchors[i]).norm() for i in range(gaussAnchors.getSize())
     )
     assert distance < 1e-15
 checkMoments(anchorOnlyNodes, anchorOnlyWeights, 1e-9)
@@ -154,8 +149,7 @@ assert len(extraWeights) == len(extraNodes)
 assert all(value > 0.0 for value in extraWeights)
 for extraNode in extraNodes:
     distance = min(
-        (extraNode - extraAnchors[i]).norm()
-        for i in range(extraAnchors.getSize())
+        (extraNode - extraAnchors[i]).norm() for i in range(extraAnchors.getSize())
     )
     assert distance < 1e-15
 checkMoments(extraNodes, extraWeights)
@@ -183,9 +177,7 @@ ott.assert_almost_equal(forcedNodes[: len(forcedAnchors)], forcedAnchors)
 checkMoments(forcedNodes, forcedWeights)
 
 # An empty anchor sample is accepted and leaves the builder unchanged.
-emptyAnchorQuad = otexp.GaussLPQuadrature(
-    rawFunctions, rawMeasure, ot.Sample()
-)
+emptyAnchorQuad = otexp.GaussLPQuadrature(rawFunctions, rawMeasure, ot.Sample())
 assert emptyAnchorQuad.getAnchors().getSize() == 0
 
 # Duplicate anchors are removed, keeping a single copy.
@@ -206,9 +198,7 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(TypeError):
     otexp.GaussLPQuadrature(rawFunctions, rawMeasure, ot.Sample([[2.2, 1.0]]))
 with ott.assert_raises(TypeError):
-    otexp.GaussLPQuadrature(
-        rawFunctions, rawMeasure, ot.Sample([[float("nan")]])
-    )
+    otexp.GaussLPQuadrature(rawFunctions, rawMeasure, ot.Sample([[float("nan")]]))
 
 # The anchor accessor validates immediately when the measure is set, and a
 # rejected update leaves the anchors unchanged.
@@ -384,7 +374,9 @@ assert 0 < len(nodes1d) <= n1d
 assert len(weights1d) == len(nodes1d)
 ott.assert_almost_equal(sum(weights1d), 1.0, 1e-3, 1e-3)
 for k in range(n1d):
-    integral = sum(weights1d[i] * functions1d[k](nodes1d[i])[0] for i in range(len(nodes1d)))
+    integral = sum(
+        weights1d[i] * functions1d[k](nodes1d[i])[0] for i in range(len(nodes1d))
+    )
     if k == 0:
         ott.assert_almost_equal(integral, 1.0, 1e-3, 1e-3)
     else:
@@ -393,25 +385,23 @@ for k in range(n1d):
 # LP solver fallback: an invalid primary solver fails over to the fallback
 # solver. Anchors are supplied so that a solver failure cannot be hidden by
 # the measure-adapted fallback rule.
-quad1d = otexp.GaussLPQuadrature(
-    functions1d, dist1d, ot.Sample([[2.2], [3.8]])
-)
-ot.ResourceMap.SetAsString('GaussLPQuadrature-Solver', 'nonsense')
+quad1d = otexp.GaussLPQuadrature(functions1d, dist1d, ot.Sample([[2.2], [3.8]]))
+ot.ResourceMap.SetAsString("GaussLPQuadrature-Solver", "nonsense")
 nodesFb, weightsFb = quad1d.build(n1d)
 ott.assert_almost_equal(sum(weightsFb), 1.0, 1e-3, 1e-3)
 # The ResourceMap is never modified to switch solvers
-assert ot.ResourceMap.GetAsString('GaussLPQuadrature-Solver') == 'nonsense'
-assert ot.ResourceMap.GetAsString('GaussLPQuadrature-FallbackSolver') == 'ipm'
+assert ot.ResourceMap.GetAsString("GaussLPQuadrature-Solver") == "nonsense"
+assert ot.ResourceMap.GetAsString("GaussLPQuadrature-FallbackSolver") == "ipm"
 # An empty fallback disables the retry and surfaces the original error
-ot.ResourceMap.SetAsString('GaussLPQuadrature-FallbackSolver', '')
+ot.ResourceMap.SetAsString("GaussLPQuadrature-FallbackSolver", "")
 with ott.assert_raises(TypeError):
     quad1d.build(n1d)
 # Identical primary and fallback solvers: no pointless retry, error surfaces
-ot.ResourceMap.SetAsString('GaussLPQuadrature-FallbackSolver', 'nonsense')
+ot.ResourceMap.SetAsString("GaussLPQuadrature-FallbackSolver", "nonsense")
 with ott.assert_raises(TypeError):
     quad1d.build(n1d)
-ot.ResourceMap.SetAsString('GaussLPQuadrature-Solver', 'choose')
-ot.ResourceMap.SetAsString('GaussLPQuadrature-FallbackSolver', 'ipm')
+ot.ResourceMap.SetAsString("GaussLPQuadrature-Solver", "choose")
+ot.ResourceMap.SetAsString("GaussLPQuadrature-FallbackSolver", "ipm")
 
 # Highly correlated 2D normal distribution: the LP equality system is
 # ill-conditioned. Check the default solver chain, then an explicit interior
@@ -427,9 +417,9 @@ correlatedFactory = otexp.BasisOrthonormalizationFactory(
 correlatedFunctions = [correlatedFactory.build(k) for k in range(len(initialBasis))]
 correlatedQuad = otexp.GaussLPQuadrature(correlatedFunctions, correlatedDistribution)
 
-for solver, fallback in [('choose', 'ipm'), ('ipm', '')]:
-    ot.ResourceMap.SetAsString('GaussLPQuadrature-Solver', solver)
-    ot.ResourceMap.SetAsString('GaussLPQuadrature-FallbackSolver', fallback)
+for solver, fallback in [("choose", "ipm"), ("ipm", "")]:
+    ot.ResourceMap.SetAsString("GaussLPQuadrature-Solver", solver)
+    ot.ResourceMap.SetAsString("GaussLPQuadrature-FallbackSolver", fallback)
     correlatedNodes, correlatedWeights = correlatedQuad.build(4)
     assert 0 < len(correlatedNodes) <= 4
     assert len(correlatedWeights) == len(correlatedNodes)
@@ -444,8 +434,8 @@ for solver, fallback in [('choose', 'ipm'), ('ipm', '')]:
         ott.assert_almost_equal(integral, expected, 1e-3, 1e-3)
 
 # Restore the default solver configuration.
-ot.ResourceMap.SetAsString('GaussLPQuadrature-Solver', 'choose')
-ot.ResourceMap.SetAsString('GaussLPQuadrature-FallbackSolver', 'ipm')
+ot.ResourceMap.SetAsString("GaussLPQuadrature-Solver", "choose")
+ot.ResourceMap.SetAsString("GaussLPQuadrature-FallbackSolver", "ipm")
 
 # Heavy-tailed measures: the moment and candidate kernels must be adapted to
 # the measure instead of using a Gauss-Legendre rule on the numerical range.
@@ -489,9 +479,7 @@ ott.assert_almost_equal(sum(heavyRuleWeights), 1.0, 1e-3, 1e-3)
 
 # Save/load round trip for the builder: the functions, the measure and the
 # anchors are persisted.
-savedQuad = otexp.GaussLPQuadrature(
-    rawFunctions, rawMeasure, ot.Sample([[2.2], [3.8]])
-)
+savedQuad = otexp.GaussLPQuadrature(rawFunctions, rawMeasure, ot.Sample([[2.2], [3.8]]))
 studyFile = "gauss_lp_quadrature.xml"
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager(studyFile))
@@ -538,15 +526,11 @@ preservedQuad.setMeasureAndFunctions(ot.Uniform(2.5, 4.5), rawFunctions)
 assert preservedQuad.getSize() == len(rawFunctions)
 assert len(preservedQuad.getFunctionsCollection()) == len(rawFunctions)
 assert preservedQuad.getAnchors().getSize() == 2
-ott.assert_almost_equal(
-    preservedQuad.getMeasure().getParameter(), ot.Point([2.5, 4.5])
-)
+ott.assert_almost_equal(preservedQuad.getMeasure().getParameter(), ot.Point([2.5, 4.5]))
 with ott.assert_raises(TypeError):
     preservedQuad.setMeasureAndFunctions(ot.Uniform(5.0, 6.0), rawFunctions)
 # A rejected setter leaves the builder unchanged.
-ott.assert_almost_equal(
-    preservedQuad.getMeasure().getParameter(), ot.Point([2.5, 4.5])
-)
+ott.assert_almost_equal(preservedQuad.getMeasure().getParameter(), ot.Point([2.5, 4.5]))
 assert preservedQuad.getAnchors().getSize() == 2
 with ott.assert_raises(TypeError):
     preservedQuad.setMeasureAndFunctions(rawMeasure, [])
@@ -569,9 +553,7 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(TypeError):
     otexp.GaussLPQuadrature([ot.SymbolicFunction(["x"], ["1"])], distribution)
 with ott.assert_raises(TypeError):
-    otexp.GaussLPQuadrature(
-        [ot.SymbolicFunction(["x", "y"], ["x", "y"])], distribution
-    )
+    otexp.GaussLPQuadrature([ot.SymbolicFunction(["x", "y"], ["x", "y"])], distribution)
 
 # The local refinement uses dedicated ResourceMap tolerances, tighter than the
 # generic optimization defaults and independent from them.
@@ -682,12 +664,16 @@ with ott.assert_raises(TypeError):
 
 # Guard: functions whose dimension does not match the measure, and non-scalar
 # functions, are rejected.
-badInputDimension = [ot.SymbolicFunction(ot.Description(["x", "y", "z"]), ot.Description(["1"]))] + functions[1:]
+badInputDimension = [
+    ot.SymbolicFunction(ot.Description(["x", "y", "z"]), ot.Description(["1"]))
+] + functions[1:]
 with ott.assert_raises(TypeError):
     otexp.FiniteOrthogonalFunctionFactory(badInputDimension, distribution)
 with ott.assert_raises(TypeError):
     otexp.GaussLPQuadrature(badInputDimension, distribution)
-badOutputDimension = [ot.SymbolicFunction(ot.Description(["x"]), ot.Description(["1", "1"]))] + functions[1:]
+badOutputDimension = [
+    ot.SymbolicFunction(ot.Description(["x"]), ot.Description(["1", "1"]))
+] + functions[1:]
 with ott.assert_raises(TypeError):
     otexp.FiniteOrthogonalFunctionFactory(badOutputDimension, distribution)
 with ott.assert_raises(TypeError):

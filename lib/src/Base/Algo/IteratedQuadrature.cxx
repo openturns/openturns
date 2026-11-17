@@ -184,8 +184,8 @@ public:
     // on the original integrand
     const Bool last = (depth_ == function_.getInputDimension() - 2);
     const Function partialFunction(last ?
-        static_cast<FunctionImplementation *>(new IteratedQuadratureLastFunction(function_, fullPoint)) :
-        static_cast<FunctionImplementation *>(new IteratedQuadraturePartialFunctionWrapper(quadrature_, function_, fullPoint, lowerBounds_, upperBounds_, depth_ + 1)));
+                                   static_cast<FunctionImplementation *>(new IteratedQuadratureLastFunction(function_, fullPoint)) :
+                                   static_cast<FunctionImplementation *>(new IteratedQuadraturePartialFunctionWrapper(quadrature_, function_, fullPoint, lowerBounds_, upperBounds_, depth_ + 1)));
     const Point value(quadrature_.getAlgorithm().integrate(partialFunction, Interval(a, b)));
     for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
       if (!std::isfinite(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function_;

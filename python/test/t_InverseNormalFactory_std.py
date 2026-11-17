@@ -3,6 +3,7 @@
 import openturns as ot
 
 import openturns.testing as ott
+
 ot.TESTPREAMBLE()
 
 distribution = ot.InverseNormal(2.5, 1.5)

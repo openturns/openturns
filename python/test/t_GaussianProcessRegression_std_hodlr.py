@@ -149,9 +149,7 @@ def test_two_outputs():
 
     # LAPACK reference with optimization (independent authority)
     ot.ResourceMap.SetAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK")
-    fit_lapack = ot.GaussianProcessFitter(
-        sampleX, sampleY, build_covariance(), basis
-    )
+    fit_lapack = ot.GaussianProcessFitter(sampleX, sampleY, build_covariance(), basis)
     fit_lapack.run()
     result_lapack = fit_lapack.getResult()
     gpr_lapack = ot.GaussianProcessRegression(result_lapack)
@@ -164,12 +162,8 @@ def test_two_outputs():
     try:
         ot.ResourceMap.SetAsString("GaussianProcessFitter-LinearAlgebra", "HODLR")
         covariance_hodlr = build_covariance()
-        covariance_hodlr.setParameter(
-            result_lapack.getCovarianceModel().getParameter()
-        )
-        fit_hodlr = ot.GaussianProcessFitter(
-            sampleX, sampleY, covariance_hodlr, basis
-        )
+        covariance_hodlr.setParameter(result_lapack.getCovarianceModel().getParameter())
+        fit_hodlr = ot.GaussianProcessFitter(sampleX, sampleY, covariance_hodlr, basis)
         fit_hodlr.setOptimizeParameters(False)
         fit_hodlr.run()
         algo = ot.GaussianProcessRegression(fit_hodlr.getResult())

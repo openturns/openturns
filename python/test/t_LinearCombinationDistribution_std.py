@@ -119,9 +119,7 @@ for testIndex in range(len(testCases)):
         1e-9,
         "complementary quantile",
     )
-    ott.assert_almost_equal(
-        distribution.computeCDF(quantileComp), 0.05, 1e-7, 1e-9
-    )
+    ott.assert_almost_equal(distribution.computeCDF(quantileComp), 0.05, 1e-7, 1e-9)
 
     # Get 95% survival function
     inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
@@ -161,11 +159,8 @@ for testIndex in range(len(testCases)):
 
     assert distribution.getBlockMin() == 5, "wrong blockMin"
     assert distribution.getBlockMax() == 20, "wrong blockMax"
-    assert (
-        distribution.getMaxSize()
-        == ot.ResourceMap.GetAsUnsignedInteger(
-            "LinearCombinationDistribution-DefaultMaxSize"
-        )
+    assert distribution.getMaxSize() == ot.ResourceMap.GetAsUnsignedInteger(
+        "LinearCombinationDistribution-DefaultMaxSize"
     ), "wrong maxSize"
     ott.assert_almost_equal(
         distribution.getAlpha(),
@@ -367,13 +362,9 @@ ott.assert_almost_equal(
 atom1 = ot.TruncatedDistribution(ot.Uniform(0.0, 1.0), ot.Interval(0.0, 1.0))
 atom2 = ot.Uniform(0.0, 2.0)
 total = atom1 + atom2
-ott.assert_almost_equal(
-    total.computeCDF(2.0), 0.75, 1e-10, 1e-12, "ticket 953 cdf"
-)
+ott.assert_almost_equal(total.computeCDF(2.0), 0.75, 1e-10, 1e-12, "ticket 953 cdf")
 quantile = total.computeQuantile(0.2)[0]
-ott.assert_almost_equal(
-    quantile, sqrt(0.8), 1e-8, 1e-10, "ticket 953 quantile"
-)
+ott.assert_almost_equal(quantile, sqrt(0.8), 1e-8, 1e-10, "ticket 953 quantile")
 minS = 0.2
 maxS = 10.0
 muS = (log(minS) + log(maxS)) / 2.0
@@ -405,7 +396,9 @@ dist1d = ot.LinearCombinationDistribution(
 pi = dist1d.getPositionIndicator()
 ott.assert_almost_equal(pi, dist1d.getMean()[0], 1e-10, 1e-12, "position indicator")
 di = dist1d.getDispersionIndicator()
-ott.assert_almost_equal(di, dist1d.getStandardDeviation()[0], 1e-10, 1e-12, "dispersion indicator")
+ott.assert_almost_equal(
+    di, dist1d.getStandardDeviation()[0], 1e-10, 1e-12, "dispersion indicator"
+)
 
 # Test setReferenceBandwidth / getReferenceBandwidth
 print("reference bandwidth")
@@ -413,7 +406,9 @@ bw = dist1d.getReferenceBandwidth()
 assert len(bw) == 1, "wrong bandwidth dimension"
 newBw = [0.75]
 dist1d.setReferenceBandwidth(newBw)
-ott.assert_almost_equal(dist1d.getReferenceBandwidth(), newBw, 1e-12, 1e-12, "reference bandwidth")
+ott.assert_almost_equal(
+    dist1d.getReferenceBandwidth(), newBw, 1e-12, 1e-12, "reference bandwidth"
+)
 
 # Test setPDFPrecision / setCDFPrecision
 print("precision setters")
@@ -489,9 +484,7 @@ halfWeighted = ot.LinearCombinationDistribution(
 )
 assert not halfWeighted.isIntegral(), "wrong integral"
 assert not halfWeighted.isContinuous(), "wrong continuous"
-mixed1D = ot.LinearCombinationDistribution(
-    [ot.Normal(), ot.Bernoulli(0.5)], [1.0, 1.0]
-)
+mixed1D = ot.LinearCombinationDistribution([ot.Normal(), ot.Bernoulli(0.5)], [1.0, 1.0])
 assert mixed1D.isContinuous(), "wrong continuous"
 assert not mixed1D.isDiscrete(), "wrong discrete"
 assert not mixed1D.isIntegral(), "wrong integral"
@@ -554,7 +547,10 @@ for gradient in [
 assert analytical.computeCharacteristicFunction(0.0) == 1.0, "wrong cf at 0"
 assert analytical.computeLogCharacteristicFunction(0.0) == 0.0, "wrong log cf at 0"
 y = ot.Point([0.3, -0.7])
-mu2D = [sum(weightMatrix2D[j, i] * collection2D[i].getMean()[0] for i in range(3)) for j in range(2)]
+mu2D = [
+    sum(weightMatrix2D[j, i] * collection2D[i].getMean()[0] for i in range(3))
+    for j in range(2)
+]
 cov2D = ot.CovarianceMatrix(2)
 for j in range(2):
     for k in range(j + 1):
@@ -569,7 +565,13 @@ spread = sum(y[j] * sum(cov2D[j, k] * y[k] for k in range(2)) for j in range(2))
 expectedLogPhi = complex(0.0, phase) - 0.5 * spread
 expectedPhi = cmath.exp(expectedLogPhi)
 gotPhi = distribution2D.computeCharacteristicFunction(y)
-ott.assert_almost_equal([gotPhi.real, gotPhi.imag], [expectedPhi.real, expectedPhi.imag], 1e-9, 1e-12, "cf point")
+ott.assert_almost_equal(
+    [gotPhi.real, gotPhi.imag],
+    [expectedPhi.real, expectedPhi.imag],
+    1e-9,
+    1e-12,
+    "cf point",
+)
 gotLogPhi = distribution2D.computeLogCharacteristicFunction(y)
 ott.assert_almost_equal(
     [gotLogPhi.real, gotLogPhi.imag],
@@ -589,7 +591,9 @@ with ott.assert_raises(TypeError):
 fft = analytical.getFFTAlgorithm()
 analytical.setFFTAlgorithm(fft)
 assert analytical.getFFTAlgorithm().getClassName() == fft.getClassName(), "wrong fft"
-assert len(analytical.getParameterDescription()) == len(analytical.getParameter()) > 0, "bad description"
+assert (
+    len(analytical.getParameterDescription()) == len(analytical.getParameter()) > 0
+), "bad description"
 with ott.assert_raises(TypeError):
     analytical.setParameter([0.0])
 same = ot.LinearCombinationDistribution([ot.Normal(1.0, 2.0)], [2.0], 5.0)
@@ -606,9 +610,15 @@ loadedStudy.load()
 loaded = ot.LinearCombinationDistribution()
 loadedStudy.fillObject("dist", loaded)
 os.remove(fileName)
-ott.assert_almost_equal(loaded.getMean(), analytical.getMean(), 1e-12, 1e-12, "loaded mean")
 ott.assert_almost_equal(
-    loaded.getCovariance(), analytical.getCovariance(), 1e-12, 1e-12, "loaded covariance"
+    loaded.getMean(), analytical.getMean(), 1e-12, 1e-12, "loaded mean"
+)
+ott.assert_almost_equal(
+    loaded.getCovariance(),
+    analytical.getCovariance(),
+    1e-12,
+    1e-12,
+    "loaded covariance",
 )
 assert loaded == analytical, "wrong loaded equality"
 

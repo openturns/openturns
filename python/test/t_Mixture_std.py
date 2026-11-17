@@ -54,11 +54,24 @@ size = 1000
 oneSample = distribution.getSample(size)
 ott.assert_almost_equal(oneSample[0], [-1.86277, -0.862642, 2.91223], 1e-5, 0.0)
 ott.assert_almost_equal(oneSample[size - 1], [1.56533, -1.10765, 2.76013], 1e-5, 0.0)
-ott.assert_almost_equal(oneSample.computeMean(), [1.64038, 0.699193, 2.03941], 1e-5, 0.0)
+ott.assert_almost_equal(
+    oneSample.computeMean(), [1.64038, 0.699193, 2.03941], 1e-5, 0.0
+)
 ott.assert_almost_equal(
     oneSample.computeCovariance(),
     ot.CovarianceMatrix(
-        3, [4.88439, 3.99293, 0.644831, 3.99293, 9.41608, 2.09091, 0.644831, 2.09091, 1.58061]
+        3,
+        [
+            4.88439,
+            3.99293,
+            0.644831,
+            3.99293,
+            9.41608,
+            2.09091,
+            0.644831,
+            2.09091,
+            1.58061,
+        ],
     ),
     1e-5,
     0.0,
@@ -82,15 +95,23 @@ x = 0.6
 y = [0.2] * (dimension - 1)
 ott.assert_almost_equal(distribution.computeConditionalPDF(x, y), 0.184614, 1e-6, 1e-6)
 ott.assert_almost_equal(distribution.computeConditionalCDF(x, y), 0.106212, 1e-6, 1e-6)
-ott.assert_almost_equal(distribution.computeConditionalQuantile(x, y), 2.237650, 1e-6, 1e-6)
+ott.assert_almost_equal(
+    distribution.computeConditionalQuantile(x, y), 2.237650, 1e-6, 1e-6
+)
 pt = ot.Point([i + 1.5 for i in range(dimension)])
 ott.assert_almost_equal(
-    distribution.computeSequentialConditionalPDF(point), [0.179079, 0.144334, 0.227727], 1e-5, 0.0
+    distribution.computeSequentialConditionalPDF(point),
+    [0.179079, 0.144334, 0.227727],
+    1e-5,
+    0.0,
 )
 resCDF = distribution.computeSequentialConditionalCDF(pt)
 ott.assert_almost_equal(resCDF, [0.5, 0.778617, 0.809658], 1e-5, 0.0)
 ott.assert_almost_equal(
-    distribution.computeSequentialConditionalQuantile(resCDF), [1.5, 2.5, 3.5], 1e-5, 0.0
+    distribution.computeSequentialConditionalQuantile(resCDF),
+    [1.5, 2.5, 3.5],
+    1e-5,
+    0.0,
 )
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -196,7 +217,18 @@ covariance = distribution.getCovariance()
 ott.assert_almost_equal(
     covariance,
     ot.CovarianceMatrix(
-        3, [4.66667, 3.66667, 0.666667, 3.66667, 9.66667, 2.16667, 0.666667, 2.16667, 1.66667]
+        3,
+        [
+            4.66667,
+            3.66667,
+            0.666667,
+            3.66667,
+            9.66667,
+            2.16667,
+            0.666667,
+            2.16667,
+            1.66667,
+        ],
     ),
     1e-5,
     0.0,
@@ -208,9 +240,33 @@ assert len(parameter) == 27
 ott.assert_almost_equal(
     parameter,
     [
-        0.5, 2.0, -0.5, 3.0, 1.0, 1.0, 0.5, 0.0, 0.5,
-        1.5, 2.0, 0.5, 3.0, 2.0, 1.0, 0.5, 0.0, 0.5,
-        2.5, 2.0, 1.5, 3.0, 3.0, 1.0, 0.5, 0.0, 0.5,
+        0.5,
+        2.0,
+        -0.5,
+        3.0,
+        1.0,
+        1.0,
+        0.5,
+        0.0,
+        0.5,
+        1.5,
+        2.0,
+        0.5,
+        3.0,
+        2.0,
+        1.0,
+        0.5,
+        0.0,
+        0.5,
+        2.5,
+        2.0,
+        1.5,
+        3.0,
+        3.0,
+        1.0,
+        0.5,
+        0.0,
+        0.5,
     ],
     0.0,
     0.0,
@@ -218,13 +274,40 @@ ott.assert_almost_equal(
 parameterDescription = distribution.getParameterDescription()
 assert len(parameterDescription) == 27
 assert list(parameterDescription) == [
-    "mu_0", "sigma_0", "mu_1", "sigma_1", "mu_2", "sigma_2", "R_1_0", "R_2_0", "R_2_1",
-    "mu_0", "sigma_0", "mu_1", "sigma_1", "mu_2", "sigma_2", "R_1_0", "R_2_0", "R_2_1",
-    "mu_0", "sigma_0", "mu_1", "sigma_1", "mu_2", "sigma_2", "R_1_0", "R_2_0", "R_2_1",
+    "mu_0",
+    "sigma_0",
+    "mu_1",
+    "sigma_1",
+    "mu_2",
+    "sigma_2",
+    "R_1_0",
+    "R_2_0",
+    "R_2_1",
+    "mu_0",
+    "sigma_0",
+    "mu_1",
+    "sigma_1",
+    "mu_2",
+    "sigma_2",
+    "R_1_0",
+    "R_2_0",
+    "R_2_1",
+    "mu_0",
+    "sigma_0",
+    "mu_1",
+    "sigma_1",
+    "mu_2",
+    "sigma_2",
+    "R_1_0",
+    "R_2_0",
+    "R_2_1",
 ]
 distribution.setParameter(parameter)
 ott.assert_almost_equal(distribution.getParameter(), parameter, 0.0, 0.0)
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Mixture"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "Mixture"
+)
 
 # Constructor with separate weights. Also check small weights removal
 weights = [1.0e-20, 2.5, 32.0]
@@ -263,8 +346,10 @@ assert coll[2].getSize() == 0
 # computeConditionalPDF used cumulative conditioningPDF instead of per-atom check
 # Verify conditional PDF produces a valid result
 atoms = ot.DistributionCollection(
-    [ot.Normal([0.0, 0.0], [1.0, 1.0], ot.CorrelationMatrix(2)),
-     ot.Normal([3.0, 3.0], [1.0, 1.0], ot.CorrelationMatrix(2))]
+    [
+        ot.Normal([0.0, 0.0], [1.0, 1.0], ot.CorrelationMatrix(2)),
+        ot.Normal([3.0, 3.0], [1.0, 1.0], ot.CorrelationMatrix(2)),
+    ]
 )
 mixture = ot.Mixture(atoms)
 condPDF = mixture.computeConditionalPDF(1.0, [2.0])
@@ -305,15 +390,11 @@ ott.assert_almost_equal(h2, 0.75 * peak, 1e-6, 1e-6)
 # log scale is applied to the mixed drawing as well, see #1489
 assert mixed.drawPDF(-6.0, 6.0, 129, True).getLogScale() == ot.GraphImplementation.LOGX
 # several atoms
-mixed3 = ot.Mixture(
-    [ot.Dirac(-3.0), ot.Dirac(3.0), ot.Normal()], [0.25, 0.25, 0.5]
-)
+mixed3 = ot.Mixture([ot.Dirac(-3.0), ot.Dirac(3.0), ot.Normal()], [0.25, 0.25, 0.5])
 n_drawables = mixed3.drawPDF(-6.0, 6.0).getDrawables().getSize()
 assert n_drawables == 6, "two arrows and their text label expected"
 # purely continuous mixtures keep the generic drawing
-continuous = ot.Mixture(
-    [ot.Normal(-1.0, 1.0), ot.Normal(1.0, 1.0)], [0.5, 0.5]
-)
+continuous = ot.Mixture([ot.Normal(-1.0, 1.0), ot.Normal(1.0, 1.0)], [0.5, 0.5])
 n_drawables = continuous.drawPDF(-6.0, 6.0).getDrawables().getSize()
 assert n_drawables == 1, "no atom expected"
 
@@ -348,15 +429,16 @@ assert ot.Mixture([ot.Normal(), ot.Normal()], [0.3, 0.7]) != ot.Mixture(
 assert ot.Mixture([ot.Normal(), ot.Normal()], [0.3, 0.7]) == ot.Mixture(
     [ot.Normal(), ot.Normal()], [0.3, 0.7]
 )
-assert list(ot.Mixture([ot.Dirac(1.0), ot.Dirac(1.0)], [0.5, 0.5]).getSingularities()) == []
+assert (
+    list(ot.Mixture([ot.Dirac(1.0), ot.Dirac(1.0)], [0.5, 0.5]).getSingularities())
+    == []
+)
 assert list(
     ot.Mixture([ot.Dirac(1.0), ot.Uniform(0.0, 3.0)], [0.5, 0.5]).getSingularities()
 ) == [1.0]
 
 # --- Mixture: the log-PDF stays finite when every atom PDF underflows ---
-tail_mixture = ot.Mixture(
-    [ot.Exponential(1.0), ot.Exponential(2.0)], [0.5, 0.5]
-)
+tail_mixture = ot.Mixture([ot.Exponential(1.0), ot.Exponential(2.0)], [0.5, 0.5])
 tail_point = [800.0]
 assert tail_mixture.computePDF(tail_point) == 0.0
 ott.assert_almost_equal(
@@ -366,9 +448,7 @@ ott.assert_almost_equal(
     0.0,
 )
 # Zero-weight atoms do not contribute
-zero_weight = ot.Mixture(
-    [ot.Exponential(1.0), ot.Exponential(2.0)], [1.0, 0.0]
-)
+zero_weight = ot.Mixture([ot.Exponential(1.0), ot.Exponential(2.0)], [1.0, 0.0])
 ott.assert_almost_equal(zero_weight.computeLogPDF([1.0]), -1.0, 1e-15, 0.0)
 
 # Replacing the collection resets the PDF/CDF interpolation state

@@ -62,9 +62,7 @@ ott.assert_almost_equal(
     myFunction.hessian(inPoint), ot.SymmetricTensor(inputDimension, outputDimension)
 )
 ott.assert_almost_equal(myFunction.getEvaluation()(inPoint), outPoint)
-ott.assert_almost_equal(
-    myFunction.getGradient().gradient(inPoint), linear.transpose()
-)
+ott.assert_almost_equal(myFunction.getGradient().gradient(inPoint), linear.transpose())
 ott.assert_almost_equal(
     myFunction.getHessian().hessian(inPoint),
     ot.SymmetricTensor(inputDimension, outputDimension),

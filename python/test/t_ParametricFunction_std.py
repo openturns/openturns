@@ -158,9 +158,9 @@ x_marg = ot.Point([3.0, 4.0, 5.0])
 # dimensions = 4 calls (centered FD)
 n_calls_marg = 0
 gradient_marg = g_marg.parameterGradient(x_marg)
-assert n_calls_marg == 4, (
-    f"Expected 4 calls for marginal parameterGradient, got {n_calls_marg}"
-)
+assert (
+    n_calls_marg == 4
+), f"Expected 4 calls for marginal parameterGradient, got {n_calls_marg}"
 
 # Verify correctness
 ott.assert_almost_equal(gradient_marg[0, 0], 1.0)
@@ -195,9 +195,7 @@ negFunc = ot.SymbolicFunction(["a", "x"], ["a^2 + x"])
 negFrozen = ot.ParametricFunction(negFunc, [0], [-2.0])
 ott.assert_almost_equal(negFrozen([1.0]), [5.0])
 # A single formula may define several named outputs
-multiFunc = ot.SymbolicFunction(
-    ["a", "x"], ["y0", "y1"], "y0 := a * x; y1 := a + x"
-)
+multiFunc = ot.SymbolicFunction(["a", "x"], ["y0", "y1"], "y0 := a * x; y1 := a + x")
 multiFrozen = ot.ParametricFunction(multiFunc, [0], [2.0])
 assert list(multiFrozen.getOutputDescription()) == ["y0", "y1"]
 ott.assert_almost_equal(multiFrozen([3.0]), [6.0, 5.0])

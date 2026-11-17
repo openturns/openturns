@@ -302,9 +302,7 @@ ott.assert_almost_equal(
 )
 # MultivariateUniform truncation simplification
 mvu = otexp.MultivariateUniform([0.0, 1.0], [2.0, 3.0])
-truncMvu = ot.TruncatedDistribution(
-    mvu, ot.Interval([0.5, 1.5], [1.5, 2.5])
-)
+truncMvu = ot.TruncatedDistribution(mvu, ot.Interval([0.5, 1.5], [1.5, 2.5]))
 simplified = truncMvu.getSimplifiedVersion()
 assert "MultivariateUniform" in str(simplified.getClassName)
 ott.assert_almost_equal(simplified.getRange().getLowerBound(), [0.5, 1.5])
@@ -348,20 +346,46 @@ prior.setDescription(sample.getDescription())
 distribution = ot.KernelSmoothing().build(sample)
 truncated = ot.TruncatedDistribution(distribution, prior.getRange())
 marginal = truncated.getMarginal([0, 1])
-assert marginal.getDescription() == ["a1", "a3"], f"Got {list(marginal.getDescription())}"
+assert marginal.getDescription() == [
+    "a1",
+    "a3",
+], f"Got {list(marginal.getDescription())}"
 
 # Test computeSequentialConditional* with custom ordering
 td = ot.TruncatedDistribution(ot.Normal(2), ot.Interval([-1.0] * 2, [1.0] * 2))
 x = ot.Point([0.5, 0.5])
 ordering = [0, 1]
 # Identity ordering should match 1-arg version
-ott.assert_almost_equal(td.computeSequentialConditionalCDF(x, ordering), td.computeSequentialConditionalCDF(x), 1e-5, 1e-5)
-ott.assert_almost_equal(td.computeSequentialConditionalPDF(x, ordering), td.computeSequentialConditionalPDF(x), 1e-5, 1e-5)
-ott.assert_almost_equal(td.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7]), ordering), td.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7])), 1e-5, 1e-5)
+ott.assert_almost_equal(
+    td.computeSequentialConditionalCDF(x, ordering),
+    td.computeSequentialConditionalCDF(x),
+    1e-5,
+    1e-5,
+)
+ott.assert_almost_equal(
+    td.computeSequentialConditionalPDF(x, ordering),
+    td.computeSequentialConditionalPDF(x),
+    1e-5,
+    1e-5,
+)
+ott.assert_almost_equal(
+    td.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7]), ordering),
+    td.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7])),
+    1e-5,
+    1e-5,
+)
 # Reversed ordering
 x_rev = ot.Point([x[1], x[0]])
 r_cdf = td.computeSequentialConditionalCDF(x_rev, [1, 0])
-ott.assert_almost_equal(r_cdf, [td.computeSequentialConditionalCDF(x)[1], td.computeSequentialConditionalCDF(x_rev)[1]], 1e-4, 1e-4)
+ott.assert_almost_equal(
+    r_cdf,
+    [
+        td.computeSequentialConditionalCDF(x)[1],
+        td.computeSequentialConditionalCDF(x_rev)[1],
+    ],
+    1e-4,
+    1e-4,
+)
 
 # PiecewiseLinearDistribution simplification, including endpoint regression
 x_trunc = ot.Point([0.0, 1.0, 2.0, 3.0])
@@ -393,8 +417,12 @@ for test_x in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]:
 t_interior = ot.TruncatedDistribution(dist_trunc, ot.Interval(0.5, 2.5))
 s_interior = t_interior.getSimplifiedVersion()
 for test_x in [0.5, 1.0, 1.5, 2.0, 2.5]:
-    ott.assert_almost_equal(s_interior.computePDF(test_x), t_interior.computePDF(test_x))
-    ott.assert_almost_equal(s_interior.computeCDF(test_x), t_interior.computeCDF(test_x))
+    ott.assert_almost_equal(
+        s_interior.computePDF(test_x), t_interior.computePDF(test_x)
+    )
+    ott.assert_almost_equal(
+        s_interior.computeCDF(test_x), t_interior.computeCDF(test_x)
+    )
 
 # Truncated discrete distribution must keep the lower atom, see issue #3361
 binomial = ot.Binomial(4, 0.5)
@@ -421,10 +449,16 @@ ott.assert_almost_equal(truncated_dirichlet.getMean()[0], 203.0 / 440.0)
 truncated_poisson = ot.TruncatedDistribution(ot.Poisson(2.0), ot.Interval(1.0, 3.0))
 step = 1.0e-6
 cdf_fd = (
-    ot.TruncatedDistribution(ot.Poisson(2.0 + step), ot.Interval(1.0, 3.0)).computeCDF(1.0)
-    - ot.TruncatedDistribution(ot.Poisson(2.0 - step), ot.Interval(1.0, 3.0)).computeCDF(1.0)
+    ot.TruncatedDistribution(ot.Poisson(2.0 + step), ot.Interval(1.0, 3.0)).computeCDF(
+        1.0
+    )
+    - ot.TruncatedDistribution(
+        ot.Poisson(2.0 - step), ot.Interval(1.0, 3.0)
+    ).computeCDF(1.0)
 ) / (2.0 * step)
-ott.assert_almost_equal(truncated_poisson.computeCDFGradient([1.0])[0], cdf_fd, 1e-4, 0.0)
+ott.assert_almost_equal(
+    truncated_poisson.computeCDFGradient([1.0])[0], cdf_fd, 1e-4, 0.0
+)
 # Discrete truncation has no bound derivatives: the full PDF gradient at x=2
 # is [3/128, 0, 0], without continuous boundary terms
 ott.assert_almost_equal(

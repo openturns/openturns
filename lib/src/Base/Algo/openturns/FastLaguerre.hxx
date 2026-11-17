@@ -51,18 +51,18 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 namespace FastLaguerre
 {
-  /** Compute n Gauss-Laguerre nodes and weights for Gamma(k, 1, 0).
-   *  @param n number of quadrature nodes (> 0)
-   *  @param k shape parameter of the Gamma distribution (must be > 0)
-   *  @param nodes output array of length n, strictly increasing (nodes in
-   *         [0, inf))
-   *  @param weights output array of length n, positive and normalized to sum
-   *         to 1
-   */
-  OT_API void ComputeNodesAndWeights(const UnsignedInteger n,
-                              const Scalar k,
-                              Scalar * nodes,
-                              Scalar * weights);
+/** Compute n Gauss-Laguerre nodes and weights for Gamma(k, 1, 0).
+ *  @param n number of quadrature nodes (> 0)
+ *  @param k shape parameter of the Gamma distribution (must be > 0)
+ *  @param nodes output array of length n, strictly increasing (nodes in
+ *         [0, inf))
+ *  @param weights output array of length n, positive and normalized to sum
+ *         to 1
+ */
+OT_API void ComputeNodesAndWeights(const UnsignedInteger n,
+                                   const Scalar k,
+                                   Scalar * nodes,
+                                   Scalar * weights);
 } // namespace FastLaguerre
 
 END_NAMESPACE_OPENTURNS

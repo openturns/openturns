@@ -161,10 +161,10 @@ Bool DistributionImplementation::equals(const DistributionImplementation & ) con
 Bool DistributionImplementation::hasEqualBase(const DistributionImplementation & other) const
 {
   return (dimension_ == other.dimension_)
-      && (description_ == other.description_)
-      && (range_ == other.range_)
-      && (isParallel_ == other.isParallel_)
-      && (isCopula_ == other.isCopula_);
+         && (description_ == other.description_)
+         && (range_ == other.range_)
+         && (isParallel_ == other.isParallel_)
+         && (isCopula_ == other.isCopula_);
 }
 
 /* Comparison operator */
@@ -3316,7 +3316,8 @@ Collection<LevelSet> DistributionImplementation::computeMinimumVolumeLevelSetCol
 
 LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const Scalar prob,
     Scalar & threshold) const
-{  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+{
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // As we are in 1D and as the function defining the composite distribution can have complex variations,
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution

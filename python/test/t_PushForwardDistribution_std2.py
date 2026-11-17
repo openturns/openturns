@@ -17,7 +17,9 @@ chiSquare3 = ot.ChiSquare(3)
 # A level surface that coincides with a mesh plane exercises the face
 # deduplication: Y = X0^2 on R^3 has two flat branes x0 = +/- sqrt(y), and its
 # density is the chi-square distribution with one degree of freedom.
-surfaceDiscretizationKey = "PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization"
+surfaceDiscretizationKey = (
+    "PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization"
+)
 previousSurfaceDiscretization = ot.ResourceMap.GetAsUnsignedInteger(
     surfaceDiscretizationKey
 )
@@ -58,8 +60,9 @@ pythonSurface = otexp.PushForwardDistribution(
     ot.PythonFunction(3, 1, lambda x: [x[0] ** 2 + x[1] ** 2 + x[2] ** 2]),
     ot.Normal(3),
 )
-ott.assert_almost_equal(pythonSurface.computePDF([1.0]),
-                        chiSquare3.computePDF([1.0]), 2e-2, 0.0)
+ott.assert_almost_equal(
+    pythonSurface.computePDF([1.0]), chiSquare3.computePDF([1.0]), 2e-2, 0.0
+)
 
 # A nonlinear map from R^3 to R^2 has a one dimensional fibre, the
 # intersection of the two level surfaces. For the uniform cube and
@@ -99,8 +102,9 @@ normalCurve = otexp.PushForwardDistribution(
     ot.Normal(3),
 )
 curvePoint = [0.7, 0.4]
-expectedCurvePDF = (0.5 * math.exp(-0.5 * curvePoint[0])
-                    * ot.Normal().computePDF([curvePoint[1]]))
+expectedCurvePDF = (
+    0.5 * math.exp(-0.5 * curvePoint[0]) * ot.Normal().computePDF([curvePoint[1]])
+)
 pdf = normalCurve.computePDF(curvePoint)
 print(f"normalCurve pdf({curvePoint})={pdf:.12g}")
 ott.assert_almost_equal(pdf, expectedCurvePDF, 1e-2, 0.0)
@@ -189,16 +193,13 @@ pythonCurve = otexp.PushForwardDistribution(
     ot.PythonFunction(3, 2, lambda x: [x[0] ** 2 + x[1] ** 2, x[2]]),
     uniformCube,
 )
-ott.assert_almost_equal(pythonCurve.computePDF([0.5, 0.4]),
-                        math.pi / 4.0, 2e-3, 0.0)
+ott.assert_almost_equal(pythonCurve.computePDF([0.5, 0.4]), math.pi / 4.0, 2e-3, 0.0)
 
 # Nonlinear co-area maps with a higher dimensional fibre are still accepted
 # at construction, and their PDF fails with an explicit message.
 nonAffineFunctions = [
-    (ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["x0 + x1^2"]),
-     ot.Normal(4)),
-    (ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["x0^2", "x1"]),
-     ot.Normal(4)),
+    (ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["x0 + x1^2"]), ot.Normal(4)),
+    (ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["x0^2", "x1"]), ot.Normal(4)),
 ]
 for nonAffineFunction, nonAffineAntecedent in nonAffineFunctions:
     nonAffineDistribution = otexp.PushForwardDistribution(
@@ -219,7 +220,5 @@ sampledMoments = otexp.PushForwardDistribution(
     ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1"]), ot.Normal(2)
 )
 ott.assert_almost_equal(sampledMoments.getMean(), [1.0], 0.0, 0.2)
-ott.assert_almost_equal(
-    sampledMoments.getCovariance()[0, 0], 3.0, 0.0, 0.4
-)
+ott.assert_almost_equal(sampledMoments.getCovariance()[0, 0], 3.0, 0.0, 0.4)
 ot.ResourceMap.Reset()

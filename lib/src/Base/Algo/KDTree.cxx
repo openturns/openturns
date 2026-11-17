@@ -525,9 +525,9 @@ void KDTree::computeOrdering(Indices & buffer,
   const UnsignedInteger mid = lo + count / 2;
   std::nth_element(buffer.begin() + lo, buffer.begin() + mid, buffer.begin() + hi,
                    [&](const UnsignedInteger a, const UnsignedInteger b)
-                   {
-                     return points_(a, axis) < points_(b, axis);
-                   });
+  {
+    return points_(a, axis) < points_(b, axis);
+  });
   computeOrdering(buffer, lo, mid);
   computeOrdering(buffer, mid, hi);
 }

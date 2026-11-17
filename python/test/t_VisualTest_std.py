@@ -170,7 +170,9 @@ assert len(graph.getDrawables()) >= 1
 medium_size = ot.ResourceMap.GetAsUnsignedInteger("VisualTest-CloudMediumSize")
 large_sample = normal.getSample(10 * medium_size)
 large_qq_plot = ot.VisualTest.DrawQQplot(large_sample, normal)
-assert large_qq_plot.getDrawable(1).getPointStyle() == "plus", "visible point style expected"
+assert (
+    large_qq_plot.getDrawable(1).getPointStyle() == "plus"
+), "visible point style expected"
 
 # DrawPairsWithGrid in 2D
 distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
@@ -180,8 +182,12 @@ assert design_grid.getNbRows() == 1, "wrong nb rows"
 assert design_grid.getNbColumns() == 1, "wrong nb columns"
 graph = design_grid.getGraph(0, 0)
 assert len(graph.getDrawables()) == 2, "each graph must contain Grid+Cloud"
-assert graph.getDrawable(0).getImplementation().getClassName() == "Grid", "first drawable must be Grid"
-assert graph.getDrawable(1).getImplementation().getClassName() == "Cloud", "second drawable must be Cloud"
+assert (
+    graph.getDrawable(0).getImplementation().getClassName() == "Grid"
+), "first drawable must be Grid"
+assert (
+    graph.getDrawable(1).getImplementation().getClassName() == "Cloud"
+), "second drawable must be Cloud"
 gridDrawable = graph.getDrawable(0)
 assert list(gridDrawable.getSubdivisions()) == [10, 10], "wrong grid subdivisions"
 
@@ -194,7 +200,9 @@ assert design_grid3.getNbColumns() == 2, "wrong nb columns in 3D"
 assert len(design_grid3.getGraph(0, 0).getDrawables()) == 2, "missing (1,0) plane"
 assert len(design_grid3.getGraph(1, 0).getDrawables()) == 2, "missing (2,0) plane"
 assert len(design_grid3.getGraph(1, 1).getDrawables()) == 2, "missing (2,1) plane"
-assert len(design_grid3.getGraph(0, 1).getDrawables()) == 0, "upper triangle must be empty"
+assert (
+    len(design_grid3.getGraph(0, 1).getDrawables()) == 0
+), "upper triangle must be empty"
 
 # DrawPairsWithGrid with explicit bounds/subdivisions in 3D
 bounds3 = ot.Interval([0.0] * 3, [1.0] * 3)
@@ -204,7 +212,9 @@ for i in range(2):
         if j > i:
             continue
         g = design_grid3b.getGraph(i, j)
-        assert g.getDrawable(0).getImplementation().getClassName() == "Grid", "Grid missing"
+        assert (
+            g.getDrawable(0).getImplementation().getClassName() == "Grid"
+        ), "Grid missing"
 
 # invalid dimension
 with ott.assert_raises(ValueError):

@@ -111,7 +111,7 @@ a = 0.8
 b = 0.1
 copulas = [
     ot.NormalCopula(ot.CorrelationMatrix([[1.0, a], [a, 1.0]])),
-    ot.NormalCopula(ot.CorrelationMatrix([[1.0, b], [b, 1.0]]))
+    ot.NormalCopula(ot.CorrelationMatrix([[1.0, b], [b, 1.0]])),
 ]
 block_independent_copula = ot.BlockIndependentCopula(copulas)
 point = ot.Point([0.7] * 4)
@@ -134,8 +134,10 @@ ott.assert_almost_equal(result, expected, 1e-5, 1e-5)
 # Test SCQ on MarginalDistribution wrapping a JointDistribution
 # whose core is a BlockIndependentCopula (not the copula directly)
 marginals_jd = [
-    ot.Normal(0.0, 1.0), ot.Normal(1.0, 2.0),
-    ot.Exponential(1.0), ot.Uniform(-1.0, 2.0),
+    ot.Normal(0.0, 1.0),
+    ot.Normal(1.0, 2.0),
+    ot.Exponential(1.0),
+    ot.Uniform(-1.0, 2.0),
 ]
 copulas_jd = [
     ot.NormalCopula(ot.CorrelationMatrix([[1.0, a], [a, 1.0]])),
@@ -185,7 +187,7 @@ fullDep = ot.Normal([0.0] * 3, [1.0] * 3, R)
 margDep = ot.MarginalDistribution(fullDep, [0, 1])
 # Conditional distribution of X1 | X0 = 0.3 is Normal(0.3*0.8, sqrt(1-0.8^2))
 rho = 0.8
-condDist = ot.Normal(0.3 * rho, (1.0 - rho ** 2) ** 0.5)
+condDist = ot.Normal(0.3 * rho, (1.0 - rho**2) ** 0.5)
 cdfCond = margDep.computeConditionalCDF(0.5, [0.3])
 ott.assert_almost_equal(cdfCond, condDist.computeCDF(0.5))
 qCond = margDep.computeConditionalQuantile(0.95, [0.3])
@@ -209,51 +211,76 @@ point_bic = ot.Point([0.3, 0.7, 0.5, 0.9])
 # Identity ordering should match natural order
 ott.assert_almost_equal(
     bic.computeSequentialConditionalQuantile(point_bic, [0, 1, 2, 3]),
-    bic.computeSequentialConditionalQuantile(point_bic))
+    bic.computeSequentialConditionalQuantile(point_bic),
+)
 # Partial ordering on BIC: first block (dim=2)
 # Compare against the block copula directly
 block0 = copulas_bic[0]
 ott.assert_almost_equal(
     bic.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7]), [0, 1]),
-    block0.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7])), 1e-5, 1e-5)
+    block0.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7])),
+    1e-5,
+    1e-5,
+)
 # Partial ordering from the second block
 block1 = copulas_bic[1]
 ott.assert_almost_equal(
     bic.computeSequentialConditionalQuantile(ot.Point([0.5, 0.9]), [2, 3]),
-    block1.computeSequentialConditionalQuantile(ot.Point([0.5, 0.9])), 1e-5, 1e-5)
+    block1.computeSequentialConditionalQuantile(ot.Point([0.5, 0.9])),
+    1e-5,
+    1e-5,
+)
 
 # Test computeSequentialConditionalQuantile with custom ordering on JointDistribution
 marginals_jd2 = [
-    ot.Normal(0.0, 1.0), ot.Normal(1.0, 2.0),
-    ot.Exponential(1.0), ot.Uniform(-1.0, 2.0),
+    ot.Normal(0.0, 1.0),
+    ot.Normal(1.0, 2.0),
+    ot.Exponential(1.0),
+    ot.Uniform(-1.0, 2.0),
 ]
 joint_direct2 = ot.JointDistribution(marginals_jd2, bic)
 # Identity ordering
 ott.assert_almost_equal(
     joint_direct2.computeSequentialConditionalQuantile(point_bic, [0, 1, 2, 3]),
-    joint_direct2.computeSequentialConditionalQuantile(point_bic))
+    joint_direct2.computeSequentialConditionalQuantile(point_bic),
+)
 # Non-trivial permutation: [2, 0, 3, 1]
 perm2 = [2, 0, 3, 1]
-ref_jd2 = ot.MarginalDistribution(joint_direct2, perm2).computeSequentialConditionalQuantile(point_bic)
+ref_jd2 = ot.MarginalDistribution(
+    joint_direct2, perm2
+).computeSequentialConditionalQuantile(point_bic)
 ott.assert_almost_equal(
     joint_direct2.computeSequentialConditionalQuantile(point_bic, perm2),
-    ref_jd2, 1e-4, 1e-4)
+    ref_jd2,
+    1e-4,
+    1e-4,
+)
 
 # Test on a generic distribution (Normal) via the default implementation
 normal4 = ot.Normal([0.0] * 4, [1.0] * 4, ot.CorrelationMatrix(4))
 ott.assert_almost_equal(
     normal4.computeSequentialConditionalQuantile(point_bic, [0, 1, 2, 3]),
-    normal4.computeSequentialConditionalQuantile(point_bic))
+    normal4.computeSequentialConditionalQuantile(point_bic),
+)
 # Permutation on generic Normal
-ref_norm2 = ot.MarginalDistribution(normal4, [0, 2, 1, 3]).computeSequentialConditionalQuantile(point_bic)
+ref_norm2 = ot.MarginalDistribution(
+    normal4, [0, 2, 1, 3]
+).computeSequentialConditionalQuantile(point_bic)
 ott.assert_almost_equal(
     normal4.computeSequentialConditionalQuantile(point_bic, [0, 2, 1, 3]),
-    ref_norm2, 1e-4, 1e-4)
+    ref_norm2,
+    1e-4,
+    1e-4,
+)
 # Partial ordering
 ott.assert_almost_equal(
     normal4.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7]), [0, 2]),
-    ot.MarginalDistribution(normal4, [0, 2]).computeSequentialConditionalQuantile(ot.Point([0.3, 0.7])),
-    1e-4, 1e-4)
+    ot.MarginalDistribution(normal4, [0, 2]).computeSequentialConditionalQuantile(
+        ot.Point([0.3, 0.7])
+    ),
+    1e-4,
+    1e-4,
+)
 
 # Test computeSequentialConditionalCDF wrapping BlockIndependentCopula
 # with permutation that preserves block-internal order

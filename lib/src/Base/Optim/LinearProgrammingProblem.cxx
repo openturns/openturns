@@ -40,8 +40,8 @@ LinearProgrammingProblem::LinearProgrammingProblem()
 
 /* Parameter constructor */
 LinearProgrammingProblem::LinearProgrammingProblem(const Point & cost, const Interval & bounds,
-                             const Matrix & constraintCoefficients, const Interval & constraintBounds,
-                             const Scalar constant)
+    const Matrix & constraintCoefficients, const Interval & constraintBounds,
+    const Scalar constant)
   : LinearProgrammingProblem(cost, bounds, SparseMatrix::FromDenseMatrix(constraintCoefficients), constraintBounds, constant)
 {
   // Nothing to do
@@ -49,8 +49,8 @@ LinearProgrammingProblem::LinearProgrammingProblem(const Point & cost, const Int
 
 /* Parameter constructor with sparse constraint coefficients */
 LinearProgrammingProblem::LinearProgrammingProblem(const Point & cost, const Interval & bounds,
-                             const SparseMatrix & constraintCoefficients, const Interval & constraintBounds,
-                             const Scalar constant)
+    const SparseMatrix & constraintCoefficients, const Interval & constraintBounds,
+    const Scalar constant)
   : OptimizationProblemImplementation()
 {
   if (bounds.getDimension() && bounds.getDimension() != cost.getDimension())

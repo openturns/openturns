@@ -59,11 +59,11 @@ def use_case_holdr():
         # Generate a random sample of vectors (Normal distribution)
         randomSample = ot.DistFunc.rNormal(hmat.getNbRows())
         # hmat * (hmat^T * randomSample[i]) -->  first (hmat^T * randomSample[i])
-        hmat.gemv('T', 1., randomSample, 0., error)
+        hmat.gemv("T", 1.0, randomSample, 0.0, error)
         # Then (hmat * error) --> error
-        hmat.gemv('N', 1., error, 0., error)
+        hmat.gemv("N", 1.0, error, 0.0, error)
         # hmatRef * randomSample[i]
-        hmatRef.gemv('N', 1., randomSample, -1.0, error)
+        hmatRef.gemv("N", 1.0, randomSample, -1.0, error)
         normDiff += error.normSquare()
 
     normDiff = m.sqrt(normDiff / nSamples)
@@ -102,8 +102,10 @@ def use_case_holdr():
             rhsCopy[i] -= simpleAssembly.eval(vertices[i], vertices[j]) * result[j]
 
     diffNorm = rhsCopy.norm()
-    threshold = 2.e-3
-    ott.assert_almost_equal(abs(diffNorm - threshold * rhsCopyNorm), 0.00719, 1e-5, 1e-5)
+    threshold = 2.0e-3
+    ott.assert_almost_equal(
+        abs(diffNorm - threshold * rhsCopyNorm), 0.00719, 1e-5, 1e-5
+    )
 
 
 def use_case_holdrsym():
@@ -144,11 +146,11 @@ def use_case_holdrsym():
         # DistFunc generate
         randomSample = ot.Point(hmat.getNbRows())
         # hmat * (hmat^T * randomSample[i]) -->  first (hmat^T * randomSample[i])
-        hmat.gemv('T', 1., randomSample, 0., error)
+        hmat.gemv("T", 1.0, randomSample, 0.0, error)
         # Then (hmat * error) --> error
-        hmat.gemv('N', 1., error, 0., error)
+        hmat.gemv("N", 1.0, error, 0.0, error)
         # hmatRef * randomSample[i]
-        hmatRef.gemv('N', 1., randomSample, -1.0, error)
+        hmatRef.gemv("N", 1.0, randomSample, -1.0, error)
         normDiff += error.normSquare()
 
     normDiff = m.sqrt(normDiff / nSamples)

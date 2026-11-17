@@ -45,7 +45,7 @@ CLASSNAMEINIT(ActiveLearningReliabilityAlgorithm)
 
 static const Factory<ActiveLearningReliabilityAlgorithm> Factory_ActiveLearningReliabilityAlgorithm;
 
-  /** Default constructor */
+/** Default constructor */
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
   : EventSimulationImplementation()
   , defaultEvent_(getEvent())
@@ -53,14 +53,14 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
   , maximumIterations_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations"))
   , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
-  {
-    // Default members must be valid for Study save/load of a default instance.
-    // Both handles share their implementation until first mutation.
-    defaultSimulation_ = ProbabilitySimulationAlgorithm(defaultEvent_);
-    simulation_ = defaultSimulation_;
-    // Validate the ResourceMap entry with the same rule as the setter
-    setMaximumIterations(maximumIterations_);
-  }
+{
+  // Default members must be valid for Study save/load of a default instance.
+  // Both handles share their implementation until first mutation.
+  defaultSimulation_ = ProbabilitySimulationAlgorithm(defaultEvent_);
+  simulation_ = defaultSimulation_;
+  // Validate the ResourceMap entry with the same rule as the setter
+  setMaximumIterations(maximumIterations_);
+}
 
 /** Extract the surrogate specification from a fitter. Only the fitter
  * result exposes the covariance model and the trend basis, and getResult()
@@ -85,8 +85,8 @@ static void ExtractSurrogateSpec(const GaussianProcessFitter & fitter,
  * The design of experiment and the surrogate specification are sourced from
  * the fitter, the true event from the simulation. */
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const GaussianProcessFitter & fitter,
-                                                                       const EventSimulation & simulation,
-                                                                       const ActiveLearningReliabilityFunction & criterion)
+    const EventSimulation & simulation,
+    const ActiveLearningReliabilityFunction & criterion)
   : EventSimulationImplementation(simulation.getEvent())
   , defaultEvent_(simulation.getEvent())
   , defaultSimulation_(simulation)
@@ -107,13 +107,16 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const Gau
   // Validate the ResourceMap entry with the same rule as the setter
   setMaximumIterations(maximumIterations_);
   simulation_ = defaultSimulation_;
-  try {
+  try
+  {
     simulation_.setKeepSample(true);
     defaultSimulation_.setKeepSample(true);
-  } catch (const NotYetImplementedException &) {
+  }
+  catch (const NotYetImplementedException &)
+  {
     throw InvalidArgumentException(HERE)
-      << "ActiveLearningReliabilityAlgorithm: the simulator does not support setKeepSample. "
-      "Consider using one of these or modify the simulator to support setKeepSample.";
+        << "ActiveLearningReliabilityAlgorithm: the simulator does not support setKeepSample. "
+        "Consider using one of these or modify the simulator to support setKeepSample.";
   }
   ExtractSurrogateSpec(fitter, covarianceModel_, basis_);
   // The simulator handles share their implementation until first mutation:
@@ -173,13 +176,14 @@ GaussianProcessRegressionResult ActiveLearningReliabilityAlgorithm::fitGaussianP
 }
 
 /* Class to retrieve GP plus uncertainty as Function*/
-class GPWithUncertainty : public EvaluationImplementation {
+class GPWithUncertainty : public EvaluationImplementation
+{
 public:
   GPWithUncertainty(const GaussianProcessRegressionResult & gprResult, const Scalar kFactor)
     : kFactor_(kFactor)
     , gprCov_(gprResult)
     , gprMetamodel_(gprResult.getMetaModel())
-    {}
+  {}
 
   GPWithUncertainty * clone() const override
   {
@@ -229,7 +233,8 @@ protected:
    single-threaded runs stay reproducible without permanently perturbing
    the process-wide stream shared with other threads. The caller holds
    GetActiveLearningSimulationMutex() for the whole lifetime of the guard. */
-class RandomGeneratorSeedGuard {
+class RandomGeneratorSeedGuard
+{
 public:
   explicit RandomGeneratorSeedGuard(const UnsignedInteger seed)
     : savedState_(RandomGenerator::GetState())
@@ -270,7 +275,8 @@ static std::mutex & GetActiveLearningSimulationMutex()
    another thread) reports an error instead of blocking: a thread that waits
    on the mutex may hold the interpreter lock needed by a Python callback of
    the running algorithm, which would deadlock. */
-class ActiveLearningRunLock {
+class ActiveLearningRunLock
+{
 public:
   ActiveLearningRunLock()
     : lock_(GetActiveLearningSimulationMutex(), std::defer_lock)
@@ -278,9 +284,9 @@ public:
     // Check the thread-local flag before touching the mutex: a nested run on
     // the same thread must not call try_lock on a mutex it already owns.
     if (isRunning) throw InternalException(HERE) << "ActiveLearningReliabilityAlgorithm::run() must not be called recursively: "
-        "a model or a criterion function must not start another active learning run";
+          "a model or a criterion function must not start another active learning run";
     if (!lock_.try_lock()) throw InternalException(HERE) << "ActiveLearningReliabilityAlgorithm::run() is already "
-        "running in another thread: concurrent active learning runs are not supported";
+          "running in another thread: concurrent active learning runs are not supported";
     isRunning = true;
   }
   ~ActiveLearningRunLock()
@@ -355,10 +361,10 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty(cons
 
   // Computation of probability with GP mean
   CompositeRandomVector meanEventRV = CompositeRandomVector(GPMean,
-                                                            RandomVector(inputDistribution));
+                                      RandomVector(inputDistribution));
   ThresholdEvent meanEvent = ThresholdEvent(meanEventRV,
-                                            defaultEvent_.getOperator(),
-                                            defaultEvent_.getThreshold());
+                             defaultEvent_.getOperator(),
+                             defaultEvent_.getThreshold());
 
   EventSimulation simulationMean = defaultSimulation_;
 
@@ -371,8 +377,8 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty(cons
                                      RandomVector(inputDistribution));
 
   ThresholdEvent eventMinus = ThresholdEvent(minusEventRV,
-                                             defaultEvent_.getOperator(),
-                                             defaultEvent_.getThreshold());
+                              defaultEvent_.getOperator(),
+                              defaultEvent_.getThreshold());
 
   EventSimulation simulationMinus = defaultSimulation_;
   simulationMinus.setEvent(eventMinus);
@@ -384,8 +390,8 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty(cons
                                     RandomVector(inputDistribution));
 
   ThresholdEvent eventPlus = ThresholdEvent(plusEventRV,
-                                            defaultEvent_.getOperator(),
-                                            defaultEvent_.getThreshold());
+                             defaultEvent_.getOperator(),
+                             defaultEvent_.getThreshold());
 
   EventSimulation simulationPlus = defaultSimulation_;
   simulationPlus.setEvent(eventPlus);
@@ -399,7 +405,7 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty(cons
 
 /* Check convergence based on stability of history */
 Bool ActiveLearningReliabilityAlgorithm::checkConvergenceStability(const Scalar currentValue,
-                                                                   const Scalar previousValue)
+    const Scalar previousValue)
 {
   if (!(std::abs(currentValue) > 0.0)) return !(std::abs(previousValue) > 0.0);
   return std::abs(currentValue - previousValue) / std::abs(currentValue) <= convergenceCriterionThreshold_;
@@ -499,7 +505,7 @@ Sample ActiveLearningReliabilityAlgorithm::getOutputDoE() const
 
 void ActiveLearningReliabilityAlgorithm::setResult(const ActiveLearningReliabilityResult &activeLearningReliabilityResult)
 {
-   activeLearningReliabilityResult_ = activeLearningReliabilityResult;
+  activeLearningReliabilityResult_ = activeLearningReliabilityResult;
 }
 
 
@@ -630,11 +636,11 @@ void ActiveLearningReliabilityAlgorithm::run()
     //Estimate probability with current GP
     Function newGPRmetamodel =  finalGPRResult.getMetaModel();
     CompositeRandomVector newRandomVector = CompositeRandomVector(newGPRmetamodel,
-                                                                  RandomVector(inputDistribution));
+                                            RandomVector(inputDistribution));
 
     ThresholdEvent newEvent = ThresholdEvent(newRandomVector,
-                                             defaultEvent_.getOperator(),
-                                             defaultEvent_.getThreshold());
+                              defaultEvent_.getOperator(),
+                              defaultEvent_.getThreshold());
 
     EventSimulation currentSimulation = defaultSimulation_;
     currentSimulation.setEvent(newEvent);
@@ -678,7 +684,7 @@ void ActiveLearningReliabilityAlgorithm::run()
         const UnsignedInteger historySize = probabilityHistory_.getSize();
         if (historySize > 1)
           convergenceStatus = checkConvergenceStability(probabilityHistory_[historySize - 1],
-                                                        probabilityHistory_[historySize - 2]);
+                              probabilityHistory_[historySize - 2]);
         break;
       }
       case RELIABILITY_INDEX_STABILITY:
@@ -686,7 +692,7 @@ void ActiveLearningReliabilityAlgorithm::run()
         const UnsignedInteger historySize = reliabilityIndexHistory_.getSize();
         if (historySize > 1)
           convergenceStatus = checkConvergenceStability(reliabilityIndexHistory_[historySize - 1],
-                                                        reliabilityIndexHistory_[historySize - 2]);
+                              reliabilityIndexHistory_[historySize - 2]);
         break;
       }
       default:
@@ -721,10 +727,10 @@ void ActiveLearningReliabilityAlgorithm::run()
 
     Function finalGPRmetamodel = finalGPRResult.getMetaModel();
     CompositeRandomVector finalRandomVector = CompositeRandomVector(finalGPRmetamodel,
-                                                                    RandomVector(inputDistribution));
+        RandomVector(inputDistribution));
     ThresholdEvent finalEvent = ThresholdEvent(finalRandomVector,
-                                               defaultEvent_.getOperator(),
-                                               defaultEvent_.getThreshold());
+                                defaultEvent_.getOperator(),
+                                defaultEvent_.getThreshold());
 
     EventSimulation finalSimulation = defaultSimulation_;
     finalSimulation.setEvent(finalEvent);

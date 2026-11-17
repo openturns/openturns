@@ -30,7 +30,10 @@ ott.assert_almost_equal(from_params.getBeta(), 0.25)
 generic_from_params = factory.build(
     [10.0, 0.25, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
 )
-print("Generic build from params type = ", generic_from_params.getImplementation().getClassName())
+print(
+    "Generic build from params type = ",
+    generic_from_params.getImplementation().getClassName(),
+)
 assert generic_from_params.getImplementation().getClassName() == "Kent"
 
 # Build from sample with identity orientation

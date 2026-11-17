@@ -3,7 +3,6 @@ Test Normality
 ==============
 """
 
-
 # %%
 # In this example, we show how to test the normality of a sample of dimension 1.
 #

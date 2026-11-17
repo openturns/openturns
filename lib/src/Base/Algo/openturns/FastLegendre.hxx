@@ -47,14 +47,14 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 namespace FastLegendre
 {
-  /** Compute n standard Gauss-Legendre nodes and weights on [-1, 1].
-   *  @param n number of quadrature nodes (> 0)
-   *  @param nodes output array of length n, in strictly increasing order
-   *  @param weights output array of length n, positive and summing to 2
-   */
-  OT_API void ComputeNodesAndWeights(const UnsignedInteger n,
-                              Scalar * nodes,
-                              Scalar * weights);
+/** Compute n standard Gauss-Legendre nodes and weights on [-1, 1].
+ *  @param n number of quadrature nodes (> 0)
+ *  @param nodes output array of length n, in strictly increasing order
+ *  @param weights output array of length n, positive and summing to 2
+ */
+OT_API void ComputeNodesAndWeights(const UnsignedInteger n,
+                                   Scalar * nodes,
+                                   Scalar * weights);
 } // namespace FastLegendre
 
 END_NAMESPACE_OPENTURNS

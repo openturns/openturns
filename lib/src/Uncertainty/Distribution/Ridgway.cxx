@@ -45,7 +45,8 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-namespace {
+namespace
+{
 
 // Draw from N(0,1) truncated to [lower, upper] using inverse CDF
 // Uses a pre-generated uniform draw for thread safety in TBB regions
@@ -196,17 +197,17 @@ LowDiscrepancySequence GetRidgwaySequence(const UnsignedInteger dimension)
 // Core Gaussian orthant SMC defined below, shared by the direct and Student paths
 template <typename UniformSource>
 Scalar mvnOrthantProbabilityCore(
-    const Point& a, const Point& b,
-    const Point& mu, const TriangularMatrix& L,
-    const UnsignedInteger M,
-    const Scalar alpha,
-    UniformSource& source);
+  const Point& a, const Point& b,
+  const Point& mu, const TriangularMatrix& L,
+  const UnsignedInteger M,
+  const Scalar alpha,
+  UniformSource& source);
 
 Scalar mvn_orthant_probability(
-    const Point& a, const Point& b,
-    const Point& mu, const TriangularMatrix& L,
-    const UnsignedInteger M,
-    const Scalar alpha)
+  const Point& a, const Point& b,
+  const Point& mu, const TriangularMatrix& L,
+  const UnsignedInteger M,
+  const Scalar alpha)
 {
   // Direct path: draws are generated on demand, sequentially, outside parallel regions
   GeneratingUniformSource source;
@@ -214,10 +215,10 @@ Scalar mvn_orthant_probability(
 }
 
 Scalar mvn_orthant_probability(
-    const Point& a, const Point& b,
-    const TriangularMatrix& L,
-    const UnsignedInteger M,
-    const Scalar alpha)
+  const Point& a, const Point& b,
+  const TriangularMatrix& L,
+  const UnsignedInteger M,
+  const Scalar alpha)
 {
   const UnsignedInteger d = L.getDimension();
   return mvn_orthant_probability(a, b, Point(d, 0.0), L, M, alpha);
@@ -231,11 +232,11 @@ Scalar mvn_orthant_probability(
 // at most 1 resampling + M extension + M * t Gibbs draws.
 template <typename UniformSource>
 Scalar mvnOrthantProbabilityCore(
-    const Point& a, const Point& b,
-    const Point& mu, const TriangularMatrix& L,
-    const UnsignedInteger M,
-    const Scalar alpha,
-    UniformSource& source)
+  const Point& a, const Point& b,
+  const Point& mu, const TriangularMatrix& L,
+  const UnsignedInteger M,
+  const Scalar alpha,
+  UniformSource& source)
 {
   const UnsignedInteger d = L.getDimension();
 
@@ -243,13 +244,13 @@ Scalar mvnOrthantProbabilityCore(
     throw InvalidDimensionException(HERE) << "Dimension must be at least 1, here d=0";
   if (a.getDimension() != d)
     throw InvalidDimensionException(HERE) << "Lower bound a has dimension "
-        << a.getDimension() << ", expected " << d;
+                                          << a.getDimension() << ", expected " << d;
   if (b.getDimension() != d)
     throw InvalidDimensionException(HERE) << "Upper bound b has dimension "
-        << b.getDimension() << ", expected " << d;
+                                          << b.getDimension() << ", expected " << d;
   if (mu.getDimension() != d)
     throw InvalidDimensionException(HERE) << "Mean mu has dimension "
-        << mu.getDimension() << ", expected " << d;
+                                          << mu.getDimension() << ", expected " << d;
   if (M == 0)
     throw InvalidArgumentException(HERE) << "Number of particles must be positive, here M=0";
   if (!(alpha > 0.0))
@@ -259,10 +260,10 @@ Scalar mvnOrthantProbabilityCore(
   {
     if (a[i] > b[i])
       throw InvalidArgumentException(HERE) << "Lower bound a[" << i << "]=" << a[i]
-          << " exceeds upper bound b[" << i << "]=" << b[i];
+                                           << " exceeds upper bound b[" << i << "]=" << b[i];
     if (L(i, i) <= 0.0)
       throw InvalidArgumentException(HERE) << "Cholesky diagonal L(" << i << "," << i
-          << ")=" << L(i, i) << " must be positive";
+                                           << ")=" << L(i, i) << " must be positive";
   }
 
   // Center the bounds
@@ -277,7 +278,7 @@ Scalar mvnOrthantProbabilityCore(
   if (d == 1)
   {
     return DistFunc::pNormal(b0[0] / L(0, 0))
-         - DistFunc::pNormal(a0[0] / L(0, 0));
+           - DistFunc::pNormal(a0[0] / L(0, 0));
   }
 
   // Particle system: M particles of dimension d
@@ -287,12 +288,13 @@ Scalar mvnOrthantProbabilityCore(
   // Algorithm 3: Initialize first dimension
   // The normalizing constant of π_1 is Z_1 = Φ(B_1)
   const Scalar initProb = DistFunc::pNormal(b0[0] / L(0, 0))
-                        - DistFunc::pNormal(a0[0] / L(0, 0));
+                          - DistFunc::pNormal(a0[0] / L(0, 0));
   if (!(initProb > 0.0)) return 0.0;
   Scalar logZ = std::log(initProb);
   // Take the M initial draws sequentially, outside parallel regions
   const Point initU(source.take(M));
-  struct InitParticlesFunctor {
+  struct InitParticlesFunctor
+  {
     Sample& particles_;
     const TriangularMatrix& L_;
     const Point& a0_;
@@ -304,8 +306,10 @@ Scalar mvnOrthantProbabilityCore(
       , a0_(a0)
       , b0_(b0)
       , u_(u) {}
-    void operator()(const TBBImplementation::BlockedRange<UnsignedInteger>& r) const {
-      for (UnsignedInteger m = r.begin(); m != r.end(); ++m) {
+    void operator()(const TBBImplementation::BlockedRange<UnsignedInteger>& r) const
+    {
+      for (UnsignedInteger m = r.begin(); m != r.end(); ++m)
+      {
         const Scalar lower = a0_[0] / L_(0, 0);
         const Scalar upper = b0_[0] / L_(0, 0);
         if (upper > lower)
@@ -357,7 +361,8 @@ Scalar mvnOrthantProbabilityCore(
 
       // Gibbs moves to rejuvenate particles, using sequentially pre-taken draws
       const Point gibbsU(source.take(M * t));
-      struct GibbsMoveFunctor {
+      struct GibbsMoveFunctor
+      {
         Sample& particles_;
         const TriangularMatrix& L_;
         const Point& a0_;
@@ -371,8 +376,10 @@ Scalar mvnOrthantProbabilityCore(
           , b0_(b0)
           , t_(t)
           , u_(u) {}
-        void operator()(const TBBImplementation::BlockedRange<UnsignedInteger>& r) const {
-          for (UnsignedInteger i = r.begin(); i != r.end(); ++i) {
+        void operator()(const TBBImplementation::BlockedRange<UnsignedInteger>& r) const
+        {
+          for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+          {
             UnsignedInteger offset = i * t_;
             gibbsMove(particles_, i, L_, a0_, b0_, t_, u_, offset);
           }
@@ -383,7 +390,8 @@ Scalar mvnOrthantProbabilityCore(
 
     // Extend to dimension t (Algorithm 3 inner loop), one pre-taken draw per particle
     const Point extendU(source.take(M));
-    struct ExtendDimensionFunctor {
+    struct ExtendDimensionFunctor
+    {
       Sample& particles_;
       Point& logWeights_;
       const TriangularMatrix& L_;
@@ -399,18 +407,23 @@ Scalar mvnOrthantProbabilityCore(
         , b0_(b0)
         , t_(t)
         , u_(u) {}
-      void operator()(const TBBImplementation::BlockedRange<UnsignedInteger>& r) const {
-        for (UnsignedInteger m = r.begin(); m != r.end(); ++m) {
+      void operator()(const TBBImplementation::BlockedRange<UnsignedInteger>& r) const
+      {
+        for (UnsignedInteger m = r.begin(); m != r.end(); ++m)
+        {
           Scalar y = 0.0;
           for (UnsignedInteger j = 0; j < t_; ++j)
             y += L_(t_, j) * particles_[m][j];
           const Scalar lower = (a0_[t_] - y) / L_(t_, t_);
           const Scalar upper = (b0_[t_] - y) / L_(t_, t_);
-          if (upper > lower) {
+          if (upper > lower)
+          {
             const Scalar prob = DistFunc::pNormal(upper) - DistFunc::pNormal(lower);
             logWeights_[m] += std::log(prob);
             particles_[m][t_] = truncatedNormalDraw(lower, upper, u_[m]);
-          } else {
+          }
+          else
+          {
             logWeights_[m] = SpecFunc::LowestScalar;
           }
         }
@@ -426,12 +439,12 @@ Scalar mvnOrthantProbabilityCore(
 }
 
 Scalar mvt_orthant_probability(
-    const Point& a, const Point& b,
-    const Point& mu, const TriangularMatrix& L,
-    const Scalar nu,
-    const UnsignedInteger M,
-    const Scalar alpha,
-    const UnsignedInteger N)
+  const Point& a, const Point& b,
+  const Point& mu, const TriangularMatrix& L,
+  const Scalar nu,
+  const UnsignedInteger M,
+  const Scalar alpha,
+  const UnsignedInteger N)
 {
   const UnsignedInteger d = L.getDimension();
 
@@ -439,13 +452,13 @@ Scalar mvt_orthant_probability(
     throw InvalidDimensionException(HERE) << "Dimension must be at least 1, here d=0";
   if (a.getDimension() != d)
     throw InvalidDimensionException(HERE) << "Lower bound a has dimension "
-        << a.getDimension() << ", expected " << d;
+                                          << a.getDimension() << ", expected " << d;
   if (b.getDimension() != d)
     throw InvalidDimensionException(HERE) << "Upper bound b has dimension "
-        << b.getDimension() << ", expected " << d;
+                                          << b.getDimension() << ", expected " << d;
   if (mu.getDimension() != d)
     throw InvalidDimensionException(HERE) << "Mean mu has dimension "
-        << mu.getDimension() << ", expected " << d;
+                                          << mu.getDimension() << ", expected " << d;
   if (!(nu > 0.0))
     throw InvalidArgumentException(HERE) << "Degrees of freedom must be positive, here nu=" << nu;
   if (M == 0)
@@ -469,10 +482,10 @@ Scalar mvt_orthant_probability(
   {
     if (a[i] > b[i])
       throw InvalidArgumentException(HERE) << "Lower bound a[" << i << "]=" << a[i]
-          << " exceeds upper bound b[" << i << "]=" << b[i];
+                                           << " exceeds upper bound b[" << i << "]=" << b[i];
     if (L(i, i) <= 0.0)
       throw InvalidArgumentException(HERE) << "Cholesky diagonal L(" << i << "," << i
-          << ")=" << L(i, i) << " must be positive";
+                                           << ")=" << L(i, i) << " must be positive";
   }
 
   // Center the bounds
@@ -487,7 +500,7 @@ Scalar mvt_orthant_probability(
   if (d == 1)
   {
     return DistFunc::pStudent(nu, b0[0] / L(0, 0))
-         - DistFunc::pStudent(nu, a0[0] / L(0, 0));
+           - DistFunc::pStudent(nu, a0[0] / L(0, 0));
   }
 
   // Generate low discrepancy points for the Student outer integration
@@ -564,7 +577,10 @@ Scalar mvt_orthant_probability(
       }
     }
 
-    void join(const Reduce& other) { sum_ += other.sum_; }
+    void join(const Reduce& other)
+    {
+      sum_ += other.sum_;
+    }
   };
 
   Scalar sum = 0.0;
@@ -584,12 +600,12 @@ Scalar mvt_orthant_probability(
 }
 
 Scalar mvt_orthant_probability(
-    const Point& a, const Point& b,
-    const TriangularMatrix& L,
-    const Scalar nu,
-    const UnsignedInteger M,
-    const Scalar alpha,
-    const UnsignedInteger N)
+  const Point& a, const Point& b,
+  const TriangularMatrix& L,
+  const Scalar nu,
+  const UnsignedInteger M,
+  const Scalar alpha,
+  const UnsignedInteger N)
 {
   const UnsignedInteger d = L.getDimension();
   return mvt_orthant_probability(a, b, Point(d, 0.0), L, nu, M, alpha, N);

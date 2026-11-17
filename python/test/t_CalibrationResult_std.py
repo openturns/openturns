@@ -75,7 +75,10 @@ posteriorMean = result.getParameterPosterior().getMean()
 outputObservations = result.getOutputObservations()
 residuals = result.getResidualFunction()(posteriorMean)
 expectedOutput = ot.Sample(
-    [[outputObservations[i, 0] + residuals[i]] for i in range(outputObservations.getSize())]
+    [
+        [outputObservations[i, 0] + residuals[i]]
+        for i in range(outputObservations.getSize())
+    ]
 )
 ott.assert_almost_equal(result.getOutputAtPosteriorMean(), expectedOutput)
 
@@ -126,11 +129,7 @@ transposable.setOutputAtPriorAndPosteriorMean(
 transposable.drawObservationsVsInputs()
 
 # bootstrapped posterior is the MAP distribution, see issue #2889
-legends = [
-    legend
-    for j in range(3)
-    for legend in graph1.getGraph(0, j).getLegends()
-]
+legends = [legend for j in range(3) for legend in graph1.getGraph(0, j).getLegends()]
 assert any("MAP (bootstrap)" in legend for legend in legends)
 assert not any(legend == "Posterior" for legend in legends)
 

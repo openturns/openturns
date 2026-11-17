@@ -91,19 +91,13 @@ if scaled[probeIndex] > expectedQuantile:
 else:
     dimension = pool.getDimension()
     density = math.exp(-0.5 * (probe[0] ** 2 + probe[1] ** 2)) / (2.0 * math.pi)
-    expected = (
-        min(
-            math.sqrt(
-                (probe[0] - inputSample[j][0]) ** 2
-                + (probe[1] - inputSample[j][1]) ** 2
-            )
-            for j in range(inputSample.getSize())
+    expected = min(
+        math.sqrt(
+            (probe[0] - inputSample[j][0]) ** 2 + (probe[1] - inputSample[j][1]) ** 2
         )
-        * density ** (1.0 / dimension)
-    )
-ott.assert_almost_equal(
-    scores[probeIndex][0], expected, 1.0e-12, 1.0e-12
-)
+        for j in range(inputSample.getSize())
+    ) * density ** (1.0 / dimension)
+ott.assert_almost_equal(scores[probeIndex][0], expected, 1.0e-12, 1.0e-12)
 
 # the infill point maximizes the criterion over the pool
 infill = criterion.getInfillSample(pool, scores)
@@ -133,9 +127,7 @@ if HAVE_LIBXML2:
     study2.fillObject("criterion", loaded)
     assert loaded.getReliabilityThreshold() == threshold
     assert loaded.getLearningThreshold() == 0.1
-    ott.assert_almost_equal(
-        loaded(pool, inputSample), criterion(pool, inputSample)
-    )
+    ott.assert_almost_equal(loaded(pool, inputSample), criterion(pool, inputSample))
     os.remove(fileName)
 
 # end-to-end enrichment with the GMM criterion on a small budget

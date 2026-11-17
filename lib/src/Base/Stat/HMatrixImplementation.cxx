@@ -586,10 +586,10 @@ void HMatrixImplementation::factorize(const String& method)
     const Scalar warnThreshold = ResourceMap::GetAsScalar("HMatrix-RegularizationWarnThreshold");
     if ((maxDiag > 0.0) && (lambda / maxDiag >= warnThreshold))
       LOGWARN(OSS() << "HMatrix: the " << method << " factorization required a regularization shift of "
-             << lambda << " (ratio " << lambda / maxDiag
-             << " of the diagonal, threshold " << warnThreshold
-             << "). The factorized matrix is A + lambda * I, so the solve() and logDeterminant() "
-             << "results are for the regularized matrix and may be inaccurate.");
+              << lambda << " (ratio " << lambda / maxDiag
+              << " of the diagonal, threshold " << warnThreshold
+              << "). The factorized matrix is A + lambda * I, so the solve() and logDeterminant() "
+              << "results are for the regularized matrix and may be inaccurate.");
   }
   // isFactorized becomes true.
   isFactorized_ = true;
@@ -686,7 +686,7 @@ Matrix HMatrixImplementation::gemm_dense(char transHMat, char transDense, char s
   if (transDense == 'N')
   {
     ARows = lhsRow;
-    ACols = lhsCol; 
+    ACols = lhsCol;
   }
   else
   {
@@ -730,8 +730,8 @@ Matrix HMatrixImplementation::gemm_dense(char transHMat, char transDense, char s
   if (trans_a == 'T')
     lhsCopy = lhsCopy.transpose();
   // First reorder vectors in before performing any operation
-  static_cast<hmat_interface_t*>(hmatInterface_.get())->vector_reorder(&lhsCopy(0,0), static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get()), 0, NULL, rhs.getNbColumns());
-  static_cast<hmat_interface_t*>(hmatInterface_.get())->gemm_dense(trans_b, 'N', 'L', &alpha, static_cast<hmat_matrix_t*>(hmat_), &lhsCopy(0,0), &beta, &rhs(0,0), rhs.getNbColumns());
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->vector_reorder(&lhsCopy(0, 0), static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get()), 0, NULL, rhs.getNbColumns());
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->gemm_dense(trans_b, 'N', 'L', &alpha, static_cast<hmat_matrix_t*>(hmat_), &lhsCopy(0, 0), &beta, &rhs(0, 0), rhs.getNbColumns());
   // Restore vectors
   static_cast<hmat_interface_t*>(hmatInterface_.get())->vector_restore(&rhs(0, 0), static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get()), 0, NULL, rhs.getNbColumns());
   if (transpose_result)

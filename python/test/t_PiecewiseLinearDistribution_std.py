@@ -251,39 +251,47 @@ print("CCDF/SF/ISF OK")
 # 14. Confidence intervals
 # ---------------------------------------------------------------------------
 # Minimum volume interval
-interval_mvi, threshold_mvi = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-assert (threshold_mvi > 0.0)
+interval_mvi, threshold_mvi = (
+    distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+)
+assert threshold_mvi > 0.0
 
 # Minimum volume level set
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-assert (beta > 0.0)
+assert beta > 0.0
 
 # Bilateral confidence interval
-interval_bci, beta_bci = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
-assert (beta_bci > 0.0)
+interval_bci, beta_bci = (
+    distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+)
+assert beta_bci > 0.0
 
 # Unilateral confidence interval -- lower tail
-interval_uni_lo, beta_uni_lo = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
-assert (beta_uni_lo > 0.0)
+interval_uni_lo, beta_uni_lo = (
+    distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+)
+assert beta_uni_lo > 0.0
 
 # Unilateral confidence interval -- upper tail
-interval_uni_hi, beta_uni_hi = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
-assert (beta_uni_hi > 0.0)
+interval_uni_hi, beta_uni_hi = (
+    distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+)
+assert beta_uni_hi > 0.0
 print("Confidence intervals OK")
 
 # ---------------------------------------------------------------------------
 # 15. Equality and inequality
 # ---------------------------------------------------------------------------
 distribution3 = otexp.PiecewiseLinearDistribution(x, y)
-assert (distribution == distribution3)
-assert (not (distribution != distribution3))
+assert distribution == distribution3
+assert not (distribution != distribution3)
 
 # Different distribution
 distribution4 = otexp.PiecewiseLinearDistribution(
     ot.Point([0.0, 1.5, 3.0]), ot.Point([0.1, 1.0, 0.1])
 )
-assert (not (distribution == distribution4))
-assert (distribution != distribution4)
+assert not (distribution == distribution4)
+assert distribution != distribution4
 print("Equality/Inequality OK")
 
 # ---------------------------------------------------------------------------
@@ -345,7 +353,9 @@ ott.assert_almost_equal(dist_uni.getCovariance()[0, 0], 1.0 / 12.0)
 print("Uniform shape OK")
 
 # Triangular: x=[0,1,2], y=[0,1,0]
-dist_tri = otexp.PiecewiseLinearDistribution(ot.Point([0.0, 1.0, 2.0]), ot.Point([0.0, 1.0, 0.0]))
+dist_tri = otexp.PiecewiseLinearDistribution(
+    ot.Point([0.0, 1.0, 2.0]), ot.Point([0.0, 1.0, 0.0])
+)
 ott.assert_almost_equal(dist_tri.computePDF(1.0), 1.0)
 ott.assert_almost_equal(dist_tri.computeCDF(0.0), 0.0)
 ott.assert_almost_equal(dist_tri.computeCDF(2.0), 1.0)
@@ -427,7 +437,9 @@ print("OK: quantile out-of-range thrown")
 eps = 1e-8
 for test_x in [0.3, 0.7, 1.0, 1.5]:
     pdf_val = distribution.computePDF(test_x)
-    cdf_deriv = (distribution.computeCDF(test_x + eps) - distribution.computeCDF(test_x - eps)) / (2.0 * eps)
+    cdf_deriv = (
+        distribution.computeCDF(test_x + eps) - distribution.computeCDF(test_x - eps)
+    ) / (2.0 * eps)
     ott.assert_almost_equal(pdf_val, cdf_deriv, 1e-6, 1e-6)
 print("CDF-PDF consistency OK")
 
@@ -435,10 +447,10 @@ print("CDF-PDF consistency OK")
 # 22. Distribution properties
 # ---------------------------------------------------------------------------
 ott.assert_almost_equal(distribution.getDimension(), 1)
-assert (distribution.isContinuous())
-assert (not distribution.isDiscrete())
-assert (not distribution.isElliptical())
-assert (not distribution.isCopula())
+assert distribution.isContinuous()
+assert not distribution.isDiscrete()
+assert not distribution.isElliptical()
+assert not distribution.isCopula()
 
 range_ = distribution.getRange()
 ott.assert_almost_equal(range_.getLowerBound()[0], 0.0)
@@ -501,7 +513,9 @@ print("All tests passed!")
 # --- PiecewiseLinearDistribution: equality sees its base ---
 x = [0.0, 1.0, 2.0]
 y = [0.5, 1.0, 0.5]
-assert otexp.PiecewiseLinearDistribution(x, y) == otexp.PiecewiseLinearDistribution(x, y)
-assert otexp.PiecewiseLinearDistribution(
+assert otexp.PiecewiseLinearDistribution(x, y) == otexp.PiecewiseLinearDistribution(
     x, y
-) != otexp.PiecewiseLinearDistribution(x, [0.5, 2.0, 0.5])
+)
+assert otexp.PiecewiseLinearDistribution(x, y) != otexp.PiecewiseLinearDistribution(
+    x, [0.5, 2.0, 0.5]
+)

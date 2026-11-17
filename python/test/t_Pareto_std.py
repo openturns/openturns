@@ -97,7 +97,10 @@ ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [5.85938]), 1e-5, 0.0
 parameters = distribution.getParametersCollection()
 assert len(parameters) == 1
 ott.assert_almost_equal(parameters[0], [7.5, 5.0, -7.0], 0.0, 0.0)
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Pareto"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "Pareto"
+)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
@@ -115,6 +118,8 @@ ott.assert_almost_equal(ot.Pareto(1.0, 1.0, 0.0).computeDDF([1.0]), [0.0], 0.0, 
 
 # Density at the finite lower bound gamma + beta: alpha / beta
 ott.assert_almost_equal(distribution.computePDF(0.5), 5.0 / 7.5, 1e-12, 0.0)
-ott.assert_almost_equal(distribution.computeLogPDF(0.5), math.log(5.0 / 7.5), 1e-12, 0.0)
+ott.assert_almost_equal(
+    distribution.computeLogPDF(0.5), math.log(5.0 / 7.5), 1e-12, 0.0
+)
 # Roughness: analytic value alpha^2 / (beta * (2 * alpha + 1))
 ott.assert_almost_equal(ot.Pareto(1.0, 2.0).getRoughness(), 0.8)

@@ -35,7 +35,9 @@ x = [0.5] * 2
 
 # Value-based equality compares the reference measure and the functions
 assert factory == otexp.FiniteOrthogonalFunctionFactory(initialBasis, distribution)
-assert factory != otexp.FiniteOrthogonalFunctionFactory(initialBasis, ot.Normal(mean, std))
+assert factory != otexp.FiniteOrthogonalFunctionFactory(
+    initialBasis, ot.Normal(mean, std)
+)
 assert factory != otexp.FiniteOrthogonalFunctionFactory(initialBasis[:2], distribution)
 kMax = len(initialBasis)
 distribution = factory.getMeasure()

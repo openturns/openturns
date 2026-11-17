@@ -221,7 +221,7 @@ void AbdoRackwitz::run()
 
     result_.setOptimalPoint(currentPoint_);
     result_.setOptimalValue(Point(1, currentLevelValue_));
-    
+
     if (stop)
     {
       result_.setStatus(OptimizationResult::SUCCESS);

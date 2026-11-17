@@ -101,9 +101,7 @@ ott.assert_almost_equal(locator.queryScalar(ot.Point([0.5, 1.5, 5.0])), [0, 1, 2
 # out-of-range queries return simplicesNumber
 assert locator.queryScalar(5.0) == 2
 assert locator.queryScalar(-1.0) == 2
-decreasing = ot.EnclosingSimplexMonotonic1D(
-    ot.Sample.BuildFromPoint([2.0, 1.0, 0.0])
-)
+decreasing = ot.EnclosingSimplexMonotonic1D(ot.Sample.BuildFromPoint([2.0, 1.0, 0.0]))
 assert decreasing.queryScalar(-1.0) == 2
 assert decreasing.queryScalar(5.0) == 2
 assert decreasing.query([1.0]) == 1

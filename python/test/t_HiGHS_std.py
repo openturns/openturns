@@ -18,7 +18,9 @@ ot.ResourceMap.AddAsBool("HiGHS-output_flag", True)
 bounds = ot.Interval([0.0, 1.0], [4.0, 1e30], [True, True], [True, False])
 cost = [1.1, 1.0]
 A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
-cb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e30], [False, True, True], [True, True, False])
+cb = ot.Interval(
+    [-1e9, 5.0, 6.0], [7.0, 15.0, 1e30], [False, True, True], [True, True, False]
+)
 problem = otexp.LinearProgrammingProblem(cost, bounds, A, cb)
 print(problem)
 
@@ -52,7 +54,9 @@ problemFunctionConstraint.setInequalityConstraint(
 )
 algoFunctionConstraint = otexp.HiGHS(problemFunctionConstraint)
 algoFunctionConstraint.run()
-ott.assert_almost_equal(algoFunctionConstraint.getResult().getOptimalPoint(), [0.0, 1.0])
+ott.assert_almost_equal(
+    algoFunctionConstraint.getResult().getOptimalPoint(), [0.0, 1.0]
+)
 
 sol = {
     ot.OptimizationProblemImplementation.CONTINUOUS: [0.5, 2.25],
@@ -64,7 +68,10 @@ for vtype in [
 ]:
     problem.setVariablesType([vtype] * 2)
     for solver in ["choose", "simplex", "ipm"]:
-        if vtype != ot.OptimizationProblemImplementation.CONTINUOUS and solver != "choose":
+        if (
+            vtype != ot.OptimizationProblemImplementation.CONTINUOUS
+            and solver != "choose"
+        ):
             # discrete problems are solved by the MIP solver
             with ott.assert_raises(TypeError):
                 otexp.HiGHS(problem, solver)
@@ -107,15 +114,14 @@ for vtype in [
                 algo.getReducedCosts()
 
 # setter after construction
-problem.setVariablesType(
-    [ot.OptimizationProblemImplementation.CONTINUOUS] * 2
-)
+problem.setVariablesType([ot.OptimizationProblemImplementation.CONTINUOUS] * 2)
 algo = otexp.HiGHS(problem)
 algo.setAlgorithmName("simplex")
 assert algo.getAlgorithmName() == "simplex", "algorithm name"
 algo.run()
 ott.assert_almost_equal(
-    algo.getResult().getOptimalPoint(), sol[ot.OptimizationProblemImplementation.CONTINUOUS]
+    algo.getResult().getOptimalPoint(),
+    sol[ot.OptimizationProblemImplementation.CONTINUOUS],
 )
 
 # the constant term shifts the optimal value, not the optimal point
@@ -125,7 +131,8 @@ algoConstant = otexp.HiGHS(problem, "simplex")
 algoConstant.run()
 resultConstant = algoConstant.getResult()
 ott.assert_almost_equal(
-    resultConstant.getOptimalPoint(), sol[ot.OptimizationProblemImplementation.CONTINUOUS]
+    resultConstant.getOptimalPoint(),
+    sol[ot.OptimizationProblemImplementation.CONTINUOUS],
 )
 ott.assert_almost_equal(resultConstant.getOptimalValue(), [1.1 * 0.5 + 2.25 + 10.0])
 problem.setConstant(0.0)
@@ -261,9 +268,7 @@ dimension = 20000
 largeRows = list(range(dimension))
 largeColumns = list(range(dimension))
 largeValues = [1.0] * dimension
-largeA = otexp.SparseMatrix(
-    dimension, dimension, largeRows, largeColumns, largeValues
-)
+largeA = otexp.SparseMatrix(dimension, dimension, largeRows, largeColumns, largeValues)
 largeBounds = ot.Interval([0.0] * dimension, [1e30] * dimension)
 largeConstraint = ot.Interval([1.0] * dimension, [1e30] * dimension)
 largeProblem = otexp.LinearProgrammingProblem(
@@ -288,7 +293,9 @@ for i in range(n_cons):
     row = normal.getSample(n_vars).asPoint()
     for j in range(n_vars):
         A_cb[i, j] = row[j]
-upper_cb = [sum(abs(A_cb[i, j]) for j in range(n_vars)) * 0.5 + 1.0 for i in range(n_cons)]
+upper_cb = [
+    sum(abs(A_cb[i, j]) for j in range(n_vars)) * 0.5 + 1.0 for i in range(n_cons)
+]
 cb_cb = ot.Interval([-1e30] * n_cons, upper_cb, [False] * n_cons, [True] * n_cons)
 problem_cb = otexp.LinearProgrammingProblem(cost_cb, bounds_cb, A_cb, cb_cb)
 
@@ -304,7 +311,9 @@ def stop_now():
 def check_monotonic(progress_calls):
     assert len(progress_calls) > 0, "progress callback was not invoked"
     assert all(0.0 <= p <= 100.0 for p in progress_calls), "progress out of range"
-    assert all(b >= a for a, b in zip(progress_calls, progress_calls[1:])), "progress not monotonic"
+    assert all(
+        b >= a for a, b in zip(progress_calls, progress_calls[1:])
+    ), "progress not monotonic"
 
 
 for solver in ["simplex", "ipm"]:

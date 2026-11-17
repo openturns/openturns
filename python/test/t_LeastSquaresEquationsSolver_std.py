@@ -23,7 +23,9 @@ ott.assert_almost_equal(analytical(solution), [0, 0], 1e-5, 1e-5)
 # Extra coverage (no output to preserve expout)
 assert len(repr(algo)) > 0
 default_solver = ot.LeastSquaresEquationsSolver()
-assert default_solver.getOptimizationAlgorithm().getClassName() == "OptimizationAlgorithm"
+assert (
+    default_solver.getOptimizationAlgorithm().getClassName() == "OptimizationAlgorithm"
+)
 algo.setOptimizationAlgorithm(ot.Cobyla())
 assert "Cobyla" in repr(algo.getOptimizationAlgorithm())
 # incompatible optimizer triggers the fallback solver setup
@@ -31,9 +33,7 @@ with ott.assert_raises(Exception):
     algo.solve(analytical, starting_point)
 algo.setOptimizationAlgorithm(default_solver.getOptimizationAlgorithm())
 # solve with explicit bounds
-bounded = algo.solve(
-    analytical, starting_point, ot.Interval([-5.0, -5.0], [5.0, 5.0])
-)
+bounded = algo.solve(analytical, starting_point, ot.Interval([-5.0, -5.0], [5.0, 5.0]))
 ott.assert_almost_equal(analytical(bounded), [0, 0], 1e-5, 1e-5)
 # bounds of wrong dimension
 with ott.assert_raises(Exception):

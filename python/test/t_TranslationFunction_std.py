@@ -40,7 +40,9 @@ assert ev.getOutputDimension() == 3
 assert ev.isLinear()
 assert ev.isLinearlyDependent(0)
 ott.assert_almost_equal(ev(inPoint), outPoint, 1e-14, 1e-14)
-ott.assert_almost_equal(ev(ot.Sample([inPoint, inPoint])), [outPoint, outPoint], 1e-14, 1e-14)
+ott.assert_almost_equal(
+    ev(ot.Sample([inPoint, inPoint])), [outPoint, outPoint], 1e-14, 1e-14
+)
 ott.assert_almost_equal(ev.getConstant(), [2.0, 3.0, -4.0], 1e-14, 1e-14)
 ev.setConstant([1.0, 1.0, 1.0])
 ott.assert_almost_equal(ev(inPoint), inPoint + [1.0, 1.0, 1.0], 1e-14, 1e-14)

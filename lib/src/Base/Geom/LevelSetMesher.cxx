@@ -717,7 +717,8 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
           if (!project)
           {
             const Point newPosition(currentVertex + delta);
-            if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
+            if (isRemove) movedVertices[moveSlot] = newPosition;
+            else movedVertices.add(newPosition);
           }
           else
           {
@@ -750,7 +751,8 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
             {
               const LinearFunction tToPoint(Point(1), currentVertex, Matrix(currentVertex.getDimension(), 1, shift));
               const Point newPosition(tToPoint(Point(1, tStar)));
-              if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
+              if (isRemove) movedVertices[moveSlot] = newPosition;
+              else movedVertices.add(newPosition);
             }
             else
             {
@@ -768,7 +770,8 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
               {
                 solver.run();
                 const Point newPosition(currentVertex + solver.getResult().getOptimalPoint());
-                if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
+                if (isRemove) movedVertices[moveSlot] = newPosition;
+                else movedVertices.add(newPosition);
               }
               catch (const Exception &)
               {
@@ -780,13 +783,15 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
                 {
                   cobyla.run();
                   const Point newPosition(currentVertex + cobyla.getResult().getOptimalPoint());
-                  if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
+                  if (isRemove) movedVertices[moveSlot] = newPosition;
+                  else movedVertices.add(newPosition);
                 }
                 catch (const Exception &)
                 {
                   LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << cobyla << ", use basic linear interpolation");
                   const Point newPosition(currentVertex + delta);
-                  if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
+                  if (isRemove) movedVertices[moveSlot] = newPosition;
+                  else movedVertices.add(newPosition);
                 }
               } // User-defined solver failed ?
             } // minimizeDistance

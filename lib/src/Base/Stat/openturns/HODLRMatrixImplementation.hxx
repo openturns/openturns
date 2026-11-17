@@ -70,8 +70,14 @@ class OT_API HODLRRealAssemblyFunction
 {
 public:
   virtual ~HODLRRealAssemblyFunction() {}
-  HODLRRealAssemblyFunction* clone() const override { return new HODLRRealAssemblyFunction(*this); }
-  UnsignedInteger getSize() const override { return 0; }
+  HODLRRealAssemblyFunction* clone() const override
+  {
+    return new HODLRRealAssemblyFunction(*this);
+  }
+  UnsignedInteger getSize() const override
+  {
+    return 0;
+  }
 };
 
 /**
@@ -97,9 +103,15 @@ public:
     return f_(i, j);
   }
 
-  UnsignedInteger getSize() const override { return size_; }
+  UnsignedInteger getSize() const override
+  {
+    return size_;
+  }
 
-  Bool isParallel() const override { return parallel_; }
+  Bool isParallel() const override
+  {
+    return parallel_;
+  }
 
 private:
   EvalFunction f_;
@@ -116,7 +128,10 @@ class OT_API HODLRCovarianceAssemblyFunction
 public:
   HODLRCovarianceAssemblyFunction(const CovarianceModel & covarianceModel,
                                   const Sample & vertices);
-  HODLRCovarianceAssemblyFunction* clone() const override { return new HODLRCovarianceAssemblyFunction(*this); }
+  HODLRCovarianceAssemblyFunction* clone() const override
+  {
+    return new HODLRCovarianceAssemblyFunction(*this);
+  }
   Scalar operator()(UnsignedInteger i, UnsignedInteger j) const override;
   UnsignedInteger getSize() const override;
 

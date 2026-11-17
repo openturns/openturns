@@ -29,9 +29,13 @@ dist1 = otexp.PushForwardOverMesh(field1)
 # shared by two segments and their first-match value depends on segment
 # order, while midpoints lie strictly inside one image segment each.
 midpoints1 = ot.Sample(
-    [[0.5 * (imgVertices1[i][0] + imgVertices1[i + 1][0]),
-      0.5 * (imgVertices1[i][1] + imgVertices1[i + 1][1])]
-     for i in range(nSeg)]
+    [
+        [
+            0.5 * (imgVertices1[i][0] + imgVertices1[i + 1][0]),
+            0.5 * (imgVertices1[i][1] + imgVertices1[i + 1][1]),
+        ]
+        for i in range(nSeg)
+    ]
 )
 pdf1 = [dist1.computePDF(p) for p in midpoints1]
 ax1.plot(circleX, circleY, "k--", lw=1.0, label="unit disk")
@@ -47,7 +51,9 @@ plt.colorbar(sc1, ax=ax1, label="PDF")
 # Case n=2, p=2: reference mesh of the unit disk (LevelSetMesher) mapped by
 # the identity P1 field. The push-forward reduces to the uniform distribution
 # over the disk mesh; the PDF is constant 1/area.
-level = ot.LevelSet(ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1^2 - 1.0"]), ot.Less(), 0.0)
+level = ot.LevelSet(
+    ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1^2 - 1.0"]), ot.Less(), 0.0
+)
 box = ot.Interval([-1.0, -1.0], [1.0, 1.0])
 refMesh2 = ot.LevelSetMesher([20, 20]).build(level, box, False)
 imgMesh2 = refMesh2
@@ -59,7 +65,13 @@ ax2.plot(circleX, circleY, "k--", lw=1.0)
 # Draw the mesh support lightly and annotate the constant PDF
 meshGraph = imgMesh2.draw()
 # Use a scatter colored by the (constant) PDF for the legend
-sc2 = ax2.scatter([v[0] for v in verts2], [v[1] for v in verts2], c=[pdf2] * len(verts2), cmap="viridis", s=4)
+sc2 = ax2.scatter(
+    [v[0] for v in verts2],
+    [v[1] for v in verts2],
+    c=[pdf2] * len(verts2),
+    cmap="viridis",
+    s=4,
+)
 ax2.set_aspect("equal", adjustable="box")
 ax2.set_title(f"n=2, p=2: PDF on disk mesh (PDF={pdf2:.3f})")
 ax2.set_xlabel(r"$y_0$")

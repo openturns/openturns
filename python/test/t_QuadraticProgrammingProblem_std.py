@@ -142,9 +142,7 @@ assert problemFunctions.getLinearConstraintBounds().getUpperBound() == [2.5]
 problemFunctions.setEqualityConstraint(
     ot.LinearFunction([1.0, 1.0], [-2.5], ot.Matrix([[1.0, 1.0]]))
 )
-ott.assert_almost_equal(
-    problemFunctions.getEqualityConstraint()([0.0, 0.0]), [-4.5]
-)
+ott.assert_almost_equal(problemFunctions.getEqualityConstraint()([0.0, 0.0]), [-4.5])
 
 # setting one kind preserves the other kind
 problemFunctions.setInequalityConstraint(
@@ -152,12 +150,8 @@ problemFunctions.setInequalityConstraint(
 )
 assert problemFunctions.hasEqualityConstraint()
 assert problemFunctions.hasInequalityConstraint()
-ott.assert_almost_equal(
-    problemFunctions.getEqualityConstraint()([0.0, 0.0]), [-4.5]
-)
-ott.assert_almost_equal(
-    problemFunctions.getInequalityConstraint()([0.0, 0.0]), [1.0]
-)
+ott.assert_almost_equal(problemFunctions.getEqualityConstraint()([0.0, 0.0]), [-4.5])
+ott.assert_almost_equal(problemFunctions.getInequalityConstraint()([0.0, 0.0]), [1.0])
 
 # an empty function clears the corresponding constraints
 problemFunctions.setInequalityConstraint(ot.Function())
@@ -180,9 +174,7 @@ problemFunctionEquality.setEqualityConstraint(
 )
 algoFunctions = otexp.HiGHS(problemFunctionEquality)
 algoFunctions.run()
-ott.assert_almost_equal(
-    algoFunctions.getResult().getOptimalPoint(), [0.75, 1.75]
-)
+ott.assert_almost_equal(algoFunctions.getResult().getOptimalPoint(), [0.75, 1.75])
 
 # a generic problem carrying constraint functions is still rejected by HiGHS
 baseProblem = ot.OptimizationProblem(ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1^2"]))
@@ -208,7 +200,9 @@ ott.assert_almost_equal(resultLS.getOptimalPoint(), [0.5, 2.25])
 ott.assert_almost_equal(resultLS.getOptimalValue(), [0.375])
 
 # empty bounds leave the least-squares problem unconstrained: solution [1, 2]
-problemLSUnbounded = otexp.QuadraticProgrammingProblem.FromLeastSquares(A, b, ot.Interval())
+problemLSUnbounded = otexp.QuadraticProgrammingProblem.FromLeastSquares(
+    A, b, ot.Interval()
+)
 algoLSUnbounded = otexp.HiGHS(problemLSUnbounded)
 algoLSUnbounded.run()
 ott.assert_almost_equal(algoLSUnbounded.getResult().getOptimalPoint(), [1.0, 2.0])
@@ -217,7 +211,9 @@ ott.assert_almost_equal(algoLSUnbounded.getResult().getOptimalValue(), [0.0])
 # linear constraints: projection of (1, 2) onto x0 + x1 = 2.5
 Aconstraint = ot.Matrix([[1.0, 1.0]])
 constraintBounds = ot.Interval([2.5], [2.5])
-problemC = otexp.QuadraticProgrammingProblem(Q, c, ot.Interval(), Aconstraint, constraintBounds)
+problemC = otexp.QuadraticProgrammingProblem(
+    Q, c, ot.Interval(), Aconstraint, constraintBounds
+)
 algoC = otexp.HiGHS(problemC)
 algoC.run()
 ott.assert_almost_equal(algoC.getResult().getOptimalPoint(), [0.75, 1.75])
@@ -274,7 +270,9 @@ ott.assert_almost_equal(inequalityTwoSided([1.0, 0.0]), [1.0, 1.5])
 # a problem can mix equality and inequality rows
 mixedMatrix = ot.Matrix([[1.0, 1.0], [1.0, -1.0]])
 mixedBounds = ot.Interval([2.5, -1e30], [2.5, 1.0], [True, False], [True, True])
-problemMixed = otexp.QuadraticProgrammingProblem(Q, c, ot.Interval(), mixedMatrix, mixedBounds)
+problemMixed = otexp.QuadraticProgrammingProblem(
+    Q, c, ot.Interval(), mixedMatrix, mixedBounds
+)
 assert problemMixed.hasEqualityConstraint()
 assert problemMixed.hasInequalityConstraint()
 equalityMixed = problemMixed.getEqualityConstraint()
@@ -315,7 +313,9 @@ with ott.assert_raises(ValueError):
         ot.Matrix(2, 1), [1.0, 2.0, 3.0], ot.Interval()
     )
 with ott.assert_raises(ValueError):
-    otexp.QuadraticProgrammingProblem.FromLeastSquares(ot.Matrix(2, 1), [1.0, 2.0], ot.Interval(2))
+    otexp.QuadraticProgrammingProblem.FromLeastSquares(
+        ot.Matrix(2, 1), [1.0, 2.0], ot.Interval(2)
+    )
 with ott.assert_raises(ValueError):
     problemC.setLinearConstraint(ot.Matrix(2, 1), ot.Interval(2))
 with ott.assert_raises(ValueError):

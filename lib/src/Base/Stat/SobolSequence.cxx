@@ -231,15 +231,15 @@ void SobolSequence::setScrambling(const String & scrambling)
     scrambling_ = scrambling;
     // initialize multidigit scrambling parameters
     if (scrambling == "MULTIDIGIT")
-      {
-        multidigitBits_ = ResourceMap::GetAsUnsignedInteger("SobolSequence-MultidigitBits");
-        if (!(multidigitBits_ > 0 && multidigitBits_ <= MaximumBase2Logarithm))
-          throw InvalidArgumentException(HERE) << "Error: the \"SobolSequence-MultidigitBits\" key has an invalid value=" << multidigitBits_ << ". It must be strictly positive and less or equal to " << MaximumBase2Logarithm;
-        multidigitModulus_ = (static_cast<Unsigned64BitsInteger>(1) << multidigitBits_) - 1;
-        multidigitMultiplier_ = ResourceMap::GetAsUnsignedInteger("SobolSequence-MultidigitMultiplier");
-        if (multidigitMultiplier_ == 0)
-          throw InvalidArgumentException(HERE) << "Error: the \"SobolSequence-MultidigitMultiplier\" key has an invalid value=" << multidigitMultiplier_ << ". It must be strictly positive.";          
-      }
+    {
+      multidigitBits_ = ResourceMap::GetAsUnsignedInteger("SobolSequence-MultidigitBits");
+      if (!(multidigitBits_ > 0 && multidigitBits_ <= MaximumBase2Logarithm))
+        throw InvalidArgumentException(HERE) << "Error: the \"SobolSequence-MultidigitBits\" key has an invalid value=" << multidigitBits_ << ". It must be strictly positive and less or equal to " << MaximumBase2Logarithm;
+      multidigitModulus_ = (static_cast<Unsigned64BitsInteger>(1) << multidigitBits_) - 1;
+      multidigitMultiplier_ = ResourceMap::GetAsUnsignedInteger("SobolSequence-MultidigitMultiplier");
+      if (multidigitMultiplier_ == 0)
+        throw InvalidArgumentException(HERE) << "Error: the \"SobolSequence-MultidigitMultiplier\" key has an invalid value=" << multidigitMultiplier_ << ". It must be strictly positive.";
+    }
     initialize(dimension_);
   }
 }
@@ -292,12 +292,12 @@ void SobolSequence::load(Advocate & adv)
   adv.loadAttribute( "coefficients_", coefficients_);
   scrambling_ = "NONE";
   if (adv.hasAttribute("scrambling_"))
-    {
-      adv.loadAttribute( "scrambling_", scrambling_);
-      adv.loadAttribute( "multidigitBits_", multidigitBits_);
-      adv.loadAttribute( "multidigitModulus_", multidigitModulus_);
-      adv.loadAttribute( "multidigitMultiplier_", multidigitMultiplier_);
-    }
+  {
+    adv.loadAttribute( "scrambling_", scrambling_);
+    adv.loadAttribute( "multidigitBits_", multidigitBits_);
+    adv.loadAttribute( "multidigitModulus_", multidigitModulus_);
+    adv.loadAttribute( "multidigitMultiplier_", multidigitMultiplier_);
+  }
 }
 
 

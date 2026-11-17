@@ -37,7 +37,7 @@ class OT_API ActiveLearningUFunction
 {
   CLASSNAME
 public:
- /** Default constructor */
+  /** Default constructor */
   ActiveLearningUFunction();
 
   /** Default constructor */

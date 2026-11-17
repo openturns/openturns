@@ -85,7 +85,7 @@ static Point BesselZeros(const Scalar a,
   {
     const Scalar beta = (k + 0.5 * a - 0.25) * M_PI;
     Scalar z = beta - (mu - 1.0) / (8.0 * beta)
-      - 4.0 * (mu - 1.0) * (7.0 * mu - 31.0) / (3.0 * std::pow(8.0 * beta, 3));
+               - 4.0 * (mu - 1.0) * (7.0 * mu - 31.0) / (3.0 * std::pow(8.0 * beta, 3));
     for (UnsignedInteger iter = 0; iter < 10; ++iter)
     {
       const Scalar step = SpecFunc::BesselJ(a, z) / SpecFunc::BesselJDerivative(a, z);
@@ -234,9 +234,9 @@ struct JacobiBoundaryTables
 };
 
 static JacobiBoundaryTables BuildBoundaryTables(const Scalar alpha,
-                                                const Scalar beta,
-                                                const Scalar thetaMax,
-                                                const UnsignedInteger n)
+    const Scalar beta,
+    const Scalar thetaMax,
+    const UnsignedInteger n)
 {
   const Scalar A = 0.25 - alpha * alpha;
   const Scalar B = 0.25 - beta * beta;
@@ -278,8 +278,8 @@ static JacobiBoundaryTables BuildBoundaryTables(const Scalar alpha,
     fcos[i] = B / std::pow(2.0 * std::cos(t[i] / 2.0), 2);
     const Scalar t2 = t[i] * t[i];
     f[i] = -A * (1.0 / 12.0 + t2 / 240.0 + t2 * t2 / 6048.0 + t2 * t2 * t2 / 172800.0
-                  + t2 * t2 * t2 * t2 / 5322240.0 + 691.0 * t2 * t2 * t2 * t2 * t2 / 118879488000.0
-                  + t2 * t2 * t2 * t2 * t2 * t2 / 5748019200.0);
+                 + t2 * t2 * t2 * t2 / 5322240.0 + 691.0 * t2 * t2 * t2 * t2 * t2 / 118879488000.0
+                 + t2 * t2 * t2 * t2 * t2 * t2 / 5748019200.0);
   }
   for (UnsignedInteger i = 0; i < Npts; ++i)
   {
@@ -914,10 +914,10 @@ static Bool RefineBoundaryBlock(const UnsignedInteger n,
 
 // Full asymptotic rule: interior everywhere, Bessel boundary overwrite
 static Bool ComputeNodesAndWeightsAsymptotic(const UnsignedInteger n,
-                                             const Scalar alpha,
-                                             const Scalar beta,
-                                             Scalar * nodes,
-                                             Scalar * weights)
+    const Scalar alpha,
+    const Scalar beta,
+    Scalar * nodes,
+    Scalar * weights)
 {
   Point x;
   Point w;
@@ -970,61 +970,61 @@ static Bool ComputeNodesAndWeightsAsymptotic(const UnsignedInteger n,
 
 namespace FastJacobi
 {
-  void ComputeNodesAndWeights(const UnsignedInteger n,
-                              const Scalar alpha,
-                              const Scalar beta,
-                              Scalar * nodes,
-                              Scalar * weights)
+void ComputeNodesAndWeights(const UnsignedInteger n,
+                            const Scalar alpha,
+                            const Scalar beta,
+                            Scalar * nodes,
+                            Scalar * weights)
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be > 0";
+  if (alpha <= -1.0) throw InvalidArgumentException(HERE) << "Error: alpha must be > -1";
+  if (beta <= -1.0) throw InvalidArgumentException(HERE) << "Error: beta must be > -1";
+  if (n == 1)
   {
-    if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be > 0";
-    if (alpha <= -1.0) throw InvalidArgumentException(HERE) << "Error: alpha must be > -1";
-    if (beta <= -1.0) throw InvalidArgumentException(HERE) << "Error: beta must be > -1";
-    if (n == 1)
-    {
-      nodes[0] = (beta - alpha) / (alpha + beta + 2.0);
-      weights[0] = 1.0;
-      return;
-    }
-
-    // Symmetric recurrence coefficients for orthonormal Jacobi polynomials
-    const Scalar ab = alpha + beta;
-    Point gamma(n);
-    Point b(n, 0.0);
-    gamma[0] = (beta - alpha) / (ab + 2.0);
-    for (UnsignedInteger j = 1; j < n; ++j)
-    {
-      const Scalar s = (1.0 * j);
-      const Scalar t = 2.0 * s + ab;
-      gamma[j] = (beta * beta - alpha * alpha) / (t * (t + 2.0));
-      // Canceled form for j == 1: s + ab == t - 1, so the general formula
-      // suffers a 0/0 cancellation when ab == -1 and loses accuracy when
-      // ab is close to -1; the canceled form is exact for all ab
-      if (j == 1)
-        b[j] = 2.0 / t * std::sqrt((s + alpha) * (s + beta) / (t + 1.0));
-      else
-        b[j] = 2.0 / t * std::sqrt(s * (s + alpha) * (s + beta) * (s + ab) / ((t + 1.0) * (t - 1.0)));
-    }
-
-    // Large rules use the Hale-Townsend asymptotic path, small ones the
-    // polished eigensolver; threshold from the ResourceMap.
-    // Above the threshold the relative accuracy is better than 5e-13 and
-    // the asymptotic path is faster.
-    // Validity: the Hale-Townsend expansions assume moderate exponents.
-    // Chebfun jacpts warns for MAX(ALPHA, BETA) > 5 when asymmetric, and the
-    // mpmath oracle shows symmetric cases need the same guard ((6, 6) fails
-    // at n=100 with 1.5e-12, (30, 30) fails even at n=1000 with 1e-05).
-    // Gate validated to 5e-13: max <= 5 for n < 200, max <= 10 for n >= 200;
-    // larger exponents fall back to the polished solver.
-    const UnsignedInteger asymptoticThreshold = ResourceMap::GetAsUnsignedInteger("FastJacobi-AsymptoticThreshold");
-    const Scalar maxAB = std::max(alpha, beta);
-    const Scalar allowedMax = (n >= 200 ? 10.0 : 5.0);
-    if ((n >= asymptoticThreshold) && (maxAB <= allowedMax))
-    {
-      if (ComputeNodesAndWeightsAsymptotic(n, alpha, beta, nodes, weights)) return;
-      // fall through to the polished eigensolver on asymptotic failure
-    }
-    FastGaussQuadrature::PolishedSolve(gamma.data(), b.data(), n, nodes, weights);
+    nodes[0] = (beta - alpha) / (alpha + beta + 2.0);
+    weights[0] = 1.0;
+    return;
   }
+
+  // Symmetric recurrence coefficients for orthonormal Jacobi polynomials
+  const Scalar ab = alpha + beta;
+  Point gamma(n);
+  Point b(n, 0.0);
+  gamma[0] = (beta - alpha) / (ab + 2.0);
+  for (UnsignedInteger j = 1; j < n; ++j)
+  {
+    const Scalar s = (1.0 * j);
+    const Scalar t = 2.0 * s + ab;
+    gamma[j] = (beta * beta - alpha * alpha) / (t * (t + 2.0));
+    // Canceled form for j == 1: s + ab == t - 1, so the general formula
+    // suffers a 0/0 cancellation when ab == -1 and loses accuracy when
+    // ab is close to -1; the canceled form is exact for all ab
+    if (j == 1)
+      b[j] = 2.0 / t * std::sqrt((s + alpha) * (s + beta) / (t + 1.0));
+    else
+      b[j] = 2.0 / t * std::sqrt(s * (s + alpha) * (s + beta) * (s + ab) / ((t + 1.0) * (t - 1.0)));
+  }
+
+  // Large rules use the Hale-Townsend asymptotic path, small ones the
+  // polished eigensolver; threshold from the ResourceMap.
+  // Above the threshold the relative accuracy is better than 5e-13 and
+  // the asymptotic path is faster.
+  // Validity: the Hale-Townsend expansions assume moderate exponents.
+  // Chebfun jacpts warns for MAX(ALPHA, BETA) > 5 when asymmetric, and the
+  // mpmath oracle shows symmetric cases need the same guard ((6, 6) fails
+  // at n=100 with 1.5e-12, (30, 30) fails even at n=1000 with 1e-05).
+  // Gate validated to 5e-13: max <= 5 for n < 200, max <= 10 for n >= 200;
+  // larger exponents fall back to the polished solver.
+  const UnsignedInteger asymptoticThreshold = ResourceMap::GetAsUnsignedInteger("FastJacobi-AsymptoticThreshold");
+  const Scalar maxAB = std::max(alpha, beta);
+  const Scalar allowedMax = (n >= 200 ? 10.0 : 5.0);
+  if ((n >= asymptoticThreshold) && (maxAB <= allowedMax))
+  {
+    if (ComputeNodesAndWeightsAsymptotic(n, alpha, beta, nodes, weights)) return;
+    // fall through to the polished eigensolver on asymptotic failure
+  }
+  FastGaussQuadrature::PolishedSolve(gamma.data(), b.data(), n, nodes, weights);
+}
 } // namespace FastJacobi
 
 END_NAMESPACE_OPENTURNS

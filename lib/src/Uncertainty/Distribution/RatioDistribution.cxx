@@ -721,7 +721,7 @@ Scalar RatioDistribution::computeInverseMoment(const UnsignedInteger n) const
   const Scalar relativeError = ResourceMap::GetAsScalar("RatioDistribution-InverseMomentRelativeError");
   if (!std::isfinite(value[0]) || !(error <= relativeError * (1.0 + std::abs(value[0]))))
     throw NotDefinedException(HERE) << "Error: unable to compute the inverse moment of order " << n
-                                     << " of the denominator, the integral is likely divergent";
+                                    << " of the denominator, the integral is likely divergent";
   return value[0];
 }
 

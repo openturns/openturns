@@ -39,9 +39,7 @@ assert math.isinf(LPDF)
 PDF = distribution.computePDF(point)
 assert PDF == 0.0
 CDF = distribution.computeCDF(point)
-prob = distribution.computeProbability(
-    ot.Interval([0.0, 1.0, 2.0], [0.5, 1.5, 2.5])
-)
+prob = distribution.computeProbability(ot.Interval([0.0, 1.0, 2.0], [0.5, 1.5, 2.5]))
 assert prob >= 0.0
 quantile = distribution.computeQuantile(0.95)
 assert distribution.computeCDF(quantile) >= 0.95
@@ -63,7 +61,9 @@ assert distribution.getSupport().getSize() == 12
 # A huge finite bound must be clamped, not wrapped on UnsignedInteger cast
 ott.assert_almost_equal(distribution.computeCDF([1e300, 1e300, 1e300]), 1.0)
 ott.assert_almost_equal(
-    distribution.computeProbability(ot.Interval([1e300, 1e300, 1e300], [1e301, 1e301, 1e301])),
+    distribution.computeProbability(
+        ot.Interval([1e300, 1e300, 1e300], [1e301, 1e301, 1e301])
+    ),
     0.0,
 )
 
@@ -90,9 +90,9 @@ def iter_atoms(n, colors):
 
 
 def pdf_formula(n, colors, x):
-    return math.prod(math.comb(colors[i], x[i]) for i in range(len(colors))) / math.comb(
-        sum(colors), n
-    )
+    return math.prod(
+        math.comb(colors[i], x[i]) for i in range(len(colors))
+    ) / math.comb(sum(colors), n)
 
 
 def check_distribution(n, colors):
@@ -110,9 +110,14 @@ def check_distribution(n, colors):
         ott.assert_almost_equal(dist.computeCDF(x), rec, 1e-9, 1e-9)
     # probability of a single atom and of the box [0, x]
     for x, ref in mass:
-        ott.assert_almost_equal(dist.computeProbability(ot.Interval(x, x)), ref, 1e-9, 1e-9)
         ott.assert_almost_equal(
-            dist.computeProbability(ot.Interval(dim * [0.0], x)), dist.computeCDF(x), 1e-9, 1e-9
+            dist.computeProbability(ot.Interval(x, x)), ref, 1e-9, 1e-9
+        )
+        ott.assert_almost_equal(
+            dist.computeProbability(ot.Interval(dim * [0.0], x)),
+            dist.computeCDF(x),
+            1e-9,
+            1e-9,
         )
     # complementary CDF and survival function as partial sums
     for x, _ in mass:
@@ -121,8 +126,12 @@ def check_distribution(n, colors):
         rec_surv = sum(m for y, m in mass if all(y[i] > x[i] for i in range(dim)))
         ott.assert_almost_equal(dist.computeSurvivalFunction(x), rec_surv, 1e-9, 1e-9)
         # survival function with non-integer thresholds and negative bounds
-        rec_surv0 = sum(m for y, m in mass if all(y[i] > x[i] - 0.5 for i in range(dim)))
-        ott.assert_almost_equal(dist.computeSurvivalFunction([v - 0.5 for v in x]), rec_surv0, 1e-9, 1e-9)
+        rec_surv0 = sum(
+            m for y, m in mass if all(y[i] > x[i] - 0.5 for i in range(dim))
+        )
+        ott.assert_almost_equal(
+            dist.computeSurvivalFunction([v - 0.5 for v in x]), rec_surv0, 1e-9, 1e-9
+        )
     # CDF is monotone with respect to the component-wise partial order
     for a, _ in mass:
         for b, _ in mass:
@@ -143,13 +152,27 @@ check_distribution(2, [1, 1, 1, 1])
 dist3, atoms3, mass3 = check_distribution(5, [3, 3, 3])
 hyper = ot.Hypergeometric(9, 3, 5)
 for x in range(-1, 8):
-    ott.assert_almost_equal(dist3.getMarginal(0).computePDF(x), hyper.computePDF(x), 1e-12, 1e-12)
-    ott.assert_almost_equal(dist3.getMarginal(0).computeCDF(x), hyper.computeCDF(x), 1e-12, 1e-12)
-    ott.assert_almost_equal(dist3.getMarginal(0).computeSurvivalFunction(x), hyper.computeSurvivalFunction(x), 1e-12, 1e-12)
+    ott.assert_almost_equal(
+        dist3.getMarginal(0).computePDF(x), hyper.computePDF(x), 1e-12, 1e-12
+    )
+    ott.assert_almost_equal(
+        dist3.getMarginal(0).computeCDF(x), hyper.computeCDF(x), 1e-12, 1e-12
+    )
+    ott.assert_almost_equal(
+        dist3.getMarginal(0).computeSurvivalFunction(x),
+        hyper.computeSurvivalFunction(x),
+        1e-12,
+        1e-12,
+    )
 # The 2D marginal probabilities match the closed form with a rest category
 m2 = dist3.getMarginal([0, 1])
 for x0, x1 in [(0, 2), (1, 1), (2, 2), (3, 0)]:
-    ref = math.comb(3, x0) * math.comb(3, x1) * math.comb(3, 5 - x0 - x1) / math.comb(9, 5)
+    ref = (
+        math.comb(3, x0)
+        * math.comb(3, x1)
+        * math.comb(3, 5 - x0 - x1)
+        / math.comb(9, 5)
+    )
     ott.assert_almost_equal(m2.computePDF([x0, x1]), ref, 1e-12, 1e-12)
 # The covariance of the 2D marginal
 ott.assert_almost_equal(dist3.getCovariance()[0, 0], 5.0 / 9.0, 1e-12, 1e-12)
@@ -163,8 +186,12 @@ dist1 = otexp.MultivariateHypergeometric(4, [3, 5]).getMarginal(0)
 for x in range(-1, 7):
     ott.assert_almost_equal(dist1.computePDF(x), hyper1.computePDF(x), 1e-12, 1e-12)
     ott.assert_almost_equal(dist1.computeCDF(x), hyper1.computeCDF(x), 1e-12, 1e-12)
-    ott.assert_almost_equal(dist1.computeProbability(ot.Interval([0.5], [2.5])),
-                            hyper1.computeProbability(ot.Interval([0.5], [2.5])), 1e-12, 1e-12)
+    ott.assert_almost_equal(
+        dist1.computeProbability(ot.Interval([0.5], [2.5])),
+        hyper1.computeProbability(ot.Interval([0.5], [2.5])),
+        1e-12,
+        1e-12,
+    )
 
 # Deterministic 1D limit: a single color category with the full box
 det = otexp.MultivariateHypergeometric(4, [4])
@@ -219,17 +246,13 @@ for x, ref in [(a, pdf_formula(3, [3, 3], a)) for a in iter_atoms(3, [3, 3])]:
 # wrongly removed non-monotone tails and returned 0.999... for [170,190]×full.
 dist_reg = otexp.MultivariateHypergeometric(300, [300, 300, 400])
 ott.assert_almost_equal(
-    dist_reg.computeProbability(
-        ot.Interval([170.0, 0.0, 0.0], [190.0, 300.0, 300.0])
-    ),
+    dist_reg.computeProbability(ot.Interval([170.0, 0.0, 0.0], [190.0, 300.0, 300.0])),
     4.543e-32,
     1e-6,
     1e-6,
 )
 ott.assert_almost_equal(
-    dist_reg.computeProbability(
-        ot.Interval([21.0, 0.0, 0.0], [60.0, 300.0, 300.0])
-    ),
+    dist_reg.computeProbability(ot.Interval([21.0, 0.0, 0.0], [60.0, 300.0, 300.0])),
     2.780e-6,
     1e-6,
     1e-6,
@@ -248,8 +271,11 @@ m120 = dist_perm.getMarginal([1, 2, 0])
 ott.assert_almost_equal(m012.getMean(), [5.0 / 3.0, 20.0 / 9.0, 10.0 / 9.0])
 ott.assert_almost_equal(m120.getMean(), [20.0 / 9.0, 10.0 / 9.0, 5.0 / 3.0])
 # The first component of the permuted marginal is the original component 1
-ott.assert_almost_equal(dist_perm.getMarginal([1, 0]).getMarginal(0).getMean(),
-                        dist_perm.getMarginal(1).getMean(), 1e-12)
+ott.assert_almost_equal(
+    dist_perm.getMarginal([1, 0]).getMarginal(0).getMean(),
+    dist_perm.getMarginal(1).getMean(),
+    1e-12,
+)
 
 # ---------------- regression: setParameter restores eta through the setters ----------------
 # setParameter reconstructs the object; a non-default eta must be preserved and
@@ -260,37 +286,58 @@ dist_eta.setParameter([4, 9, 3, 3, 3])
 ott.assert_almost_equal(dist_eta.getEta(), 0.5)
 dist_eta_ref = otexp.MultivariateHypergeometric(4, [3, 3, 3])
 dist_eta_ref.setEta(0.5)
-ott.assert_almost_equal(dist_eta.computeCDF([2, 2, 2]), dist_eta_ref.computeCDF([2, 2, 2]), 1e-12)
+ott.assert_almost_equal(
+    dist_eta.computeCDF([2, 2, 2]), dist_eta_ref.computeCDF([2, 2, 2]), 1e-12
+)
 
 # ---------------- defective case: 1D reduces to Hypergeometric, mimicking Multinomial/Binomial ----------------
 # 1D defective with total C reduces to Hypergeometric(C, K, n)
 hyper_def = ot.Hypergeometric(8, 3, 4)
 dist_def1 = otexp.MultivariateHypergeometric(4, [3], 8)
 for x in range(-1, 7):
-    ott.assert_almost_equal(dist_def1.computePDF([x]), hyper_def.computePDF([x]), 1e-12, 1e-12)
-    ott.assert_almost_equal(dist_def1.computeCDF([x]), hyper_def.computeCDF([x]), 1e-12, 1e-12)
-    ott.assert_almost_equal(dist_def1.computeProbability(ot.Interval([0.5], [2.5])),
-                            hyper_def.computeProbability(ot.Interval([0.5], [2.5])), 1e-12, 1e-12)
+    ott.assert_almost_equal(
+        dist_def1.computePDF([x]), hyper_def.computePDF([x]), 1e-12, 1e-12
+    )
+    ott.assert_almost_equal(
+        dist_def1.computeCDF([x]), hyper_def.computeCDF([x]), 1e-12, 1e-12
+    )
+    ott.assert_almost_equal(
+        dist_def1.computeProbability(ot.Interval([0.5], [2.5])),
+        hyper_def.computeProbability(ot.Interval([0.5], [2.5])),
+        1e-12,
+        1e-12,
+    )
 
 
 # Defective 2D PDF sums to one and matches the closed form with rest
 def pdf_defect(n, colors, total, x):
     rest = total - sum(colors)
-    return (math.prod(math.comb(colors[i], x[i]) for i in range(len(colors)))
-            * math.comb(rest, n - sum(x)) / math.comb(total, n))
+    return (
+        math.prod(math.comb(colors[i], x[i]) for i in range(len(colors)))
+        * math.comb(rest, n - sum(x))
+        / math.comb(total, n)
+    )
 
 
 dist_def2 = otexp.MultivariateHypergeometric(4, [3, 2], 8)
-ott.assert_almost_equal(sum(dist_def2.computePDF(p) for p in dist_def2.getSupport()), 1.0, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    sum(dist_def2.computePDF(p) for p in dist_def2.getSupport()), 1.0, 1e-12, 1e-12
+)
 for atom in dist_def2.getSupport():
     x = [int(v) for v in atom]
-    ott.assert_almost_equal(dist_def2.computePDF(x), pdf_defect(4, [3, 2], 8, x), 1e-12, 1e-12)
+    ott.assert_almost_equal(
+        dist_def2.computePDF(x), pdf_defect(4, [3, 2], 8, x), 1e-12, 1e-12
+    )
 # The marginal of a defective distribution keeps the same total (mimicking Multinomial)
-ott.assert_almost_equal(dist_def2.getMarginal(0).computePDF([2]), hyper_def.computePDF([2]), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    dist_def2.getMarginal(0).computePDF([2]), hyper_def.computePDF([2]), 1e-12, 1e-12
+)
 
 # computeLogPDF on-support point matches log(computePDF)
 for a, _ in mass3:
-    ott.assert_almost_equal(dist3.computeLogPDF(a), math.log(dist3.computePDF(a)), 1e-12, 1e-15)
+    ott.assert_almost_equal(
+        dist3.computeLogPDF(a), math.log(dist3.computePDF(a)), 1e-12, 1e-15
+    )
 
 # DistributionValidation
 ot.Log.Show(ot.Log.TRACE)

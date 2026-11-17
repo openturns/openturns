@@ -58,11 +58,11 @@ Y = f(X) + ot.Normal(0.0, 0.2).getSample(N)
 # which is also the direction that drives :math:`Y`:
 
 plt.scatter(X.getMarginal(0), X.getMarginal(1), c=Y)
-plt.xlabel('x1')
-plt.ylabel('x2')
-plt.axis('square')
+plt.xlabel("x1")
+plt.ylabel("x2")
+plt.axis("square")
 plt.title("2D colored dataset")
-plt.colorbar(label='Y')
+plt.colorbar(label="Y")
 plt.show()
 
 # %%
@@ -86,16 +86,21 @@ transformation = result.getTransformation()
 # :meth:`~openturns.experimental.SlicedInverseRegressionResult.getDirections`:
 
 plt.scatter(X.getMarginal(0), X.getMarginal(1), c=Y)
-plt.xlabel('x1')
-plt.ylabel('x2')
-plt.axis('square')
+plt.xlabel("x1")
+plt.ylabel("x2")
+plt.axis("square")
 plt.title("First direction of SIR")
 dir_sir = result.getDirections()
-plt.plot([-dir_sir[0, 0] * 30, dir_sir[0, 0] * 30],
-         [-dir_sir[1, 0] * 30, dir_sir[1, 0] * 30], c='red', label='SIR')
+plt.plot(
+    [-dir_sir[0, 0] * 30, dir_sir[0, 0] * 30],
+    [-dir_sir[1, 0] * 30, dir_sir[1, 0] * 30],
+    c="red",
+    label="SIR",
+)
 beta = ot.Point([1.0, 2.0]) / math.sqrt(5)
-plt.plot([-beta[0] * 30, beta[0] * 30],
-         [-beta[1] * 30, beta[1] * 30], 'k--', label='True')
+plt.plot(
+    [-beta[0] * 30, beta[0] * 30], [-beta[1] * 30, beta[1] * 30], "k--", label="True"
+)
 plt.legend()
 plt.show()
 
@@ -121,9 +126,9 @@ print("Eigenvalues:", eigenvalues)
 
 X_sir = transformation(X)
 plt.scatter(X_sir.getMarginal(0), Y, alpha=0.7)
-plt.xlabel('First SIR component')
-plt.ylabel('Y')
-plt.title('Projection onto SIR direction vs Y')
+plt.xlabel("First SIR component")
+plt.ylabel("Y")
+plt.title("Projection onto SIR direction vs Y")
 plt.show()
 
 # %%
@@ -192,8 +197,12 @@ for i in range(n_hd):
     X_true[i, 0] = z1[i]
     X_true[i, 1] = z2[i]
 
-plt.scatter([X_true[i, 0] for i in range(n_hd)],
-            [X_true[i, 1] for i in range(n_hd)], c=colors_hd, cmap="viridis")
+plt.scatter(
+    [X_true[i, 0] for i in range(n_hd)],
+    [X_true[i, 1] for i in range(n_hd)],
+    c=colors_hd,
+    cmap="viridis",
+)
 plt.xlabel("True coordinate 1")
 plt.ylabel("True coordinate 2")
 plt.axis("square")
@@ -216,8 +225,10 @@ print("SIR eigenvalues:", result_hd.getEigenvalues())
 directions_hd = result_hd.getDirections()
 for k in range(2):
     dk = ot.Point([directions_hd[i, k] for i in range(d_hd)])
-    print(f"direction {k}: |<d, e1>|={abs(dk.dot(edr1)):.3f} "
-          f"|<d, e2>|={abs(dk.dot(edr2)):.3f}")
+    print(
+        f"direction {k}: |<d, e1>|={abs(dk.dot(edr1)):.3f} "
+        f"|<d, e2>|={abs(dk.dot(edr2)):.3f}"
+    )
 
 # %%
 # Projection on the SIR space
@@ -228,8 +239,12 @@ for k in range(2):
 # predictive directions.
 
 X_sir_hd = result_hd.getTransformation()(X_hd)
-plt.scatter([X_sir_hd[i, 0] for i in range(n_hd)],
-            [X_sir_hd[i, 1] for i in range(n_hd)], c=colors_hd, cmap="viridis")
+plt.scatter(
+    [X_sir_hd[i, 0] for i in range(n_hd)],
+    [X_sir_hd[i, 1] for i in range(n_hd)],
+    c=colors_hd,
+    cmap="viridis",
+)
 plt.xlabel("SIR coordinate 1")
 plt.ylabel("SIR coordinate 2")
 plt.axis("square")
@@ -256,8 +271,7 @@ plt.show()
 Xc_hd = X_hd - X_hd.computeMean()
 Mc_hd = ot.Matrix(Xc_hd)
 singularValues, U_hd, VT_hd = Mc_hd.computeSVD()
-print("PCA singular values (first 5):",
-      [singularValues[i] for i in range(5)])
+print("PCA singular values (first 5):", [singularValues[i] for i in range(5)])
 V_hd = VT_hd.transpose()
 V2_hd = ot.Matrix(d_hd, 2)
 for i in range(d_hd):
@@ -265,8 +279,10 @@ for i in range(d_hd):
         V2_hd[i, j] = V_hd[i, j]
 for k in range(2):
     vk = ot.Point([V_hd[i, k] for i in range(d_hd)])
-    print(f"PCA axis {k}: |<v, e1>|={abs(vk.dot(edr1)):.3f} "
-          f"|<v, e2>|={abs(vk.dot(edr2)):.3f}")
+    print(
+        f"PCA axis {k}: |<v, e1>|={abs(vk.dot(edr1)):.3f} "
+        f"|<v, e2>|={abs(vk.dot(edr2)):.3f}"
+    )
 Mpca_hd = Mc_hd * V2_hd
 X_pca_hd = ot.Sample(n_hd, 2)
 for i in range(n_hd):
@@ -283,8 +299,12 @@ for i in range(n_hd):
 # to the response. The flat spectrum of singular values confirms that
 # no variance direction dominates.
 
-plt.scatter([X_pca_hd[i, 0] for i in range(n_hd)],
-            [X_pca_hd[i, 1] for i in range(n_hd)], c=colors_hd, cmap="viridis")
+plt.scatter(
+    [X_pca_hd[i, 0] for i in range(n_hd)],
+    [X_pca_hd[i, 1] for i in range(n_hd)],
+    c=colors_hd,
+    cmap="viridis",
+)
 plt.xlabel("PCA coordinate 1")
 plt.ylabel("PCA coordinate 2")
 plt.axis("square")

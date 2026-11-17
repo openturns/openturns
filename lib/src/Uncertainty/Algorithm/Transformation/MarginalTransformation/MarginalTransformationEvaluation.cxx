@@ -41,7 +41,10 @@ static Description BuildConsistentMarginalParameterDescription(const Distributio
 {
   const UnsignedInteger dimension = marginal.getParameter().getDimension();
   Description description;
-  try { description = marginal.getParameterDescription(); }
+  try
+  {
+    description = marginal.getParameterDescription();
+  }
   catch (const NotYetImplementedException &) { /* fall through to the default below */ }
   if (description.getSize() != dimension)
   {
@@ -510,44 +513,44 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
         * the rows associated with the output marginal parameters store
         * -(dcdf/dpq)(Q(F(x, pf), pq), pq) / pdf(Q(F(x, pf), pq))
         */
+      {
+        UnsignedInteger inputParametersDimension = 0;
+        for (UnsignedInteger j = 0; j < inputDimension; ++j)
+          inputParametersDimension += inputDistributionCollection_[j].getParameter().getDimension();
+        UnsignedInteger rowInput = 0;
+        UnsignedInteger rowOutput = inputParametersDimension;
+        for (UnsignedInteger j = 0; j < inputDimension; ++j)
         {
-          UnsignedInteger inputParametersDimension = 0;
-          for (UnsignedInteger j = 0; j < inputDimension; ++j)
-            inputParametersDimension += inputDistributionCollection_[j].getParameter().getDimension();
-          UnsignedInteger rowInput = 0;
-          UnsignedInteger rowOutput = inputParametersDimension;
-          for (UnsignedInteger j = 0; j < inputDimension; ++j)
+          const Point x(1, inP[j]);
+          const Distribution inputMarginal(inputDistributionCollection_[j]);
+          const Distribution outputMarginal(outputDistributionCollection_[j]);
+          const Point q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
+          const Scalar denominator = outputMarginal.computePDF(q);
+          const UnsignedInteger inputMarginalParametersDimension = inputMarginal.getParameter().getDimension();
+          const UnsignedInteger outputMarginalParametersDimension = outputMarginal.getParameter().getDimension();
+          if (denominator > 0.0)
           {
-            const Point x(1, inP[j]);
-            const Distribution inputMarginal(inputDistributionCollection_[j]);
-            const Distribution outputMarginal(outputDistributionCollection_[j]);
-            const Point q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
-            const Scalar denominator = outputMarginal.computePDF(q);
-            const UnsignedInteger inputMarginalParametersDimension = inputMarginal.getParameter().getDimension();
-            const UnsignedInteger outputMarginalParametersDimension = outputMarginal.getParameter().getDimension();
-            if (denominator > 0.0)
+            const Point leftGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
+            for (UnsignedInteger i = 0; i < leftGradient.getDimension(); ++i)
             {
-              const Point leftGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
-              for (UnsignedInteger i = 0; i < leftGradient.getDimension(); ++i)
-              {
-                result(rowInput, j) = leftGradient[i];
-                ++rowInput;
-              }
-              const Point rightGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
-              for (UnsignedInteger i = 0; i < rightGradient.getDimension(); ++i)
-              {
-                result(rowOutput, j) = rightGradient[i];
-                ++rowOutput;
-              }
+              result(rowInput, j) = leftGradient[i];
+              ++rowInput;
             }
-            else
+            const Point rightGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
+            for (UnsignedInteger i = 0; i < rightGradient.getDimension(); ++i)
             {
-              rowInput += inputMarginalParametersDimension;
-              rowOutput += outputMarginalParametersDimension;
+              result(rowOutput, j) = rightGradient[i];
+              ++rowOutput;
             }
-          } // BOTH
-        }
-        break;
+          }
+          else
+          {
+            rowInput += inputMarginalParametersDimension;
+            rowOutput += outputMarginalParametersDimension;
+          }
+        } // BOTH
+      }
+      break;
       default:
         // Should never go there
         throw NotYetImplementedException(HERE) << "In MarginalTransformationEvaluation::parameterGradient(const Point & inP)";

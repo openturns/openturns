@@ -43,11 +43,11 @@ ActiveLearningGMMFunction::ActiveLearningGMMFunction()
 
 /* Constructor with parameters */
 ActiveLearningGMMFunction::ActiveLearningGMMFunction(const Scalar reliabilityThreshold,
-                                                     const Scalar learningThreshold,
-                                                     const Distribution & inputDistribution,
-                                                     const Scalar outputQuantileLevel)
+    const Scalar learningThreshold,
+    const Distribution & inputDistribution,
+    const Scalar outputQuantileLevel)
   : ActiveLearningReliabilityFunctionImplementation(reliabilityThreshold,
-                                                    learningThreshold)
+      learningThreshold)
   , inputDistribution_(inputDistribution)
   , outputQuantileLevel_(outputQuantileLevel)
 {
@@ -78,8 +78,8 @@ Scalar ActiveLearningGMMFunction::computeAsScalar(const Point &) const
   // pool itself, so it is only defined for a whole sample, and it needs the
   // current design of experiment to compute the distances.
   throw InvalidArgumentException(HERE) << "The GMM criterion is defined on a whole candidate sample together with the "
-    "current design of experiment: use operator()(inputSample, inputDoE) or getInfillSample(), "
-    "a point-by-point evaluation has no meaning";
+                                       "current design of experiment: use operator()(inputSample, inputDoE) or getInfillSample(), "
+                                       "a point-by-point evaluation has no meaning";
 }
 
 
@@ -145,7 +145,7 @@ Bool ActiveLearningGMMFunction::checkConvergenceLearning(const Sample & criterio
   if (criterionValues.getSize() == 0) throw InvalidArgumentException(HERE) << "Cannot check learning convergence on an empty sample of criterion values";
   const Scalar max_GMM = criterionValues.getMax()[0];
 
-  if (max_GMM <=learningThreshold_)
+  if (max_GMM <= learningThreshold_)
   {
     return true;
   }
@@ -157,7 +157,7 @@ Bool ActiveLearningGMMFunction::checkConvergenceLearning(const Sample & criterio
 
 /* Return sample corresponding to GMM criterion*/
 Sample ActiveLearningGMMFunction::getInfillSample(const Sample & inputSample,
-                                                  const Sample & criterionValues) const
+    const Sample & criterionValues) const
 {
   Indices indextoReturn(1);
   indextoReturn[0] = criterionValues.argsort(false)[0];

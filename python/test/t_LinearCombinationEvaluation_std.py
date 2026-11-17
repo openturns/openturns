@@ -36,7 +36,9 @@ _ = repr(myEvaluation)
 _ = str(myEvaluation)
 assert myEvaluation.getInputDimension() == 3
 assert myEvaluation.getOutputDimension() == 1
-ott.assert_almost_equal(myEvaluation(ot.Sample([inPoint, inPoint]))[0], myEvaluation(inPoint), 1e-14, 1e-14)
+ott.assert_almost_equal(
+    myEvaluation(ot.Sample([inPoint, inPoint]))[0], myEvaluation(inPoint), 1e-14, 1e-14
+)
 _ = myEvaluation.getCoefficients()
 _ = myEvaluation.getFunctionsCollection()
 _ = myEvaluation.getParameter()
@@ -56,9 +58,14 @@ with ott.assert_raises(Exception):
 with ott.assert_raises(Exception):
     ot.LinearCombinationEvaluation(functions, [0.3])
 with ott.assert_raises(Exception):
-    ot.LinearCombinationEvaluation([functions[0], ot.SymbolicFunction(["x"], ["x"])], [0.5, 0.5])
+    ot.LinearCombinationEvaluation(
+        [functions[0], ot.SymbolicFunction(["x"], ["x"])], [0.5, 0.5]
+    )
 with ott.assert_raises(Exception):
-    ot.LinearCombinationEvaluation([functions[0], ot.SymbolicFunction(["x1", "x2", "x3"], ["x1", "x2"])], [0.5, 0.5])
+    ot.LinearCombinationEvaluation(
+        [functions[0], ot.SymbolicFunction(["x1", "x2", "x3"], ["x1", "x2"])],
+        [0.5, 0.5],
+    )
 with ott.assert_raises(Exception):
     myEvaluation.setParameter([0.0])
 # small-coefficient filtering + isZero branch

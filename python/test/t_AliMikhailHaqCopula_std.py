@@ -119,13 +119,21 @@ unitCopula = ot.AliMikhailHaqCopula(1.0)
 ott.assert_almost_equal(unitCopula.computeCDF([0.2, 0.2]), 1.0 / 9.0, 1e-12, 0.0)
 ott.assert_almost_equal(unitCopula.computePDF([0.2, 0.2]), 1.71467764, 1e-6, 0.0)
 ott.assert_almost_equal(unitCopula.computeArchimedeanGenerator(0.5), 1.0, 0.0, 0.0)
-ott.assert_almost_equal(unitCopula.computeInverseArchimedeanGenerator(1.0), 0.5, 0.0, 0.0)
-ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorDerivative(0.5), -4.0, 0.0, 0.0)
-ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorSecondDerivative(0.5), 16.0, 0.0, 0.0)
+ott.assert_almost_equal(
+    unitCopula.computeInverseArchimedeanGenerator(1.0), 0.5, 0.0, 0.0
+)
+ott.assert_almost_equal(
+    unitCopula.computeArchimedeanGeneratorDerivative(0.5), -4.0, 0.0, 0.0
+)
+ott.assert_almost_equal(
+    unitCopula.computeArchimedeanGeneratorSecondDerivative(0.5), 16.0, 0.0, 0.0
+)
 
 # Theta=0 is the independent copula, of generator -log(t)
 independentCopula = ot.AliMikhailHaqCopula(0.0)
-ott.assert_almost_equal(independentCopula.computeArchimedeanGeneratorDerivative(0.5), -2.0, 0.0, 0.0)
+ott.assert_almost_equal(
+    independentCopula.computeArchimedeanGeneratorDerivative(0.5), -2.0, 0.0, 0.0
+)
 ott.assert_almost_equal(
     independentCopula.computeArchimedeanGeneratorSecondDerivative(0.5), 4.0, 0.0, 0.0
 )

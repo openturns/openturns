@@ -77,9 +77,7 @@ factory = ot.BernsteinCopulaFactory()
 small_sample = ot.GumbelCopula(3.0).getSample(30)
 assert factory.build(small_sample).getClassName() == "Distribution"
 assert factory.build(small_sample, "AMISE").getClassName() == "Distribution"
-assert (
-    factory.build(small_sample, "LogLikelihood").getClassName() == "Distribution"
-)
+assert factory.build(small_sample, "LogLikelihood").getClassName() == "Distribution"
 f = ot.SymbolicFunction("t", "-log(t)")
 assert (
     factory.build(small_sample, "PenalizedCsiszarDivergence", f).getClassName()

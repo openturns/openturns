@@ -15,9 +15,9 @@ def checkMixture(distribution, atoms, weights, constant, classNames):
     coll = distribution.getDistributionCollection()
     assert len(coll) == len(classNames), "wrong number of atoms"
     for i in range(len(coll)):
-        assert (
-            coll[i].getImplementation().getClassName() == classNames[i]
-        ), "wrong atom class at position %d" % i
+        assert coll[i].getImplementation().getClassName() == classNames[i], (
+            "wrong atom class at position %d" % i
+        )
     # The moments of the combination are exact whatever the simplifications
     mean = constant
     variance = 0.0
@@ -107,13 +107,13 @@ atoms = [
 ]
 weights = [1.0, 1.0, 2.0, 3.0, 4.0]
 d = ot.LinearCombinationDistribution(atoms, weights, 2.0)
-checkMixture(
-    d, atoms, weights, 2.0, ["Triangular", "Trapezoidal", "Uniform"]
-)
+checkMixture(d, atoms, weights, 2.0, ["Triangular", "Trapezoidal", "Uniform"])
 
 # Test merge of Bernoulli and Binomial atoms
 # Deactivate the fusion of discrete atoms
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 0)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-MaximumSupportSize", 0
+)
 atoms = [
     ot.Bernoulli(0.5),
     ot.Bernoulli(0.5),
@@ -134,17 +134,25 @@ checkMixture(
 
 # Test merge of Poisson atoms
 # Deactivate the fusion of discrete atoms
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 0)
-atoms = [ot.Poisson(3.0), ot.Poisson(2.0), ot.Poisson(6.0), ot.Poisson(10.0), ot.Poisson(4.0)]
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-MaximumSupportSize", 0
+)
+atoms = [
+    ot.Poisson(3.0),
+    ot.Poisson(2.0),
+    ot.Poisson(6.0),
+    ot.Poisson(10.0),
+    ot.Poisson(4.0),
+]
 weights = [1.0, 2.0, 3.0, 2.0, 1.0]
 d = ot.LinearCombinationDistribution(atoms, weights, 2.0)
-checkMixture(
-    d, atoms, weights, 2.0, ["Poisson", "Poisson", "Poisson"]
-)
+checkMixture(d, atoms, weights, 2.0, ["Poisson", "Poisson", "Poisson"])
 
 # Test fusion of opposite-weight Poisson atoms into a Skellam atom weighted
 # by the absolute value of their weights
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 10000)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-MaximumSupportSize", 10000
+)
 # identical parameters
 atoms = [ot.Poisson(2.0), ot.Poisson(2.0)]
 d = ot.LinearCombinationDistribution(atoms, [2.5, -2.5], 2.0)
@@ -167,7 +175,9 @@ ott.assert_almost_equal(
 # generic evaluation on the raw atoms gives the same values.
 # Note that a leftover Uniform atom absorbs its weight into its bounds,
 # hence the unit weights below.
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 10000)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-MaximumSupportSize", 10000
+)
 # more continuous atoms
 atoms = [ot.Logistic(), ot.Binomial(2, 0.5), ot.Uniform()]
 d = ot.LinearCombinationDistribution(atoms, [1.0, 2.0, 3.0], 2.0)
@@ -202,7 +212,10 @@ checkWeights(d, [1.0, 1.0])
 atoms = [ot.Logistic(), ot.Bernoulli(0.1), ot.Binomial(2, 0.5), ot.Uniform()]
 d = ot.LinearCombinationDistribution(atoms, [1.0, 2.0, 3.0, 4.0], 2.0)
 checkMixture(
-    d, atoms, [1.0, 2.0, 3.0, 4.0], 2.0,
+    d,
+    atoms,
+    [1.0, 2.0, 3.0, 4.0],
+    2.0,
     ["Logistic", "Uniform", "FiniteDiscreteDistribution"],
 )
 checkWeights(d, [1.0, 1.0, 1.0])
@@ -219,7 +232,9 @@ for offset in [-1.5, -0.5, 0.0, 0.5, 1.5]:
 
 # Test the fusion of discrete atoms
 # All the atoms have a too large support
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 1)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-MaximumSupportSize", 1
+)
 atoms = [ot.Binomial(2, 0.1), ot.Binomial(3, 0.5), ot.Poisson(), ot.Geometric()]
 weights = [1.0, 2.0, 3.0, 4.0]
 d = ot.LinearCombinationDistribution(atoms, weights, 2.0)
@@ -232,7 +247,9 @@ checkMixture(
 )
 
 # Some atoms have a too large support, no pending aggregated discrete
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 15)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-MaximumSupportSize", 15
+)
 atoms = [ot.Binomial(2, 0.1), ot.Binomial(3, 0.5), ot.Poisson(), ot.Geometric()]
 weights = [1.0, 2.0, 3.0, 4.0]
 d = ot.LinearCombinationDistribution(atoms, weights, 2.0)
@@ -245,7 +262,9 @@ checkMixture(
 )
 
 # Some atoms have a too large support, a pending aggregated discrete
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 15)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-MaximumSupportSize", 15
+)
 atoms = [
     ot.Binomial(2, 0.1),
     ot.Binomial(3, 0.5),
@@ -264,7 +283,9 @@ checkMixture(
 )
 
 # All the atoms can be merged
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 100)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-MaximumSupportSize", 100
+)
 atoms = [ot.Bernoulli(0.1), ot.Bernoulli(0.2), ot.Bernoulli(0.3), ot.Bernoulli(0.4)]
 weights = [1.0, 2.0, 3.0, 4.0]
 d = ot.LinearCombinationDistribution(atoms, weights, 2.0)

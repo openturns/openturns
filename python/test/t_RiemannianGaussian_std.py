@@ -96,8 +96,7 @@ ott.assert_almost_equal(squared / 5000, 3.0, 0.1, 0.0)
 mean_matrix = distribution.getMeanMatrix()
 assert mean_matrix.getDimension() == 2
 point_mean = distribution.getMean()
-expected_point = [mean_matrix[0, 0], mean_matrix[0, 1],
-                  mean_matrix[1, 1]]
+expected_point = [mean_matrix[0, 0], mean_matrix[0, 1], mean_matrix[1, 1]]
 ott.assert_almost_equal(point_mean, expected_point, 1e-12, 0.0)
 
 # setMean / getMeanMatrix round-trip

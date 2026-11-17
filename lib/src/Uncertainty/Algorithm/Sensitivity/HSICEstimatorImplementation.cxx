@@ -205,9 +205,9 @@ struct HSICPValuesPermutationFunctor
   Point accumulator_;
 
   HSICPValuesPermutationFunctor(const Collection<Indices> & indicesCollection,
-                                 const Point & HSICobs,
-                                 const HSICEstimatorImplementation & hsic,
-                                 const Collection<CovarianceMatrix> & inputCovarianceMatrices)
+                                const Point & HSICobs,
+                                const HSICEstimatorImplementation & hsic,
+                                const Collection<CovarianceMatrix> & inputCovarianceMatrices)
     : indicesCollection_(indicesCollection)
     , HSICobs_(HSICobs)
     , p_hsic_(hsic.clone())

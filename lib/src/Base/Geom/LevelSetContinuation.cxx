@@ -31,9 +31,9 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /* Parameter constructor */
 LevelSetContinuation::LevelSetContinuation(const Function & function,
-                                           const Function & density,
-                                           const Interval & searchInterval,
-                                           const Point & level)
+    const Function & density,
+    const Interval & searchInterval,
+    const Point & level)
   : function_(function)
   , density_(density)
   , searchInterval_(searchInterval)
@@ -272,11 +272,11 @@ Bool LevelSetContinuation::evaluateRHS(const Point & point,
 
 /* One RK4 step followed by a Newton projection */
 Bool LevelSetContinuation::RK4Step(Point & point,
-                                  Scalar & integral,
-                                  const Scalar step,
-                                  const Scalar orientation,
-                                  Point & tangentEnd,
-                                  Bool & singular) const
+                                   Scalar & integral,
+                                   const Scalar step,
+                                   const Scalar orientation,
+                                   Point & tangentEnd,
+                                   Bool & singular) const
 {
   Point k1x;
   Point k2x;
@@ -319,12 +319,12 @@ Bool LevelSetContinuation::RK4Step(Point & point,
 
 /* Trace one direction from a seed */
 LevelSetContinuation::Result LevelSetContinuation::traceDirection(const Point & seed,
-                                                                  const Scalar orientation,
-                                                                  const Scalar initialStep,
-                                                                  const Scalar minimumStep,
-                                                                  Bool & closed,
-                                                                  Scalar & length,
-                                                                  Sample & path) const
+    const Scalar orientation,
+    const Scalar initialStep,
+    const Scalar minimumStep,
+    Bool & closed,
+    Scalar & length,
+    Sample & path) const
 {
   Result result;
   closed = false;
@@ -469,10 +469,10 @@ LevelSetContinuation::Result LevelSetContinuation::traceDirection(const Point & 
 
 /* Trace one connected component from one of its mesh segments */
 LevelSetContinuation::Status LevelSetContinuation::traceComponent(const Segment & segment,
-                                                                  const Scalar initialStep,
-                                                                  const Scalar minimumStep,
-                                                                  Scalar & density,
-                                                                  Sample & path) const
+    const Scalar initialStep,
+    const Scalar minimumStep,
+    Scalar & density,
+    Sample & path) const
 {
   density = 0.0;
   Point direction(segment.second - segment.first);
@@ -513,8 +513,8 @@ LevelSetContinuation::Status LevelSetContinuation::traceComponent(const Segment 
 
 /* Refine the fibre described by the mesh segments and integrate the density */
 LevelSetContinuation::Result LevelSetContinuation::computeDensity(const Collection<Segment> & segments,
-                                                                  const Scalar meshStep,
-                                                                  const Scalar endpointTolerance) const
+    const Scalar meshStep,
+    const Scalar endpointTolerance) const
 {
   Result result;
   if (segments.isEmpty())

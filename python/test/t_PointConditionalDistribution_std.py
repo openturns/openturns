@@ -103,7 +103,9 @@ distribution = ot.PointConditionalDistribution(student, [1], [2.0])
 simplified = distribution.getSimplifiedVersion()
 print(simplified)
 ott.assert_almost_equal(simplified.getMarginal(0), ot.Student(3.5, 1.84, 0.578273))
-ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 0.540416310512559)
+ott.assert_almost_equal(
+    distribution.computePDF(distribution.getMean()), 0.540416310512559
+)
 
 # special case for Mixture
 mixture = ot.Mixture([ot.Normal(2), ot.Normal(2)], [0.3, 0.7])
@@ -159,7 +161,9 @@ distribution = ot.PointConditionalDistribution(
 simplified = distribution.getSimplifiedVersion()
 print(simplified)
 assert simplified.getName() == "BlockIndependentDistribution", "wrong type"
-ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 0.14676486183286414)
+ott.assert_almost_equal(
+    distribution.computePDF(distribution.getMean()), 0.14676486183286414
+)
 # test a conditioning which remove all but the last block
 # As the last block can be simplified, it is its actual simplification which is used
 distribution = ot.PointConditionalDistribution(
@@ -201,16 +205,35 @@ copula = ot.NormalCopula(ot.CorrelationMatrix([[1.0, 0.8], [0.8, 1.0]]))
 pcd = ot.PointConditionalDistribution(copula, [1], [0.3])
 q = ot.Point([0.6])
 # 2-arg with full identity ordering should match 1-arg version
-ott.assert_almost_equal(pcd.computeSequentialConditionalCDF(q, [0]), pcd.computeSequentialConditionalCDF(q), 1e-5, 1e-5)
-ott.assert_almost_equal(pcd.computeSequentialConditionalPDF(q, [0]), pcd.computeSequentialConditionalPDF(q), 1e-5, 1e-5)
-ott.assert_almost_equal(pcd.computeSequentialConditionalQuantile(q, [0]), pcd.computeSequentialConditionalQuantile(q), 1e-5, 1e-5)
+ott.assert_almost_equal(
+    pcd.computeSequentialConditionalCDF(q, [0]),
+    pcd.computeSequentialConditionalCDF(q),
+    1e-5,
+    1e-5,
+)
+ott.assert_almost_equal(
+    pcd.computeSequentialConditionalPDF(q, [0]),
+    pcd.computeSequentialConditionalPDF(q),
+    1e-5,
+    1e-5,
+)
+ott.assert_almost_equal(
+    pcd.computeSequentialConditionalQuantile(q, [0]),
+    pcd.computeSequentialConditionalQuantile(q),
+    1e-5,
+    1e-5,
+)
 
 # Generic path with a discrete conditional: the lower-bound atom is included
 joint = ot.JointDistribution([ot.Poisson(1.0), ot.Poisson(1.0)], ot.FrankCopula(3.0))
 cond = ot.PointConditionalDistribution(joint, [1], [0.0])
 # P(X0 in [0, 1] | X1 = 0) sums the conditional PMF over both atoms
-expected = (joint.computePDF([0.0, 0.0]) + joint.computePDF([1.0, 0.0])) / joint.getMarginal(1).computePDF(0.0)
-ott.assert_almost_equal(cond.computeProbability(ot.Interval([-1.0], [1.0])), expected, 1e-12, 0.0)
+expected = (
+    joint.computePDF([0.0, 0.0]) + joint.computePDF([1.0, 0.0])
+) / joint.getMarginal(1).computePDF(0.0)
+ott.assert_almost_equal(
+    cond.computeProbability(ot.Interval([-1.0], [1.0])), expected, 1e-12, 0.0
+)
 
 # Failed setParameter leaves the distribution unchanged
 joint = ot.JointDistribution([ot.Normal(), ot.Uniform()])
@@ -245,7 +268,9 @@ with ott.assert_raises(Exception):
     ot.Student(1.5, [0.0], ot.CovarianceMatrix(1, [1.0]))
 # ... including for singular matrices as before
 singStudent = ot.Student(
-    4.2, [0.0] * 3, ot.CovarianceMatrix([[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+    4.2,
+    [0.0] * 3,
+    ot.CovarianceMatrix([[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]]),
 )
 ott.assert_almost_equal(singStudent.getMean(), [0.0] * 3, 0.0, 0.0)
 
@@ -267,9 +292,7 @@ assert (
     pcdR.getIntegrationAlgorithm().getImplementation().getClassName()
     == "SimplicialCubature"
 )
-ott.assert_almost_equal(
-    pcdR.computePDF([0.0]), pcd.computePDF([0.0]), 1e-12, 0.0
-)
+ott.assert_almost_equal(pcdR.computePDF([0.0]), pcd.computePDF([0.0]), 1e-12, 0.0)
 
 # --- Coverage: validation, predicates, accessors, simplified paths ---
 with ott.assert_raises(Exception):
@@ -296,9 +319,13 @@ assert pcd_cov.getMarginal([0]).getDimension() == 1
 assert pcd_cov.getConditioningValues() == [0.5]
 assert list(pcd_cov.getConditioningIndices()) == [1]
 assert pcd_cov.getDistribution().getClassName() != ""
-ot.ResourceMap.SetAsString("PointConditionalDistribution-RangeAdaptationMethod", "Normal")
+ot.ResourceMap.SetAsString(
+    "PointConditionalDistribution-RangeAdaptationMethod", "Normal"
+)
 assert pcd_cov.getRange().getDimension() == 2
-ot.ResourceMap.SetAsString("PointConditionalDistribution-RangeAdaptationMethod", "NormalCopula")
+ot.ResourceMap.SetAsString(
+    "PointConditionalDistribution-RangeAdaptationMethod", "NormalCopula"
+)
 assert pcd_cov == pcd_cov
 assert pcd_cov == ot.PointConditionalDistribution(n_cov, [1], [0.5])
 assert pcd_cov.computeQuantile(0.5).getSize() == 2

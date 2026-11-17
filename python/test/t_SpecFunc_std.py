@@ -63,7 +63,10 @@ ott.assert_almost_equal(
     ot.SpecFunc.LogSumExp([math.log(2.0), math.log(3.0)]), math.log(5.0), 1e-15, 0.0
 )
 ott.assert_almost_equal(
-    ot.SpecFunc.LogSumExp([1000.0, 1001.0]), 1001.0 + math.log1p(math.exp(-1.0)), 1e-15, 0.0
+    ot.SpecFunc.LogSumExp([1000.0, 1001.0]),
+    1001.0 + math.log1p(math.exp(-1.0)),
+    1e-15,
+    0.0,
 )
 ott.assert_almost_equal(
     ot.SpecFunc.LogSumExp([1000.0, 1001.0, 999.0]),
@@ -312,9 +315,7 @@ try:
         with ott.assert_raises(Exception):
             ot.SpecFunc.LauricellaF_A(1.5, [2.0], [3.0], [0.5])
 finally:
-    ot.ResourceMap.SetAsScalar(
-        "SpecFunc-LauricellaTolerance", lauricellaTolerance
-    )
+    ot.ResourceMap.SetAsScalar("SpecFunc-LauricellaTolerance", lauricellaTolerance)
 
 # A series stopped at its degree limit without convergence must not be
 # reported as a valid value: the caller has to use its fallback.

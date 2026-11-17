@@ -40,13 +40,15 @@ top = [0.0, 1.0]
 assert circle.isOnManifold(east2)
 assert not circle.isOnManifold([2.0, 0.0])
 ott.assert_almost_equal(circle.projectToManifold([3.0, 0.0]), east2, 1e-12, 1e-12)
-ott.assert_almost_equal(circle.projectToTangentSpace(east2, [1.0, 1.0]), [0.0, 1.0],
-                        1e-12, 1e-12)
+ott.assert_almost_equal(
+    circle.projectToTangentSpace(east2, [1.0, 1.0]), [0.0, 1.0], 1e-12, 1e-12
+)
 # A tangent vector of norm pi/2 at (1, 0) maps to (0, 1)
 ott.assert_almost_equal(circle.expMap(east2, [0.0, 0.5 * math.pi]), top, 1e-12, 1e-12)
 ott.assert_almost_equal(circle.logMap(east2, top), [0.0, 0.5 * math.pi], 1e-12, 1e-12)
-ott.assert_almost_equal(circle.getGeodesicDistance(east2, top), 0.5 * math.pi,
-                        1e-12, 1e-12)
+ott.assert_almost_equal(
+    circle.getGeodesicDistance(east2, top), 0.5 * math.pi, 1e-12, 1e-12
+)
 # The tangent basis of a 1-dimensional manifold is a single unit vector; the
 # canonical first axis is rejected here since it is the normal of the tangent
 # space at (1, 0)
@@ -55,8 +57,9 @@ assert circleBasis.getSize() == 1
 assert circleBasis.getDimension() == 2
 ott.assert_almost_equal(circleBasis[0].norm(), 1.0, 1e-12, 1e-12)
 ott.assert_almost_equal(circleBasis[0].dot(circleBasis[0]), 1.0, 1e-12, 1e-12)
-ott.assert_almost_equal(circle.expMap(east2, circleBasis[0]), [math.cos(1.0), math.sin(1.0)],
-                        1e-12, 1e-12)
+ott.assert_almost_equal(
+    circle.expMap(east2, circleBasis[0]), [math.cos(1.0), math.sin(1.0)], 1e-12, 1e-12
+)
 # The logarithmic map is undefined at the antipode of the base point
 with ott.assert_raises(TypeError):
     circle.logMap(east2, [-1.0, 0.0])
@@ -64,9 +67,13 @@ with ott.assert_raises(TypeError):
 # Geodesic distance between (1, 0, 0) and (0, 1, 0) is pi / 2
 east = [1.0, 0.0, 0.0]
 north2 = [0.0, 1.0, 0.0]
-ott.assert_almost_equal(sphere.getGeodesicDistance(east, north2), 0.5 * math.pi, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    sphere.getGeodesicDistance(east, north2), 0.5 * math.pi, 1e-12, 1e-12
+)
 ott.assert_almost_equal(sphere.getGeodesicDistance(east, east), 0.0, 1e-12, 1e-12)
-ott.assert_almost_equal(sphere.getGeodesicDistance(east, [-1.0, 0.0, 0.0]), math.pi, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    sphere.getGeodesicDistance(east, [-1.0, 0.0, 0.0]), math.pi, 1e-12, 1e-12
+)
 
 # Membership and projection
 assert sphere.isOnManifold(east)
@@ -118,14 +125,25 @@ basis = sphere.getTangentBasis(east)
 assert basis.getSize() == 2
 assert basis.getDimension() == 3
 for k in range(2):
-    ott.assert_almost_equal([sum(basis[k][i] * east[i] for i in range(3))], [0.0], 1e-12, 1e-12)
-    ott.assert_almost_equal([sum(basis[k][i] * basis[k][i] for i in range(3))], [1.0], 1e-12, 1e-12)
-ott.assert_almost_equal([sum(basis[0][i] * basis[1][i] for i in range(3))], [0.0], 1e-12, 1e-12)
+    ott.assert_almost_equal(
+        [sum(basis[k][i] * east[i] for i in range(3))], [0.0], 1e-12, 1e-12
+    )
+    ott.assert_almost_equal(
+        [sum(basis[k][i] * basis[k][i] for i in range(3))], [1.0], 1e-12, 1e-12
+    )
+ott.assert_almost_equal(
+    [sum(basis[0][i] * basis[1][i] for i in range(3))], [0.0], 1e-12, 1e-12
+)
 
 # Volume density is 1 at the origin and (sin r / r)^(n-2) elsewhere
 ott.assert_almost_equal(sphere.getExpMapVolumeDensity([0.0, 0.0]), 1.0, 1e-12, 1e-12)
 radius = 1.2
-ott.assert_almost_equal(sphere.getExpMapVolumeDensity([radius, 0.0]), math.sin(radius) / radius, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    sphere.getExpMapVolumeDensity([radius, 0.0]),
+    math.sin(radius) / radius,
+    1e-12,
+    1e-12,
+)
 ott.assert_almost_equal(circle.getExpMapVolumeDensity([radius]), 1.0, 1e-12, 1e-12)
 
 # Wrong coordinates dimension raises
@@ -153,7 +171,9 @@ assert rotations.getIntrinsicDimension() == 3
 
 # Total volume: 16 sqrt(2) pi^2 for the Frobenius-induced metric, consistent
 # with the integral of getExpMapVolumeDensity over the tangent ball
-ott.assert_almost_equal(rotations.getVolume(), 16.0 * math.sqrt(2.0) * math.pi * math.pi, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    rotations.getVolume(), 16.0 * math.sqrt(2.0) * math.pi * math.pi, 1e-12, 1e-12
+)
 
 # Identity rotation, row-major flattened
 identity = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
@@ -170,8 +190,12 @@ assert rotations.isOnManifold(rotZ)
 # Geodesic distance from identity is sqrt(2) times the rotation angle for the
 # Frobenius-induced metric (a tangent vector for an angle theta has
 # Frobenius norm sqrt(2) * theta)
-ott.assert_almost_equal(rotations.getGeodesicDistance(identity, rotZ), math.sqrt(2.0) * theta, 1e-12, 1e-12)
-ott.assert_almost_equal(rotations.getGeodesicDistance(identity, identity), 0.0, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    rotations.getGeodesicDistance(identity, rotZ), math.sqrt(2.0) * theta, 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    rotations.getGeodesicDistance(identity, identity), 0.0, 1e-12, 1e-12
+)
 
 # Exponential map of a null increment is the base point
 ott.assert_almost_equal(rotations.expMap(identity, [0.0] * 9), identity, 1e-12, 1e-12)
@@ -186,21 +210,32 @@ ott.assert_almost_equal(rotations.expMap(identity, logZ), rotZ, 1e-12, 1e-12)
 # Round trip at a non-trivial base point: exp then log
 logAtZ = rotations.logMap(rotZ, identity)
 ott.assert_almost_equal(rotations.expMap(rotZ, logAtZ), identity, 1e-10, 1e-10)
-ott.assert_almost_equal(rotations.getGeodesicDistance(rotZ, identity), math.sqrt(2.0) * theta, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    rotations.getGeodesicDistance(rotZ, identity), math.sqrt(2.0) * theta, 1e-12, 1e-12
+)
 
 # Polar projection of a scaled rotation recovers the rotation
-ott.assert_almost_equal(rotations.projectToManifold([2.0 * x for x in rotZ]), rotZ, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    rotations.projectToManifold([2.0 * x for x in rotZ]), rotZ, 1e-12, 1e-12
+)
 
 # Tangent projection at identity keeps the skew part only
 skewPlusSym = [1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 0.0, 0.0, 1.0]
 projectedTangent = rotations.projectToTangentSpace(identity, skewPlusSym)
 print("projectedTangent=", projectedTangent)
-ott.assert_almost_equal(projectedTangent, [0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0], 1e-12, 1e-12)
+ott.assert_almost_equal(
+    projectedTangent, [0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0], 1e-12, 1e-12
+)
 
 # Logarithmic map at the cut locus (half-turn) raises
 halfTurn = [-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0]
 assert rotations.isOnManifold(halfTurn)
-ott.assert_almost_equal(rotations.getGeodesicDistance(identity, halfTurn), math.sqrt(2.0) * math.pi, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    rotations.getGeodesicDistance(identity, halfTurn),
+    math.sqrt(2.0) * math.pi,
+    1e-12,
+    1e-12,
+)
 with ott.assert_raises(TypeError):
     rotations.logMap(identity, halfTurn)
 
@@ -220,32 +255,46 @@ for k in range(3):
         ott.assert_almost_equal([cross], [0.0], 1e-12, 1e-12)
 
 # Volume density is 1 at the origin and (sin(theta/2)/(theta/2))^2 elsewhere
-ott.assert_almost_equal(rotations.getExpMapVolumeDensity([0.0, 0.0, 0.0]), 1.0, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    rotations.getExpMapVolumeDensity([0.0, 0.0, 0.0]), 1.0, 1e-12, 1e-12
+)
 angle = 1.1
 ratio = math.sin(0.5 * angle) / (0.5 * angle)
-ott.assert_almost_equal(rotations.getExpMapVolumeDensity([angle, angle, 0.0]), ratio * ratio, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    rotations.getExpMapVolumeDensity([angle, angle, 0.0]), ratio * ratio, 1e-12, 1e-12
+)
 
 # Interface object wraps an implementation and forwards all operations
 wrapped = otexp.Manifold(otexp.SphereManifold(3))
 assert wrapped.getAmbientDimension() == 3
 assert wrapped.getIntrinsicDimension() == 2
 ott.assert_almost_equal(wrapped.getVolume(), 4.0 * math.pi, 1e-12, 1e-12)
-ott.assert_almost_equal(wrapped.expMap(east, [0.0, 0.5 * math.pi, 0.0]), north2, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    wrapped.expMap(east, [0.0, 0.5 * math.pi, 0.0]), north2, 1e-12, 1e-12
+)
 assert wrapped.isOnManifold(east)
 wrapped.setEpsilon(1e-8)
 ott.assert_almost_equal(wrapped.getEpsilon(), 1e-8, 1e-15, 0.0)
 # The remaining operations are forwarded to the implementation as well
 ott.assert_almost_equal(wrapped.projectToManifold([2.0, 0.0, 0.0]), east, 1e-12, 1e-12)
-ott.assert_almost_equal(wrapped.projectToTangentSpace(east, [1.0, 1.0, 0.0]),
-                        [0.0, 1.0, 0.0], 1e-12, 1e-12)
-ott.assert_almost_equal(wrapped.logMap(east, north2), [0.0, 0.5 * math.pi, 0.0],
-                        1e-12, 1e-12)
-ott.assert_almost_equal(wrapped.getGeodesicDistance(east, north2), 0.5 * math.pi,
-                        1e-12, 1e-12)
-ott.assert_almost_equal(wrapped.getTangentBasis(east), sphere.getTangentBasis(east),
-                        1e-12, 1e-12)
-ott.assert_almost_equal(wrapped.getExpMapVolumeDensity([0.5, 0.0]),
-                        sphere.getExpMapVolumeDensity([0.5, 0.0]), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    wrapped.projectToTangentSpace(east, [1.0, 1.0, 0.0]), [0.0, 1.0, 0.0], 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    wrapped.logMap(east, north2), [0.0, 0.5 * math.pi, 0.0], 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    wrapped.getGeodesicDistance(east, north2), 0.5 * math.pi, 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    wrapped.getTangentBasis(east), sphere.getTangentBasis(east), 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    wrapped.getExpMapVolumeDensity([0.5, 0.0]),
+    sphere.getExpMapVolumeDensity([0.5, 0.0]),
+    1e-12,
+    1e-12,
+)
 # The comparison operator takes the tolerance into account, so restore the
 # default one before comparing with a freshly built manifold
 wrapped.setEpsilon(1e-10)

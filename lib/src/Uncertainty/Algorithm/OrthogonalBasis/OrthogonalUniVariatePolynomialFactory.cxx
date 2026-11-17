@@ -234,7 +234,7 @@ void OrthogonalUniVariatePolynomialFactory::save(Advocate & adv) const
 
   adv.saveAttribute("recurrenceCoefficientsCache_", recurrenceCoefficientsCache_);
   adv.saveAttribute( "a_", a_ );
-  adv.saveAttribute( "b_", b_ );  
+  adv.saveAttribute( "b_", b_ );
 }
 
 

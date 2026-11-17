@@ -29,8 +29,7 @@ for i in range(3):
 prod = realization * realization.transpose()
 for i in range(3):
     for j in range(3):
-        ott.assert_almost_equal(prod[i, j], 1.0 if i == j else 0.0,
-                                1e-12, 1e-15)
+        ott.assert_almost_equal(prod[i, j], 1.0 if i == j else 0.0, 1e-12, 1e-15)
 ott.assert_almost_equal(realization.computeDeterminant(), 1.0, 1e-12, 0.0)
 
 # Uniform distribution: F=0 gives the Haar measure on SO(3), PDF = 1 / (8 pi^2)
@@ -43,20 +42,18 @@ pdf_id = uniform.computePDF([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0])
 ott.assert_almost_equal(pdf_id, 1.0 / (8.0 * math.pi**2), 1e-6, 0.0)
 
 # PDF ratio: for axial F = diag(k, 0, 0), f(I) / f(Rz(pi)) = exp(2 k)
-axial = otexp.MatrixFisher(ot.SquareMatrix([[1.0, 0.0, 0.0], [0.0, 0.0, 0.0],
-                                            [0.0, 0.0, 0.0]]))
-rot180 = ot.SquareMatrix(
-    [[-1.0, 0.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, 1.0]]
+axial = otexp.MatrixFisher(
+    ot.SquareMatrix([[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
 )
+rot180 = ot.SquareMatrix([[-1.0, 0.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, 1.0]])
 flat180 = [rot180[i // 3, i % 3] for i in range(9)]
-ratio = axial.computePDF([1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
-                          0.0, 0.0, 1.0]) / axial.computePDF(flat180)
+ratio = axial.computePDF(
+    [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+) / axial.computePDF(flat180)
 ott.assert_almost_equal(ratio, math.exp(2.0), 1e-6, 0.0)
 
 # Entropy of the uniform distribution: log(8 pi^2)
-ott.assert_almost_equal(
-    uniform.computeEntropy(), math.log(8.0 * math.pi**2), 1e-6, 0.0
-)
+ott.assert_almost_equal(uniform.computeEntropy(), math.log(8.0 * math.pi**2), 1e-6, 0.0)
 
 # Mean of the uniform distribution is the zero matrix
 mean = uniform.getMean()
@@ -141,14 +138,15 @@ for i in range(10):
     prod = R * R.transpose()
     for r in range(3):
         for c in range(3):
-            ott.assert_almost_equal(prod[r, c], 1.0 if r == c else 0.0,
-                                    1e-9, 1e-15)
+            ott.assert_almost_equal(prod[r, c], 1.0 if r == c else 0.0, 1e-9, 1e-15)
     ott.assert_almost_equal(R.computeDeterminant(), 1.0, 1e-9, 0.0)
 
 # F with negative determinant: construction and round-trip work
 negF = ot.SquareMatrix([[5.0, 0.0, 0.0], [0.0, 3.0, 0.0], [0.0, 0.0, -1.0]])
 negDist = otexp.MatrixFisher(negF)
-ott.assert_almost_equal(negDist.getParameter(), [5.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, -1.0], 1e-12, 0.0)
+ott.assert_almost_equal(
+    negDist.getParameter(), [5.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, -1.0], 1e-12, 0.0
+)
 assert negDist.computePDF([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]) > 0.0
 
 # High concentration: the adaptive quadrature order agrees with a fine order.

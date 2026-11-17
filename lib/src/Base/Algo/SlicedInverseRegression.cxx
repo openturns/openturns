@@ -38,8 +38,8 @@ SlicedInverseRegression::SlicedInverseRegression()
 }
 
 SlicedInverseRegression::SlicedInverseRegression(const Sample & inputSample,
-                                                 const Sample & outputSample,
-                                                 const UnsignedInteger sliceNumber)
+    const Sample & outputSample,
+    const UnsignedInteger sliceNumber)
   : PersistentObject()
   , inputSample_(inputSample)
   , outputSample_(outputSample)

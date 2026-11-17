@@ -39,9 +39,9 @@ QuadraticProgrammingProblem::QuadraticProgrammingProblem()
 
 /* Parameter constructor */
 QuadraticProgrammingProblem::QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
-                                   const Point & linearCost,
-                                   const Interval & bounds,
-                                   const Scalar constant)
+    const Point & linearCost,
+    const Interval & bounds,
+    const Scalar constant)
   : OptimizationProblemImplementation()
   , hessian_(hessian)
   , linearCost_(linearCost)
@@ -55,11 +55,11 @@ QuadraticProgrammingProblem::QuadraticProgrammingProblem(const SymmetricMatrix &
 
 /* Parameter constructor */
 QuadraticProgrammingProblem::QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
-                                   const Point & linearCost,
-                                   const Interval & bounds,
-                                   const Matrix & constraintCoefficients,
-                                   const Interval & constraintBounds,
-                                   const Scalar constant)
+    const Point & linearCost,
+    const Interval & bounds,
+    const Matrix & constraintCoefficients,
+    const Interval & constraintBounds,
+    const Scalar constant)
   : OptimizationProblemImplementation()
   , hessian_(hessian)
   , linearCost_(linearCost)

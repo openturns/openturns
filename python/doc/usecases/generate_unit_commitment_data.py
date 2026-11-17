@@ -49,9 +49,30 @@ TURBINES = [
 
 # relative profile of the demand over a winter day
 DEMAND_SHAPE = [
-    0.62, 0.58, 0.55, 0.54, 0.56, 0.62, 0.72, 0.82,
-    0.88, 0.90, 0.89, 0.87, 0.86, 0.85, 0.84, 0.85,
-    0.90, 0.97, 1.00, 0.98, 0.94, 0.87, 0.78, 0.69,
+    0.62,
+    0.58,
+    0.55,
+    0.54,
+    0.56,
+    0.62,
+    0.72,
+    0.82,
+    0.88,
+    0.90,
+    0.89,
+    0.87,
+    0.86,
+    0.85,
+    0.84,
+    0.85,
+    0.90,
+    0.97,
+    1.00,
+    0.98,
+    0.94,
+    0.87,
+    0.78,
+    0.69,
 ]
 DEMAND_PEAK = 27350.0
 
@@ -70,20 +91,33 @@ def thermal_data():
     ramp_down = np.round(np.maximum(min_power, rng.uniform(21.0, 120.0, N_UNITS)), 1)
     initial_power = np.zeros(N_UNITS)
     running = rng.choice(N_UNITS, N_RUNNING, replace=False)
-    initial_power[running] = np.round(rng.uniform(min_power[running], max_power[running]), 1)
-    return np.column_stack([
-        min_power, max_power, linear_term, start_up_cost,
-        min_up_time, min_down_time, initial_power, ramp_up, ramp_down,
-    ])
+    initial_power[running] = np.round(
+        rng.uniform(min_power[running], max_power[running]), 1
+    )
+    return np.column_stack(
+        [
+            min_power,
+            max_power,
+            linear_term,
+            start_up_cost,
+            min_up_time,
+            min_down_time,
+            initial_power,
+            ramp_up,
+            ramp_down,
+        ]
+    )
 
 
 def hydro_data():
     """Return the reservoir and the turbine tables."""
-    reservoirs = np.column_stack([
-        MAX_VOLUMETRIC,
-        INITIAL_RATIO * np.array(MAX_VOLUMETRIC),
-        INFLOW,
-    ])
+    reservoirs = np.column_stack(
+        [
+            MAX_VOLUMETRIC,
+            INITIAL_RATIO * np.array(MAX_VOLUMETRIC),
+            INFLOW,
+        ]
+    )
     turbines = np.array(TURBINES, dtype=float)
     return reservoirs, turbines
 
@@ -99,29 +133,45 @@ def main():
     reservoirs, turbines = hydro_data()
     demand = demand_data()
     np.savetxt(
-        os.path.join(here, "unit_commitment_thermal.csv"), thermal, delimiter=",",
+        os.path.join(here, "unit_commitment_thermal.csv"),
+        thermal,
+        delimiter=",",
         fmt=["%.1f", "%.1f", "%.2f", "%.2f", "%d", "%d", "%.1f", "%.1f", "%.1f"],
         header="MinPower,MaxPower,LinearTerm,StartUpCost,MinUpTime,MinDownTime,"
-               "InitialPower,DeltaRampUp,DeltaRampDown",
+        "InitialPower,DeltaRampUp,DeltaRampDown",
         comments="",
     )
     np.savetxt(
-        os.path.join(here, "unit_commitment_reservoirs.csv"), reservoirs, delimiter=",",
-        fmt="%.3f", header="MaxVolumetric,InitialVolumetric,Inflow", comments="",
-    )
-    np.savetxt(
-        os.path.join(here, "unit_commitment_turbines.csv"), turbines, delimiter=",",
-        fmt=["%d", "%d", "%.1f", "%.2f"], header="StartArc,EndArc,MaxFlow,ProductionTerm",
+        os.path.join(here, "unit_commitment_reservoirs.csv"),
+        reservoirs,
+        delimiter=",",
+        fmt="%.3f",
+        header="MaxVolumetric,InitialVolumetric,Inflow",
         comments="",
     )
     np.savetxt(
-        os.path.join(here, "unit_commitment_demand.csv"), demand, delimiter=",",
-        fmt="%.1f", header="Demand", comments="",
+        os.path.join(here, "unit_commitment_turbines.csv"),
+        turbines,
+        delimiter=",",
+        fmt=["%d", "%d", "%.1f", "%.2f"],
+        header="StartArc,EndArc,MaxFlow,ProductionTerm",
+        comments="",
+    )
+    np.savetxt(
+        os.path.join(here, "unit_commitment_demand.csv"),
+        demand,
+        delimiter=",",
+        fmt="%.1f",
+        header="Demand",
+        comments="",
     )
     print("thermal fleet   : %d units, %d hours" % (N_UNITS, N_HOURS))
     print("running at t=0  : %d units" % int((thermal[:, 6] > 0.0).sum()))
     print("demand          : min %.1f MW, max %.1f MW" % (demand.min(), demand.max()))
-    print("hydro valley    : %d reservoirs, %d turbines" % (reservoirs.shape[0], turbines.shape[0]))
+    print(
+        "hydro valley    : %d reservoirs, %d turbines"
+        % (reservoirs.shape[0], turbines.shape[0])
+    )
     print("hydro capacity  : %.1f MW" % (turbines[:, 2] * turbines[:, 3]).sum())
 
 

@@ -81,7 +81,11 @@ distribution_def = otexp.MultivariateHypergeometric(10, [10, 12], 35)
 hyper = ot.Hypergeometric(35, 10, 10)
 print(distribution_def)
 print("PDF at 3 red and 4 green balls:", distribution_def.computePDF([3, 4]))
-print("PDF at 3 red balls:", distribution_def.getMarginal(0).computePDF([3]), hyper.computePDF([3]))
+print(
+    "PDF at 3 red balls:",
+    distribution_def.getMarginal(0).computePDF([3]),
+    hyper.computePDF([3]),
+)
 graph = distribution_def.drawPDF()
 graph.setTitle("Defective hypergeometric urn with untracked yellow balls")
 view = otv.View(graph)

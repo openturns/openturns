@@ -126,7 +126,11 @@ def assert_parameter_gradient(model, z1, z2, tol=1e-6):
         model.setParameter(param_minus)
         cov_minus = model(z1, z2)[0, 0]
         ott.assert_almost_equal(
-            pg[q, 0], (cov_plus - cov_minus) / (2.0 * h), tol, tol, "parameterGradient[" + str(q) + "]"
+            pg[q, 0],
+            (cov_plus - cov_minus) / (2.0 * h),
+            tol,
+            tol,
+            "parameterGradient[" + str(q) + "]",
         )
     model.setParameter(param)
 

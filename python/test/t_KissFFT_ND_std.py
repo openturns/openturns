@@ -31,13 +31,17 @@ print("3D ND OK")
 
 # Inverse roundtrip
 r3 = fft.inverseTransform(r1, [2, 3, 4])
-ott.assert_almost_equal(max(abs(r3[i] - data[i]) for i in range(len(data))), 0.0, 0.0, 1e-14)
+ott.assert_almost_equal(
+    max(abs(r3[i] - data[i]) for i in range(len(data))), 0.0, 0.0, 1e-14
+)
 print("3D inverse roundtrip OK")
 
 # Complex collection input (should match Point input)
 data2 = ot.ComplexCollection(vals)
 r4 = fft.transform(data2, [2, 3, 4])
-ott.assert_almost_equal(max(abs(r4[i] - r1[i]) for i in range(len(vals))), 0.0, 0.0, 1e-14)
+ott.assert_almost_equal(
+    max(abs(r4[i] - r1[i]) for i in range(len(vals))), 0.0, 0.0, 1e-14
+)
 print("Complex input OK")
 
 # Check error on bad size
@@ -58,5 +62,7 @@ vals = [i + 1.0 for i in range(120)]
 data = ot.Point(vals)
 r1 = fft.transform(data, [2, 3, 4, 5])
 r2 = fft.inverseTransform(r1, [2, 3, 4, 5])
-ott.assert_almost_equal(max(abs(r2[i] - data[i]) for i in range(len(data))), 0.0, 0.0, 1e-14)
+ott.assert_almost_equal(
+    max(abs(r2[i] - data[i]) for i in range(len(data))), 0.0, 0.0, 1e-14
+)
 print("4D roundtrip OK")

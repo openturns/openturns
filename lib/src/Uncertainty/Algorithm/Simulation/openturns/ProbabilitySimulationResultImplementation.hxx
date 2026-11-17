@@ -48,10 +48,10 @@ public:
 
   /** Standard constructor */
   ProbabilitySimulationResultImplementation(const RandomVector & event,
-                              const Scalar probabilityEstimate,
-                              const Scalar varianceEstimate,
-                              const UnsignedInteger outerSampling,
-                              const UnsignedInteger blockSize);
+      const Scalar probabilityEstimate,
+      const Scalar varianceEstimate,
+      const UnsignedInteger outerSampling,
+      const UnsignedInteger blockSize);
 
   /** Virtual constructor */
   ProbabilitySimulationResultImplementation * clone() const override;

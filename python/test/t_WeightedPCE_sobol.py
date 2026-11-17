@@ -27,7 +27,11 @@ s1Reference = [
     0.0,
 ]
 interaction = (b**2 * pi**8 / 18.0 - b**2 * pi**8 / 50.0) / covariance
-stReference = [s1Reference[0] + interaction, s1Reference[1], s1Reference[2] + interaction]
+stReference = [
+    s1Reference[0] + interaction,
+    s1Reference[1],
+    s1Reference[2] + interaction,
+]
 
 model = ot.SymbolicFunction(
     ["x1", "x2", "x3"],
@@ -50,7 +54,9 @@ testVariance = testOutput.computeVariance()[0]
 
 def fitAndScore(levels):
     """Fit the expansion on a Gauss product design and return its diagnostics."""
-    inputSample, weight = ot.GaussProductExperiment(distribution, levels).generateWithWeights()
+    inputSample, weight = ot.GaussProductExperiment(
+        distribution, levels
+    ).generateWithWeights()
     outputSample = model(inputSample)
     ot.RandomGenerator.SetSeed(0)
     algorithm = ot.FunctionalChaosAlgorithm(
@@ -63,9 +69,7 @@ def fitAndScore(levels):
     algorithm.run()
     result = algorithm.getResult()
     sobolIndices = ot.FunctionalChaosSobolIndices(result)
-    s1Error = max(
-        abs(sobolIndices.getSobolIndex(i) - s1Reference[i]) for i in range(3)
-    )
+    s1Error = max(abs(sobolIndices.getSobolIndex(i) - s1Reference[i]) for i in range(3))
     stError = max(
         abs(sobolIndices.getSobolTotalIndex(i) - stReference[i]) for i in range(3)
     )

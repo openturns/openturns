@@ -183,7 +183,7 @@ protected:
 
   /** Cut point in history */
   Indices historyCutPoints_ = {0};
-  
+
   /** Is regression? */
   Bool isLeastSquares_ = true;
 

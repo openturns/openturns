@@ -97,7 +97,8 @@ public:
                              RELIABILITY_INDEX_UNCERTAINTY = 1,
                              ACTIVE_LEARNING = 2,
                              PROBABILITY_STABILITY = 3,
-                             RELIABILITY_INDEX_STABILITY = 4};
+                             RELIABILITY_INDEX_STABILITY = 4
+                            };
 
   // Accessor to convergence attributes
   void setConvergenceCriterion(const UnsignedInteger convergenceCriterion = ACTIVE_LEARNING);

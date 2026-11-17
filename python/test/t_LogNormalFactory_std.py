@@ -3,6 +3,7 @@
 import openturns as ot
 
 import openturns.testing as ott
+
 ot.TESTPREAMBLE()
 
 
@@ -38,6 +39,4 @@ with ott.assert_raises(Exception):
         ot.Sample([[1.0], [2.0], [3.0]]), 5.0
     )
 with ott.assert_raises(Exception):
-    ot.ParetoFactory().buildMethodOfLeastSquares(
-        ot.Sample([[1.0], [2.0], [3.0]]), 5.0
-    )
+    ot.ParetoFactory().buildMethodOfLeastSquares(ot.Sample([[1.0], [2.0], [3.0]]), 5.0)

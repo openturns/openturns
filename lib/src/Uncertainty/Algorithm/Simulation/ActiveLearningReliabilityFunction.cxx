@@ -98,7 +98,7 @@ Sample ActiveLearningReliabilityFunction::operator()(const Sample & inputSample,
 
 /* Select the infill sample to evaluate on the true function */
 Sample ActiveLearningReliabilityFunction::getInfillSample(const Sample & inputSample,
-                                                          const Sample & criterionValues) const
+    const Sample & criterionValues) const
 {
   return getImplementation()->getInfillSample(inputSample, criterionValues);
 }

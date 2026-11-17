@@ -339,14 +339,14 @@ void krnrdt(const Scalar a,
 }
 
 Scalar Normal3DRectangularProbability(const Scalar a1,
-                                       const Scalar a2,
-                                       const Scalar a3,
-                                       const Scalar b1,
-                                       const Scalar b2,
-                                       const Scalar b3,
-                                       const Scalar rho12,
-                                       const Scalar rho13,
-                                       const Scalar rho23)
+                                      const Scalar a2,
+                                      const Scalar a3,
+                                      const Scalar b1,
+                                      const Scalar b2,
+                                      const Scalar b3,
+                                      const Scalar rho12,
+                                      const Scalar rho13,
+                                      const Scalar rho23)
 {
   if (!(std::abs(rho12) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho12 must be in [-1, 1], here rho12=" << rho12;
   if (!(std::abs(rho13) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho13 must be in [-1, 1], here rho13=" << rho13;

@@ -28,7 +28,12 @@ LPDF = distribution.computeLogPDF(point)
 ott.assert_almost_equal(LPDF, -3.91245138189, 1e-9, 0.0)
 PDF = distribution.computePDF(point)
 ott.assert_almost_equal(PDF, 0.0199914343056, 1e-9, 0.0)
-ott.assert_almost_equal(PDF, distribution.computeCDF(point) - distribution.computeCDF([point[0] - 1.0]), 1e-12, 0.0)
+ott.assert_almost_equal(
+    PDF,
+    distribution.computeCDF(point) - distribution.computeCDF([point[0] - 1.0]),
+    1e-12,
+    0.0,
+)
 
 CDF = distribution.computeCDF(point)
 ott.assert_almost_equal(CDF, 0.971360859022, 1e-9, 0.0)

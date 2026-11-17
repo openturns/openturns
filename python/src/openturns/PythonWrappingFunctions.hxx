@@ -1934,7 +1934,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
   else if (PyObject_HasAttrString(pyObj, "getNbSheets"))
   {
     // case of conversion from XTensor to YTensor
-    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod(pyObj,"getNbColumns", "()"));
+    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod(pyObj, "getNbColumns", "()"));
     ScopedPyObjectPointer rowsObj(PyObject_CallMethod(pyObj, "getNbRows", "()"));
     ScopedPyObjectPointer sheetsObj(PyObject_CallMethod(pyObj, "getNbSheets", "()"));
     ScopedPyObjectPointer implObj(PyObject_CallMethod(pyObj, "getImplementation", "()"));

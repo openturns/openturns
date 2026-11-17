@@ -780,8 +780,8 @@ Graph VisualTest::DrawLowerExtremalDependenceFunction(const Sample & data)
 
 /* Draw 2-d projections of a design with grid lines in each plane */
 GridLayout VisualTest::DrawPairsWithGrid(const Sample & sample,
-                                         const Interval & bounds,
-                                         const Indices & subdivisions)
+    const Interval & bounds,
+    const Indices & subdivisions)
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension < 2)

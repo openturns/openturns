@@ -72,7 +72,9 @@ def expected_density(factors, graph, point, partial):
             term = 1.0
             for c, variables in enumerate(graph):
                 positions = tuple(
-                    k for k, variable in enumerate(variables) if assignment[variable] == c
+                    k
+                    for k, variable in enumerate(variables)
+                    if assignment[variable] == c
                 )
                 local = tuple(point[variable] for variable in variables)
                 term *= partial(factors[c], local, positions)
@@ -111,9 +113,7 @@ expected_cdf = Phi_x[0] ** 2 * Phi_x[1] ** 2
 expected_pdf = 4.0 * phi_x[0] * phi_x[1] * Phi_x[0] * Phi_x[1]
 ott.assert_almost_equal(distribution.computeCDF(x), expected_cdf, 1.0e-14)
 ott.assert_almost_equal(distribution.computePDF(x), expected_pdf, 1.0e-14)
-ott.assert_almost_equal(
-    distribution.computeLogPDF(x), math.log(expected_pdf), 1.0e-13
-)
+ott.assert_almost_equal(distribution.computeLogPDF(x), math.log(expected_pdf), 1.0e-13)
 
 # Conditional laws: each marginal is the square of a normal CDF
 y = 0.2
@@ -131,17 +131,11 @@ ott.assert_almost_equal(
 # Exact marginals, including a permutation of the coordinates
 marginal = distribution.getMarginal(0)
 ott.assert_almost_equal(marginal.computeCDF([x[0]]), Phi_x[0] ** 2, 1.0e-14)
-ott.assert_almost_equal(
-    marginal.computePDF([x[0]]), 2.0 * phi_x[0] * Phi_x[0], 1.0e-13
-)
+ott.assert_almost_equal(marginal.computePDF([x[0]]), 2.0 * phi_x[0] * Phi_x[0], 1.0e-13)
 permuted = distribution.getMarginal([1, 0])
 assert permuted.getDimension() == 2
-ott.assert_almost_equal(
-    permuted.computeCDF([x[1], x[0]]), expected_cdf, 1.0e-14
-)
-ott.assert_almost_equal(
-    permuted.computePDF([x[1], x[0]]), expected_pdf, 1.0e-13
-)
+ott.assert_almost_equal(permuted.computeCDF([x[1], x[0]]), expected_cdf, 1.0e-14)
+ott.assert_almost_equal(permuted.computePDF([x[1], x[0]]), expected_pdf, 1.0e-13)
 
 # Tail behaviour: the log-density must not underflow
 tail = ot.Point([-15.0, -15.0])
@@ -171,9 +165,7 @@ assert distribution.computePDF(deep_tail) == 0.0
 assert distribution.computeCDF(deep_tail) == 0.0
 # A single Gaussian factor must also keep its log-density finite in the tails
 tail_factor = correlated_normal(0.5)
-single = ot.CumulativeDistributionNetwork(
-    [tail_factor], ot.BipartiteGraph([[0, 1]])
-)
+single = ot.CumulativeDistributionNetwork([tail_factor], ot.BipartiteGraph([[0, 1]]))
 ott.assert_almost_equal(
     single.computeLogPDF(deep_tail),
     tail_factor.computeLogPDF(deep_tail),
@@ -212,9 +204,7 @@ ott.assert_almost_equal(
 )
 ott.assert_almost_equal(
     marginal.computePDF([x[0]]),
-    2.0
-    * ot.Normal().computePDF(x[0])
-    * ot.Normal().computeCDF(x[0]),
+    2.0 * ot.Normal().computePDF(x[0]) * ot.Normal().computeCDF(x[0]),
     1.0e-13,
 )
 
@@ -253,7 +243,9 @@ ott.assert_almost_equal(expected_level, level, 1.0e-9)
 factor_01 = correlated_normal(0.4)
 factor_12 = correlated_normal(-0.3)
 graph = [[0, 1], [1, 2]]
-tree = ot.CumulativeDistributionNetwork([factor_01, factor_12], ot.BipartiteGraph(graph))
+tree = ot.CumulativeDistributionNetwork(
+    [factor_01, factor_12], ot.BipartiteGraph(graph)
+)
 point = ot.Point([0.2, -0.5, 0.8])
 point_01 = ot.Point([point[0], point[1]])
 point_12 = ot.Point([point[1], point[2]])
@@ -277,12 +269,9 @@ f12_cdf = factor_12.computeCDF(point_12)
 f12_pdf = factor_12.computePDF(point_12)
 partial_01 = gaussian_partial(factor_01, point_01, (0,))
 pdf_01 = factor_01.computePDF(point_01)
-num = pdf_01 * f12_cdf + partial_01 * gaussian_partial(
-    factor_12, point_12, (0,)
-)
-den = (
-    pdf_01 * ot.Normal().computeCDF(point[1])
-    + partial_01 * ot.Normal().computePDF(point[1])
+num = pdf_01 * f12_cdf + partial_01 * gaussian_partial(factor_12, point_12, (0,))
+den = pdf_01 * ot.Normal().computeCDF(point[1]) + partial_01 * ot.Normal().computePDF(
+    point[1]
 )
 ott.assert_almost_equal(
     tree.computeConditionalCDF(point[2], point_01), num / den, 1.0e-13
@@ -500,9 +489,10 @@ assert len(base.getParameterDescription()) == base.getParameterDimension()
 assert "class=CumulativeDistributionNetwork" in repr(base)
 assert "CumulativeDistributionNetwork([" in str(base)
 
-assert ot.CumulativeDistributionNetwork(
-    [ot.Normal(2)], ot.BipartiteGraph([[0, 1]])
-) == base
+assert (
+    ot.CumulativeDistributionNetwork([ot.Normal(2)], ot.BipartiteGraph([[0, 1]]))
+    == base
+)
 assert not (
     ot.CumulativeDistributionNetwork([ot.Normal(2)], ot.BipartiteGraph([[1, 0]]))
     == base
@@ -575,13 +565,18 @@ ott.assert_almost_equal(
 duplicated_mean = duplicated_network.getMean()
 assert all(math.isfinite(value) for value in duplicated_mean)
 ott.assert_almost_equal(duplicated_mean, [0.56419, 0.56419], 1.0e-4)
-duplicated_upper = duplicated_network.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)[0]
+duplicated_upper = (
+    duplicated_network.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True
+    )[0]
+)
 assert list(duplicated_upper.getFiniteUpperBound()) == [True, True]
 ott.assert_almost_equal(
     duplicated_upper.getUpperBound(), [ot.Normal().getRange().getUpperBound()[0]] * 2
 )
 ott.assert_almost_equal(
-    shared_network.getMarginal(0).computeQuantile(0.9), [ot.Normal().computeQuantile(0.9)[0]]
+    shared_network.getMarginal(0).computeQuantile(0.9),
+    [ot.Normal().computeQuantile(0.9)[0]],
 )
 
 # Sampling by conditional inversion must not return huge values when the
@@ -646,12 +641,8 @@ assert permuted_marginal.getDimension() == 2
 single_marginal = described.getMarginal(1)
 assert single_marginal.getDimension() == 1
 assert single_marginal.getDescription() == ["b"]
-ott.assert_almost_equal(
-    single_marginal.computeCDF([0.3]), ot.Normal().computeCDF(0.3)
-)
-ott.assert_almost_equal(
-    single_marginal.computePDF([0.3]), ot.Normal().computePDF(0.3)
-)
+ott.assert_almost_equal(single_marginal.computeCDF([0.3]), ot.Normal().computeCDF(0.3))
+ott.assert_almost_equal(single_marginal.computePDF([0.3]), ot.Normal().computePDF(0.3))
 with ott.assert_raises(Exception):
     described.getMarginal(2)
 with ott.assert_raises(Exception):
@@ -883,9 +874,7 @@ correlation_3d = ot.CorrelationMatrix(3)
 correlation_3d[0, 1] = 0.4
 correlation_3d[0, 2] = -0.2
 correlation_3d[1, 2] = 0.3
-gaussian_3d = ot.Normal(
-    [0.1, -0.2, 0.3], [1.0, 1.5, 0.8], correlation_3d
-)
+gaussian_3d = ot.Normal([0.1, -0.2, 0.3], [1.0, 1.5, 0.8], correlation_3d)
 gaussian_network = ot.CumulativeDistributionNetwork(
     [gaussian_3d], ot.BipartiteGraph([[0, 1, 2]])
 )
@@ -978,7 +967,9 @@ ott.assert_almost_equal(
 assert not dirichlet_network.isElliptical()
 for k in [1, 2, 3]:
     scale = 1.0 - sum(dirichlet_point[:k])
-    beta = ot.Beta(dirichlet_parameters[k], sum(dirichlet_parameters[k + 1 :]), 0.0, 1.0)
+    beta = ot.Beta(
+        dirichlet_parameters[k], sum(dirichlet_parameters[k + 1 :]), 0.0, 1.0
+    )
     conditioning = ot.Point(dirichlet_point[:k])
     ott.assert_almost_equal(
         dirichlet_network.computeConditionalCDF(dirichlet_point[k], conditioning),
@@ -998,9 +989,7 @@ original_maximum_terms = ot.ResourceMap.GetAsUnsignedInteger(maximum_terms_key)
 try:
     ot.ResourceMap.SetAsUnsignedInteger(maximum_terms_key, 1)
     scale = 1.0 - sum(dirichlet_point[:2])
-    beta = ot.Beta(
-        dirichlet_parameters[2], sum(dirichlet_parameters[3:]), 0.0, 1.0
-    )
+    beta = ot.Beta(dirichlet_parameters[2], sum(dirichlet_parameters[3:]), 0.0, 1.0)
     ott.assert_almost_equal(
         dirichlet_network.computeConditionalCDF(
             dirichlet_point[2], ot.Point(dirichlet_point[:2])
@@ -1009,9 +998,7 @@ try:
         1.0e-12,
     )
     scale = 1.0 - dirichlet_point[0]
-    beta = ot.Beta(
-        dirichlet_parameters[1], sum(dirichlet_parameters[2:]), 0.0, 1.0
-    )
+    beta = ot.Beta(dirichlet_parameters[1], sum(dirichlet_parameters[2:]), 0.0, 1.0)
     ott.assert_almost_equal(
         dirichlet_network.computeConditionalPDF(
             dirichlet_point[1], ot.Point(dirichlet_point[:1])
@@ -1124,9 +1111,7 @@ ott.assert_almost_equal(
     1.0e-14,
 )
 
-finite_discrete = ot.FiniteDiscreteDistribution(
-    ot.Sample([[0.5], [1.5]]), [0.5, 0.5]
-)
+finite_discrete = ot.FiniteDiscreteDistribution(ot.Sample([[0.5], [1.5]]), [0.5, 0.5])
 finite_discrete_network = ot.CumulativeDistributionNetwork(
     [finite_discrete], ot.BipartiteGraph([[0]])
 )
@@ -1184,9 +1169,7 @@ numerator = (
     discrete_chain.computeCDF([chain_point[0], chain_point[1], math.inf])
     - discrete_chain.computeCDF([chain_point[0] - 1.0, chain_point[1], math.inf])
     - discrete_chain.computeCDF([chain_point[0], chain_point[1] - 1.0, math.inf])
-    + discrete_chain.computeCDF(
-        [chain_point[0] - 1.0, chain_point[1] - 1.0, math.inf]
-    )
+    + discrete_chain.computeCDF([chain_point[0] - 1.0, chain_point[1] - 1.0, math.inf])
 )
 ott.assert_almost_equal(
     discrete_chain.computeConditionalPDF(chain_point[1], [chain_point[0]]),

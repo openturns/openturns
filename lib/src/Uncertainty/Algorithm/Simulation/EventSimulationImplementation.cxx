@@ -53,7 +53,7 @@ EventSimulationImplementation::EventSimulationImplementation(const HistoryStrate
 
 /* Constructor with parameters */
 EventSimulationImplementation::EventSimulationImplementation(const RandomVector & event,
-                                 const HistoryStrategy & convergenceStrategy)
+    const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
   , event_(event)
   , result_()
@@ -196,11 +196,11 @@ Sample EventSimulationImplementation::computeBlockSample()
 }
 
 /** Setter keep sample */
-void EventSimulationImplementation::setKeepSample(const Bool) 
+void EventSimulationImplementation::setKeepSample(const Bool)
 {
   throw NotYetImplementedException(HERE) << "In EventSimulationImplementation::setKeepSample(Bool)";
-} 
-  
+}
+
 /* Draw the probability convergence at the given level */
 Graph EventSimulationImplementation::drawProbabilityConvergence(const Scalar level) const
 {

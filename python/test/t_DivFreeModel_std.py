@@ -71,7 +71,9 @@ with ott.assert_raises(TypeError):
 print("=" * 60)
 print("Test non-scalar underlying model (must fail)")
 print("=" * 60)
-model_vec = ot.TensorizedCovarianceModel([ot.SquaredExponential([1.5], [1.0]), ot.SquaredExponential([2.0], [2.0])])
+model_vec = ot.TensorizedCovarianceModel(
+    [ot.SquaredExponential([1.5], [1.0]), ot.SquaredExponential([2.0], [2.0])]
+)
 assert model_vec.getOutputDimension() == 2
 with ott.assert_raises(TypeError):
     otexp.DivFreeModel(model_vec)
@@ -462,9 +464,9 @@ print("=" * 60)
 div_3d_meta = otexp.DivFreeModel(3)
 amp_3d = div_3d_meta.getAmplitude()
 # C_div(0)_{ii} = sum_{k!=i} 1/L_k^2, all L_k = 1 => C_div(0) = 2*I
-ott.assert_almost_equal(amp_3d[0], 2.0 ** 0.5, 1e-10)
-ott.assert_almost_equal(amp_3d[1], 2.0 ** 0.5, 1e-10)
-ott.assert_almost_equal(amp_3d[2], 2.0 ** 0.5, 1e-10)
+ott.assert_almost_equal(amp_3d[0], 2.0**0.5, 1e-10)
+ott.assert_almost_equal(amp_3d[1], 2.0**0.5, 1e-10)
+ott.assert_almost_equal(amp_3d[2], 2.0**0.5, 1e-10)
 
 # ====================================================================
 # setScale refreshes metadata
@@ -520,12 +522,26 @@ def assert_partial_gradient(model, s, t, eps=1e-5, tol=1e-4):
         flat_minus = symmetrized_flat(model(s_minus, t))
         for k in range(out * out):
             gradfd = (flat_plus[k] - flat_minus[k]) / (2.0 * eps)
-            ott.assert_almost_equal(grad[a, k], gradfd, tol, tol, "partialGradient[" + str(a) + "," + str(k) + "]")
+            ott.assert_almost_equal(
+                grad[a, k],
+                gradfd,
+                tol,
+                tol,
+                "partialGradient[" + str(a) + "," + str(k) + "]",
+            )
 
 
-assert_partial_gradient(otexp.DivFreeModel(ot.SquaredExponential([1.5, 2.0], [1.0])), [0.5, 0.3], [0.1, 0.2])
-assert_partial_gradient(otexp.DivFreeModel(ot.SquaredExponential([1.0, 1.5, 2.0], [1.0])), [0.5, 0.3, 0.2], [0.1, 0.2, 0.3])
-assert_partial_gradient(otexp.DivFreeModel(ot.MaternModel([1.5, 2.0], [1.0], 1.5)), [0.5, 0.3], [0.1, 0.2])
+assert_partial_gradient(
+    otexp.DivFreeModel(ot.SquaredExponential([1.5, 2.0], [1.0])), [0.5, 0.3], [0.1, 0.2]
+)
+assert_partial_gradient(
+    otexp.DivFreeModel(ot.SquaredExponential([1.0, 1.5, 2.0], [1.0])),
+    [0.5, 0.3, 0.2],
+    [0.1, 0.2, 0.3],
+)
+assert_partial_gradient(
+    otexp.DivFreeModel(ot.MaternModel([1.5, 2.0], [1.0], 1.5)), [0.5, 0.3], [0.1, 0.2]
+)
 # Fallback paths run with the expected shapes
 div_grad = otexp.DivFreeModel(ot.SquaredExponential([1.5, 2.0], [1.0]))
 hess = div_grad.partialHessian([0.5, 0.3], [0.1, 0.2])
@@ -556,8 +572,12 @@ def assert_exact_stationary(base, s, t):
             ott.assert_almost_equal(c[i, j], expected, 1e-14, 1e-14)
 
 
-assert_exact_stationary(ot.SquaredExponential([1.5, 2.0], [1.0]), [0.5, 0.3], [0.1, 0.2])
-assert_exact_stationary(ot.SquaredExponential([1.0, 1.5, 2.0], [1.0]), [0.5, 0.3, 0.2], [0.1, 0.2, 0.3])
+assert_exact_stationary(
+    ot.SquaredExponential([1.5, 2.0], [1.0]), [0.5, 0.3], [0.1, 0.2]
+)
+assert_exact_stationary(
+    ot.SquaredExponential([1.0, 1.5, 2.0], [1.0]), [0.5, 0.3, 0.2], [0.1, 0.2, 0.3]
+)
 assert_exact_stationary(ot.MaternModel([1.5, 2.0], [1.0], 1.5), [0.5, 0.3], [0.1, 0.2])
 
 print("All tests passed!")

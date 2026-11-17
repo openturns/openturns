@@ -79,7 +79,9 @@ assert im.getNonZeroPolynomialChaosExpansionIndices(1) == [1, 0, 0]
 assert im.getNonZeroPolynomialChaosExpansionIndices(-1) == [21, 0, 4]
 assert indices[0] == im.getNonZeroPolynomialChaosExpansionIndices(0)
 assert indices[-1] == im.getNonZeroPolynomialChaosExpansionIndices(-1)
-assert_almost_equal(im.getNonZeroPolynomialChaosExpansionCoefficients(0), im.expectation, 1e-12)
+assert_almost_equal(
+    im.getNonZeroPolynomialChaosExpansionCoefficients(0), im.expectation, 1e-12
+)
 
 with assert_raises(ValueError):
     im.getNonZeroPolynomialChaosExpansionIndices(46)

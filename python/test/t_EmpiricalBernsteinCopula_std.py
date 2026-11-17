@@ -153,9 +153,7 @@ marginalCopula = ot.EmpiricalBernsteinCopula(
 )
 assert not marginalCopula.isCopula()
 assert marginalCopula.hasIndependentCopula()
-ott.assert_almost_equal(
-    marginalCopula.computeConditionalPDF(0.3, []), 0.92, 1e-12, 0.0
-)
+ott.assert_almost_equal(marginalCopula.computeConditionalPDF(0.3, []), 0.92, 1e-12, 0.0)
 ott.assert_almost_equal(
     marginalCopula.computeSequentialConditionalPDF([0.3]), [0.92], 1e-12, 0.0
 )
@@ -172,10 +170,7 @@ assert math.isfinite(copula6D.computeLogPDF([0.01] * 6))
 n = 100
 multipliers = [37, 53, 71, 89, 13]
 permutation_sample = ot.Sample(
-    [
-        [(i + 0.5) / n] + [((a * i) % n + 0.5) / n for a in multipliers]
-        for i in range(n)
-    ]
+    [[(i + 0.5) / n] + [((a * i) % n + 0.5) / n for a in multipliers] for i in range(n)]
 )
 underflow_copula = ot.EmpiricalBernsteinCopula(permutation_sample, n)
 underflow_point = [1.0 - 1e-9] * 6

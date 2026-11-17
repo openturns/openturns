@@ -22,10 +22,10 @@ ott.assert_almost_equal(distribution.computePDF(x), math.log(x / 3.0), 1.0e-10, 
 
 x = 7.999
 expectedCCDF = 8.0 - x - x * math.log(8.0 / x)
-ott.assert_almost_equal(distribution.computeComplementaryCDF(x), expectedCCDF, 1.0e-7, 0.0)
 ott.assert_almost_equal(
-    distribution.computeCDF(x), 1.0 - expectedCCDF, 1.0e-12, 0.0
+    distribution.computeComplementaryCDF(x), expectedCCDF, 1.0e-7, 0.0
 )
+ott.assert_almost_equal(distribution.computeCDF(x), 1.0 - expectedCCDF, 1.0e-12, 0.0)
 ott.assert_almost_equal(
     distribution.computeProbability(ot.Interval(7.999, 8.0)), expectedCCDF, 1.0e-7, 0.0
 )
@@ -36,9 +36,7 @@ signedDistribution = ot.ProductDistribution(
     ot.Uniform(-2.0, -1.0), ot.Uniform(3.0, 4.0)
 )
 x = -7.999
-ott.assert_almost_equal(
-    signedDistribution.computeCDF(x), expectedCCDF, 1.0e-7, 0.0
-)
+ott.assert_almost_equal(signedDistribution.computeCDF(x), expectedCCDF, 1.0e-7, 0.0)
 ott.assert_almost_equal(
     signedDistribution.computeProbability(ot.Interval(-8.0, x)),
     expectedCCDF,
@@ -47,13 +45,10 @@ ott.assert_almost_equal(
 )
 
 # The direct and complementary integrations must agree on both sides of zero.
-mixedDistribution = ot.ProductDistribution(
-    ot.Uniform(-1.0, 2.0), ot.Normal(1.0, 2.0)
-)
+mixedDistribution = ot.ProductDistribution(ot.Uniform(-1.0, 2.0), ot.Normal(1.0, 2.0))
 for x in [-2.0, -1.0, -0.5, 0.0, 0.5, 1.0, 2.0]:
     ott.assert_almost_equal(
-        mixedDistribution.computeCDF(x)
-        + mixedDistribution.computeComplementaryCDF(x),
+        mixedDistribution.computeCDF(x) + mixedDistribution.computeComplementaryCDF(x),
         1.0,
         1.0e-12,
         0.0,
@@ -77,9 +72,14 @@ for x in [1.0e-13, 1.0e-12, 1.0e-10]:
 
 x = 1.0 - 1.0e-6
 expectedCCDF = (1.0 - x) + x * math.log(x)
-ott.assert_almost_equal(squareDistribution.computeComplementaryCDF(x), expectedCCDF, 1.0e-8, 0.0)
 ott.assert_almost_equal(
-    squareDistribution.computeProbability(ot.Interval(x, 1.0)), expectedCCDF, 1.0e-8, 0.0
+    squareDistribution.computeComplementaryCDF(x), expectedCCDF, 1.0e-8, 0.0
+)
+ott.assert_almost_equal(
+    squareDistribution.computeProbability(ot.Interval(x, 1.0)),
+    expectedCCDF,
+    1.0e-8,
+    0.0,
 )
 
 # Quantiles must invert the stable probability branch, including both tails.
@@ -107,9 +107,7 @@ for probability in [1.0e-12, 1.0e-9, 1.0e-6]:
     )
 
 # The same checks for a product whose lower support bound is positive.
-boundedDistribution = ot.ProductDistribution(
-    ot.Uniform(1.0, 2.0), ot.Uniform(3.0, 4.0)
-)
+boundedDistribution = ot.ProductDistribution(ot.Uniform(1.0, 2.0), ot.Uniform(3.0, 4.0))
 for probability in [1.0e-12, 1.0e-9, 1.0e-6]:
     quantile = boundedDistribution.computeQuantile(probability)[0]
     ott.assert_almost_equal(

@@ -86,7 +86,9 @@ ott.assert_almost_equal(quantile, [0.135721, 0.135721], 1e-6, 0.0)
 
 # Get 95% survival function
 inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
-ott.assert_almost_equal(inverseSurvival, [0.027249037839104637, 0.027249037839104637], 1e-6, 0.0)
+ott.assert_almost_equal(
+    inverseSurvival, [0.027249037839104637, 0.027249037839104637], 1e-6, 0.0
+)
 ott.assert_almost_equal(
     copula.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 0.0
 )
@@ -104,7 +106,9 @@ ott.assert_almost_equal(beta, 0.966383, 1e-6, 0.0)
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
     0.95, True
 )
-ott.assert_almost_equal(interval.getLowerBound(), [0.027249037839104637, 0.027249037839104637], 1e-6, 0.0)
+ott.assert_almost_equal(
+    interval.getLowerBound(), [0.027249037839104637, 0.027249037839104637], 1e-6, 0.0
+)
 ott.assert_almost_equal(interval.getUpperBound(), [1.0, 1.0], 0.0, 0.0)
 ott.assert_almost_equal(beta, 0.972751, 1e-6, 0.0)
 

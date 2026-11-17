@@ -74,9 +74,7 @@ for case in cases:
     point = ot.Point(distribution.getDimension(), 3.5)
 
     # derivative of PDF with regards its arguments
-    ott.assert_almost_equal(
-        distribution.computeDDF(point), case["ddf"], 1e-5, 1e-12
-    )
+    ott.assert_almost_equal(distribution.computeDDF(point), case["ddf"], 1e-5, 1e-12)
 
     # PDF value
     LPDF = distribution.computeLogPDF(point)
@@ -113,9 +111,7 @@ for case in cases:
     quantile = distribution.computeQuantile(0.95)
     ott.assert_almost_equal(quantile, case["quantile"], 1e-5, 1e-12)
     ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-9, 0.0)
-    inverseSurvival = ot.Point(
-        distribution.computeInverseSurvivalFunction(0.95)
-    )
+    inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
     ott.assert_almost_equal(inverseSurvival, case["inv_survival"], 1e-5, 1e-12)
     ott.assert_almost_equal(
         distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-9, 0.0
@@ -123,29 +119,15 @@ for case in cases:
     # NOTE: entropy is covered by DistributionValidation below, no manual check needed
 
     # Confidence regions
-    interval, _ = (
-        distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-    )
-    ott.assert_almost_equal(
-        interval.getLowerBound(), [case["mvi"][0]], 1e-5, 1e-12
-    )
-    ott.assert_almost_equal(
-        interval.getUpperBound(), [case["mvi"][1]], 1e-5, 1e-12
-    )
-    ott.assert_almost_equal(
-        distribution.computeProbability(interval), 0.95, 1e-9, 0.0
-    )
-    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
-        0.95
-    )
+    interval, _ = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    ott.assert_almost_equal(interval.getLowerBound(), [case["mvi"][0]], 1e-5, 1e-12)
+    ott.assert_almost_equal(interval.getUpperBound(), [case["mvi"][1]], 1e-5, 1e-12)
+    ott.assert_almost_equal(distribution.computeProbability(interval), 0.95, 1e-9, 0.0)
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     lower = interval.getLowerBound()[0]
-    ott.assert_almost_equal(
-        beta, distribution.computePDF([lower]), 1e-9, 1e-12
-    )
+    ott.assert_almost_equal(beta, distribution.computePDF([lower]), 1e-9, 1e-12)
     interval, _ = (
-        distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
-            0.95
-        )
+        distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
     )
     ott.assert_almost_equal(
         interval.getLowerBound(), [case["bilateral"][0]], 1e-5, 1e-12
@@ -153,27 +135,21 @@ for case in cases:
     ott.assert_almost_equal(
         interval.getUpperBound(), [case["bilateral"][1]], 1e-5, 1e-12
     )
-    ott.assert_almost_equal(
-        distribution.computeProbability(interval), 0.95, 1e-9, 0.0
-    )
+    ott.assert_almost_equal(distribution.computeProbability(interval), 0.95, 1e-9, 0.0)
     interval, _ = (
         distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
             0.95, False
         )
     )
     ott.assert_almost_equal(interval.getLowerBound()[0], a, 0.0, 0.0)
-    ott.assert_almost_equal(
-        distribution.computeProbability(interval), 0.95, 1e-9, 0.0
-    )
+    ott.assert_almost_equal(distribution.computeProbability(interval), 0.95, 1e-9, 0.0)
     interval, _ = (
         distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
             0.95, True
         )
     )
     ott.assert_almost_equal(interval.getUpperBound()[0], b, 0.0, 0.0)
-    ott.assert_almost_equal(
-        distribution.computeProbability(interval), 0.95, 1e-9, 0.0
-    )
+    ott.assert_almost_equal(distribution.computeProbability(interval), 0.95, 1e-9, 0.0)
 
     # characteristic function
     CF = distribution.computeCharacteristicFunction(point[0])
@@ -185,16 +161,9 @@ for case in cases:
     ott.assert_almost_equal(standardDeviation, case["std"], 1e-5, 1e-12)
     covariance = distribution.getCovariance()
     ott.assert_almost_equal(covariance, case["cov"], 1e-5, 1e-12)
-    ott.assert_almost_equal(
-        covariance[0, 0], standardDeviation[0] ** 2, 1e-12, 0.0
-    )
-    ott.assert_almost_equal(
-        distribution.getParameter(), case["parameters"], 0.0, 0.0
-    )
-    assert (
-        list(distribution.getParameterDescription())
-        == ["mu", "sigma", "a", "b"]
-    )
+    ott.assert_almost_equal(covariance[0, 0], standardDeviation[0] ** 2, 1e-12, 0.0)
+    ott.assert_almost_equal(distribution.getParameter(), case["parameters"], 0.0, 0.0)
+    assert list(distribution.getParameterDescription()) == ["mu", "sigma", "a", "b"]
     ott.assert_almost_equal(
         distribution.getStandardRepresentative().getParameter(),
         case["std_rep"],
@@ -290,13 +259,20 @@ ott.assert_almost_equal(
 edge = ot.TruncatedNormal(1.5, 3.0, -2.0, 5.0)
 ref = ot.Normal(1.5, 3.0)
 ott.assert_almost_equal(
-    edge.computePDF(-2.0), ref.computePDF(-2.0) / (ref.computeCDF(5.0) - ref.computeCDF(-2.0)), 1e-12, 0.0
+    edge.computePDF(-2.0),
+    ref.computePDF(-2.0) / (ref.computeCDF(5.0) - ref.computeCDF(-2.0)),
+    1e-12,
+    0.0,
 )
 ott.assert_almost_equal(edge.computePDF(5.0), edge.computePDF(-2.0), 1e-12, 0.0)
 assert edge.computePDF(-2.0) > 0.0
-ott.assert_almost_equal(edge.computeLogPDF(-2.0), math.log(edge.computePDF(-2.0)), 1e-12, 0.0)
+ott.assert_almost_equal(
+    edge.computeLogPDF(-2.0), math.log(edge.computePDF(-2.0)), 1e-12, 0.0
+)
 # Right-sided DDF and inside PDF gradient at the finite lower bound
-ott.assert_almost_equal(edge.computeDDF([-2.0]), [-(-2.0 - 1.5) / 9.0 * edge.computePDF(-2.0)], 1e-12, 0.0)
+ott.assert_almost_equal(
+    edge.computeDDF([-2.0]), [-(-2.0 - 1.5) / 9.0 * edge.computePDF(-2.0)], 1e-12, 0.0
+)
 grad = edge.computePDFGradient([-2.0])
 assert grad.norm() > 0.0
 ott.assert_almost_equal(grad[2], -edge.computePDFGradient([5.0])[3], 1e-12, 0.0)

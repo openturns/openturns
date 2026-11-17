@@ -59,7 +59,9 @@ print("myFunc(point)=", myFunc(point))
 print("called ", myFunc.getCallsNumber(), " times")
 
 # PointToPointEvaluation extra coverage (no prints)
-evFF = ot.PointToPointEvaluation(ot.SymbolicFunction("x", "sin(x)"), ot.SymbolicFunction("x", "cos(x)"))
+evFF = ot.PointToPointEvaluation(
+    ot.SymbolicFunction("x", "sin(x)"), ot.SymbolicFunction("x", "cos(x)")
+)
 _ = repr(evFF)
 _ = str(evFF)
 assert evFF.getInputDimension() == 1
@@ -78,13 +80,20 @@ _ = evFF.getLeftFunction()
 _ = evFF.getRightFunction()
 _ = evFF.getPointToFieldFunction()
 _ = evFF.getFieldToPointFunction()
-ott.assert_almost_equal(evFF(ot.Sample([[0.5], [1.0]])), ot.Function(evFF)(ot.Sample([[0.5], [1.0]])), 1e-14, 1e-14)
+ott.assert_almost_equal(
+    evFF(ot.Sample([[0.5], [1.0]])),
+    ot.Function(evFF)(ot.Sample([[0.5], [1.0]])),
+    1e-14,
+    1e-14,
+)
 with ott.assert_raises(Exception):
     evFF([1.0, 2.0])
 with ott.assert_raises(Exception):
     evFF.getMarginal(5)
 with ott.assert_raises(Exception):
-    ot.PointToPointEvaluation(ot.SymbolicFunction(["x", "y"], ["x+y"]), ot.SymbolicFunction("x", "cos(x)"))
+    ot.PointToPointEvaluation(
+        ot.SymbolicFunction(["x", "y"], ["x+y"]), ot.SymbolicFunction("x", "cos(x)")
+    )
 # field/function composition branch: sample eval on field-based instance
 _ = myFunc(ot.Sample([[1.0] * myFunc.getInputDimension()] * 3))
 with ott.assert_raises(Exception):

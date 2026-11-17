@@ -39,10 +39,12 @@ ot.RandomGenerator.SetSeed(0)
 # approximate is a Gaussian bump, and we look at the Christoffel density of
 # a 10-function space to see where the optimal sampling concentrates.
 measure = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 2)
-basis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Uniform(-1.0, 1.0)] * 2))
+basis = ot.OrthogonalBasis(
+    ot.OrthogonalProductPolynomialFactory([ot.Uniform(-1.0, 1.0)] * 2)
+)
 spaceDimension = 10
 christoffel = otexp.ChristoffelDistribution(basis, spaceDimension)
-target = ot.SymbolicFunction(['x0', 'x1'], ['exp(-(x0^2 + x1^2))'])
+target = ot.SymbolicFunction(["x0", "x1"], ["exp(-(x0^2 + x1^2))"])
 
 # %%
 # We evaluate the normalized Christoffel function on a fine grid and draw it
@@ -70,10 +72,18 @@ uniformSample = measure.getSample(budget)
 expansionSize = experiment.getSpaceDimension()
 
 
-def fit(design, designWeights, expansionBasis=basis, expansionMeasure=measure, expansionSize=expansionSize):
+def fit(
+    design,
+    designWeights,
+    expansionBasis=basis,
+    expansionMeasure=measure,
+    expansionSize=expansionSize,
+):
     observations = target(design)
     weights = ot.Point(designWeights)
-    expansion = ot.LeastSquaresExpansion(design, weights, observations, expansionMeasure, expansionBasis, expansionSize)
+    expansion = ot.LeastSquaresExpansion(
+        design, weights, observations, expansionMeasure, expansionBasis, expansionSize
+    )
     expansion.run()
     return expansion.getResult().getMetaModel()
 
@@ -91,16 +101,22 @@ validation = measure.getSample(2000)
 reference = target(validation)
 norm = reference.computeRawMoment(2)[0] ** 0.5
 error = ((metamodel(validation) - reference).computeRawMoment(2)[0]) ** 0.5 / norm
-uniformError = ((uniformMetamodel(validation) - reference).computeRawMoment(2)[0]) ** 0.5 / norm
+uniformError = (
+    (uniformMetamodel(validation) - reference).computeRawMoment(2)[0]
+) ** 0.5 / norm
 print(f"subsampled error={error:.3e} uniform error={uniformError:.3e}")
 
 
 def condition(design, designWeights, designExperiment=experiment):
-    eigenvalues = sorted(designExperiment.computeDesignEigenvalues(design, ot.Point(designWeights)))
+    eigenvalues = sorted(
+        designExperiment.computeDesignEigenvalues(design, ot.Point(designWeights))
+    )
     return eigenvalues[-1] / eigenvalues[0]
 
 
-print(f"subsampled conditioning={condition(sample, weights):.3f} uniform conditioning={condition(uniformSample, [1.0] * budget):.3f}")
+print(
+    f"subsampled conditioning={condition(sample, weights):.3f} uniform conditioning={condition(uniformSample, [1.0] * budget):.3f}"
+)
 
 # %%
 # In practice simulation points may already be available from a previous study.
@@ -110,24 +126,40 @@ print(f"subsampled conditioning={condition(sample, weights):.3f} uniform conditi
 candidatePool = measure.getSample(2 * budget)
 givenSample, givenWeights = experiment.generateWithWeights(candidatePool)
 givenMetamodel = fit(givenSample, list(givenWeights))
-givenError = ((givenMetamodel(validation) - reference).computeRawMoment(2)[0]) ** 0.5 / norm
-print(f"recycled error={givenError:.3e} conditioning={condition(givenSample, list(givenWeights)):.3f}")
+givenError = (
+    (givenMetamodel(validation) - reference).computeRawMoment(2)[0]
+) ** 0.5 / norm
+print(
+    f"recycled error={givenError:.3e} conditioning={condition(givenSample, list(givenWeights)):.3f}"
+)
 
 # %%
 # The workflow is not specific to polynomials. We repeat the same test case
 # with a tensor Fourier basis: its family is orthonormal on [-pi, pi], so the
 # experiment draws its design on that wider square and the validation is
 # performed there as well.
-fourierBasis = ot.OrthogonalBasis(ot.OrthogonalProductFunctionFactory([ot.FourierSeriesFactory()] * 2))
+fourierBasis = ot.OrthogonalBasis(
+    ot.OrthogonalProductFunctionFactory([ot.FourierSeriesFactory()] * 2)
+)
 fourierMeasure = fourierBasis.getMeasure()
 fourierExperiment = otexp.ChristoffelSubsampleExperiment(fourierBasis, budget)
 fourierSample, fourierWeights = fourierExperiment.generateWithWeights()
-fourierMetamodel = fit(fourierSample, fourierWeights, fourierBasis, fourierMeasure, fourierExperiment.getSpaceDimension())
+fourierMetamodel = fit(
+    fourierSample,
+    fourierWeights,
+    fourierBasis,
+    fourierMeasure,
+    fourierExperiment.getSpaceDimension(),
+)
 fourierValidation = fourierMeasure.getSample(2000)
 fourierReference = target(fourierValidation)
 fourierNorm = fourierReference.computeRawMoment(2)[0] ** 0.5
-fourierError = ((fourierMetamodel(fourierValidation) - fourierReference).computeRawMoment(2)[0]) ** 0.5 / fourierNorm
-print(f"fourier error={fourierError:.3e} conditioning={condition(fourierSample, fourierWeights, fourierExperiment):.3f}")
+fourierError = (
+    (fourierMetamodel(fourierValidation) - fourierReference).computeRawMoment(2)[0]
+) ** 0.5 / fourierNorm
+print(
+    f"fourier error={fourierError:.3e} conditioning={condition(fourierSample, fourierWeights, fourierExperiment):.3f}"
+)
 
 # %%
 # We display the three designs together. We observe that the sampled designs

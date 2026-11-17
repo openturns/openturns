@@ -172,7 +172,9 @@ def test_parameters_iso():
 def test_parameter_gradient_vanishing_marginal():
     # Product of a single functional marginal whose correlation vanishes
     # exactly at the evaluation point: rho(u) = a - u^2 with a = 1, u = |tau|/scale = 1
-    rho = ot.ParametricFunction(ot.SymbolicFunction(["u", "a"], ["a - u^2"]), [1], [1.0])
+    rho = ot.ParametricFunction(
+        ot.SymbolicFunction(["u", "a"], ["a - u^2"]), [1], [1.0]
+    )
     marginal = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
     # activate the extra parameter a so that it is part of the product parameters
     marginal.setActiveParameter([0, 2, 3])
@@ -194,7 +196,9 @@ def test_parameter_gradient_vanishing_marginal():
         valueM = model.computeAsScalar(s, t)
         model.setParameter(p0)
         fd = (valueP - valueM) / (2.0 * eps)
-        ott.assert_almost_equal(grad[k, 0], fd, 1e-6, 1e-6, "in parameterGradient zero correlation")
+        ott.assert_almost_equal(
+            grad[k, 0], fd, 1e-6, 1e-6, "in parameterGradient zero correlation"
+        )
     # Same check at a non-vanishing point
     s = ot.Point([0.5])
     grad = model.parameterGradient(s, t)

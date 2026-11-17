@@ -95,9 +95,9 @@ void P1InterpolatedProcess::setMesh(const Mesh & mesh)
 {
   if (mesh.getDimension() != compoundProcess_.getInputDimension())
     throw InvalidArgumentException(HERE) << "Error: trying to set a mesh with dimension "
-                                          << mesh.getDimension()
-                                          << " on a P1InterpolatedProcess whose compound process has input dimension "
-                                          << compoundProcess_.getInputDimension();
+                                         << mesh.getDimension()
+                                         << " on a P1InterpolatedProcess whose compound process has input dimension "
+                                         << compoundProcess_.getInputDimension();
   const UnsignedInteger outputDim = compoundProcess_.getOutputDimension();
   const P1LagrangeInterpolation interpolation(compoundProcess_.getMesh(), mesh, outputDim);
   const FieldFunction p1Interpolation(interpolation);

@@ -40,9 +40,7 @@ print("pdf     =%.6f" % PDF)
 # Density at the support boundary equals lambda, not zero (see #3066)
 ott.assert_almost_equal(ot.Exponential().computePDF(0.0), 1.0, 0.0, 0.0)
 ott.assert_almost_equal(ot.Exponential().computeLogPDF(0.0), 0.0, 0.0, 0.0)
-ott.assert_almost_equal(
-    ot.Exponential(2.5, -0.5).computePDF([-0.5]), 2.5, 0.0, 0.0
-)
+ott.assert_almost_equal(ot.Exponential(2.5, -0.5).computePDF([-0.5]), 2.5, 0.0, 0.0)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -123,5 +121,9 @@ ott.assert_almost_equal(edge.computePDFGradient([-0.5]), [1.0, 6.25], 1e-12, 0.0
 ott.assert_almost_equal(edge.computeDDF([-0.5]), [-6.25], 1e-12, 0.0)
 
 # --- Exponential: gradients agree with density at the atom ---
-ott.assert_almost_equal(ot.Exponential().computePDFGradient([0.0]), [1.0, 1.0], 0.0, 0.0)
-ott.assert_almost_equal(ot.Exponential().computeCDFGradient([0.0]), [0.0, 0.0], 0.0, 0.0)
+ott.assert_almost_equal(
+    ot.Exponential().computePDFGradient([0.0]), [1.0, 1.0], 0.0, 0.0
+)
+ott.assert_almost_equal(
+    ot.Exponential().computeCDFGradient([0.0]), [0.0, 0.0], 0.0, 0.0
+)

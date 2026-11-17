@@ -31,7 +31,8 @@ CLASSNAMEINIT(MultiStart)
 static const Factory<MultiStart> Factory_MultiStart;
 static const Factory<PersistentCollection<OptimizationResult> > Factory_PersistentCollection_OptimizationResult;
 
-namespace {
+namespace
+{
 // Data forwarded to the scaled progress callback: the inner solver reports
 // progress on its local budget, we re-express it on the global budget from
 // the shared evaluation counter so progress stays monotonic across restarts.
@@ -195,7 +196,7 @@ void MultiStart::run()
       const Point x(localResult.getOptimalPoint());
       const Point y(localResult.getOptimalValue());
       const Bool objectiveImproved = (y.getDimension() > 0) && ((!result_.getOptimalValue().getDimension())
-                                    || ((getProblem().isMinimization() && y[0] < result_.getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > result_.getOptimalValue()[0])));
+                                     || ((getProblem().isMinimization() && y[0] < result_.getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > result_.getOptimalValue()[0])));
 
       if (objectiveImproved)
       {

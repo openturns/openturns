@@ -72,7 +72,9 @@ try:
             assert nodes[k] > nodes[k - 1]
     ott.assert_almost_equal(sum(weights), 1.0, 1e-12)
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("FastJacobi-AsymptoticThreshold", defaultThreshold)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "FastJacobi-AsymptoticThreshold", defaultThreshold
+    )
 nodes, weights = ot.JacobiFactory(2.5, 3.5).getNodesAndWeights(150)
 assert len(nodes) == 150
 for k in range(150):

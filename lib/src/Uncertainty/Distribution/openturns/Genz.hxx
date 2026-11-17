@@ -29,32 +29,32 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 OT_API Scalar mvn_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const Point & mu,
-    const TriangularMatrix & L,
-    const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+  const Point & a,
+  const Point & b,
+  const Point & mu,
+  const TriangularMatrix & L,
+  const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 
 OT_API Scalar mvn_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const TriangularMatrix & L,
-    const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+  const Point & a,
+  const Point & b,
+  const TriangularMatrix & L,
+  const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 
 OT_API Scalar mvt_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const Point & mu,
-    const TriangularMatrix & L,
-    const Scalar nu,
-    const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+  const Point & a,
+  const Point & b,
+  const Point & mu,
+  const TriangularMatrix & L,
+  const Scalar nu,
+  const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 
 OT_API Scalar mvt_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const TriangularMatrix & L,
-    const Scalar nu,
-    const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+  const Point & a,
+  const Point & b,
+  const TriangularMatrix & L,
+  const Scalar nu,
+  const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 
 END_NAMESPACE_OPENTURNS
 

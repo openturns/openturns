@@ -160,7 +160,7 @@ Point JacobiFactory::getRoots(const UnsignedInteger n) const
 
 /* Nodes and weights of the polynomial of degree n */
 Point JacobiFactory::getNodesAndWeights(const UnsignedInteger n,
-    Point & weightsOut) const
+                                        Point & weightsOut) const
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
   Point nodes(n);

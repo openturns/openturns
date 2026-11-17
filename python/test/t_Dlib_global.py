@@ -80,7 +80,9 @@ global_algo.setStopCallback(no_stop)
 global_algo.run()
 assert len(global_progress) == max_calls, "wrong progress calls number"
 assert all(0.0 <= p <= 100.0 for p in global_progress), "progress out of range"
-assert all(b >= a for a, b in zip(global_progress, global_progress[1:])), "progress not monotonic"
+assert all(
+    b >= a for a, b in zip(global_progress, global_progress[1:])
+), "progress not monotonic"
 assert abs(global_progress[-1] - 100.0) < 1e-12, "wrong final progress"
 
 stop_global = ot.Dlib(notConstrainingBoundsProblem, "global")

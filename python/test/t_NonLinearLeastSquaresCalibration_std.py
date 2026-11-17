@@ -93,9 +93,7 @@ for i in range(len(x)):
     jacobian = thetaModel.parameterGradient(ot.Point(x[i]))
     for a in range(parameterDimension):
         for b in range(parameterDimension):
-            gram[a, b] += sum(
-                jacobian[a, k] * jacobian[b, k] for k in range(len(y[0]))
-            )
+            gram[a, b] += sum(jacobian[a, k] * jacobian[b, k] for k in range(len(y[0])))
 hessian = ot.Matrix(gram)
 for k in range(len(residuals)):
     for a in range(parameterDimension):
@@ -111,14 +109,10 @@ linearG = ot.SymbolicFunction(["a", "b", "x"], ["a + b * x", "a - b * x"])
 linearModel = ot.ParametricFunction(linearG, [0, 1], [2.8, 1.2])
 linearY = linearModel(x)
 linearY += ot.Normal([0.0] * 2, [0.05] * 2, ot.IdentityMatrix(2)).getSample(m)
-linearGauss = ot.NonLinearLeastSquaresCalibration(
-    linearModel, x, linearY, [1.0, 1.0]
-)
+linearGauss = ot.NonLinearLeastSquaresCalibration(linearModel, x, linearY, [1.0, 1.0])
 linearGauss.setBootstrapSize(0)
 linearGauss.run()
-linearLaplace = ot.NonLinearLeastSquaresCalibration(
-    linearModel, x, linearY, [1.0, 1.0]
-)
+linearLaplace = ot.NonLinearLeastSquaresCalibration(linearModel, x, linearY, [1.0, 1.0])
 linearLaplace.setUseLaplaceApproximation(True)
 linearLaplace.setBootstrapSize(0)
 linearLaplace.run()

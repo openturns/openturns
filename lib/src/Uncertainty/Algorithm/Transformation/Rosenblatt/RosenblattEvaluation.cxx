@@ -174,7 +174,10 @@ Description RosenblattEvaluation::getParameterDescription() const
   // empty description), and fail fast on a short non-empty description
   const UnsignedInteger dimension = distribution_.getParameterDimension();
   Description description;
-  try { description = distribution_.getParameterDescription(); }
+  try
+  {
+    description = distribution_.getParameterDescription();
+  }
   catch (const NotYetImplementedException &) { /* fall through to the default below */ }
   if (description.getSize() != dimension)
   {

@@ -247,7 +247,7 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
   // Ensure the covariance is positive definite: clamp its eigenvalues to
   // twice the positive definiteness threshold of the RiemannianGaussian class
   const Scalar sigmaFloor =
-      2.0 * ResourceMap::GetAsScalar("RiemannianGaussian-PositiveDefiniteThreshold");
+    2.0 * ResourceMap::GetAsScalar("RiemannianGaussian-PositiveDefiniteThreshold");
   SymmetricMatrix sigma_sym(d);
   for (UnsignedInteger i = 0; i < d; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)

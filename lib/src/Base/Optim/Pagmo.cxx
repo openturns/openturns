@@ -398,7 +398,8 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
 #if PAGMO_VERSION_NR >= 202000
                                          "nsga3",
 #endif
-                                         "mhaco"};
+                                         "mhaco"
+                                        };
   if (!problem.isContinuous() && !integerAlgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support non continuous problems";
 #else
@@ -495,7 +496,7 @@ void Pagmo::run()
     const UnsignedInteger variant = ResourceMap::GetAsUnsignedInteger("Pagmo-de-variant");
     pagmo::de algorithm_impl(gen, F, CR, variant, getMaximumResidualError(), getMaximumAbsoluteError());
 #if PAGMO_VERSION_NR >= 202000
-    algorithm_impl.set_bfe(pagmo::bfe{});
+    algorithm_impl.set_bfe(pagmo::bfe {});
 #endif
     algo = algorithm_impl;
   }

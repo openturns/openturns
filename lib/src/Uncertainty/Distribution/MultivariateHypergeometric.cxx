@@ -58,7 +58,7 @@ MultivariateHypergeometric::MultivariateHypergeometric()
 
 /* Parameters constructor */
 MultivariateHypergeometric::MultivariateHypergeometric(const UnsignedInteger n,
-                                                       const Indices & colors)
+    const Indices & colors)
   : DistributionImplementation()
   , n_(0)
   , colors_(0)
@@ -76,8 +76,8 @@ MultivariateHypergeometric::MultivariateHypergeometric(const UnsignedInteger n,
 
 /* Parameters constructor with total population */
 MultivariateHypergeometric::MultivariateHypergeometric(const UnsignedInteger n,
-                                                       const Indices & colors,
-                                                       const UnsignedInteger total)
+    const Indices & colors,
+    const UnsignedInteger total)
   : DistributionImplementation()
   , n_(0)
   , colors_(0)
@@ -261,7 +261,7 @@ Scalar MultivariateHypergeometric::computePDF(const Point & point) const
 
 /* Compute the generating function of a sum of truncated Binomial distributions as needed in the computeCDF() method */
 Complex MultivariateHypergeometric::computeGlobalPhi(const Complex & z,
-                                                     const Indices & x) const
+    const Indices & x) const
 {
   Complex value(1.0);
   const UnsignedInteger dimension = getDimension();
@@ -281,8 +281,8 @@ Complex MultivariateHypergeometric::computeGlobalPhi(const Complex & z,
 
 /* Compute the generating function of a sum of truncated Binomial distributions as needed in the computeProbability() method */
 Complex MultivariateHypergeometric::computeGlobalPhi(const Complex & z,
-                                                     const Indices & a,
-                                                     const Indices & b) const
+    const Indices & a,
+    const Indices & b) const
 {
   Complex value(1.0);
   const UnsignedInteger dimension = getDimension();
@@ -302,19 +302,19 @@ Complex MultivariateHypergeometric::computeGlobalPhi(const Complex & z,
 
 /* Compute the generating function of a truncated Binomial distribution as needed in the computeCDF() method */
 Complex MultivariateHypergeometric::computeLocalPhi(const Complex & z,
-                                                    const Scalar c,
-                                                    const Scalar t,
-                                                    const UnsignedInteger a) const
+    const Scalar c,
+    const Scalar t,
+    const UnsignedInteger a) const
 {
   return PoissonFormula::localPhi0(z, PoissonFormula::BinomialKernel(c, t, z), a, smallA_);
 }
 
 /* Compute the generating function of a truncated Binomial distribution as needed in the computeProbability() method */
 Complex MultivariateHypergeometric::computeLocalPhi(const Complex & z,
-                                                    const Scalar c,
-                                                    const Scalar t,
-                                                    const UnsignedInteger a,
-                                                    const UnsignedInteger b) const
+    const Scalar c,
+    const Scalar t,
+    const UnsignedInteger a,
+    const UnsignedInteger b) const
 {
   return PoissonFormula::localPhi(z, PoissonFormula::BinomialKernel(c, t, z), a, b, smallA_);
 }
@@ -396,8 +396,11 @@ Scalar MultivariateHypergeometric::computeCDF(const Point & point) const
   }
   if (fullCoverage) return 1.0;
   // Evaluation of P(W=n) using Poisson's formula
-  return PoissonFormula::computeCDF([&](const Complex & z) { return computeGlobalPhi(z, kPoint); },
-                                    n_, r_, normalizationCDF_, getClassName());
+  return PoissonFormula::computeCDF([&](const Complex & z)
+  {
+    return computeGlobalPhi(z, kPoint);
+  },
+  n_, r_, normalizationCDF_, getClassName());
 }
 
 /* Compute the probability content of an interval */
@@ -488,8 +491,11 @@ Scalar MultivariateHypergeometric::computeProbability(const Interval & interval)
   }
   // Diametral term
   const Scalar logBinomPDF = DistFunc::logdBinomial(total_, t_, n_);
-  return PoissonFormula::computeProbability([&](const Complex & z) { return computeGlobalPhi(z, a, b); },
-                                            nA, r, logCoefNorm, logBinomPDF);
+  return PoissonFormula::computeProbability([&](const Complex & z)
+  {
+    return computeGlobalPhi(z, a, b);
+  },
+  nA, r, logCoefNorm, logBinomPDF);
 }
 
 /* Get the survival function of the distribution */
@@ -884,7 +890,7 @@ void MultivariateHypergeometric::updateSpectral()
 
 /* Compute the scalar quantile of the 1D multivariate hypergeometric distribution */
 Scalar MultivariateHypergeometric::computeScalarQuantile(const Scalar prob,
-                                                         const Bool tail) const
+    const Bool tail) const
 {
   return Hypergeometric(total_, colors_[0], n_).computeQuantile(prob, tail)[0];
 }

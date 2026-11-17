@@ -50,8 +50,12 @@ for cname, class_ in persistentClasses.items():
             print("--", cname, exc)
     except Exception:
         pass
-print(f"==== {len(failed)} failures / {len(notCopied)} not copied / {len(persistentClasses)} classes ====")
+print(
+    f"==== {len(failed)} failures / {len(notCopied)} not copied / {len(persistentClasses)} classes ===="
+)
 print(f"failed={failed}")
 print(f"notCopied={notCopied}")
 assert len(failed) < 1, f"{len(failed)} serialization failures: {failed}"
-assert len(notCopied) < 1, f"{len(notCopied)} classes not copied by the copy ctor: {notCopied}"
+assert (
+    len(notCopied) < 1
+), f"{len(notCopied)} classes not copied by the copy ctor: {notCopied}"

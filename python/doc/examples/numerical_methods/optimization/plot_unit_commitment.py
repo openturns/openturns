@@ -165,9 +165,9 @@ reservoirs = load("unit_commitment_reservoirs.csv")
 turbines = load("unit_commitment_turbines.csv")
 demand = load("unit_commitment_demand.csv").ravel()
 
-(
-    p_min, p_max, cost, start_cost, min_up, min_down, p_init, ramp_up, ramp_down
-) = thermal.T
+(p_min, p_max, cost, start_cost, min_up, min_down, p_init, ramp_up, ramp_down) = (
+    thermal.T
+)
 min_up = min_up.astype(int)
 min_down = min_down.astype(int)
 v_max, v_init, inflow = reservoirs.T
@@ -191,8 +191,16 @@ i_grid = np.arange(n_units)[None, :]
 U = (t_grid * n_units + i_grid).ravel()
 S = n_hours * n_units + U
 P = (2 * n_hours * n_units + t_grid * (n_units + 1) + np.arange(n_units + 1)).ravel()
-V = (2 * n_hours * n_units + n_hours * (n_units + 1) + t_grid * n_res + np.arange(n_res)).ravel()
-F = (2 * n_hours * n_units + n_hours * (n_units + 1) + n_hours * n_res + t_grid * n_tur + np.arange(n_tur)).ravel()
+V = (
+    2 * n_hours * n_units + n_hours * (n_units + 1) + t_grid * n_res + np.arange(n_res)
+).ravel()
+F = (
+    2 * n_hours * n_units
+    + n_hours * (n_units + 1)
+    + n_hours * n_res
+    + t_grid * n_tur
+    + np.arange(n_tur)
+).ravel()
 n_var = int(F[-1] + 1)
 
 # %%
@@ -254,7 +262,11 @@ def add_row(entries, low, high):
 
 for t in range(n_hours):
     # demand, met by the thermal units and by the valley
-    add_row(zip(P[t * (n_units + 1) : (t + 1) * (n_units + 1)], np.ones(n_units + 1)), demand[t], INF)
+    add_row(
+        zip(P[t * (n_units + 1) : (t + 1) * (n_units + 1)], np.ones(n_units + 1)),
+        demand[t],
+        INF,
+    )
     for i in range(n_units):
         power = P[t * (n_units + 1) + i]
         state = U[t * n_units + i]
@@ -265,7 +277,15 @@ for t in range(n_hours):
         if t == 0:
             add_row([(S[i], -1.0), (U[i], 1.0)], -INF, u_init[i])
         else:
-            add_row([(S[t * n_units + i], -1.0), (state, 1.0), (U[(t - 1) * n_units + i], -1.0)], -INF, 0.0)
+            add_row(
+                [
+                    (S[t * n_units + i], -1.0),
+                    (state, 1.0),
+                    (U[(t - 1) * n_units + i], -1.0),
+                ],
+                -INF,
+                0.0,
+            )
         # ramp limits, including the transition from the initial power at the
         # first hour so that a unit started at the first hour cannot jump
         # directly to a power above its ramp-up limit
@@ -273,8 +293,14 @@ for t in range(n_hours):
             add_row([(power, 1.0)], -INF, p_init[i] + ramp_up[i])
             add_row([(power, -1.0)], -INF, ramp_down[i] - p_init[i])
         else:
-            add_row([(power, 1.0), (P[(t - 1) * (n_units + 1) + i], -1.0)], -INF, ramp_up[i])
-            add_row([(power, -1.0), (P[(t - 1) * (n_units + 1) + i], 1.0)], -INF, ramp_down[i])
+            add_row(
+                [(power, 1.0), (P[(t - 1) * (n_units + 1) + i], -1.0)], -INF, ramp_up[i]
+            )
+            add_row(
+                [(power, -1.0), (P[(t - 1) * (n_units + 1) + i], 1.0)],
+                -INF,
+                ramp_down[i],
+            )
 
 for i in range(n_units):
     # minimum up time: a start at hour k keeps the unit on for min_up hours,
@@ -285,7 +311,12 @@ for i in range(n_units):
         if k == 0:
             add_row(window + [(U[i], -length)], -length * u_init[i], INF)
         else:
-            add_row(window + [(U[k * n_units + i], -length), (U[(k - 1) * n_units + i], length)], 0.0, INF)
+            add_row(
+                window
+                + [(U[k * n_units + i], -length), (U[(k - 1) * n_units + i], length)],
+                0.0,
+                INF,
+            )
     # minimum down time: a shutdown at hour k keeps the unit off for min_down
     # hours, or until the horizon end when the window is truncated
     for k in range(n_hours):
@@ -294,7 +325,12 @@ for i in range(n_units):
         if k == 0:
             add_row(window + [(U[i], -length)], -INF, length * (1.0 - u_init[i]))
         else:
-            add_row(window + [(U[k * n_units + i], -length), (U[(k - 1) * n_units + i], length)], -INF, length)
+            add_row(
+                window
+                + [(U[k * n_units + i], -length), (U[(k - 1) * n_units + i], length)],
+                -INF,
+                length,
+            )
 
 # hydro capacities
 for t in range(n_hours):
@@ -339,7 +375,10 @@ A = otexp.SparseMatrix(len(LB), n_var, ot.Indices(ROW), ot.Indices(COL), ot.Poin
 n_rows, n_cols, nnz = A.getNbRows(), A.getNbColumns(), A.getNbNonZeros()
 print("unknowns    : %d (%d binary)" % (n_var, int(types.sum())))
 print("constraints : %d" % n_rows)
-print("matrix      : %d rows x %d columns, %d non-zeros (%.2f%%)" % (n_rows, n_cols, nnz, 100.0 * nnz / (n_rows * n_cols)))
+print(
+    "matrix      : %d rows x %d columns, %d non-zeros (%.2f%%)"
+    % (n_rows, n_cols, nnz, 100.0 * nnz / (n_rows * n_cols))
+)
 
 # %%
 # The size of the constraint matrix is what makes the sparse storage
@@ -354,7 +393,10 @@ index_width = struct.calcsize("L")
 dense_memory = n_rows * n_cols * scalar_width
 sparse_memory = nnz * (scalar_width + index_width) + (n_cols + 1) * index_width
 print("dense form  : %.1f GiB" % (dense_memory / 2**30))
-print("sparse form : %.1f MiB (%.0f times less)" % (sparse_memory / 2**20, dense_memory / sparse_memory))
+print(
+    "sparse form : %.1f MiB (%.0f times less)"
+    % (sparse_memory / 2**20, dense_memory / sparse_memory)
+)
 
 # %%
 # Solve the problem
@@ -362,9 +404,15 @@ print("sparse form : %.1f MiB (%.0f times less)" % (sparse_memory / 2**20, dense
 # The linear problem receives the sparse matrix directly, and the binary
 # variables are declared with :meth:`~openturns.OptimizationProblem.setVariablesType`
 # so that HiGHS runs its mixed integer solver.
-bounds = ot.Interval(lower.tolist(), upper.tolist(), [True] * n_var, finite_upper.tolist())
-constraint_bounds = ot.Interval(LB, UB, [bound > -INF for bound in LB], [bound < INF for bound in UB])
-problem = otexp.LinearProgrammingProblem(cost_vector.tolist(), bounds, A, constraint_bounds)
+bounds = ot.Interval(
+    lower.tolist(), upper.tolist(), [True] * n_var, finite_upper.tolist()
+)
+constraint_bounds = ot.Interval(
+    LB, UB, [bound > -INF for bound in LB], [bound < INF for bound in UB]
+)
+problem = otexp.LinearProgrammingProblem(
+    cost_vector.tolist(), bounds, A, constraint_bounds
+)
 problem.setVariablesType(types.tolist())
 algo = otexp.HiGHS(problem)
 algo.run()
@@ -387,7 +435,10 @@ hydro_power = p[:, n_units]
 starts = np.diff(np.vstack([u_init, u]), axis=0) > 0.5
 print("start-ups   : %d" % int(starts.sum()))
 print("thermal     : %.0f MWh" % thermal_power.sum())
-print("hydro       : %.0f MWh (%.0f%% of the demand)" % (hydro_power.sum(), 100.0 * hydro_power.sum() / demand.sum()))
+print(
+    "hydro       : %.0f MWh (%.0f%% of the demand)"
+    % (hydro_power.sum(), 100.0 * hydro_power.sum() / demand.sum())
+)
 print("demand      : %.0f MWh" % demand.sum())
 
 # %%
@@ -428,7 +479,9 @@ view = otv.View(graph)
 # The number of running units drops during the night, reaches a plateau
 # during the day when the cheapest units are saturated, and peaks with the
 # demand.
-graph_units = ot.Graph("Running thermal units", "Time (h)", "Number of units", True, "upper left")
+graph_units = ot.Graph(
+    "Running thermal units", "Time (h)", "Number of units", True, "upper left"
+)
 units_curve = ot.Curve(hours, u.sum(axis=1), "Running units")
 units_curve.setColor("red")
 graph_units.add(units_curve)

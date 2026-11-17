@@ -97,7 +97,9 @@ with ott.assert_raises(Exception):
 bigCovariance = ot.CovarianceMatrix(2 * 3)
 for i in range(6):
     bigCovariance[i, i] = 1.0
-multiModel = ot.UserDefinedCovarianceModel(ot.Mesh(ot.RegularGrid(0.0, 0.1, 3)), bigCovariance)
+multiModel = ot.UserDefinedCovarianceModel(
+    ot.Mesh(ot.RegularGrid(0.0, 0.1, 3)), bigCovariance
+)
 assert multiModel.getOutputDimension() == 2
 with ott.assert_raises(Exception):
     multiModel.computeAsScalar([0.0], [0.1])

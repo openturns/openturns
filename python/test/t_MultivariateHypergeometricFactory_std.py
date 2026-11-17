@@ -23,7 +23,10 @@ ott.assert_almost_equal(estimatedMultivariateHypergeometric.getColors(), [3, 3, 
 # The estimated distribution must be a valid distribution
 ott.assert_almost_equal(
     estimatedMultivariateHypergeometric.computeCDF(
-        [estimatedMultivariateHypergeometric.getRange().getUpperBound()[i] + 0.5 for i in range(3)]
+        [
+            estimatedMultivariateHypergeometric.getRange().getUpperBound()[i] + 0.5
+            for i in range(3)
+        ]
     ),
     1.0,
 )

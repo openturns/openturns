@@ -61,8 +61,8 @@ void HODLRMatrix::assemble(const HODLRRealAssemblyFunction& f, char symmetry)
 }
 
 void HODLRMatrix::assemble(const HODLRRealAssemblyFunction &f,
-                            const HODLRMatrixParameters & parameters,
-                            char symmetry)
+                           const HODLRMatrixParameters & parameters,
+                           char symmetry)
 {
   copyOnWrite();
   getImplementation()->assemble(f, parameters, symmetry);

@@ -446,10 +446,10 @@ void FunctionalChaosAlgorithm::run()
 /* Marginal computation */
 void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
     Indices & indices,
-					   Point & coefficients,
-					   Collection<Point> & coefficientsHistory,
-					   Collection<Indices> & indicesHistory,
-					   Point & errorHistory)
+    Point & coefficients,
+    Collection<Point> & coefficientsHistory,
+    Collection<Indices> & indicesHistory,
+    Point & errorHistory)
 {
   // Initialize the projection basis Phi_k_p_ and I_p_
   LOGINFO("Compute the initial basis");

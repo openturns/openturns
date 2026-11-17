@@ -355,10 +355,10 @@ Complex localPhi(const Complex & z, const Kernel & kernel, const UnsignedInteger
    soon as the partial sums become stable to a relative precision. */
 template <typename Function>
 inline Scalar computeCDF(const Function & phi,
-                  const UnsignedInteger n,
-                  const Scalar r,
-                  const Scalar normalization,
-                  const String & name)
+                         const UnsignedInteger n,
+                         const Scalar r,
+                         const Scalar normalization,
+                         const String & name)
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: the discretization size n must be positive.";
   Complex phiK(phi(Complex(r, 0.0)));
@@ -393,10 +393,10 @@ inline Scalar computeCDF(const Function & phi,
    generating function, with the diametral term handling the odd coefficient. */
 template <typename Function>
 inline Scalar computeProbability(const Function & phi,
-                          const UnsignedInteger nA,
-                          const Scalar r,
-                          const Scalar logCoefNorm,
-                          const Scalar logDiametral)
+                                 const UnsignedInteger nA,
+                                 const Scalar r,
+                                 const Scalar logCoefNorm,
+                                 const Scalar logDiametral)
 {
   const Scalar coefNorm = std::exp(-logCoefNorm - logDiametral) / (2.0 * nA);
   Scalar value = coefNorm * phi(Complex(r, 0.0)).real();

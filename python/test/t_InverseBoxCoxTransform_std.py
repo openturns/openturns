@@ -112,12 +112,12 @@ with ott.assert_raises(Exception):
     shiftedGradient.gradient([0.5])
 with ott.assert_raises(Exception):
     shiftedGradient.gradient([-30.0, 0.2])
-assert shiftedGradient == ot.InverseBoxCoxTransform(
-    [0.5, 1.0], [0.0, 0.0]
-).getGradient()
-assert shiftedGradient != ot.InverseBoxCoxTransform(
-    [0.0, 1.0], [0.0, 0.0]
-).getGradient()
+assert (
+    shiftedGradient == ot.InverseBoxCoxTransform([0.5, 1.0], [0.0, 0.0]).getGradient()
+)
+assert (
+    shiftedGradient != ot.InverseBoxCoxTransform([0.0, 1.0], [0.0, 0.0]).getGradient()
+)
 
 # Scalar (lambda, shift) constructor (no prints)
 scalarShifted = ot.InverseBoxCoxTransform(0.5, 1.0)
@@ -128,9 +128,7 @@ ott.assert_almost_equal(scalarShifted([0.5]), [0.5625])
 assert scalarShifted.getInverse().getLambda() == ot.Point([0.5])
 assert scalarShifted.getInverse().getShift() == ot.Point([1.0])
 # roundtrip with zero shift is an identity
-ott.assert_almost_equal(
-    ot.InverseBoxCoxTransform(0.5).getInverse()([1.5625]), [0.5]
-)
+ott.assert_almost_equal(ot.InverseBoxCoxTransform(0.5).getInverse()([1.5625]), [0.5])
 assert "InverseBoxCox" in repr(scalarShifted)
 assert "InverseBoxCox" in str(scalarShifted)
 pointShifted = ot.InverseBoxCoxTransform([0.5], [1.0])

@@ -40,12 +40,12 @@ ott.assert_almost_equal(u0[0], sum(dir0[i, 0] * x0[i] for i in range(2)))
 ot.RandomGenerator.SetSeed(0)
 N = 500
 Z = ot.Normal(5).getSample(N)
-c = math.sqrt(1.0 - 0.5 ** 2)
-X = ot.Sample([[z[0], 0.5 * z[0] + c * z[1], z[2], 0.5 * z[2] + c * z[3], z[4]]
-               for z in Z])
+c = math.sqrt(1.0 - 0.5**2)
+X = ot.Sample(
+    [[z[0], 0.5 * z[0] + c * z[1], z[2], 0.5 * z[2] + c * z[3], z[4]] for z in Z]
+)
 b = [0.0, 1.0, -1.0, 0.0, 0.5]
-linearIndex = ot.SymbolicFunction(["x0", "x1", "x2", "x3", "x4"],
-                                  ["x1 - x2 + 0.5*x4"])
+linearIndex = ot.SymbolicFunction(["x0", "x1", "x2", "x3", "x4"], ["x1 - x2 + 0.5*x4"])
 rates = ot.SymbolicFunction(["t"], ["exp(t)"])(linearIndex(X))
 Y = ot.Sample(N, 1)
 for i in range(N):
