@@ -19,7 +19,6 @@
  *
  */
 #include <cmath>
-#include <limits>
 #include "openturns/QuantileConfidence.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Binomial.hxx"
@@ -387,13 +386,13 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
     // The Normal guess may fall below rank + 1 for large p and small rank: clamp it,
     // the doubling loop below then brackets the root. Cap the initial guess to
     // avoid overflow of the narrowing cast for extreme ranks.
-    const UnsignedInteger maxInit = std::numeric_limits<UnsignedInteger>::max() / 2;
+    const UnsignedInteger maxInit = SpecFunc::MaxUnsignedInteger / 2;
     const Scalar clampedGuess = std::clamp(nMaxAsDouble, static_cast<Scalar>(rank + 1), static_cast<Scalar>(maxInit));
     UnsignedInteger nMax = static_cast<UnsignedInteger>(std::ceil(clampedGuess));
     if (nMax < rank + 1) nMax = rank + 1;
     // This loop must end as wilksConstraint->1 when n->inf
     // guard against overflow of the doubling sequence
-    const UnsignedInteger maxSize = std::numeric_limits<UnsignedInteger>::max() / 2;
+    const UnsignedInteger maxSize = SpecFunc::MaxUnsignedInteger / 2;
     while (wilksConstraint(Point({0.0 + nMax}))[0] < beta_)
     {
       if (nMax > maxSize)
@@ -414,7 +413,7 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
   // Adjust with exact integer Binomial evaluations to guarantee minimality.
   if (!(nApprox >= 0.0) || !std::isfinite(nApprox))
     throw InternalException(HERE) << "Cannot compute minimum sample size: invalid root approximation";
-  const Scalar maxSizeAsDouble = static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max() - 1);
+  const Scalar maxSizeAsDouble = static_cast<Scalar>(SpecFunc::MaxUnsignedInteger - 1);
   if (nApprox > maxSizeAsDouble)
     throw InternalException(HERE) << "Cannot compute minimum sample size: required size exceeds representable range";
   UnsignedInteger candidate = std::max(rank + 1, static_cast<UnsignedInteger>(std::ceil(nApprox - 1.0e-12)));
@@ -429,7 +428,7 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
   };
   while (candidate > rank + 1 && unilateralCoverageAt(candidate - 1) >= beta_)
     --candidate;
-  const UnsignedInteger maxSize = std::numeric_limits<UnsignedInteger>::max() - 1;
+  const UnsignedInteger maxSize = SpecFunc::MaxUnsignedInteger - 1;
   while (unilateralCoverageAt(candidate) < beta_)
   {
     if (candidate >= maxSize)
@@ -459,7 +458,7 @@ UnsignedInteger QuantileConfidence::computeBilateralMinimumSampleSize() const
   const Scalar root = solver.solve(residualParametric, 0.0, nMin - 1, nMax);
   if (!std::isfinite(root))
     throw InternalException(HERE) << "Cannot compute bilateral minimum sample size: invalid root";
-  if (root > static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max() - 1))
+  if (root > static_cast<Scalar>(SpecFunc::MaxUnsignedInteger - 1))
     throw InternalException(HERE) << "Cannot compute bilateral minimum sample size: required size exceeds representable range";
   // ceil(root) may overshoot by one unit due to solver tolerance: adjust with exact integer coverage
   UnsignedInteger candidate = static_cast<UnsignedInteger>(std::ceil(root - 1.0e-12));
@@ -475,7 +474,7 @@ UnsignedInteger QuantileConfidence::computeBilateralMinimumSampleSize() const
     --candidate;
   while (bilateralCoverageAt(candidate) < beta_)
   {
-    if (candidate >= std::numeric_limits<UnsignedInteger>::max() - 1)
+    if (candidate >= SpecFunc::MaxUnsignedInteger - 1)
       throw InternalException(HERE) << "Cannot compute bilateral minimum sample size: upper bound overflow";
     ++candidate;
   }

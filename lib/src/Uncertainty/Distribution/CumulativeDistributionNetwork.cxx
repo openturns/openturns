@@ -766,7 +766,7 @@ Scalar CumulativeDistributionNetwork::computeDiscretePartialLog(const Point & po
   while (remaining > 0)
   {
     UnsignedInteger variable = dimension;
-    UnsignedInteger bestDegree = std::numeric_limits<UnsignedInteger>::max();
+    UnsignedInteger bestDegree = SpecFunc::MaxUnsignedInteger;
     for (UnsignedInteger k = 0; k < derivativeSize; ++k)
     {
       const UnsignedInteger candidate = derivativeList[k];

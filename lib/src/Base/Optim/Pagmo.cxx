@@ -23,6 +23,7 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/DatabaseFunction.hxx"
 #include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
 
 #ifdef OPENTURNS_HAVE_PAGMO
 #include <pagmo/algorithm.hpp>
@@ -335,7 +336,7 @@ static const Factory<Pagmo> Factory_Pagmo;
 static UnsignedInteger GetReferenceDirectionsNumber(const UnsignedInteger objectives,
     const UnsignedInteger divisions)
 {
-  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger maxUInt = SpecFunc::MaxUnsignedInteger;
   UnsignedInteger directions = 1;
   for (UnsignedInteger i = 1; i <= divisions; ++ i)
   {

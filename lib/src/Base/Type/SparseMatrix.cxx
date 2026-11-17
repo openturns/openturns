@@ -20,9 +20,9 @@
  */
 #include "openturns/SparseMatrix.hxx"
 #include <algorithm>
-#include <limits>
 #include <utility>
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -50,8 +50,8 @@ SparseMatrix::SparseMatrix( const UnsignedInteger nbRows,
 {
   // the column pointer holds one entry per column plus the end marker: the
   // maximum column dimension would wrap its size to zero
-  if (nbColumns == std::numeric_limits<UnsignedInteger>::max())
-    throw InvalidArgumentException(HERE) << "The column dimension must be less than " << std::numeric_limits<UnsignedInteger>::max();
+  if (nbColumns == SpecFunc::MaxUnsignedInteger)
+    throw InvalidArgumentException(HERE) << "The column dimension must be less than " << SpecFunc::MaxUnsignedInteger;
   columnPointer_.resize(nbColumns + 1, 0);
 }
 
@@ -68,8 +68,8 @@ SparseMatrix::SparseMatrix(const UnsignedInteger nbRows,
 {
   // the column pointer holds one entry per column plus the end marker: the
   // maximum column dimension would wrap its size to zero
-  if (nbColumns == std::numeric_limits<UnsignedInteger>::max())
-    throw InvalidArgumentException(HERE) << "The column dimension must be less than " << std::numeric_limits<UnsignedInteger>::max();
+  if (nbColumns == SpecFunc::MaxUnsignedInteger)
+    throw InvalidArgumentException(HERE) << "The column dimension must be less than " << SpecFunc::MaxUnsignedInteger;
   const UnsignedInteger size = values.getSize();
   if ((rowIndices.getSize() != size) || (columnIndices.getSize() != size))
     throw InvalidArgumentException(HERE) << "Invalid triplets size";

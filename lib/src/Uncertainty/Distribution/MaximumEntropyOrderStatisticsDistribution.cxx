@@ -19,7 +19,6 @@
  *
  */
 #include <cmath>
-#include <limits>
 #include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"
 #include "openturns/Beta.hxx"
 #include "openturns/MarginalUniformOrderStatistics.hxx"
@@ -583,7 +582,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
     size = 1;
     for (UnsignedInteger k = 1; k < dimension; ++k)
     {
-      if (size > std::numeric_limits<UnsignedInteger>::max() / marginalNodesNumber) throw InvalidArgumentException(HERE) << "Error: the CDF computation requires " << marginalNodesNumber << "^" << dimension - 1 << " integration points, more than supported";
+      if (size > SpecFunc::MaxUnsignedInteger / marginalNodesNumber) throw InvalidArgumentException(HERE) << "Error: the CDF computation requires " << marginalNodesNumber << "^" << dimension - 1 << " integration points, more than supported";
       size *= marginalNodesNumber;
     }
   }

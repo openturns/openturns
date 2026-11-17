@@ -21,6 +21,7 @@
 #include <algorithm>
 #include "openturns/OTprivate.hxx"
 #include "openturns/KPermutations.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -88,7 +89,7 @@ UnsignedInteger KPermutations::getSize() const
 {
   if (k_ > n_) return 0;
   if (k_ == 0) return 1;
-  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger maxUInt = SpecFunc::MaxUnsignedInteger;
   UnsignedInteger size = 1;
   for (UnsignedInteger i = 0; i < k_; ++i)
   {
