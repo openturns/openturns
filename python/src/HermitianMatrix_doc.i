@@ -1,9 +1,6 @@
 %feature("docstring") OT::HermitianMatrix
 "Hermitian Matrix.
 
-Available constructors:
-    HermitianMatrix(*dim*)
-
 Parameters
 ----------
 dim : int

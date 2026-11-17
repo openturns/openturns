@@ -1,17 +1,14 @@
 %feature("docstring") OT::Grid
 "Grid.
 
-Available constructors:
-    Grid(*bounds, subdivisions, legend=' '*)
-
 Parameters
 ----------
 bounds : :class:`~openturns.Interval` of dimension 2
     Bounds of the grid, including outer edges.
 subdivisions : sequence of int of size 2
     Number of subdivisions in each direction.
-legend : str
-    Legend of the Grid.
+legend : str, optional
+    Legend of the Grid. Default is empty.
 
 Notes
 -----

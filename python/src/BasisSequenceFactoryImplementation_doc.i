@@ -1,13 +1,6 @@
 %define OT_BasisSequenceFactory_doc
 "Basis sequence factory.
 
-Available constructors:
-    BasisSequenceFactory(*basisSeqFacImp*)
-
-Parameters
-----------
-basisSeqFacImp : a BasisSequenceFactoryImplementation
-
 See also
 --------
 LARS
