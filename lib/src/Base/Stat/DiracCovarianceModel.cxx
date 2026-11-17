@@ -221,14 +221,14 @@ Scalar DiracCovarianceModel::computeAsScalar(const Scalar tau) const
 }
 
 // The following structure helps to compute the full covariance matrix
-struct DiracCovarianceModelDiscretizePolicy
+struct DiracCovarianceModelDiscretizeBody
 {
   const Sample & input_;
   CovarianceMatrix & output_;
   const DiracCovarianceModel & model_;
   const UnsignedInteger dimension_;
 
-  DiracCovarianceModelDiscretizePolicy(const Sample & input,
+  DiracCovarianceModelDiscretizeBody(const Sample & input,
                                        CovarianceMatrix & output,
                                        const DiracCovarianceModel & model)
     : input_(input)
@@ -247,7 +247,7 @@ struct DiracCovarianceModelDiscretizePolicy
           output_(indexBlock + i, indexBlock + j) = model_.outputCovariance_.getImplementation()->operator()(i, j);
     }
   }
-}; /* end struct DiracCovarianceModelDiscretizePolicy */
+}; /* end struct DiracCovarianceModelDiscretizeBody */
 
 CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
 {
@@ -267,22 +267,22 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
   const UnsignedInteger fullSize = size * outputDimension_;
   CovarianceMatrix covarianceMatrix(fullSize);
 
-  const DiracCovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
+  const DiracCovarianceModelDiscretizeBody body( vertices, covarianceMatrix, *this );
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, body );
 
   return covarianceMatrix;
 }
 
 // The following structure helps to compute the full covariance matrix
-struct DiracCovarianceModelDiscretizeAndFactorizePolicy
+struct DiracCovarianceModelDiscretizeAndFactorizeBody
 {
   const Sample & input_;
   TriangularMatrix & output_;
   const DiracCovarianceModel & model_;
   const UnsignedInteger dimension_;
 
-  DiracCovarianceModelDiscretizeAndFactorizePolicy(const Sample & input,
+  DiracCovarianceModelDiscretizeAndFactorizeBody(const Sample & input,
       TriangularMatrix & output,
       const DiracCovarianceModel & model)
     : input_(input)
@@ -301,7 +301,7 @@ struct DiracCovarianceModelDiscretizeAndFactorizePolicy
           output_(indexBlock + i, indexBlock + j) = model_.covarianceFactor_(i, j);
     }
   }
-}; /* end struct DiracCovarianceModelDiscretizeAndFactorizePolicy */
+}; /* end struct DiracCovarianceModelDiscretizeAndFactorizeBody */
 
 TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & vertices) const
 {
@@ -321,9 +321,9 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
   const UnsignedInteger fullSize = size * outputDimension_;
   TriangularMatrix covarianceFactor(fullSize);
 
-  const DiracCovarianceModelDiscretizeAndFactorizePolicy policy( vertices, covarianceFactor, *this );
+  const DiracCovarianceModelDiscretizeAndFactorizeBody body( vertices, covarianceFactor, *this );
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, body );
 
   return covarianceFactor;
 }

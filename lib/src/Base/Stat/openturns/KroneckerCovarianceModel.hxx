@@ -119,7 +119,7 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-  friend struct KroneckerModelDiscretizePolicy;
+  friend struct KroneckerModelDiscretizeBody;
   void setCorrelationModel(const CovarianceModel & rho);
   Scalar computeRhoOverSample(const Collection<Scalar>::const_iterator &s_begin,
                               const Collection<Scalar>::const_iterator &t_begin) const;

@@ -1231,7 +1231,7 @@ CorrelationMatrix SampleImplementation::computeSpearmanCorrelation() const
  * Gives the Kendall tau matrix of the sample, including ties correction
  */
 
-struct ComputeKendallPolicy
+struct ComputeKendallBody
 {
   const SampleImplementation & input_;
   Point & output_;
@@ -1239,7 +1239,7 @@ struct ComputeKendallPolicy
   const Indices & indicesY_;
   const Bool smallCase_;
 
-  ComputeKendallPolicy( const SampleImplementation & input,
+  ComputeKendallBody( const SampleImplementation & input,
                         Point & output,
                         const Indices & indicesX,
                         const Indices & indicesY,
@@ -1270,7 +1270,7 @@ struct ComputeKendallPolicy
     }
   }
 
-}; /* end struct ComputeKendallPolicy */
+}; /* end struct ComputeKendallBody */
 
 CorrelationMatrix SampleImplementation::computeKendallTau() const
 {
@@ -1297,8 +1297,8 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
   } // end for i
   // Now the computation
   Point result(caseNumber);
-  const ComputeKendallPolicy policy( *this, result, indX, indY, smallCase );
-  TBBImplementation::ParallelFor( 0, caseNumber, policy );
+  const ComputeKendallBody body( *this, result, indX, indY, smallCase );
+  TBBImplementation::ParallelFor( 0, caseNumber, body );
   index = 0;
   for (UnsignedInteger i = 0; i < dimension_ - 1; ++i)
   {
@@ -1640,7 +1640,7 @@ Pointer<SampleImplementation> SampleImplementation::computeQuantile(const Point 
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Point & prob) const";
 }
 
-struct CDFPolicy
+struct CDFBody
 {
   typedef Scalar value_type;
 
@@ -1648,7 +1648,7 @@ struct CDFPolicy
   const Bool tail_;
   const UnsignedInteger dimension_;
 
-  CDFPolicy( const SampleImplementation & nsi,
+  CDFBody( const SampleImplementation & nsi,
              const Point & point,
              const Bool tail )
     : point_(point), tail_(tail), dimension_(nsi.getDimension()) {}
@@ -1674,7 +1674,7 @@ struct CDFPolicy
     return a;
   }
 
-}; /* end struct CDFPolicy */
+}; /* end struct CDFBody */
 
 /*
  * Get the empirical CDF of the sample
@@ -1686,8 +1686,8 @@ Scalar SampleImplementation::computeEmpiricalCDF(const Point & x,
   if (getDimension() != x.getDimension()) throw InvalidArgumentException(HERE) << "Point has incorrect dimension. Got "
         << x.getDimension() << ". Expected " << getDimension();
 
-  const CDFPolicy policy( *this, x, survival );
-  ReductionFunctor<CDFPolicy> functor( *this, policy );
+  const CDFBody body( *this, x, survival );
+  ReductionFunctor<CDFBody> functor( *this, body );
   TBBImplementation::ParallelReduce(0, size_, functor, 1024);
   return static_cast < Scalar > (functor.accumulator_) / size_;
 }

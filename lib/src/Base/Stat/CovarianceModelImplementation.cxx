@@ -759,14 +759,14 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
   return discretize(timeGrid.getVertices());
 }
 
-struct CovarianceModelDiscretizePolicy
+struct CovarianceModelDiscretizeBody
 {
   const SampleImplementation & input_;
   CovarianceMatrix & output_;
   const CovarianceModelImplementation & model_;
   const UnsignedInteger outputDimension_;
 
-  CovarianceModelDiscretizePolicy(const Sample & input,
+  CovarianceModelDiscretizeBody(const Sample & input,
                                   CovarianceMatrix & output,
                                   const CovarianceModelImplementation & model)
     : input_(*input.getImplementation())
@@ -790,9 +790,9 @@ struct CovarianceModelDiscretizePolicy
     }
   }
 
-}; /* end struct CovarianceModelDiscretizePolicy */
+}; /* end struct CovarianceModelDiscretizeBody */
 
-struct CovarianceModelDiscretizeScalarPolicy
+struct CovarianceModelDiscretizeScalarBody
 {
   const SampleImplementation & input_;
   // output_ is a CovarianceMatrix, but since we fill only its half part,
@@ -802,7 +802,7 @@ struct CovarianceModelDiscretizeScalarPolicy
   const CovarianceModelImplementation & model_;
   const UnsignedInteger inputDimension_;
 
-  CovarianceModelDiscretizeScalarPolicy(const Sample & input,
+  CovarianceModelDiscretizeScalarBody(const Sample & input,
                                         CovarianceMatrix & output,
                                         const CovarianceModelImplementation & model)
     : input_(*input.getImplementation())
@@ -821,9 +821,9 @@ struct CovarianceModelDiscretizeScalarPolicy
       output_(jLocal, iLocal) = model_.computeAsScalar(input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
     }
   }
-}; /* end struct CovarianceModelDiscretizeScalarPolicy */
+}; /* end struct CovarianceModelDiscretizeScalarBody */
 
-struct CovarianceModelDiscretizeDiagonalPolicy
+struct CovarianceModelDiscretizeDiagonalBody
 {
   const SampleImplementation & input_;
   // output_ is a CovarianceMatrix, but since we fill only its half part,
@@ -834,7 +834,7 @@ struct CovarianceModelDiscretizeDiagonalPolicy
   const UnsignedInteger outputDimension_;
   const UnsignedInteger inputDimension_;
 
-  CovarianceModelDiscretizeDiagonalPolicy(const Sample & input,
+  CovarianceModelDiscretizeDiagonalBody(const Sample & input,
                                           CovarianceMatrix & output,
                                           const CovarianceModelImplementation & model)
     : input_(*input.getImplementation())
@@ -869,7 +869,7 @@ struct CovarianceModelDiscretizeDiagonalPolicy
     }
   }
 
-}; /* end struct CovarianceModelDiscretizeDiagonalPolicy */
+}; /* end struct CovarianceModelDiscretizeDiagonalBody */
 
 CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertices) const
 {
@@ -878,9 +878,9 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
   if (getOutputDimension() == 1)
   {
     CovarianceMatrix covarianceMatrix(size);
-    const CovarianceModelDiscretizeScalarPolicy policy(vertices, covarianceMatrix, *this);
+    const CovarianceModelDiscretizeScalarBody body(vertices, covarianceMatrix, *this);
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body);
     return covarianceMatrix;
   }
   else if (isDiagonal())
@@ -890,18 +890,18 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     // SquareMatrix allocation and the full block copies
     const UnsignedInteger fullSize = size * outputDimension_;
     CovarianceMatrix covarianceMatrix(fullSize);
-    const CovarianceModelDiscretizeDiagonalPolicy policy( vertices, covarianceMatrix, *this );
+    const CovarianceModelDiscretizeDiagonalBody body( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body);
     return covarianceMatrix;
   }
   else
   {
     const UnsignedInteger fullSize = size * outputDimension_;
     CovarianceMatrix covarianceMatrix(fullSize);
-    const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
+    const CovarianceModelDiscretizeBody body( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body);
     return covarianceMatrix;
   }
 }
@@ -1006,7 +1006,7 @@ struct CrossCovarianceDiagonalFunctor
     : firstSample_(*firstSample.getImplementation())
     , secondSample_(*secondSample.getImplementation())
     , output_(*output.getImplementation())
-    , marginals_(CovarianceModelDiscretizeDiagonalPolicy::buildMarginals(model))
+    , marginals_(CovarianceModelDiscretizeDiagonalBody::buildMarginals(model))
     , dimension_(model.getOutputDimension())
     , firstInputDimension_(firstSample_.getDimension())
     , secondInputDimension_(secondSample_.getDimension())
@@ -1046,9 +1046,9 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
     const UnsignedInteger firstSampleSize = firstSample.getSize();
     const UnsignedInteger secondSampleSize = secondSample.getSize();
     Matrix result(firstSampleSize, secondSampleSize);
-    const CrossCovarianceFunctor1D policy(firstSample, secondSample, result, *this);
+    const CrossCovarianceFunctor1D body(firstSample, secondSample, result, *this);
     // The loop is over X & Y samples
-    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, body);
     return result;
   }
   const UnsignedInteger firstSampleSize = firstSample.getSize();
@@ -1061,14 +1061,14 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
     // The output blocks are diagonal, so the marginal scalar models can be
     // evaluated directly into the diagonal entries, avoiding the per-pair
     // SquareMatrix allocation and the full block copies
-    const CrossCovarianceDiagonalFunctor policy(firstSample, secondSample, result, *this);
+    const CrossCovarianceDiagonalFunctor body(firstSample, secondSample, result, *this);
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, body);
     return result;
   }
-  const CrossCovarianceFunctor policy(firstSample, secondSample, result, *this);
+  const CrossCovarianceFunctor body(firstSample, secondSample, result, *this);
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, body);
   return result;
 }
 
@@ -1143,15 +1143,15 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sampl
   if (outputDimension == 1)
   {
     Matrix result(size, 1);
-    const CrossCovariancePointFunctor1D policy(sample, point, result, *this);
+    const CrossCovariancePointFunctor1D body(sample, point, result, *this);
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
     return result;
   }
   const UnsignedInteger fullSize = size * outputDimension;
   Matrix result(fullSize, outputDimension);
-  const CrossCovariancePointFunctor policy(sample, point, result, *this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  const CrossCovariancePointFunctor body(sample, point, result, *this);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
   return result;
 }
 
@@ -1184,9 +1184,9 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
   {
     const UnsignedInteger size = vertices.getSize();
     CovarianceMatrix covarianceMatrix(size);
-    const CovarianceModelDiscretizeScalarPolicy policy( vertices, covarianceMatrix, *this );
+    const CovarianceModelDiscretizeScalarBody body( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body);
     // Compute the Cholesky
     return covarianceMatrix.computeCholeskyInPlace();
   }
@@ -1199,14 +1199,14 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
 }
 
 
-struct CovarianceModelScalarDiscretizeRowPolicy
+struct CovarianceModelScalarDiscretizeRowBody
 {
   const SampleImplementation & input_;
   const Point p_;
   SampleImplementation & output_;
   const CovarianceModelImplementation & model_;
 
-  CovarianceModelScalarDiscretizeRowPolicy(const Sample & input,
+  CovarianceModelScalarDiscretizeRowBody(const Sample & input,
       const UnsignedInteger index,
       Sample & output,
       const CovarianceModelImplementation & model)
@@ -1222,9 +1222,9 @@ struct CovarianceModelScalarDiscretizeRowPolicy
       output_(i, 0) = model_.computeAsScalar(p_.begin(), input_.data_begin() + (i * model_.getInputDimension()));
   }
 
-}; /* end struct CovarianceModelScalarDiscretizeRowPolicy */
+}; /* end struct CovarianceModelScalarDiscretizeRowBody */
 
-struct CovarianceModelDiscretizeRowPolicy
+struct CovarianceModelDiscretizeRowBody
 {
   const Sample & input_;
   const Point p_;
@@ -1232,7 +1232,7 @@ struct CovarianceModelDiscretizeRowPolicy
   const CovarianceModelImplementation & model_;
   const UnsignedInteger outputDimension_;
 
-  CovarianceModelDiscretizeRowPolicy(const Sample & input,
+  CovarianceModelDiscretizeRowBody(const Sample & input,
                                      const UnsignedInteger p,
                                      Sample & output,
                                      const CovarianceModelImplementation & model)
@@ -1255,7 +1255,7 @@ struct CovarianceModelDiscretizeRowPolicy
     }
   }
 
-}; /* end struct CovarianceModelDiscretizeRowPolicy */
+}; /* end struct CovarianceModelDiscretizeRowBody */
 
 Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
     const UnsignedInteger p) const
@@ -1265,13 +1265,13 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
   Sample result(size * outputDimension_, outputDimension_);
   if (outputDimension_ == 1)
   {
-    const CovarianceModelScalarDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+    const CovarianceModelScalarDiscretizeRowBody body( vertices, p, result, *this );
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
   }
   else
   {
-    const CovarianceModelDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+    const CovarianceModelDiscretizeRowBody body( vertices, p, result, *this );
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
   }
   return result;
 }

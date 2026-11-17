@@ -1520,7 +1520,7 @@ Sample LinearCombinationDistribution::computePDF(const Scalar xMin,
   return computePDF(Point(1, xMin), Point(1, xMax), Indices(1, pointNumber), grid);
 }
 
-struct EquivalentNormalPDFSumPolicy
+struct EquivalentNormalPDFSumBody
 {
   const LinearCombinationDistribution & mixture_;
   const Sample & grid_;
@@ -1528,7 +1528,7 @@ struct EquivalentNormalPDFSumPolicy
   const UnsignedInteger levelMax_;
   Collection<Scalar> & output_;
 
-  EquivalentNormalPDFSumPolicy(const LinearCombinationDistribution & mixture,
+  EquivalentNormalPDFSumBody(const LinearCombinationDistribution & mixture,
                                const Sample & grid,
                                const Point & two_b_sigma,
                                const UnsignedInteger levelMax,
@@ -1548,7 +1548,7 @@ struct EquivalentNormalPDFSumPolicy
       output_[i] = mixture_.computeEquivalentNormalPDFSum(grid_[i], two_b_sigma_, levelMax_, fakeLevelMax);
     }
   }
-}; /* end struct EquivalentNormalPDFSumPolicy */
+}; /* end struct EquivalentNormalPDFSumBody */
 
 /* Compute the PDF of nD distributions over a regular grid */
 Sample LinearCombinationDistribution::computePDF(const Point & xMin,
@@ -1620,8 +1620,8 @@ Sample LinearCombinationDistribution::computePDF(const Point & xMin,
   (void) computeEquivalentNormalPDFSum(mu, two_b_sigma, 0, levelMax);
 
   Collection<Scalar> output(size);
-  const EquivalentNormalPDFSumPolicy policyGrid(*this, grid, two_b_sigma, levelMax, output);
-  TBBImplementation::ParallelFor(0, size, policyGrid, 1024);
+  const EquivalentNormalPDFSumBody bodyGrid(*this, grid, two_b_sigma, levelMax, output);
+  TBBImplementation::ParallelFor(0, size, bodyGrid, 1024);
 
   result.getImplementation()->setData(output);
 
@@ -1650,13 +1650,13 @@ Sample LinearCombinationDistribution::computePDF(const Point & xMin,
   return result;
 }
 
-struct AddPDFOn1DGridPolicy
+struct AddPDFOn1DGridBody
 {
   const LinearCombinationDistribution & mixture_;
   const Point & xPoints_;
   Collection<Complex> & output_;
 
-  AddPDFOn1DGridPolicy(const LinearCombinationDistribution & mixture,
+  AddPDFOn1DGridBody(const LinearCombinationDistribution & mixture,
                        const Point & xPoints,
                        Collection<Complex> & output)
     : mixture_(mixture)
@@ -1673,7 +1673,7 @@ struct AddPDFOn1DGridPolicy
       output_[i] = mixture_.computeDeltaCharacteristicFunction(x);
     }
   }
-}; /* end struct AddPDFOn1DGridPolicy */
+}; /* end struct AddPDFOn1DGridBody */
 
 void LinearCombinationDistribution::addPDFOn1DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
 {
@@ -1695,8 +1695,8 @@ void LinearCombinationDistribution::addPDFOn1DGrid(const Indices & pointNumber, 
   // FFT 1D
   Collection<Complex> yk(N);
   // 1) compute \Sigma_+
-  const AddPDFOn1DGridPolicy policyGridPP(*this, xPlus, yk);
-  TBBImplementation::ParallelFor(0, N, policyGridPP, 1024);
+  const AddPDFOn1DGridBody bodyGridPP(*this, xPlus, yk);
+  TBBImplementation::ParallelFor(0, N, bodyGridPP, 1024);
   for (UnsignedInteger j = 0; j < N; ++j)
     yk[j] *= fx[j];
 
@@ -1719,7 +1719,7 @@ void LinearCombinationDistribution::addPDFOn1DGrid(const Indices & pointNumber, 
   }
 }
 
-struct AddPDFOn2DGridPolicy
+struct AddPDFOn2DGridBody
 {
   const LinearCombinationDistribution & mixture_;
   const Point & xPoints_;
@@ -1728,7 +1728,7 @@ struct AddPDFOn2DGridPolicy
   const UnsignedInteger ny_;
   Collection<Complex> & output_;
 
-  AddPDFOn2DGridPolicy(const LinearCombinationDistribution & mixture,
+  AddPDFOn2DGridBody(const LinearCombinationDistribution & mixture,
                        const Point & xPoints,
                        const Point & yPoints,
                        Collection<Complex> & output)
@@ -1752,7 +1752,7 @@ struct AddPDFOn2DGridPolicy
       output_[i] = mixture_.computeDeltaCharacteristicFunction(x);
     }
   }
-}; /* end struct AddPDFOn2DGridPolicy */
+}; /* end struct AddPDFOn2DGridBody */
 
 void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
 {
@@ -1791,8 +1791,8 @@ void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, 
   }
   ComplexMatrix yk(Nx, Ny);
   // 1) compute \Sigma_++
-  const AddPDFOn2DGridPolicy policyGridPP(*this, xPlus, yPlus, *(yk.getImplementation().get()));
-  TBBImplementation::ParallelFor(0, Nx * Ny, policyGridPP, 1024);
+  const AddPDFOn2DGridBody bodyGridPP(*this, xPlus, yPlus, *(yk.getImplementation().get()));
+  TBBImplementation::ParallelFor(0, Nx * Ny, bodyGridPP, 1024);
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk(i, j) *= fx[i] * fy[j];
@@ -1810,8 +1810,8 @@ void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, 
   ComplexMatrix sigma_minus_minus(fftMatrix(fftAlgorithm_, ykc));
 
   // 3) compute \Sigma_+-
-  const AddPDFOn2DGridPolicy policyGridPM(*this, xPlus, yMinus, *(yk.getImplementation().get()));
-  TBBImplementation::ParallelFor(0, Nx * Ny, policyGridPM, 1024);
+  const AddPDFOn2DGridBody bodyGridPM(*this, xPlus, yMinus, *(yk.getImplementation().get()));
+  TBBImplementation::ParallelFor(0, Nx * Ny, bodyGridPM, 1024);
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk(i, j) *= fx[i] * std::conj(fy[Ny - 1 - j]);
@@ -1887,7 +1887,7 @@ void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, 
   }
 }
 
-struct AddPDFOn3DGridPolicy
+struct AddPDFOn3DGridBody
 {
   const LinearCombinationDistribution & mixture_;
   const Point & xPoints_;
@@ -1898,7 +1898,7 @@ struct AddPDFOn3DGridPolicy
   const UnsignedInteger nz_;
   Collection<Complex> & output_;
 
-  AddPDFOn3DGridPolicy(const LinearCombinationDistribution & mixture,
+  AddPDFOn3DGridBody(const LinearCombinationDistribution & mixture,
                        const Point & xPoints,
                        const Point & yPoints,
                        const Point & zPoints,
@@ -1927,7 +1927,7 @@ struct AddPDFOn3DGridPolicy
       output_[i] = mixture_.computeDeltaCharacteristicFunction(x);
     }
   }
-}; /* end struct AddPDFOn3DGridPolicy */
+}; /* end struct AddPDFOn3DGridBody */
 
 void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
 {
@@ -1980,8 +1980,8 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
     zMinus[k] = (static_cast<Scalar>(k) - Nz) * h[2];
   }
   ComplexTensor yk(Nx, Ny, Nz);
-  const AddPDFOn3DGridPolicy policyGridPPP(*this, xPlus, yPlus, zPlus, *(yk.getImplementation().get()));
-  TBBImplementation::ParallelFor(0, Nx * Ny * Nz, policyGridPPP, 1024);
+  const AddPDFOn3DGridBody bodyGridPPP(*this, xPlus, yPlus, zPlus, *(yk.getImplementation().get()));
+  TBBImplementation::ParallelFor(0, Nx * Ny * Nz, bodyGridPPP, 1024);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -2002,8 +2002,8 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
   ComplexTensor sigma_minus_minus_minus(fftTensor(fftAlgorithm_, ykc));
 
   // 3) compute \Sigma_++-
-  const AddPDFOn3DGridPolicy policyGridPPM(*this, xPlus, yPlus, zMinus, *(yk.getImplementation().get()));
-  TBBImplementation::ParallelFor(0, Nx * Ny * Nz, policyGridPPM, 1024);
+  const AddPDFOn3DGridBody bodyGridPPM(*this, xPlus, yPlus, zMinus, *(yk.getImplementation().get()));
+  TBBImplementation::ParallelFor(0, Nx * Ny * Nz, bodyGridPPM, 1024);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -2028,8 +2028,8 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
         sigma_minus_minus_plus(i, j, k) *= z_exp_mz[k];
 
   // 5) compute \Sigma_+-+
-  const AddPDFOn3DGridPolicy policyGridPMP(*this, xPlus, yMinus, zPlus, *(yk.getImplementation().get()));
-  TBBImplementation::ParallelFor(0, Nx * Ny * Nz, policyGridPMP, 1024);
+  const AddPDFOn3DGridBody bodyGridPMP(*this, xPlus, yMinus, zPlus, *(yk.getImplementation().get()));
+  TBBImplementation::ParallelFor(0, Nx * Ny * Nz, bodyGridPMP, 1024);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -2054,8 +2054,8 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
         sigma_minus_plus_minus(i, j, k) *= z_exp_my[j];
 
   // 7) compute \Sigma_+--
-  const AddPDFOn3DGridPolicy policyGridPMM(*this, xPlus, yMinus, zMinus, *(yk.getImplementation().get()));
-  TBBImplementation::ParallelFor(0, Nx * Ny * Nz, policyGridPMM, 1024);
+  const AddPDFOn3DGridBody bodyGridPMM(*this, xPlus, yMinus, zMinus, *(yk.getImplementation().get()));
+  TBBImplementation::ParallelFor(0, Nx * Ny * Nz, bodyGridPMM, 1024);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)

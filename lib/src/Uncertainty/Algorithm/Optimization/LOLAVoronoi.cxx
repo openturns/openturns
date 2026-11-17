@@ -94,7 +94,7 @@ void LOLAVoronoi::computeVoronoiScore() const
 }
 
 
-struct LVLOLAScorePolicy
+struct LVLOLAScoreBody
 {
   const LOLAVoronoi & lola_;
 
@@ -108,7 +108,7 @@ struct LVLOLAScorePolicy
   String methodName_ = ResourceMap::Get("LOLAVoronoi-DecompositionMethod");
   String aggregationMethod_ = ResourceMap::GetAsString("LOLAVoronoi-NonLinearityAggregationMethod");
 
-  LVLOLAScorePolicy(const LOLAVoronoi & lola, const UnsignedInteger previousSize)
+  LVLOLAScoreBody(const LOLAVoronoi & lola, const UnsignedInteger previousSize)
     : lola_(lola)
     , previousSize_(previousSize)
 
@@ -271,8 +271,8 @@ void LOLAVoronoi::computeLOLAScore() const
   neighbourhood_.resize(x_.getSize());
 
   lolaScore_.resize(x_.getSize());
-  const LVLOLAScorePolicy policy(*this, previousSize);
-  TBBImplementation::ParallelFor(0, x_.getSize(), policy);
+  const LVLOLAScoreBody body(*this, previousSize);
+  TBBImplementation::ParallelFor(0, x_.getSize(), body);
 }
 
 Sample LOLAVoronoi::generate(const UnsignedInteger size) const

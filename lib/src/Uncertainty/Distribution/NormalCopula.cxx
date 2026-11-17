@@ -116,13 +116,13 @@ Point NormalCopula::getRealization() const
   }
 }
 
-struct NormalCopulaComputeSamplePolicy
+struct NormalCopulaComputeSampleBody
 {
   const Sample input_;
   Sample & output_;
   UnsignedInteger dimension_;
 
-  NormalCopulaComputeSamplePolicy(const Sample & input,
+  NormalCopulaComputeSampleBody(const Sample & input,
                                   Sample & output)
     : input_(input)
     , output_(output)
@@ -136,7 +136,7 @@ struct NormalCopulaComputeSamplePolicy
         output_(i, j) = DistFunc::pNormal(input_(i, j));
   }
 
-}; /* end struct NormalCopulaComputeSamplePolicy */
+}; /* end struct NormalCopulaComputeSampleBody */
 
 /* Get a sample of the distribution */
 Sample NormalCopula::getSample(const UnsignedInteger size) const
@@ -156,8 +156,8 @@ Sample NormalCopula::getSample(const UnsignedInteger size) const
     const UnsignedInteger dimension = getDimension();
     const Sample normalSample(normal_.getSample(size));
     Sample result(size, dimension);
-    const NormalCopulaComputeSamplePolicy policy(normalSample, result);
-    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy, 1024);
+    const NormalCopulaComputeSampleBody body(normalSample, result);
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, body, 1024);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;

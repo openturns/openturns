@@ -27,14 +27,14 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef kissfft<Scalar> KISSFFTScalar;
 
-struct FFTPolicy
+struct FFTBody
 {
   const KissFFT::ComplexCollection & input_;
   KissFFT::ComplexCollection  & output_;
   KISSFFTScalar & fft_;
   const UnsignedInteger fftSize_;
 
-  FFTPolicy(const KissFFT::ComplexCollection & input,
+  FFTBody(const KissFFT::ComplexCollection & input,
             KissFFT::ComplexCollection & output,
             KISSFFTScalar & fft,
             UnsignedInteger fftSize)
@@ -52,7 +52,7 @@ struct FFTPolicy
       fft_.transform( &input_[first], &output_[first] );
     }
   }
-}; /* end struct FFTPolicy */
+}; /* end struct FFTBody */
 
 /**
  * @class KissFFT
@@ -181,7 +181,7 @@ KissFFT::ComplexCollection KissFFT::fftND(const ComplexCollection & data,
     const UnsignedInteger dimSize = dimensions[dim];
     const UnsignedInteger numFFTs = totalSize / dimSize;
     KISSFFTScalar fft(dimSize, isIFFT);
-    struct FFTPolicyND
+    struct FFTBodyND
     {
       const ComplexCollection & work_;
       ComplexCollection & result_;
@@ -207,8 +207,8 @@ KissFFT::ComplexCollection KissFFT::fftND(const ComplexCollection & data,
       }
     };
 
-    const FFTPolicyND policy{work, result, fft, dimSize, stride};
-    TBBImplementation::ParallelFor( 0, numFFTs, policy );
+    const FFTBodyND body{work, result, fft, dimSize, stride};
+    TBBImplementation::ParallelFor( 0, numFFTs, body );
     stride *= dimSize;
     if (dim < nDims - 1) work = result;
   }

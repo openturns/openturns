@@ -147,7 +147,7 @@ private:
 // allocations in the recursion of IteratedQuadrature::integrate
 class IteratedQuadraturePartialFunctionWrapper : public FunctionImplementation
 {
-  friend struct IteratedQuadratureIntegratePolicy;
+  friend struct IteratedQuadratureIntegrateBody;
 public:
   /* Default constructor */
   IteratedQuadraturePartialFunctionWrapper(const IteratedQuadrature & quadrature,
@@ -241,7 +241,7 @@ private:
 // points. Each thread gets its own copy of the body, hence its own integrand
 // with a dedicated prefix, so that the prefix-based reuse does not introduce
 // any data race
-struct IteratedQuadratureIntegratePolicy
+struct IteratedQuadratureIntegrateBody
 {
   const IteratedQuadrature & quadrature_;
   const Function & function_;
@@ -269,7 +269,7 @@ struct IteratedQuadratureIntegratePolicy
   mutable Sample y_;
   const GaussKronrod * gk_;
 
-  IteratedQuadratureIntegratePolicy(const IteratedQuadraturePartialFunctionWrapper & outer,
+  IteratedQuadratureIntegrateBody(const IteratedQuadraturePartialFunctionWrapper & outer,
                                     const Sample & fullSample,
                                     const Sample & sampleA,
                                     const Sample & sampleB,
@@ -295,7 +295,7 @@ struct IteratedQuadratureIntegratePolicy
     createFunction();
   }
 
-  IteratedQuadratureIntegratePolicy(const IteratedQuadratureIntegratePolicy & other)
+  IteratedQuadratureIntegrateBody(const IteratedQuadratureIntegrateBody & other)
     : quadrature_(other.quadrature_)
     , function_(other.function_)
     , lowerBounds_(other.lowerBounds_)
@@ -358,7 +358,7 @@ struct IteratedQuadratureIntegratePolicy
         if (!std::isfinite(result_(k, i))) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << sample_[k] << " while integrating " << function_;
     }
   }
-}; // struct IteratedQuadratureIntegratePolicy
+}; // struct IteratedQuadratureIntegrateBody
 
 Sample IteratedQuadraturePartialFunctionWrapper::operator()(const Sample & sample) const
 {
@@ -382,8 +382,8 @@ Sample IteratedQuadraturePartialFunctionWrapper::operator()(const Sample & sampl
   // Evaluate the local integrals over the sample points, using one integrand
   // per thread in order to keep the prefix-based reuse while being safe to
   // call concurrently when the original integrand allows parallel evaluation
-  const IteratedQuadratureIntegratePolicy policy(*this, fullSample, sampleA, sampleB, sample, result);
-  TBBImplementation::ParallelForIf(function_.getImplementation()->isParallel(), 0, sampleSize, policy);
+  const IteratedQuadratureIntegrateBody body(*this, fullSample, sampleA, sampleB, sample, result);
+  TBBImplementation::ParallelForIf(function_.getImplementation()->isParallel(), 0, sampleSize, body);
   return result;
 }
 

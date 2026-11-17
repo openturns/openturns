@@ -68,13 +68,13 @@ UnsignedInteger ClassifierImplementation::classify(const Point & ) const
 }
 
 /* Classify a sample */
-struct ClassifyPolicy
+struct ClassifyBody
 {
   const Sample & input_;
   Indices & output_;
   const ClassifierImplementation * p_classifier_;
 
-  ClassifyPolicy( const Sample & input,
+  ClassifyBody( const Sample & input,
                   Indices & output,
                   const ClassifierImplementation * p_classifier)
     : input_(input)
@@ -87,15 +87,15 @@ struct ClassifyPolicy
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i] = p_classifier_->classify(input_[i]);
   }
 
-}; /* end struct ClassifyPolicy */
+}; /* end struct ClassifyBody */
 
 
 Indices ClassifierImplementation::classify(const Sample & inS) const
 {
   const UnsignedInteger size = inS.getSize();
   Indices result(size);
-  const ClassifyPolicy policy(inS, result, this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  const ClassifyBody body(inS, result, this);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
   return result;
 }
 
@@ -106,14 +106,14 @@ Scalar ClassifierImplementation::grade(const Point &, const UnsignedInteger ) co
 }
 
 /* Grade a sample */
-struct GradePolicy
+struct GradeBody
 {
   const Sample & input_;
   const Indices & classes_;
   Point & output_;
   const ClassifierImplementation * p_classifier_;
 
-  GradePolicy( const Sample & input,
+  GradeBody( const Sample & input,
                const Indices & classes,
                Point & output,
                const ClassifierImplementation * p_classifier)
@@ -128,7 +128,7 @@ struct GradePolicy
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i] = p_classifier_->grade(input_[i], classes_[i]);
   }
 
-}; /* end struct GradePolicy */
+}; /* end struct GradeBody */
 
 
 /* Grade a sample */
@@ -138,8 +138,8 @@ Point ClassifierImplementation::grade(const Sample & inS, const Indices & hClass
   if (size != hClass.getSize())
     throw InvalidDimensionException(HERE) << "Input sample dimension (=" << size << ") and classes dimension (=" << hClass.getSize() << ") do not match.";
   Point result(size);
-  const GradePolicy policy(inS, hClass, result, this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  const GradeBody body(inS, hClass, result, this);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
   return result;
 }
 

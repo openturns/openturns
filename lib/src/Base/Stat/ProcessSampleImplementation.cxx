@@ -364,7 +364,7 @@ Field ProcessSampleImplementation::computeStandardDeviation() const
 }
 
 
-struct ComputeQuantilePerComponentPolicy
+struct ComputeQuantilePerComponentBody
 {
   Point & contiguous_;
   SampleImplementation & output_;
@@ -373,7 +373,7 @@ struct ComputeQuantilePerComponentPolicy
   const Scalar alpha_;
   const Scalar beta_;
 
-  ComputeQuantilePerComponentPolicy( Point & contiguous,
+  ComputeQuantilePerComponentBody( Point & contiguous,
                                      SampleImplementation & output,
                                      UnsignedInteger size,
                                      UnsignedInteger index,
@@ -423,7 +423,7 @@ struct ComputeQuantilePerComponentPolicy
       }
     }
   }
-}; /* end struct ComputeQuantilePerComponentPolicy */
+}; /* end struct ComputeQuantilePerComponentBody */
 
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
@@ -463,8 +463,8 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
   }
 
   SampleImplementation result(length, dimension);
-  const ComputeQuantilePerComponentPolicy policy( contiguous, result, size, index, beta);
-  TBBImplementation::ParallelFor( 0, sampleSize, policy );
+  const ComputeQuantilePerComponentBody body( contiguous, result, size, index, beta);
+  TBBImplementation::ParallelFor( 0, sampleSize, body );
   return Field(mesh_, result);
 }
 
@@ -513,8 +513,8 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
       // Ensure that index does not overflow
       index = 0;
     }
-    const ComputeQuantilePerComponentPolicy policy( contiguous, output, size, index, beta);
-    TBBImplementation::ParallelFor( 0, sampleSize, policy );
+    const ComputeQuantilePerComponentBody body( contiguous, output, size, index, beta);
+    TBBImplementation::ParallelFor( 0, sampleSize, body );
     result.add(output);
   }
   return result;

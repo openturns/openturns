@@ -85,14 +85,14 @@ Bool DomainImplementation::contains(const Point & ) const
   throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }
 
-class DomainImplementationContainsSamplePolicy
+class DomainImplementationContainsSampleBody
 {
   const Sample & input_;
   DomainImplementation::BoolCollection & output_;
   const DomainImplementation & domain_;
 
 public:
-  DomainImplementationContainsSamplePolicy(const Sample & input,
+  DomainImplementationContainsSampleBody(const Sample & input,
       DomainImplementation::BoolCollection & output,
       const DomainImplementation & domain)
     : input_(input)
@@ -107,15 +107,15 @@ public:
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       output_[i] = domain_.contains(input_[i]);
   } // operator ()
-};  // class DomainImplementationContainsSamplePolicy
+};  // class DomainImplementationContainsSampleBody
 
 /* Check if the given points are inside of the domain */
 DomainImplementation::BoolCollection DomainImplementation::contains(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   BoolCollection result(size, 0);
-  const DomainImplementationContainsSamplePolicy policy( sample, result, *this );
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  const DomainImplementationContainsSampleBody body( sample, result, *this );
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
   return result;
 }
 

@@ -596,7 +596,7 @@ HODLRBlasGuard::~HODLRBlasGuard()
 // block width once per factor. Columns are independent (no reduction across
 // j), so the range splits across threads with results bit-identical to the
 // serial loop.
-struct ACAResidualRowPolicy
+struct ACAResidualRowBody
 {
   const HODLREntryEvaluator* p_evaluator_;
   UnsignedInteger startRow_;
@@ -604,7 +604,7 @@ struct ACAResidualRowPolicy
   UnsignedInteger startCol_;
   UnsignedInteger nCols_;
   Scalar* bCol_;
-  ACAResidualRowPolicy(const HODLREntryEvaluator* p_evaluator,
+  ACAResidualRowBody(const HODLREntryEvaluator* p_evaluator,
                        UnsignedInteger startRow,
                        UnsignedInteger pivotRow,
                        UnsignedInteger startCol,
@@ -623,11 +623,11 @@ struct ACAResidualRowPolicy
     for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
       bCol_[j] = (*p_evaluator_)(startRow_ + pivotRow_, startCol_ + j);
   }
-}; /* end struct ACAResidualRowPolicy */
+}; /* end struct ACAResidualRowBody */
 
 // ACA residual column, evaluation part: aCol[i] = A(i, pivotCol). The downdate
-// is a single matrix-vector product against U, see ACAResidualRowPolicy.
-struct ACAResidualColumnPolicy
+// is a single matrix-vector product against U, see ACAResidualRowBody.
+struct ACAResidualColumnBody
 {
   const HODLREntryEvaluator* p_evaluator_;
   UnsignedInteger startRow_;
@@ -635,7 +635,7 @@ struct ACAResidualColumnPolicy
   UnsignedInteger startCol_;
   UnsignedInteger pivotCol_;
   Scalar* aCol_;
-  ACAResidualColumnPolicy(const HODLREntryEvaluator* p_evaluator,
+  ACAResidualColumnBody(const HODLREntryEvaluator* p_evaluator,
                           UnsignedInteger startRow,
                           UnsignedInteger nRows,
                           UnsignedInteger startCol,
@@ -654,7 +654,7 @@ struct ACAResidualColumnPolicy
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       aCol_[i] = (*p_evaluator_)(startRow_ + i, startCol_ + pivotCol_);
   }
-}; /* end struct ACAResidualColumnPolicy */
+}; /* end struct ACAResidualColumnBody */
 
 UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, UnsignedInteger nRows,
     UnsignedInteger startCol, UnsignedInteger nCols,
@@ -799,8 +799,8 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     // matrix-vector form walks the factors along their contiguous direction
     // instead of striding once per factor.
     const auto ta0 = std::chrono::steady_clock::now();
-    const ACAResidualRowPolicy rowPolicy(p_eval_.get(), startRow, pivotRow, startCol, nCols, const_cast<Scalar *>(bCol.data()));
-    TBBImplementation::ParallelForIf(parallelAssembly, 0, nCols, rowPolicy);
+    const ACAResidualRowBody rowBody(p_eval_.get(), startRow, pivotRow, startCol, nCols, const_cast<Scalar *>(bCol.data()));
+    TBBImplementation::ParallelForIf(parallelAssembly, 0, nCols, rowBody);
     const auto ta1 = std::chrono::steady_clock::now();
     g_assemblyTiming.rowEval += std::chrono::duration<double>(ta1 - ta0).count();
     if (rank > 0)
@@ -875,8 +875,8 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     // same split as the row: evaluation first, then one matrix-vector product
     // against U.
     const auto tb0 = std::chrono::steady_clock::now();
-    const ACAResidualColumnPolicy columnPolicy(p_eval_.get(), startRow, nRows, startCol, pivotCol, const_cast<Scalar *>(aCol.data()));
-    TBBImplementation::ParallelForIf(parallelAssembly, 0, nRows, columnPolicy);
+    const ACAResidualColumnBody columnBody(p_eval_.get(), startRow, nRows, startCol, pivotCol, const_cast<Scalar *>(aCol.data()));
+    TBBImplementation::ParallelForIf(parallelAssembly, 0, nRows, columnBody);
     const auto tb1 = std::chrono::steady_clock::now();
     g_assemblyTiming.colEval += std::chrono::duration<double>(tb1 - tb0).count();
     if (rank > 0)

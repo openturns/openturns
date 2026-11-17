@@ -39,7 +39,7 @@ class OT_API P1LagrangeEvaluation
 {
   CLASSNAME
   friend class FunctionImplementation;
-  friend class P1LagrangeEvaluationComputeSamplePolicy;
+  friend class P1LagrangeEvaluationComputeSampleBody;
 
 public:
 

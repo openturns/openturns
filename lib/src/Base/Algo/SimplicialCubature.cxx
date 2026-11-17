@@ -170,7 +170,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
   Point volume(mesh.computeSimplicesVolume());
 
   // Contract the rule over the function values, with a per-thread scratch.
-  struct ContractPolicy
+  struct ContractBody
   {
     const SimplicialCubature & cubature_;
     const UnsignedInteger nodeNumber_;
@@ -185,7 +185,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
     mutable Point value_;
     mutable Point error_;
 
-    ContractPolicy(const SimplicialCubature & cubature,
+    ContractBody(const SimplicialCubature & cubature,
                    const UnsignedInteger nodeNumber,
                    const UnsignedInteger outputDimension,
                    const Indices & targets,
@@ -209,7 +209,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
     {
     }
 
-    ContractPolicy(const ContractPolicy & other)
+    ContractBody(const ContractBody & other)
       : cubature_(other.cubature_)
       , nodeNumber_(other.nodeNumber_)
       , outputDimension_(other.outputDimension_)
@@ -235,7 +235,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
         AES_[K] = error_;
       }
     }
-  }; // struct ContractPolicy
+  }; // struct ContractBody
 
   const Bool parallel = (flatSize > 1) && F.getImplementation()->isParallel() && (TBBImplementation::GetThreadsNumber() > 1);
 
@@ -271,8 +271,8 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
     std::copy(volume.begin() + blockBegin, volume.begin() + blockBegin + blockFlatSize, blockVolumes.begin());
     for (UnsignedInteger t = 0; t < blockFlatSize; ++ t)
       blockTargets[t] = blockBegin + t;
-    const ContractPolicy contractPolicy(*this, nodeNumber, outputDimension, blockTargets, blockVolumes, blockOutputs, Wbar, VLS, AES);
-    TBBImplementation::ParallelForIf(parallel, 0, blockFlatSize, contractPolicy, 1024);
+    const ContractBody contractBody(*this, nodeNumber, outputDimension, blockTargets, blockVolumes, blockOutputs, Wbar, VLS, AES);
+    TBBImplementation::ParallelForIf(parallel, 0, blockFlatSize, contractBody, 1024);
     for (UnsignedInteger t = 0; t < blockFlatSize; ++ t)
     {
       const UnsignedInteger K = blockBegin + t;
@@ -360,8 +360,8 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
         computeRulePoints(flatVertices[ruleTargets[t]], B, roundPoints, t * nodeNumber);
     }, 1024);
     const Sample roundOutputs(F(roundPoints));
-    const ContractPolicy roundPolicy(*this, nodeNumber, outputDimension, ruleTargets, ruleVolumes, roundOutputs, Wbar, VLS, AES);
-    TBBImplementation::ParallelForIf(parallel, 0, ruleTargetsNumber, roundPolicy, 1024);
+    const ContractBody roundBody(*this, nodeNumber, outputDimension, ruleTargets, ruleVolumes, roundOutputs, Wbar, VLS, AES);
+    TBBImplementation::ParallelForIf(parallel, 0, ruleTargetsNumber, roundBody, 1024);
     for (UnsignedInteger t = 0; t < ruleTargetsNumber; ++ t)
     {
       const UnsignedInteger K = ruleTargets[t];
