@@ -1,4 +1,4 @@
-%feature("docstring") OT::LinearProblem
+%feature("docstring") OT::LinearProgrammingProblem
 R"RAW(Linear optimization problem.
 
 .. warning::
@@ -79,7 +79,7 @@ and bound constraints:
 >>> bounds = ot.Interval([0.0, 1.0], [4.0, 1e30], [True, True], [True, False])
 >>> A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
 >>> lcb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9], [False, True, True], [True, True, False])
->>> problem = otexp.LinearProblem(cost, bounds, A, lcb)
+>>> problem = otexp.LinearProgrammingProblem(cost, bounds, A, lcb)
 >>> problem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER, ot.OptimizationProblemImplementation.CONTINUOUS])
 
 The same problem can be defined from the sparse constraint matrix, which only
@@ -91,14 +91,14 @@ their column index and their value; duplicate coordinates are summed:
 [[ 0 1 ]
  [ 1 2 ]
  [ 3 2 ]]
->>> problem = otexp.LinearProblem(cost, bounds, A, lcb)
+>>> problem = otexp.LinearProgrammingProblem(cost, bounds, A, lcb)
 >>> print(problem.getSparseLinearConstraintCoefficients().getNbNonZeros())
 5
 )RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::setLinearCost
+%feature("docstring") OT::LinearProgrammingProblem::setLinearCost
 "Accessor to the linear cost.
 
 Parameters
@@ -109,7 +109,7 @@ cost : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::setConstant
+%feature("docstring") OT::LinearProgrammingProblem::setConstant
 "Accessor to the constant term of the objective.
 
 Parameters
@@ -119,7 +119,7 @@ constant : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::getConstant
+%feature("docstring") OT::LinearProgrammingProblem::getConstant
 "Accessor to the constant term of the objective.
 
 Returns
@@ -129,7 +129,7 @@ constant : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::setLinearConstraint
+%feature("docstring") OT::LinearProgrammingProblem::setLinearConstraint
 "Accessor to the linear constraint term.
 
 Each row :math:`i` of the constraint matrix defines
@@ -148,7 +148,7 @@ cb : :class:`~openturns.Interval`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::getEqualityConstraint
+%feature("docstring") OT::LinearProgrammingProblem::getEqualityConstraint
 "Accessor to the equality constraints.
 
 The equality constraints are derived from the linear constraints: a row whose
@@ -166,7 +166,7 @@ equality : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::setEqualityConstraint
+%feature("docstring") OT::LinearProgrammingProblem::setEqualityConstraint
 "Set the equality constraint function.
 
 The function must be linear: either a :class:`~openturns.LinearFunction`, or a
@@ -185,7 +185,7 @@ equalityConstraint : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::hasEqualityConstraint
+%feature("docstring") OT::LinearProgrammingProblem::hasEqualityConstraint
 "Test whether equality constraints are defined.
 
 Returns
@@ -196,7 +196,7 @@ hasEqualityConstraint : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::getInequalityConstraint
+%feature("docstring") OT::LinearProgrammingProblem::getInequalityConstraint
 "Accessor to the inequality constraints.
 
 The inequality constraints are derived from the linear constraints: each
@@ -216,7 +216,7 @@ inequality : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::setInequalityConstraint
+%feature("docstring") OT::LinearProgrammingProblem::setInequalityConstraint
 "Set the inequality constraint function.
 
 The function must be linear: either a :class:`~openturns.LinearFunction`, or a
@@ -235,7 +235,7 @@ inequalityConstraint : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::hasInequalityConstraint
+%feature("docstring") OT::LinearProgrammingProblem::hasInequalityConstraint
 "Test whether inequality constraints are defined.
 
 Returns
@@ -246,7 +246,7 @@ hasInequalityConstraint : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::getSparseLinearConstraintCoefficients
+%feature("docstring") OT::LinearProgrammingProblem::getSparseLinearConstraintCoefficients
 "Accessor to the linear constraint term in sparse form.
 
 The constraint matrix is returned in compressed sparse column form, without
@@ -260,7 +260,7 @@ A : :class:`~openturns.experimental.SparseMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearProblem::Linearize
+%feature("docstring") OT::LinearProgrammingProblem::Linearize
 "Transform a general optimization problem to a linear problem.
 
 Objective and inequality constraints coefficients are computed
@@ -277,7 +277,7 @@ location : sequence of float
 
 Returns
 -------
-linearProblem : :class:`~openturns.experimental.LinearProblem`
+linearProblem : :class:`~openturns.experimental.LinearProgrammingProblem`
    The linear problem
 "
   

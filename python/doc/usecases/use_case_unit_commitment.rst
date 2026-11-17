@@ -172,7 +172,7 @@ almost empty.
   2.0 MiB on a platform where ``UnsignedInteger`` is 8 bytes: about
   1 900 times less memory. This is what makes the difference
   between a problem that fits in memory and one that does not, and the reason
-  why :class:`~openturns.experimental.LinearProblem` accepts a sparse matrix
+  why :class:`~openturns.experimental.LinearProgrammingProblem` accepts a sparse matrix
   and hands it over to HiGHS without ever densifying it.
 
 Differences with the reference notebook

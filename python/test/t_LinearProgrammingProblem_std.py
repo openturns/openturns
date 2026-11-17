@@ -23,7 +23,7 @@ problem.setVariablesType(
     ]
 )
 location = [0.0] * 2
-linearProblem = otexp.LinearProblem.Linearize(problem, location)
+linearProblem = otexp.LinearProgrammingProblem.Linearize(problem, location)
 print(linearProblem)
 cost = linearProblem.getLinearCost()
 A = linearProblem.getLinearConstraintCoefficients()
@@ -39,7 +39,7 @@ assert problem.getBounds().getLowerBound() == [0.0, 1.0]
 # x0 + x1 = 2.5 and x0 - x1 <= 1
 mixedA = ot.Matrix([[1.0, 1.0], [1.0, -1.0]])
 mixedLU = ot.Interval([2.5, -1e30], [2.5, 1.0], [True, False], [True, True])
-mixedProblem = otexp.LinearProblem(
+mixedProblem = otexp.LinearProgrammingProblem(
     [1.0, 1.0], ot.Interval([0.0, 0.0], [10.0, 10.0]), mixedA, mixedLU
 )
 assert mixedProblem.hasEqualityConstraint()
@@ -97,7 +97,7 @@ ott.assert_almost_equal(mixedProblem.getInequalityConstraint()([1.0, 1.5]), [1.5
 
 # an evaluation-only wrapper around a linear evaluation keeps its coefficients:
 # the finite-difference gradient misses them when the constant term is large
-largeOffsetProblem = otexp.LinearProblem(
+largeOffsetProblem = otexp.LinearProgrammingProblem(
     [1.0], ot.Interval([-1e30], [1e30]), ot.Matrix(0, 1), ot.Interval()
 )
 largeOffsetProblem.setInequalityConstraint(
@@ -133,7 +133,7 @@ assert not mixedProblem.hasEqualityConstraint()
 
 # constraints set through functions are mapped to the HiGHS model: minimize x0
 # subject to x0 + x1 = 2.5, x0 - x1 <= 1 and 0 <= x_i <= 10
-functionProblem = otexp.LinearProblem(
+functionProblem = otexp.LinearProgrammingProblem(
     [1.0, 0.0], ot.Interval([0.0, 0.0], [10.0, 10.0]), ot.Matrix(0, 2), ot.Interval()
 )
 functionProblem.setEqualityConstraint(
@@ -150,7 +150,7 @@ if ot.PlatformInfo.HasFeature("highs"):
 # the sparse constraint matrix gives the same problem
 sparseA = otexp.SparseMatrix.FromDenseMatrix(A)
 assert sparseA.getNbNonZeros() == 6, "non zeros"
-sparseProblem = otexp.LinearProblem(cost, bounds, sparseA, LU)
+sparseProblem = otexp.LinearProgrammingProblem(cost, bounds, sparseA, LU)
 ott.assert_almost_equal(sparseProblem.getLinearConstraintCoefficients(), A)
 ott.assert_almost_equal(
     sparseProblem.getSparseLinearConstraintCoefficients().asDenseMatrix(), A
@@ -175,7 +175,7 @@ ott.assert_almost_equal(
 )
 
 # the dense constructor skips the zero coefficients once
-sparseZeroProblem = otexp.LinearProblem(
+sparseZeroProblem = otexp.LinearProgrammingProblem(
     [1.0, 1.0], ot.Interval(2), ot.Matrix([[1.0, 0.0], [0.0, 2.0]]), ot.Interval(2)
 )
 assert sparseZeroProblem.getSparseLinearConstraintCoefficients().getNbNonZeros() == 2
@@ -200,7 +200,7 @@ ott.assert_almost_equal(
 
 # the equality and inequality constraint functions are read from a sparse
 # problem row by row, without densifying its coefficients
-mixedSparse = otexp.LinearProblem(
+mixedSparse = otexp.LinearProgrammingProblem(
     [1.0, 1.0], ot.Interval([0.0, 0.0], [10.0, 10.0]),
     otexp.SparseMatrix.FromDenseMatrix(mixedA), mixedLU,
 )
@@ -233,9 +233,9 @@ ott.assert_almost_equal(mixedSparse.getInequalityConstraint()([0.0, 0.0]), [1.0]
 
 # dimension checks on the sparse constructor
 with ott.assert_raises(ValueError):
-    otexp.LinearProblem(cost, bounds, otexp.SparseMatrix(3, 3), LU)
+    otexp.LinearProgrammingProblem(cost, bounds, otexp.SparseMatrix(3, 3), LU)
 with ott.assert_raises(ValueError):
-    otexp.LinearProblem(cost, bounds, otexp.SparseMatrix(2, 2), LU)
+    otexp.LinearProgrammingProblem(cost, bounds, otexp.SparseMatrix(2, 2), LU)
 
 # persistence
 if ot.PlatformInfo.HasFeature("libxml2"):
@@ -249,7 +249,7 @@ if ot.PlatformInfo.HasFeature("libxml2"):
     study = ot.Study()
     study.setStorageManager(ot.XMLStorageManager(fileName))
     study.load()
-    loadedProblem = otexp.LinearProblem()
+    loadedProblem = otexp.LinearProgrammingProblem()
     study.fillObject("problem", loadedProblem)
     ott.assert_almost_equal(loadedProblem.getLinearCost(), cost)
     ott.assert_almost_equal(loadedProblem.getLinearConstraintCoefficients(), A)
@@ -294,7 +294,7 @@ if ot.PlatformInfo.HasFeature("libxml2"):
     study = ot.Study()
     study.setStorageManager(ot.XMLStorageManager(fileName))
     study.load()
-    oldProblem = otexp.LinearProblem()
+    oldProblem = otexp.LinearProgrammingProblem()
     study.fillObject("problem", oldProblem)
     ott.assert_almost_equal(oldProblem.getLinearConstraintCoefficients(), A)
     ott.assert_almost_equal(
@@ -302,7 +302,7 @@ if ot.PlatformInfo.HasFeature("libxml2"):
     )
     os.remove(fileName)
     os.remove(denseFileName)
-# constant term, as in QuadraticProblem: the optimal point is unchanged,
+# constant term, as in QuadraticProgrammingProblem: the optimal point is unchanged,
 # the optimal value is shifted
 assert linearProblem.getConstant() == 0.0
 linearProblem.setConstant(1.0)
@@ -310,7 +310,7 @@ assert linearProblem.getConstant() == 1.0
 # the objective includes the constant term
 ott.assert_almost_equal(linearProblem.getObjective()([1.0, 2.0]), [1.1 + 2.0 + 1.0])
 # the constant term can also be given to the constructor
-problemConstant = otexp.LinearProblem(
+problemConstant = otexp.LinearProgrammingProblem(
     [1.1, 1.0], ot.Interval([0.0, 1.0], [4.0, 1e30]), A, LU, 2.0
 )
 assert problemConstant.getConstant() == 2.0
@@ -329,7 +329,7 @@ nonlinearProblem.setInequalityConstraint(
 )
 nonlinearProblem.setBounds(ot.Interval([0.0, 0.0], [4.0, 4.0]))
 nonlinearLocation = [1.0, 2.0]
-nonlinearLinear = otexp.LinearProblem.Linearize(nonlinearProblem, nonlinearLocation)
+nonlinearLinear = otexp.LinearProgrammingProblem.Linearize(nonlinearProblem, nonlinearLocation)
 assert nonlinearLinear.getLinearCost() == [2.0, 1.0]
 # f(x0) - g(x0).x0 = 3 - 4
 ott.assert_almost_equal(nonlinearLinear.getConstant(), -1.0)

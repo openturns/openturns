@@ -19,7 +19,7 @@ bounds = ot.Interval([0.0, 1.0], [4.0, 1e30], [True, True], [True, False])
 cost = [1.1, 1.0]
 A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
 cb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e30], [False, True, True], [True, True, False])
-problem = otexp.LinearProblem(cost, bounds, A, cb)
+problem = otexp.LinearProgrammingProblem(cost, bounds, A, cb)
 print(problem)
 
 # algorithm names
@@ -38,7 +38,7 @@ with ott.assert_raises(TypeError):
     algo.setAlgorithmName("nosuch")
 
 # nonlinear constraint functions cannot be mapped to the HiGHS model
-problemConstraint = otexp.LinearProblem(cost, bounds, A, cb)
+problemConstraint = otexp.LinearProgrammingProblem(cost, bounds, A, cb)
 with ott.assert_raises(TypeError):
     problemConstraint.setInequalityConstraint(
         ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1"])
@@ -46,7 +46,7 @@ with ott.assert_raises(TypeError):
 
 # linear constraint functions are mapped to the linear coefficients and the
 # resulting problem is solvable
-problemFunctionConstraint = otexp.LinearProblem(cost, bounds, A, cb)
+problemFunctionConstraint = otexp.LinearProgrammingProblem(cost, bounds, A, cb)
 problemFunctionConstraint.setInequalityConstraint(
     ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"])
 )
@@ -131,7 +131,7 @@ ott.assert_almost_equal(resultConstant.getOptimalValue(), [1.1 * 0.5 + 2.25 + 10
 problem.setConstant(0.0)
 
 # a rejected setter leaves the previous algorithm name unchanged
-problemD = otexp.LinearProblem(cost, bounds, A, cb)
+problemD = otexp.LinearProgrammingProblem(cost, bounds, A, cb)
 problemD.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)
 algoD = otexp.HiGHS(problemD)
 with ott.assert_raises(TypeError):
@@ -142,7 +142,7 @@ assert algoD.getAlgorithmName() == "choose", "algorithm name"
 bounds2 = ot.Interval([0.0], [1.0])
 A2 = ot.Matrix([[1.0]])
 cb2 = ot.Interval([2.0], [1e30], [True], [False])
-problem2 = otexp.LinearProblem([1.0], bounds2, A2, cb2)
+problem2 = otexp.LinearProgrammingProblem([1.0], bounds2, A2, cb2)
 algo2 = otexp.HiGHS(problem2)
 algo2.setCheckStatus(False)
 algo2.run()
@@ -162,7 +162,7 @@ with ott.assert_raises(TypeError):
     otexp.HiGHS(multi)
 
 # problem without linear constraints
-problem3 = otexp.LinearProblem(
+problem3 = otexp.LinearProgrammingProblem(
     [1.0], ot.Interval([0.0], [1.0]), ot.Matrix(0, 1), ot.Interval()
 )
 algo8 = otexp.HiGHS(problem3, "simplex")
@@ -209,7 +209,7 @@ assert len(algo6.getResult().getStatusMessage()) > 0, "model status"
 
 # sparse constraint coefficients give the same solution as the dense matrix
 sparseA = otexp.SparseMatrix.FromDenseMatrix(A)
-sparseProblem = otexp.LinearProblem(cost, bounds, sparseA, cb)
+sparseProblem = otexp.LinearProgrammingProblem(cost, bounds, sparseA, cb)
 sparseAlgo = otexp.HiGHS(sparseProblem, "simplex")
 sparseAlgo.run()
 denseAlgo = otexp.HiGHS(problem, "simplex")
@@ -234,7 +234,7 @@ columnIndices = [0, 0, 1, 1, 1, 1, 1, 0]
 values = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0]
 tripletA = otexp.SparseMatrix(3, 2, rowIndices, columnIndices, values)
 ott.assert_almost_equal(tripletA.asDenseMatrix(), A)
-tripletProblem = otexp.LinearProblem(cost, bounds, tripletA, cb)
+tripletProblem = otexp.LinearProgrammingProblem(cost, bounds, tripletA, cb)
 tripletAlgo = otexp.HiGHS(tripletProblem, "simplex")
 tripletAlgo.run()
 ott.assert_almost_equal(
@@ -248,7 +248,7 @@ zeroValues = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.0]
 zeroA = otexp.SparseMatrix(3, 2, zeroRows, zeroColumns, zeroValues)
 assert zeroA.getNbNonZeros() == 6, "explicit zeros are kept in the sparse layout"
 ott.assert_almost_equal(zeroA.asDenseMatrix(), A)
-zeroProblem = otexp.LinearProblem(cost, bounds, zeroA, cb)
+zeroProblem = otexp.LinearProgrammingProblem(cost, bounds, zeroA, cb)
 zeroAlgo = otexp.HiGHS(zeroProblem, "simplex")
 zeroAlgo.run()
 ott.assert_almost_equal(
@@ -266,7 +266,7 @@ largeA = otexp.SparseMatrix(
 )
 largeBounds = ot.Interval([0.0] * dimension, [1e30] * dimension)
 largeConstraint = ot.Interval([1.0] * dimension, [1e30] * dimension)
-largeProblem = otexp.LinearProblem(
+largeProblem = otexp.LinearProgrammingProblem(
     [1.0] * dimension, largeBounds, largeA, largeConstraint
 )
 largeAlgo = otexp.HiGHS(largeProblem, "simplex")
@@ -290,7 +290,7 @@ for i in range(n_cons):
         A_cb[i, j] = row[j]
 upper_cb = [sum(abs(A_cb[i, j]) for j in range(n_vars)) * 0.5 + 1.0 for i in range(n_cons)]
 cb_cb = ot.Interval([-1e30] * n_cons, upper_cb, [False] * n_cons, [True] * n_cons)
-problem_cb = otexp.LinearProblem(cost_cb, bounds_cb, A_cb, cb_cb)
+problem_cb = otexp.LinearProgrammingProblem(cost_cb, bounds_cb, A_cb, cb_cb)
 
 
 def no_stop():

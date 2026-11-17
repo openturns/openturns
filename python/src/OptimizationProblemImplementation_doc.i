@@ -488,8 +488,8 @@ A : :class:`~openturns.Matrix`
 Notes
 -----
 A sparse problem materializes the dense matrix on demand. The experimental
-:class:`~openturns.experimental.LinearProblem` provides
-:meth:`~openturns.experimental.LinearProblem.getSparseLinearConstraintCoefficients`
+:class:`~openturns.experimental.LinearProgrammingProblem` provides
+:meth:`~openturns.experimental.LinearProgrammingProblem.getSparseLinearConstraintCoefficients`
 to avoid the densification.
 "
 %enddef

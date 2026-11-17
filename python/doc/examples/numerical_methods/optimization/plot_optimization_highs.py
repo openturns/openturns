@@ -42,7 +42,7 @@ LU = ot.Interval([-1e30, 1.0], [4.0, 1e30], [False, True], [True, False])
 A = ot.Matrix([[1.0, 2.0, 3.0], [1.0, 1.0, 0.0]])
 BINARY = ot.OptimizationProblemImplementation.BINARY
 bounds = ot.Interval(3)
-problem = otexp.LinearProblem(cost, bounds, A, LU)
+problem = otexp.LinearProgrammingProblem(cost, bounds, A, LU)
 problem.setVariablesType([BINARY] * 3)
 problem.setMinimization(False)
 
@@ -89,7 +89,7 @@ print(" -- Recognized LP solver names = " + str(otexp.HiGHS.GetAlgorithmNames())
 bounds2 = ot.Interval([1.0, 0.0], [1e30, 1e30], [True, True], [False, False])
 A2 = ot.Matrix([[1.0, 2.0]])
 cb2 = ot.Interval([6.0], [1e30], [True], [False])
-problem2 = otexp.LinearProblem([1.0, 1.0], bounds2, A2, cb2)
+problem2 = otexp.LinearProgrammingProblem([1.0, 1.0], bounds2, A2, cb2)
 
 # %%
 # Solve with each LP solver
@@ -142,7 +142,7 @@ print(" -- Reduced costs = " + str(algoDual.getReducedCosts()))
 # Solve a quadratic problem
 # -------------------------
 #
-# The :class:`~openturns.experimental.QuadraticProblem` class defines a convex
+# The :class:`~openturns.experimental.QuadraticProgrammingProblem` class defines a convex
 # quadratic problem:
 #
 # .. math::
@@ -153,7 +153,7 @@ print(" -- Reduced costs = " + str(algoDual.getReducedCosts()))
 # quadratic solver available in the linked HiGHS build.
 Q = ot.SymmetricMatrix([[2.0, 0.0], [0.0, 2.0]])
 boundsQP = ot.Interval([0.0, 0.0], [0.5, 10.0])
-problemQP = otexp.QuadraticProblem(Q, [-2.0, -4.0], boundsQP)
+problemQP = otexp.QuadraticProgrammingProblem(Q, [-2.0, -4.0], boundsQP)
 algoQP = otexp.HiGHS(problemQP, "choose")
 algoQP.run()
 resultQP = algoQP.getResult()
