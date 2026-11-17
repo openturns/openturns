@@ -85,37 +85,16 @@ Bool DomainImplementation::contains(const Point & ) const
   throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }
 
-class DomainImplementationContainsSampleBody
-{
-  const Sample & input_;
-  DomainImplementation::BoolCollection & output_;
-  const DomainImplementation & domain_;
-
-public:
-  DomainImplementationContainsSampleBody(const Sample & input,
-      DomainImplementation::BoolCollection & output,
-      const DomainImplementation & domain)
-    : input_(input)
-    , output_(output)
-    , domain_(domain)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      output_[i] = domain_.contains(input_[i]);
-  } // operator ()
-};  // class DomainImplementationContainsSampleBody
-
 /* Check if the given points are inside of the domain */
 DomainImplementation::BoolCollection DomainImplementation::contains(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   BoolCollection result(size, 0);
-  const DomainImplementationContainsSampleBody body( sample, result, *this );
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      result[i] = contains(sample[i]);
+  });
   return result;
 }
 

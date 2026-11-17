@@ -116,28 +116,6 @@ Point NormalCopula::getRealization() const
   }
 }
 
-struct NormalCopulaComputeSampleBody
-{
-  const Sample input_;
-  Sample & output_;
-  UnsignedInteger dimension_;
-
-  NormalCopulaComputeSampleBody(const Sample & input,
-                                  Sample & output)
-    : input_(input)
-    , output_(output)
-    , dimension_(input.getDimension())
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        output_(i, j) = DistFunc::pNormal(input_(i, j));
-  }
-
-}; /* end struct NormalCopulaComputeSampleBody */
-
 /* Get a sample of the distribution */
 Sample NormalCopula::getSample(const UnsignedInteger size) const
 {
@@ -156,8 +134,13 @@ Sample NormalCopula::getSample(const UnsignedInteger size) const
     const UnsignedInteger dimension = getDimension();
     const Sample normalSample(normal_.getSample(size));
     Sample result(size, dimension);
-    const NormalCopulaComputeSampleBody body(normalSample, result);
-    TBBImplementation::ParallelForIf(isParallel_, 0, size, body, 1024);
+    const UnsignedInteger normalDimension = normalSample.getDimension();
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        for (UnsignedInteger j = 0; j < normalDimension; ++j)
+          result(i, j) = DistFunc::pNormal(normalSample(i, j));
+    }, 1024);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;

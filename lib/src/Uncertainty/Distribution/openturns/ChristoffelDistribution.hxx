@@ -64,10 +64,6 @@ public:
   /** Quadrature wrapper over tensor slices needs the partial sums */
   friend class ChristoffelTensorSliceEvaluation;
 
-  /** TBB policies evaluate the per-point cores directly */
-  friend struct ComputeChristoffelBody;
-  friend struct ComputeLogChristoffelBody;
-
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;

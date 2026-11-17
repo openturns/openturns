@@ -409,31 +409,6 @@ Point JointDistribution::getRealization() const
   return result;
 }
 
-struct ComposedDistributionComputeSampleBody
-{
-  const Sample input_;
-  Sample & output_;
-  const Collection<Distribution> distributionCollection_;
-  UnsignedInteger dimension_;
-
-  ComposedDistributionComputeSampleBody(const Sample & input,
-                                          Sample & output,
-                                          const Collection<Distribution> & distributionCollection)
-    : input_(input)
-    , output_(output)
-    , distributionCollection_(distributionCollection)
-    , dimension_(distributionCollection.getSize())
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        output_(i, j) = distributionCollection_[j].computeScalarQuantile(input_(i, j));
-  }
-
-}; /* end struct ComposedDistributionComputeSampleBody */
-
 /* Get a sample of the distribution */
 Sample JointDistribution::getSample(const UnsignedInteger size) const
 {
@@ -444,8 +419,13 @@ Sample JointDistribution::getSample(const UnsignedInteger size) const
     // of possible parallelism of the getSample() method of the core
     const Sample coreSample(core_.getSample(size));
     Sample result(size, dimension);
-    const ComposedDistributionComputeSampleBody body(coreSample, result, distributionCollection_);
-    TBBImplementation::ParallelForIf(isParallel_, 0, size, body, 1024);
+    const UnsignedInteger collectionSize = distributionCollection_.getSize();
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        for (UnsignedInteger j = 0; j < collectionSize; ++j)
+          result(i, j) = distributionCollection_[j].computeScalarQuantile(coreSample(i, j));
+    }, 1024);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;

@@ -1231,47 +1231,6 @@ CorrelationMatrix SampleImplementation::computeSpearmanCorrelation() const
  * Gives the Kendall tau matrix of the sample, including ties correction
  */
 
-struct ComputeKendallBody
-{
-  const SampleImplementation & input_;
-  Point & output_;
-  const Indices & indicesX_;
-  const Indices & indicesY_;
-  const Bool smallCase_;
-
-  ComputeKendallBody( const SampleImplementation & input,
-                        Point & output,
-                        const Indices & indicesX,
-                        const Indices & indicesY,
-                        const Bool smallCase)
-    : input_(input)
-    , output_(output)
-    , indicesX_(indicesX)
-    , indicesY_(indicesY)
-    , smallCase_(smallCase)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    const UnsignedInteger size = input_.getSize();
-    Point x(size);
-    Point y(size);
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const UnsignedInteger indX = indicesX_[i];
-      const UnsignedInteger indY = indicesY_[i];
-      for (UnsignedInteger k = 0; k < size; ++k)
-      {
-        x[k] = input_(k, indX);
-        y[k] = input_(k, indY);
-      }
-      if (smallCase_) output_[i] = kendallSmallN(&x[0], &y[0], size);
-      else output_[i] = kendallNlogN(&x[0], &y[0], size);
-    }
-  }
-
-}; /* end struct ComputeKendallBody */
-
 CorrelationMatrix SampleImplementation::computeKendallTau() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
@@ -1297,8 +1256,24 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
   } // end for i
   // Now the computation
   Point result(caseNumber);
-  const ComputeKendallBody body( *this, result, indX, indY, smallCase );
-  TBBImplementation::ParallelFor( 0, caseNumber, body );
+  TBBImplementation::ParallelFor(0, caseNumber, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    const UnsignedInteger size = getSize();
+    Point x(size);
+    Point y(size);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const UnsignedInteger columnX = indX[i];
+      const UnsignedInteger columnY = indY[i];
+      for (UnsignedInteger k = 0; k < size; ++k)
+      {
+        x[k] = (*this)(k, columnX);
+        y[k] = (*this)(k, columnY);
+      }
+      if (smallCase) result[i] = kendallSmallN(&x[0], &y[0], size);
+      else result[i] = kendallNlogN(&x[0], &y[0], size);
+    }
+  });
   index = 0;
   for (UnsignedInteger i = 0; i < dimension_ - 1; ++i)
   {

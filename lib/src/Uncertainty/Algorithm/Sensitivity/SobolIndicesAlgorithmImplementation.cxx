@@ -142,52 +142,6 @@ Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedIn
   return firstOrderSensitivity;
 }
 
-struct BootstrapBody
-{
-  const SobolIndicesAlgorithmImplementation & sai_;
-  const Indices & indices_;
-  const UnsignedInteger size_;
-  Sample & bsFO_;
-  Sample & bsTO_;
-
-  BootstrapBody( const SobolIndicesAlgorithmImplementation & sai,
-                   const Indices & indices,
-                   const UnsignedInteger size,
-                   Sample & bsFO,
-                   Sample & bsTO)
-    : sai_(sai)
-    , indices_(indices)
-    , size_(size)
-    , bsFO_(bsFO)
-    , bsTO_(bsTO)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    Indices slice(size_);
-    Sample VTi;
-    Point aggregatedTotal;
-
-    for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
-    {
-      // Extract indices
-      std::copy(&indices_[k * size_], &indices_[k * size_] + size_, &slice[0]);
-      // Generate huge random sample using Bootstrap algorithm
-      const Sample randomCollection(sai_.getBootstrapDesign(slice));
-      // Pseudo-Reference variance
-      Sample outReference(size_, sai_.outputDesign_.getDimension());
-      for (UnsignedInteger i = 0; i < size_; ++i) outReference[i] = randomCollection[i];
-      const Point variance(outReference.computeVariance());
-      // Compute indices using this collection
-      const Sample Vi(sai_.computeIndices(randomCollection, VTi));
-      // Compute aggregated indices
-      bsFO_[k] = sai_.computeAggregatedIndices(Vi, VTi, variance, aggregatedTotal);
-      // Add to sample
-      bsTO_[k] = aggregatedTotal;
-    }
-  }
-}; /* end struct BootstrapBody */
-
 /** void method that computes confidence interval */
 void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
 {
@@ -218,8 +172,30 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
       Sample bsTOpartial(effectiveBlockSize, inputDimension);
       const RandomGenerator::UnsignedIntegerCollection randomIndices(RandomGenerator::IntegerGenerate(size * effectiveBlockSize, size));
       const Indices indices(randomIndices.begin(), randomIndices.end());
-      const BootstrapBody body( *this, indices, size, bsFOpartial, bsTOpartial );
-      TBBImplementation::ParallelFor( 0, effectiveBlockSize, body );
+      TBBImplementation::ParallelFor(0, effectiveBlockSize, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+      {
+        Indices slice(size);
+        Sample VTi;
+        Point aggregatedTotal;
+
+        for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
+        {
+          // Extract indices
+          std::copy(&indices[k * size], &indices[k * size] + size, &slice[0]);
+          // Generate huge random sample using Bootstrap algorithm
+          const Sample randomCollection(getBootstrapDesign(slice));
+          // Pseudo-Reference variance
+          Sample outReference(size, outputDesign_.getDimension());
+          for (UnsignedInteger i = 0; i < size; ++i) outReference[i] = randomCollection[i];
+          const Point variance(outReference.computeVariance());
+          // Compute indices using this collection
+          const Sample Vi(computeIndices(randomCollection, VTi));
+          // Compute aggregated indices
+          bsFOpartial[k] = computeAggregatedIndices(Vi, VTi, variance, aggregatedTotal);
+          // Add to sample
+          bsTOpartial[k] = aggregatedTotal;
+        }
+      });
 
       bsFO.add(bsFOpartial);
       bsTO.add(bsTOpartial);

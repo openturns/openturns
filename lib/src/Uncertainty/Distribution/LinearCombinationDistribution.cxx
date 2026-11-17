@@ -1520,36 +1520,6 @@ Sample LinearCombinationDistribution::computePDF(const Scalar xMin,
   return computePDF(Point(1, xMin), Point(1, xMax), Indices(1, pointNumber), grid);
 }
 
-struct EquivalentNormalPDFSumBody
-{
-  const LinearCombinationDistribution & mixture_;
-  const Sample & grid_;
-  const Point & two_b_sigma_;
-  const UnsignedInteger levelMax_;
-  Collection<Scalar> & output_;
-
-  EquivalentNormalPDFSumBody(const LinearCombinationDistribution & mixture,
-                               const Sample & grid,
-                               const Point & two_b_sigma,
-                               const UnsignedInteger levelMax,
-                               Collection<Scalar> & output)
-    : mixture_(mixture)
-    , grid_(grid)
-    , two_b_sigma_(two_b_sigma)
-    , levelMax_(levelMax)
-    , output_(output)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    UnsignedInteger fakeLevelMax = 0;
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      output_[i] = mixture_.computeEquivalentNormalPDFSum(grid_[i], two_b_sigma_, levelMax_, fakeLevelMax);
-    }
-  }
-}; /* end struct EquivalentNormalPDFSumBody */
-
 /* Compute the PDF of nD distributions over a regular grid */
 Sample LinearCombinationDistribution::computePDF(const Point & xMin,
     const Point & xMax,
@@ -1620,8 +1590,14 @@ Sample LinearCombinationDistribution::computePDF(const Point & xMin,
   (void) computeEquivalentNormalPDFSum(mu, two_b_sigma, 0, levelMax);
 
   Collection<Scalar> output(size);
-  const EquivalentNormalPDFSumBody bodyGrid(*this, grid, two_b_sigma, levelMax, output);
-  TBBImplementation::ParallelFor(0, size, bodyGrid, 1024);
+  UnsignedInteger fakeLevelMax = 0;
+  TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      output[i] = computeEquivalentNormalPDFSum(grid[i], two_b_sigma, levelMax, fakeLevelMax);
+    }
+  }, 1024);
 
   result.getImplementation()->setData(output);
 
@@ -1650,31 +1626,6 @@ Sample LinearCombinationDistribution::computePDF(const Point & xMin,
   return result;
 }
 
-struct AddPDFOn1DGridBody
-{
-  const LinearCombinationDistribution & mixture_;
-  const Point & xPoints_;
-  Collection<Complex> & output_;
-
-  AddPDFOn1DGridBody(const LinearCombinationDistribution & mixture,
-                       const Point & xPoints,
-                       Collection<Complex> & output)
-    : mixture_(mixture)
-    , xPoints_(xPoints)
-    , output_(output)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    Point x(1);
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      x[0] = xPoints_[i];
-      output_[i] = mixture_.computeDeltaCharacteristicFunction(x);
-    }
-  }
-}; /* end struct AddPDFOn1DGridBody */
-
 void LinearCombinationDistribution::addPDFOn1DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
 {
   if (pointNumber.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given indices must have dimension=1, here dimension=" << pointNumber.getSize();
@@ -1695,8 +1646,15 @@ void LinearCombinationDistribution::addPDFOn1DGrid(const Indices & pointNumber, 
   // FFT 1D
   Collection<Complex> yk(N);
   // 1) compute \Sigma_+
-  const AddPDFOn1DGridBody bodyGridPP(*this, xPlus, yk);
-  TBBImplementation::ParallelFor(0, N, bodyGridPP, 1024);
+  TBBImplementation::ParallelFor(0, N, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    Point x(1);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      x[0] = xPlus[i];
+      yk[i] = computeDeltaCharacteristicFunction(x);
+    }
+  }, 1024);
   for (UnsignedInteger j = 0; j < N; ++j)
     yk[j] *= fx[j];
 

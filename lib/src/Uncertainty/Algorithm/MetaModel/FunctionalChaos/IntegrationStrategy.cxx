@@ -92,43 +92,6 @@ String IntegrationStrategy::__repr__() const
 }
 
 
-struct IntegrationStrategyCoefficientsBody
-{
-  const Point & weightedOutput_;
-  const Matrix & designMatrix_;
-  const Indices & addedRanks_;
-  Point & alpha_;
-
-  IntegrationStrategyCoefficientsBody(const Point & weightedOutput,
-                                        const Matrix & designMatrix,
-                                        const Indices & addedRanks,
-                                        Point & alpha)
-    : weightedOutput_(weightedOutput)
-    , designMatrix_(designMatrix)
-    , addedRanks_(addedRanks)
-    , alpha_(alpha)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
-    {
-      const UnsignedInteger indexAdded = addedRanks_[j];
-      Scalar result = 0.0;
-      MatrixImplementation::const_iterator columnMatrix(designMatrix_.getImplementation()->begin() + indexAdded * designMatrix_.getNbRows());
-      for (Point::const_iterator outputSample = weightedOutput_.begin(); outputSample != weightedOutput_.end(); ++outputSample, ++columnMatrix)
-      {
-        result += (*outputSample) * (*columnMatrix);
-      } // i
-      alpha_[j] = result;
-    } // j
-  } // operator()
-
-}; /* end struct IntegrationStrategyCoefficientsBody */
-
-
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis
    For the moment, there is no specific strategy for improving the approximation of
    the L2 integral by a finite sum: the same input sample is used for all the calls
@@ -172,8 +135,20 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
   Point weightedOutput(sampleSize);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
     weightedOutput[i] = weights_[i] * outputSample_(i, marginalIndex);
-  IntegrationStrategyCoefficientsBody body(weightedOutput, designMatrix, addedRanks, addedAlpha);
-  TBBImplementation::ParallelFor( 0, addedSize, body );
+  TBBImplementation::ParallelFor(0, addedSize, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
+    {
+      const UnsignedInteger indexAdded = addedRanks[j];
+      Scalar result = 0.0;
+      MatrixImplementation::const_iterator columnMatrix(designMatrix.getImplementation()->begin() + indexAdded * designMatrix.getNbRows());
+      for (Point::const_iterator outputSample = weightedOutput.begin(); outputSample != weightedOutput.end(); ++outputSample, ++columnMatrix)
+      {
+        result += (*outputSample) * (*columnMatrix);
+      } // i
+      addedAlpha[j] = result;
+    } // j
+  });
   alpha.add(addedAlpha);
   alpha_k_p_ = alpha;
   // The residual is the mean squared error between the model and the meta model.

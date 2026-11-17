@@ -68,34 +68,14 @@ UnsignedInteger ClassifierImplementation::classify(const Point & ) const
 }
 
 /* Classify a sample */
-struct ClassifyBody
-{
-  const Sample & input_;
-  Indices & output_;
-  const ClassifierImplementation * p_classifier_;
-
-  ClassifyBody( const Sample & input,
-                  Indices & output,
-                  const ClassifierImplementation * p_classifier)
-    : input_(input)
-    , output_(output)
-    , p_classifier_(p_classifier)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i] = p_classifier_->classify(input_[i]);
-  }
-
-}; /* end struct ClassifyBody */
-
-
 Indices ClassifierImplementation::classify(const Sample & inS) const
 {
   const UnsignedInteger size = inS.getSize();
   Indices result(size);
-  const ClassifyBody body(inS, result, this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) result[i] = classify(inS[i]);
+  });
   return result;
 }
 
@@ -106,40 +86,16 @@ Scalar ClassifierImplementation::grade(const Point &, const UnsignedInteger ) co
 }
 
 /* Grade a sample */
-struct GradeBody
-{
-  const Sample & input_;
-  const Indices & classes_;
-  Point & output_;
-  const ClassifierImplementation * p_classifier_;
-
-  GradeBody( const Sample & input,
-               const Indices & classes,
-               Point & output,
-               const ClassifierImplementation * p_classifier)
-    : input_(input)
-    , classes_(classes)
-    , output_(output)
-    , p_classifier_(p_classifier)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i] = p_classifier_->grade(input_[i], classes_[i]);
-  }
-
-}; /* end struct GradeBody */
-
-
-/* Grade a sample */
 Point ClassifierImplementation::grade(const Sample & inS, const Indices & hClass) const
 {
   const UnsignedInteger size = inS.getSize();
   if (size != hClass.getSize())
     throw InvalidDimensionException(HERE) << "Input sample dimension (=" << size << ") and classes dimension (=" << hClass.getSize() << ") do not match.";
   Point result(size);
-  const GradeBody body(inS, hClass, result, this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, body);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) result[i] = grade(inS[i], hClass[i]);
+  });
   return result;
 }
 

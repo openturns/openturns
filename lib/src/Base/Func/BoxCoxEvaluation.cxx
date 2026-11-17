@@ -104,37 +104,6 @@ Point BoxCoxEvaluation::getShift() const
   return shift_;
 }
 
-struct BoxCoxEvaluationComputeSampleBody
-{
-  const Sample & input_;
-  Sample & output_;
-  const BoxCoxEvaluation & evaluation_;
-
-  BoxCoxEvaluationComputeSampleBody(const Sample & input,
-                                      Sample & output,
-                                      const BoxCoxEvaluation & evaluation)
-    : input_(input)
-    , output_(output)
-    , evaluation_(evaluation)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
-      {
-        const Scalar lambda_j = evaluation_.getLambda()[j];
-        const Scalar logX = log(input_(i, j) + evaluation_.getShift()[j]);
-        if (std::abs(lambda_j * logX) < 1e-8) output_(i, j) = logX * (1.0 + 0.5 * lambda_j * logX);
-        else output_(i, j) = std::expm1(lambda_j * logX) / lambda_j;
-      } // j
-    } // i
-  } // operator ()
-};  // struct BoxCoxEvaluationComputeSampleBody
-
 /* Operator () */
 Sample BoxCoxEvaluation::operator() (const Sample & inS) const
 {
@@ -142,8 +111,19 @@ Sample BoxCoxEvaluation::operator() (const Sample & inS) const
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
   Sample result(size, inDimension);
-  const BoxCoxEvaluationComputeSampleBody body( inS, result, *this );
-  TBBImplementation::ParallelFor( 0, size, body );
+  TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      for (UnsignedInteger j = 0; j < getInputDimension(); ++j)
+      {
+        const Scalar lambda_j = getLambda()[j];
+        const Scalar logX = log(inS(i, j) + getShift()[j]);
+        if (std::abs(lambda_j * logX) < 1e-8) result(i, j) = logX * (1.0 + 0.5 * lambda_j * logX);
+        else result(i, j) = std::expm1(lambda_j * logX) / lambda_j;
+      } // j
+    } // i
+  });
   callsNumber_.fetchAndAdd(size);
   result.setDescription(getOutputDescription());
   return result;
