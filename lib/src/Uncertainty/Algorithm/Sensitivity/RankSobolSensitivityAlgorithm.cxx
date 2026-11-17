@@ -293,7 +293,7 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
           // Compute aggregated indices
           bsFOpartial[k] = computeAggregatedIndices(Vi, variance);
         }
-      });
+      }, 1024);
       bsFO.add(bsFOpartial);
     }
 

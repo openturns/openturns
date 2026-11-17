@@ -248,7 +248,7 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
         for (UnsignedInteger i = j; i < outputDimension_; ++i)
           covarianceMatrix(indexBlock + i, indexBlock + j) = outputCovariance_.getImplementation()->operator()(i, j);
     }
-  });
+  }, 1024);
 
   return covarianceMatrix;
 }
@@ -281,7 +281,7 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
         for (UnsignedInteger i = j; i < outputDimension_; ++i)
           covarianceFactor(indexBlock + i, indexBlock + j) = covarianceFactor_(i, j);
     }
-  });
+  }, 1024);
 
   return covarianceFactor;
 }

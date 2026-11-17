@@ -142,7 +142,7 @@ Indices EnclosingSimplexAlgorithmImplementation::query(const Sample & sample) co
   TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) result[i] = query(sample[i]);
-  });
+  }, 1024);
   return result;
 }
 

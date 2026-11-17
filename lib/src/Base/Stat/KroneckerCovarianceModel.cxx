@@ -395,7 +395,7 @@ CovarianceMatrix KroneckerCovarianceModel::discretize(const Sample &vertices) co
   CovarianceMatrix rhoMatrix(size);
   const KroneckerModelDiscretizeBody body(vertices, rhoMatrix, *this);
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
   rhoMatrix.checkSymmetry();
   outputCovariance_.checkSymmetry();
   // Compute the Kronecker product of rhoMatrix by outputCovariance_
@@ -408,7 +408,7 @@ TriangularMatrix KroneckerCovarianceModel::discretizeAndFactorize(const Sample &
   CovarianceMatrix rhoMatrix(size);
   const KroneckerModelDiscretizeBody body(vertices, rhoMatrix, *this);
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
   // Compute the Cholesky factor of outputCovariance_
   if (outputCovarianceCholeskyFactor_.getDimension() == 0)
     outputCovarianceCholeskyFactor_ = outputCovariance_.computeCholesky();

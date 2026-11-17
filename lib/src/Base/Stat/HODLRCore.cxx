@@ -800,7 +800,7 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     // instead of striding once per factor.
     const auto ta0 = std::chrono::steady_clock::now();
     const ACAResidualRowBody rowBody(p_eval_.get(), startRow, pivotRow, startCol, nCols, const_cast<Scalar *>(bCol.data()));
-    TBBImplementation::ParallelForIf(parallelAssembly, 0, nCols, rowBody);
+    TBBImplementation::ParallelForIf(parallelAssembly, 0, nCols, rowBody, 1024);
     const auto ta1 = std::chrono::steady_clock::now();
     g_assemblyTiming.rowEval += std::chrono::duration<double>(ta1 - ta0).count();
     if (rank > 0)
@@ -876,7 +876,7 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     // against U.
     const auto tb0 = std::chrono::steady_clock::now();
     const ACAResidualColumnBody columnBody(p_eval_.get(), startRow, nRows, startCol, pivotCol, const_cast<Scalar *>(aCol.data()));
-    TBBImplementation::ParallelForIf(parallelAssembly, 0, nRows, columnBody);
+    TBBImplementation::ParallelForIf(parallelAssembly, 0, nRows, columnBody, 1024);
     const auto tb1 = std::chrono::steady_clock::now();
     g_assemblyTiming.colEval += std::chrono::duration<double>(tb1 - tb0).count();
     if (rank > 0)

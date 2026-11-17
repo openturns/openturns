@@ -79,7 +79,7 @@ Indices NearestNeighbourAlgorithmImplementation::query(const Sample & sample) co
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       result[i] = query(sample[i]);
-  });
+  }, 1024);
   return result;
 }
 

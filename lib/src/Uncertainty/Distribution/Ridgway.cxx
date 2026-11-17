@@ -317,7 +317,7 @@ Scalar mvnOrthantProbabilityCore(
       }
     }
   };
-  TBBImplementation::ParallelFor(0, M, InitParticlesFunctor(particles, L, a0, b0, initU));
+  TBBImplementation::ParallelFor(0, M, InitParticlesFunctor(particles, L, a0, b0, initU), 1024);
 
   // Iterate over remaining dimensions
   for (UnsignedInteger t = 1; t < d; ++t)
@@ -385,7 +385,7 @@ Scalar mvnOrthantProbabilityCore(
           }
         }
       };
-      TBBImplementation::ParallelFor(0, M, GibbsMoveFunctor(particles, L, a0, b0, t, gibbsU));
+      TBBImplementation::ParallelFor(0, M, GibbsMoveFunctor(particles, L, a0, b0, t, gibbsU), 1024);
     }
 
     // Extend to dimension t (Algorithm 3 inner loop), one pre-taken draw per particle
@@ -429,7 +429,7 @@ Scalar mvnOrthantProbabilityCore(
         }
       }
     };
-    TBBImplementation::ParallelFor(0, M, ExtendDimensionFunctor(particles, logWeights, L, a0, b0, t, extendU));
+    TBBImplementation::ParallelFor(0, M, ExtendDimensionFunctor(particles, logWeights, L, a0, b0, t, extendU), 1024);
   }
 
   // Final estimate: Z * (1/M) * sum(w_T)

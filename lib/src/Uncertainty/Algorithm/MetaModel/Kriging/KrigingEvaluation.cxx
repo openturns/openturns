@@ -286,12 +286,12 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
   if (dimension == 1)
   {
     const KrigingEvaluationSampleFunctor1D functor( inS, result, *this);
-    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor, 1024);
   }
   else
   {
     const KrigingEvaluationSampleFunctor functor( inS, result, *this );
-    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor, 1024);
   }
 
   // Evaluate the basis part sequentially

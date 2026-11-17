@@ -148,7 +148,7 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
       } // i
       addedAlpha[j] = result;
     } // j
-  });
+  }, 1024);
   alpha.add(addedAlpha);
   alpha_k_p_ = alpha;
   // The residual is the mean squared error between the model and the meta model.

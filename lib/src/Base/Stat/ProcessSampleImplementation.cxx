@@ -464,7 +464,7 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
 
   SampleImplementation result(length, dimension);
   const ComputeQuantilePerComponentBody body( contiguous, result, size, index, beta);
-  TBBImplementation::ParallelFor( 0, sampleSize, body );
+  TBBImplementation::ParallelFor( 0, sampleSize, body, 1024);
   return Field(mesh_, result);
 }
 
@@ -514,7 +514,7 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
       index = 0;
     }
     const ComputeQuantilePerComponentBody body( contiguous, output, size, index, beta);
-    TBBImplementation::ParallelFor( 0, sampleSize, body );
+    TBBImplementation::ParallelFor( 0, sampleSize, body, 1024);
     result.add(output);
   }
   return result;

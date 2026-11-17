@@ -847,7 +847,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix covarianceMatrix(size);
     const CovarianceModelDiscretizeScalarBody body(vertices, covarianceMatrix, *this);
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
     return covarianceMatrix;
   }
   else if (isDiagonal())
@@ -859,7 +859,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix covarianceMatrix(fullSize);
     const CovarianceModelDiscretizeDiagonalBody body( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
     return covarianceMatrix;
   }
   else
@@ -881,7 +881,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
           for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
             covarianceMatrix(iBase + ii, jBase + jj) = localCovariance(ii, jj);
       }
-    });
+    }, 1024);
     return covarianceMatrix;
   }
 }
@@ -918,7 +918,7 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
         resultImpl(rowIndex, columnIndex) = computeAsScalar(firstSampleImpl.data_begin() + (rowIndex * inputDimension),
             secondSampleImpl.data_begin() + (columnIndex * inputDimension));
       }
-    });
+    }, 1024);
     return result;
   }
   const UnsignedInteger firstSampleSize = firstSample.getSize();
@@ -951,7 +951,7 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
           resultImpl(iBase + k, jBase + k) = marginals[k].getImplementation()->computeAsScalar(
               firstSampleImpl.data_begin() + iLocal * firstInputDimension, secondSampleImpl.data_begin() + jLocal * secondInputDimension);
       }
-    });
+    }, 1024);
     return result;
   }
   const SampleImplementation & firstSampleImpl = *firstSample.getImplementation();
@@ -981,7 +981,7 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
         }
       }
     }
-  });
+  }, 1024);
   return result;
 }
 
@@ -1004,7 +1004,7 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sampl
         resultImpl(i, 0) = computeAsScalar(sampleImpl.data_begin() + (i * inputDimension),
             point.begin());
       }
-    });
+    }, 1024);
     return result;
   }
   const UnsignedInteger fullSize = size * outputDimension;
@@ -1020,7 +1020,7 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sampl
         for (UnsignedInteger rowIndex = 0; rowIndex < outputDimension; ++rowIndex)
           resultImpl(i * outputDimension + rowIndex, columnIndex) = localCovariance(rowIndex, columnIndex);
     }
-  });
+  }, 1024);
   return result;
 }
 
@@ -1055,7 +1055,7 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
     CovarianceMatrix covarianceMatrix(size);
     const CovarianceModelDiscretizeScalarBody body( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
     // Compute the Cholesky
     return covarianceMatrix.computeCholeskyInPlace();
   }
@@ -1083,7 +1083,7 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
     {
       for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
         resultImpl(i, 0) = computeAsScalar(point.begin(), verticesImpl.data_begin() + (i * getInputDimension()));
-    });
+    }, 1024);
   }
   else
   {
@@ -1098,7 +1098,7 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
           for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
             result(base + ii, jj) = localCovariance(ii, jj);
       }
-    });
+    }, 1024);
   }
   return result;
 }
