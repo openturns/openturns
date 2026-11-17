@@ -35,7 +35,6 @@ class OT_API RankSobolSensitivityAlgorithm
   : public SobolIndicesAlgorithmImplementation
 {
   CLASSNAME
-  friend struct RankSobolBootstrapBody;
 public:
 
   /** Default constructor */

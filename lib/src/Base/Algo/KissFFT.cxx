@@ -27,33 +27,6 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef kissfft<Scalar> KISSFFTScalar;
 
-struct FFTBody
-{
-  const KissFFT::ComplexCollection & input_;
-  KissFFT::ComplexCollection  & output_;
-  KISSFFTScalar & fft_;
-  const UnsignedInteger fftSize_;
-
-  FFTBody(const KissFFT::ComplexCollection & input,
-            KissFFT::ComplexCollection & output,
-            KISSFFTScalar & fft,
-            UnsignedInteger fftSize)
-    : input_(input)
-    , output_(output)
-    , fft_(fft)
-    , fftSize_(fftSize)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const UnsignedInteger first = fftSize_ * i;
-      fft_.transform( &input_[first], &output_[first] );
-    }
-  }
-}; /* end struct FFTBody */
-
 /**
  * @class KissFFT
  */

@@ -80,7 +80,6 @@ public:
 protected:
   mutable KDTree tree_;
 
-  friend struct LVVoronoiScoreBody;
   void computeVoronoiScore() const;
   mutable Point voronoiScore_;
 

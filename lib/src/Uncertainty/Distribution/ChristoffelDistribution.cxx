@@ -334,36 +334,16 @@ Scalar ChristoffelDistribution::computeChristoffelFunction(const Point & point) 
   return computeChristoffelCore(point);
 }
 
-struct ComputeChristoffelBody
-{
-  const Sample & input_;
-  Sample & output_;
-  const ChristoffelDistribution & distribution_;
-
-  ComputeChristoffelBody(const Sample & input,
-                           Sample & output,
-                           const ChristoffelDistribution & distribution)
-    : input_(input)
-    , output_(output)
-    , distribution_(distribution)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeChristoffelCore(input_[i]);
-  }
-}; /* end struct ComputeChristoffelBody */
-
 /* Christoffel function evaluation on a sample, parallel over points when large */
 Sample ChristoffelDistribution::computeChristoffelFunction(const Sample & sample) const
 {
   if (sample.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getDimension() << ", got dimension=" << sample.getDimension();
   const UnsignedInteger sampleSize = sample.getSize();
   Sample values(sampleSize, 1);
-  const ComputeChristoffelBody body(sample, values, *this);
-  TBBImplementation::ParallelForIf(isParallel() && (sampleSize > 2048), 0, sampleSize, body, 1024);
+  TBBImplementation::ParallelForIf(isParallel() && (sampleSize > 2048), 0, sampleSize, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) values(i, 0) = computeChristoffelCore(sample[i]);
+  }, 1024);
   return values;
 }
 
@@ -739,36 +719,16 @@ Scalar ChristoffelDistribution::computeLogChristoffelFunction(const Point & poin
   return computeLogChristoffelCore(point);
 }
 
-struct ComputeLogChristoffelBody
-{
-  const Sample & input_;
-  Sample & output_;
-  const ChristoffelDistribution & distribution_;
-
-  ComputeLogChristoffelBody(const Sample & input,
-                              Sample & output,
-                              const ChristoffelDistribution & distribution)
-    : input_(input)
-    , output_(output)
-    , distribution_(distribution)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeLogChristoffelCore(input_[i]);
-  }
-}; /* end struct ComputeLogChristoffelBody */
-
 /* Stable log of the Christoffel function on a sample, parallel over points when large */
 Sample ChristoffelDistribution::computeLogChristoffelFunction(const Sample & sample) const
 {
   if (sample.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getDimension() << ", got dimension=" << sample.getDimension();
   const UnsignedInteger sampleSize = sample.getSize();
   Sample values(sampleSize, 1);
-  const ComputeLogChristoffelBody body(sample, values, *this);
-  TBBImplementation::ParallelForIf(isParallel() && (sampleSize > 2048), 0, sampleSize, body, 1024);
+  TBBImplementation::ParallelForIf(isParallel() && (sampleSize > 2048), 0, sampleSize, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) values(i, 0) = computeLogChristoffelCore(sample[i]);
+  }, 1024);
   return values;
 }
 

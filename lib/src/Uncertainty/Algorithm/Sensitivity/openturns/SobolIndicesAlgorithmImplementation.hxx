@@ -41,7 +41,6 @@ class OT_API SobolIndicesAlgorithmImplementation
   : public PersistentObject
 {
   CLASSNAME
-  friend struct BootstrapBody;
 public:
 
   /** Default constructor */

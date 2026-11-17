@@ -70,37 +70,16 @@ UnsignedInteger NearestNeighbourAlgorithmImplementation::query(const Point & ) c
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::query(const Point & x) const";
 }
 
-class NearestNeighbourAlgorithmImplementationQuerySampleBody
-{
-  const Sample & input_;
-  Indices & output_;
-  const NearestNeighbourAlgorithmImplementation & algo_;
-
-public:
-  NearestNeighbourAlgorithmImplementationQuerySampleBody(const Sample & input,
-      Indices & output,
-      const NearestNeighbourAlgorithmImplementation & algo)
-    : input_(input)
-    , output_(output)
-    , algo_(algo)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      output_[i] = algo_.query(input_[i]);
-  } // operator ()
-};  // class NearestNeighbourAlgorithmImplementationQuerySampleBody
-
 /* Get the index of the nearest neighbour of the given points */
 Indices NearestNeighbourAlgorithmImplementation::query(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   Indices result(size);
-  const NearestNeighbourAlgorithmImplementationQuerySampleBody body( sample, result, *this );
-  TBBImplementation::ParallelFor(0, size, body);
+  TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      result[i] = query(sample[i]);
+  });
   return result;
 }
 

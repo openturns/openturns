@@ -219,34 +219,6 @@ Point ProductPolynomialEvaluation::operator() (const Point & inP) const
   return result;
 }
 
-struct ProductPolynomialEvaluationComputeSampleBody
-{
-  const Sample & input_;
-  Sample & output_;
-  const ProductPolynomialEvaluation::PolynomialCollection & polynomials_;
-
-  ProductPolynomialEvaluationComputeSampleBody(const Sample & input,
-      Sample & output,
-      const ProductPolynomialEvaluation::PolynomialCollection & polynomials)
-    : input_(input)
-    , output_(output)
-    , polynomials_(polynomials)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      Scalar value = polynomials_[0](input_(i, 0));
-      for (UnsignedInteger j = 1; j < polynomials_.getSize(); ++j)
-        value *= polynomials_[j](input_(i, j));
-      output_(i, 0) = value;
-    } // i
-  } // operator ()
-};  // struct ProductPolynomialEvaluationComputeSampleBody
-
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
 Sample ProductPolynomialEvaluation::operator() (const Sample & inS) const
 {
@@ -254,8 +226,16 @@ Sample ProductPolynomialEvaluation::operator() (const Sample & inS) const
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getOutputDimension());
-  const ProductPolynomialEvaluationComputeSampleBody body( inS, result, polynomials_ );
-  TBBImplementation::ParallelFor(0, size, body, 1024);
+  TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      Scalar value = polynomials_[0](inS(i, 0));
+      for (UnsignedInteger j = 1; j < polynomials_.getSize(); ++j)
+        value *= polynomials_[j](inS(i, j));
+      result(i, 0) = value;
+    } // i
+  }, 1024);
   result.setDescription(getOutputDescription());
   callsNumber_.fetchAndAdd(size);
   return result;
