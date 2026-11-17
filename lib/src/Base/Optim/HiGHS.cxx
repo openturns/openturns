@@ -170,7 +170,7 @@ void HiGHS::checkProblem(const OptimizationProblem & problem) const
 
   // Only the linear constraints set through setLinearConstraint are mapped to
   // the HiGHS model: arbitrary constraint functions would be silently ignored.
-  // LinearProblem and QuadraticProblem derive their equality and inequality
+  // LinearProgrammingProblem and QuadraticProgrammingProblem derive their equality and inequality
   // constraint functions from these coefficients, so they are redundant here.
   if (!problem.isLinear() && !problem.isQuadratic()
       && (problem.hasEqualityConstraint() || problem.hasInequalityConstraint()))

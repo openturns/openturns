@@ -586,8 +586,8 @@ ot_add_python_module(experimental experimental_module.i
                      ActiveLearningReliabilityAlgorithm.i ActiveLearningReliabilityAlgorithm_doc.i
                      ActiveLearningReliabilityResult.i ActiveLearningReliabilityResult_doc.i
                      HiGHS.i HiGHS_doc.i
-                     LinearProblem.i LinearProblem_doc.i
-                     QuadraticProblem.i QuadraticProblem_doc.i
+                     LinearProgrammingProblem.i LinearProgrammingProblem_doc.i
+                     QuadraticProgrammingProblem.i QuadraticProgrammingProblem_doc.i
                      SparseMatrix.i SparseMatrix_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                      BasisOrthonormalizationAlgorithm.i BasisOrthonormalizationAlgorithm_doc.i

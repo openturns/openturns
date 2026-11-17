@@ -26,7 +26,7 @@
 #include "openturns/GaussLegendre.hxx"
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/LinearProblem.hxx"
+#include "openturns/LinearProgrammingProblem.hxx"
 #include "openturns/HiGHS.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/OptimizationProblem.hxx"
@@ -409,7 +409,7 @@ Point SolveLinearProgram(const Point & cost,
 {
   const auto runSolver = [&](const String & solverName) -> Point
   {
-    LinearProblem lpProblem(cost, bounds, constraintCoefficients, constraintBounds);
+    LinearProgrammingProblem lpProblem(cost, bounds, constraintCoefficients, constraintBounds);
     HiGHS highs(lpProblem, solverName);
     highs.setMaximumConstraintError(maximumConstraintError);
     highs.run();

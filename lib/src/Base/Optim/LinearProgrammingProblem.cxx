@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief LinearProblem allows one to describe an optimization problem
+ *  @brief LinearProgrammingProblem allows one to describe an optimization problem
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/LinearProblem.hxx"
+#include "openturns/LinearProgrammingProblem.hxx"
 #include <algorithm>
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
@@ -27,28 +27,28 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LinearProblem)
+CLASSNAMEINIT(LinearProgrammingProblem)
 
-static const Factory<LinearProblem> Factory_LinearProblem;
+static const Factory<LinearProgrammingProblem> Factory_LinearProgrammingProblem;
 
 /* Default constructor */
-LinearProblem::LinearProblem()
+LinearProgrammingProblem::LinearProgrammingProblem()
   : OptimizationProblemImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-LinearProblem::LinearProblem(const Point & cost, const Interval & bounds,
+LinearProgrammingProblem::LinearProgrammingProblem(const Point & cost, const Interval & bounds,
                              const Matrix & constraintCoefficients, const Interval & constraintBounds,
                              const Scalar constant)
-  : LinearProblem(cost, bounds, SparseMatrix::FromDenseMatrix(constraintCoefficients), constraintBounds, constant)
+  : LinearProgrammingProblem(cost, bounds, SparseMatrix::FromDenseMatrix(constraintCoefficients), constraintBounds, constant)
 {
   // Nothing to do
 }
 
 /* Parameter constructor with sparse constraint coefficients */
-LinearProblem::LinearProblem(const Point & cost, const Interval & bounds,
+LinearProgrammingProblem::LinearProgrammingProblem(const Point & cost, const Interval & bounds,
                              const SparseMatrix & constraintCoefficients, const Interval & constraintBounds,
                              const Scalar constant)
   : OptimizationProblemImplementation()
@@ -63,14 +63,14 @@ LinearProblem::LinearProblem(const Point & cost, const Interval & bounds,
 
 
 /* Virtual constructor */
-LinearProblem * LinearProblem::clone() const
+LinearProgrammingProblem * LinearProgrammingProblem::clone() const
 {
-  return new LinearProblem(*this);
+  return new LinearProgrammingProblem(*this);
 }
 
 
 /* Objective accessor */
-void LinearProblem::setLinearCost(const Point & cost)
+void LinearProgrammingProblem::setLinearCost(const Point & cost)
 {
   if ((constraintCoefficients_.getNbColumns() != 0) && (constraintCoefficients_.getNbColumns() != cost.getDimension()))
     throw InvalidDimensionException(HERE) << "Linear cost dimension (" << cost.getDimension() << ") must match constraint matrix column dimension (" << constraintCoefficients_.getNbColumns() << ")";
@@ -79,26 +79,26 @@ void LinearProblem::setLinearCost(const Point & cost)
 }
 
 
-Point LinearProblem::getLinearCost() const
+Point LinearProgrammingProblem::getLinearCost() const
 {
   return cost_;
 }
 
 
-void LinearProblem::setConstant(const Scalar constant)
+void LinearProgrammingProblem::setConstant(const Scalar constant)
 {
   constant_ = constant;
   updateObjective();
 }
 
 
-Scalar LinearProblem::getConstant() const
+Scalar LinearProgrammingProblem::getConstant() const
 {
   return constant_;
 }
 
 
-void LinearProblem::updateObjective()
+void LinearProgrammingProblem::updateObjective()
 {
   const UnsignedInteger dimension = cost_.getDimension();
   Matrix linear(1, dimension);
@@ -109,13 +109,13 @@ void LinearProblem::updateObjective()
 
 
 /* Constraint accessor */
-void LinearProblem::setLinearConstraint(const Matrix & constraintCoefficients, const Interval & constraintBounds)
+void LinearProgrammingProblem::setLinearConstraint(const Matrix & constraintCoefficients, const Interval & constraintBounds)
 {
   setLinearConstraint(SparseMatrix::FromDenseMatrix(constraintCoefficients), constraintBounds);
 }
 
 
-void LinearProblem::setLinearConstraint(const SparseMatrix & constraintCoefficients, const Interval & constraintBounds)
+void LinearProgrammingProblem::setLinearConstraint(const SparseMatrix & constraintCoefficients, const Interval & constraintBounds)
 {
   if (constraintCoefficients.getNbColumns() != cost_.getDimension())
     throw InvalidDimensionException(HERE) << "Matrix column dimension (" << constraintCoefficients.getNbColumns() << ") must match problem dimension (" << cost_.getDimension() << ")";
@@ -126,63 +126,63 @@ void LinearProblem::setLinearConstraint(const SparseMatrix & constraintCoefficie
 }
 
 
-Matrix LinearProblem::getLinearConstraintCoefficients() const
+Matrix LinearProgrammingProblem::getLinearConstraintCoefficients() const
 {
   return constraintCoefficients_.asDenseMatrix();
 }
 
 
-SparseMatrix LinearProblem::getSparseLinearConstraintCoefficients() const
+SparseMatrix LinearProgrammingProblem::getSparseLinearConstraintCoefficients() const
 {
   return constraintCoefficients_;
 }
 
 
-Interval LinearProblem::getLinearConstraintBounds() const
+Interval LinearProgrammingProblem::getLinearConstraintBounds() const
 {
   return constraintBounds_;
 }
 
 
 /* Equality and inequality constraints, derived from the linear constraints */
-Bool LinearProblem::hasEqualityConstraint() const
+Bool LinearProgrammingProblem::hasEqualityConstraint() const
 {
   return HasLinearEqualityConstraint(constraintBounds_);
 }
 
 
-Function LinearProblem::getEqualityConstraint() const
+Function LinearProgrammingProblem::getEqualityConstraint() const
 {
   return GetLinearEqualityConstraint(constraintCoefficients_, constraintBounds_, cost_.getDimension());
 }
 
 
-void LinearProblem::setEqualityConstraint(const Function & equalityConstraint)
+void LinearProgrammingProblem::setEqualityConstraint(const Function & equalityConstraint)
 {
   SetLinearEqualityConstraint(constraintCoefficients_, constraintBounds_, equalityConstraint, cost_.getDimension());
 }
 
 
-Bool LinearProblem::hasInequalityConstraint() const
+Bool LinearProgrammingProblem::hasInequalityConstraint() const
 {
   return HasLinearInequalityConstraint(constraintBounds_);
 }
 
 
-Function LinearProblem::getInequalityConstraint() const
+Function LinearProgrammingProblem::getInequalityConstraint() const
 {
   return GetLinearInequalityConstraint(constraintCoefficients_, constraintBounds_, cost_.getDimension());
 }
 
 
-void LinearProblem::setInequalityConstraint(const Function & inequalityConstraint)
+void LinearProgrammingProblem::setInequalityConstraint(const Function & inequalityConstraint)
 {
   SetLinearInequalityConstraint(constraintCoefficients_, constraintBounds_, inequalityConstraint, cost_.getDimension());
 }
 
 
 /* From function linearization */
-LinearProblem LinearProblem::Linearize(const OptimizationProblem & problem, const Point & location)
+LinearProgrammingProblem LinearProgrammingProblem::Linearize(const OptimizationProblem & problem, const Point & location)
 {
   if (problem.hasMultipleObjective() || problem.hasLevelFunction() || problem.hasResidualFunction())
     throw InvalidArgumentException(HERE) << "Cannot linearize a multi-objective / nearest-point / least-squares problem";
@@ -219,7 +219,7 @@ LinearProblem LinearProblem::Linearize(const OptimizationProblem & problem, cons
     ub.add(- 1.0 * eq0);
   }
   const Interval LU(lb, ub);
-  LinearProblem linearProblem(cost, problem.getBounds(), A, LU);
+  LinearProgrammingProblem linearProblem(cost, problem.getBounds(), A, LU);
   // the constant term carries the linearization offset so that the
   // linearized objective matches the original function at the location
   linearProblem.setConstant(problem.getObjective()(location)[0] - cost.dot(location));
@@ -229,17 +229,17 @@ LinearProblem LinearProblem::Linearize(const OptimizationProblem & problem, cons
 
 
 /* Linear flag accessor */
-Bool LinearProblem::isLinear() const
+Bool LinearProgrammingProblem::isLinear() const
 {
   return true;
 }
 
 
 /* String converter */
-String LinearProblem::__repr__() const
+String LinearProgrammingProblem::__repr__() const
 {
   OSS oss;
-  oss << "class=" << LinearProblem::GetClassName();
+  oss << "class=" << LinearProgrammingProblem::GetClassName();
   oss << " cost=" << cost_
       << " constant=" << constant_
       << " constraintCoefficients=" << constraintCoefficients_
@@ -248,7 +248,7 @@ String LinearProblem::__repr__() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void LinearProblem::save(Advocate & adv) const
+void LinearProgrammingProblem::save(Advocate & adv) const
 {
   OptimizationProblemImplementation::save(adv);
   adv.saveAttribute( "cost_", cost_ );
@@ -258,7 +258,7 @@ void LinearProblem::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void LinearProblem::load(Advocate & adv)
+void LinearProgrammingProblem::load(Advocate & adv)
 {
   OptimizationProblemImplementation::load(adv);
   adv.loadAttribute( "cost_", cost_ );

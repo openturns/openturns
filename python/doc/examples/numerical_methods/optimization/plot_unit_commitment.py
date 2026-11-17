@@ -364,7 +364,7 @@ print("sparse form : %.1f MiB (%.0f times less)" % (sparse_memory / 2**20, dense
 # so that HiGHS runs its mixed integer solver.
 bounds = ot.Interval(lower.tolist(), upper.tolist(), [True] * n_var, finite_upper.tolist())
 constraint_bounds = ot.Interval(LB, UB, [bound > -INF for bound in LB], [bound < INF for bound in UB])
-problem = otexp.LinearProblem(cost_vector.tolist(), bounds, A, constraint_bounds)
+problem = otexp.LinearProgrammingProblem(cost_vector.tolist(), bounds, A, constraint_bounds)
 problem.setVariablesType(types.tolist())
 algo = otexp.HiGHS(problem)
 algo.run()

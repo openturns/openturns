@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief LinearProblem allows one to describe an optimization problem
+ *  @brief LinearProgrammingProblem allows one to describe an optimization problem
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_LINEARPROBLEM_HXX
-#define OPENTURNS_LINEARPROBLEM_HXX
+#ifndef OPENTURNS_LINEARPROGRAMMINGPROBLEM_HXX
+#define OPENTURNS_LINEARPROGRAMMINGPROBLEM_HXX
 
 #include "openturns/OptimizationProblemImplementation.hxx"
 #include "openturns/OptimizationProblem.hxx"
@@ -28,11 +28,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class LinearProblem
- * LinearProblem allows one to describe an optimization problem
+ * @class LinearProgrammingProblem
+ * LinearProgrammingProblem allows one to describe an optimization problem
  */
 
-class OT_API LinearProblem
+class OT_API LinearProgrammingProblem
   : public OptimizationProblemImplementation
 {
 
@@ -41,20 +41,20 @@ class OT_API LinearProblem
 public:
 
   /** Default constructor */
-  LinearProblem();
+  LinearProgrammingProblem();
 
   /** Constructor with parameters */
-  LinearProblem(const Point & cost, const Interval & bounds,
+  LinearProgrammingProblem(const Point & cost, const Interval & bounds,
                 const Matrix & constraintCoefficients, const Interval & constraintBounds,
                 const Scalar constant = 0.0);
 
   /** Constructor with sparse constraint coefficients */
-  LinearProblem(const Point & cost, const Interval & bounds,
+  LinearProgrammingProblem(const Point & cost, const Interval & bounds,
                 const SparseMatrix & constraintCoefficients, const Interval & constraintBounds,
                 const Scalar constant = 0.0);
 
   /** Virtual constructor */
-  LinearProblem * clone() const override;
+  LinearProgrammingProblem * clone() const override;
 
   /** Linear flag accessor */
   Bool isLinear() const override;
@@ -96,7 +96,7 @@ public:
   void load(Advocate & adv) override;
 
   /** From problem linearization */
-  static LinearProblem Linearize(const OptimizationProblem & problem,
+  static LinearProgrammingProblem Linearize(const OptimizationProblem & problem,
                                  const Point & location);
 
 private:
@@ -112,9 +112,9 @@ private:
   SparseMatrix constraintCoefficients_;
   Interval constraintBounds_;
 
-}; /* class LinearProblem */
+}; /* class LinearProgrammingProblem */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_LINEARPROBLEM_HXX */
+#endif /* OPENTURNS_LINEARPROGRAMMINGPROBLEM_HXX */

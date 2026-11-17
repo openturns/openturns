@@ -37,8 +37,8 @@
 
 /* Base/Optim */
 %import optim_module.i
-%include LinearProblem.i
-%include QuadraticProblem.i
+%include LinearProgrammingProblem.i
+%include QuadraticProgrammingProblem.i
 %include HiGHS.i
 
 /* Base/Algo */

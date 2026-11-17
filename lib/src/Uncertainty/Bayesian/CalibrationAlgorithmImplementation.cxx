@@ -26,7 +26,7 @@
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/TruncatedDistribution.hxx"
-#include "openturns/QuadraticProblem.hxx"
+#include "openturns/QuadraticProgrammingProblem.hxx"
 #include "openturns/SymmetricMatrix.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/OptimizationResult.hxx"
@@ -303,7 +303,7 @@ Point CalibrationAlgorithmImplementation::SolveBoundedLeastSquaresIncrement(cons
   }
   if ((largestSingularValue > 0.0) && (smallestSingularValue < std::sqrt(SpecFunc::Precision) * largestSingularValue))
     return SolveBoundedLeastSquaresByActiveSet(design, rightHandSide, shiftedBounds);
-  QuadraticProblem problem(QuadraticProblem::FromLeastSquares(design, rightHandSide, shiftedBounds));
+  QuadraticProgrammingProblem problem(QuadraticProgrammingProblem::FromLeastSquares(design, rightHandSide, shiftedBounds));
   // The constant term ||rightHandSide||^2 does not change the optimal point,
   // but it can be huge compared with the variable part and swamp it in the
   // solver's comparisons: a constant of 1e18 hides a variation of order one.
