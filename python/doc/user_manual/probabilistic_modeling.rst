@@ -458,7 +458,6 @@ Deprecated distribution aliases
     :template: function.rst_t
 
     dist.BayesDistribution
-    dist.MixedHistogramUserDefined
     dist.RandomMixture
     dist.UserDefined
     dist.UserDefinedFactory
