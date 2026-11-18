@@ -32,6 +32,8 @@
  * Orthonormal basis construction and sparse functional chaos improvements
  * Speeding up Gaussian field simulation on large meshes with the FFT-based circulant embedding method and the P1 interpolation
  * Covariance models for functional spaces to generate trajectories within crucial functional spaces for physical simulations
+ * AK reliability methods
+ * built-in and external HODLR compression format APIs
 
 ==== New classes ====
  * BasisOrthonormalizationAlgorithm, BasisOrthonormalizationFactory, GaussLPQuadrature, GaussLPQuadratureRule (openturns.experimental)
@@ -60,7 +62,7 @@
  * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
- * QuadraticProblem (openturns.experimental)
+ * QuadraticProgrammingProblem (openturns.experimental)
  * RatioDistribution (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * UniformOverMeshFactory (openturns.experimental)
