@@ -9,6 +9,7 @@
 ==== API changes ====
 
  * HiGHS moved out of experimental
+ * FiniteOrthogonalFunctionFactory moved out of experimental
 
 === Documentation ===
 

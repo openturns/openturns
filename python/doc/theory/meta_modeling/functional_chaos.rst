@@ -487,7 +487,7 @@ for any :math:`\standardReal_{\vect{u}} \in \standardInputSpace_{\vect{u}}`.
     - See :class:`~openturns.FourierSeriesFactory`
     - See :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
     - See :class:`~openturns.OrthogonalUniVariatePolynomialFactory`
-    - See :class:`~openturns.experimental.FiniteOrthogonalFunctionFactory`
+    - See :class:`~openturns.FiniteOrthogonalFunctionFactory`
     - See :class:`~openturns.FunctionalChaosValidation`.
 
 

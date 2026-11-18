@@ -25,7 +25,7 @@ This class implements the multivariate orthonormal basis associated with an arbi
 
 See also
 --------
-    UniVariateDistributionPolynomialFactory, OrthogonalProductPolynomialFactory, experimental.FiniteOrthogonalFunctionFactory
+    UniVariateDistributionPolynomialFactory, OrthogonalProductPolynomialFactory, FiniteOrthogonalFunctionFactory
 
 Examples
 --------

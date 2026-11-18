@@ -11,7 +11,7 @@ ot.TESTPREAMBLE()
 
 def makeBasis(functions, measure):
     """Expose a collection of functions and its measure as an OrthogonalBasis."""
-    return ot.OrthogonalBasis(otexp.FiniteOrthogonalFunctionFactory(functions, measure))
+    return ot.OrthogonalBasis(ot.FiniteOrthogonalFunctionFactory(functions, measure))
 
 
 # Check the parameter constructor
