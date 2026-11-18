@@ -161,13 +161,6 @@ void ProcessSample::setField(const UnsignedInteger index,
   getImplementation()->setField(index, field);
 }
 
-void ProcessSample::setField(const Field & field,
-                             const UnsignedInteger index)
-{
-  copyOnWrite();
-  getImplementation()->setField(field, index);
-}
-
 Sample & ProcessSample::operator[] (const UnsignedInteger index)
 {
   copyOnWrite();
