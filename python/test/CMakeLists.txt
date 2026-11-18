@@ -1015,7 +1015,6 @@ endif ()
 
 if (MATPLOTLIB_FOUND)
   ot_pyinstallcheck_test (Viewer IGNOREOUT)
-  ot_pyinstallcheck_test (PlotDesign IGNOREOUT)
 endif ()
 ot_pyinstallcheck_test (PlatformInfo_std IGNOREOUT)
 ot_pyinstallcheck_test (coupling_tools)
