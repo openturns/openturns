@@ -30,7 +30,7 @@ Refer to :ref:`optimization_algorithm`.
     Cobyla
     Dlib
     experimental.EfficientGlobalOptimization
-    experimental.HiGHS
+    HiGHS
     Ipopt
     MultiStart
     NLopt

@@ -59,7 +59,7 @@ cb : :class:`~openturns.Interval`
 
 See Also
 --------
-openturns.experimental.HiGHS, openturns.experimental.LinearProgrammingProblem
+openturns.HiGHS, openturns.experimental.LinearProgrammingProblem
 
 Examples
 --------
@@ -71,7 +71,7 @@ Define and solve a bounded quadratic problem:
 >>> c = [-2.0, -4.0]
 >>> bounds = ot.Interval([0.0, 0.0], [0.5, 10.0])
 >>> problem = otexp.QuadraticProgrammingProblem(Q, c, bounds)
->>> algo = otexp.HiGHS(problem)
+>>> algo = ot.HiGHS(problem)
 >>> algo.run() # doctest: +SKIP
 >>> result = algo.getResult() # doctest: +SKIP
 >>> x_star = result.getOptimalPoint() # doctest: +SKIP

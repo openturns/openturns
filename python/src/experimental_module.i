@@ -39,7 +39,6 @@
 %import optim_module.i
 %include LinearProgrammingProblem.i
 %include QuadraticProgrammingProblem.i
-%include HiGHS.i
 
 /* Base/Algo */
 %include SlicedInverseRegressionResult.i

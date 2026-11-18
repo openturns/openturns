@@ -414,7 +414,7 @@ problem = otexp.LinearProgrammingProblem(
     cost_vector.tolist(), bounds, A, constraint_bounds
 )
 problem.setVariablesType(types.tolist())
-algo = otexp.HiGHS(problem)
+algo = ot.HiGHS(problem)
 algo.run()
 result = algo.getResult()
 print("status      : %s" % result.getStatusMessage())

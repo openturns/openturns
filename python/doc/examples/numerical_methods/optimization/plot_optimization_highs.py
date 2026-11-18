@@ -48,7 +48,7 @@ problem.setMinimization(False)
 
 # %%
 # Run the algorithm with default settings
-algo = otexp.HiGHS(problem)
+algo = ot.HiGHS(problem)
 algo.setStartingPoint([0.0] * 3)
 algo.run()
 
@@ -64,7 +64,7 @@ print(" -- Evaluation number = " + str(result.getInputSample().getSize()))
 # --------------------------------------------------
 #
 # On continuous linear problems the LP solver can be selected
-# among the recognized names returned by :func:`~openturns.experimental.HiGHS.GetAlgorithmNames`
+# among the recognized names returned by :func:`~openturns.HiGHS.GetAlgorithmNames`
 # (whether a name is accepted at runtime depends on the HiGHS build).
 # Let us solve the following problem with several solvers:
 #
@@ -80,7 +80,7 @@ print(" -- Evaluation number = " + str(result.getInputSample().getSize()))
 #    y \geq 0\\
 #    \end{array}
 #
-print(" -- Recognized LP solver names = " + str(otexp.HiGHS.GetAlgorithmNames()))
+print(" -- Recognized LP solver names = " + str(ot.HiGHS.GetAlgorithmNames()))
 
 # %%
 # Definition of the continuous linear problem
@@ -96,9 +96,9 @@ problem2 = otexp.LinearProgrammingProblem([1.0, 1.0], bounds2, A2, cb2)
 # HiGHS solves the LP directly without Function evaluations,
 # so error histories stay empty (no convergence curve to draw);
 # solvers are compared on final point, value, status and per-solver iterations.
-for solver in otexp.HiGHS.GetAlgorithmNames():
+for solver in ot.HiGHS.GetAlgorithmNames():
     try:
-        algo2 = otexp.HiGHS(problem2, solver)
+        algo2 = ot.HiGHS(problem2, solver)
         algo2.setMaximumConstraintError(0.0)
         algo2.run()
     except Exception as ex:
@@ -133,7 +133,7 @@ for solver in otexp.HiGHS.GetAlgorithmNames():
 # A basic-solution solver also exposes the dual solution:
 # constraint duals and per-variable reduced costs
 # (first-order solvers without crossover have no dual to expose).
-algoDual = otexp.HiGHS(problem2, "simplex")
+algoDual = ot.HiGHS(problem2, "simplex")
 algoDual.run()
 print(" -- Duals = " + str(algoDual.getDualPoint()))
 print(" -- Reduced costs = " + str(algoDual.getReducedCosts()))
@@ -154,7 +154,7 @@ print(" -- Reduced costs = " + str(algoDual.getReducedCosts()))
 Q = ot.SymmetricMatrix([[2.0, 0.0], [0.0, 2.0]])
 boundsQP = ot.Interval([0.0, 0.0], [0.5, 10.0])
 problemQP = otexp.QuadraticProgrammingProblem(Q, [-2.0, -4.0], boundsQP)
-algoQP = otexp.HiGHS(problemQP, "choose")
+algoQP = ot.HiGHS(problemQP, "choose")
 algoQP.run()
 resultQP = algoQP.getResult()
 print(" -- QP optimal point = " + str(resultQP.getOptimalPoint()))

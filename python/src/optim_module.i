@@ -62,6 +62,7 @@ OT::Ceres::Initialize();
 %include CMinpack.i
 %include Cobyla.i
 %include Dlib.i
+%include HiGHS.i
 %include Ipopt.i
 %include TNC.i
 %include SQP.i

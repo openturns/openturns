@@ -104,7 +104,7 @@ Setting bounds changes the calibration:
   :class:`~openturns.GaussianLinearCalibration` solve a bounded linear
   least-squares problem as a convex quadratic problem, using the first
   algorithm selected by :meth:`~openturns.OptimizationAlgorithm.Build`. This
-  is the :class:`~openturns.experimental.HiGHS` quadratic solver when
+  is the :class:`~openturns.HiGHS` quadratic solver when
   OpenTURNS is built with HiGHS support. When the design matrix is so
   ill-conditioned that its normal matrix would lose an identified direction,
   the problem is solved directly on the design matrix with a bounded-variable

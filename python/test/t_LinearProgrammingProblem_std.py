@@ -135,7 +135,7 @@ functionProblem.setInequalityConstraint(
     ot.LinearFunction([0.0, 0.0], [1.0], ot.Matrix([[-1.0, 1.0]]))
 )
 if ot.PlatformInfo.HasFeature("highs"):
-    algoFunctions = otexp.HiGHS(functionProblem)
+    algoFunctions = ot.HiGHS(functionProblem)
     algoFunctions.run()
     ott.assert_almost_equal(algoFunctions.getResult().getOptimalPoint(), [0.0, 2.5])
 

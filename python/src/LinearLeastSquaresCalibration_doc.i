@@ -34,7 +34,7 @@ By default the calibration is unconstrained. When bounds are set with
 :meth:`setBounds`, the estimator solves the equivalent convex quadratic problem
 with the first algorithm selected by
 :meth:`~openturns.OptimizationAlgorithm.Build`, which is the
-:class:`~openturns.experimental.HiGHS` quadratic solver when OpenTURNS is built
+:class:`~openturns.HiGHS` quadratic solver when OpenTURNS is built
 with HiGHS support. When some parameters are active at a bound, the posterior
 distribution is a first-order Gaussian approximation: its covariance is
 computed from the inverse of the free block
