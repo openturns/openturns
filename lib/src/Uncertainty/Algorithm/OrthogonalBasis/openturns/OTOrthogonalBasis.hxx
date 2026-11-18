@@ -48,7 +48,6 @@
 #include "openturns/FourierSeriesFactory.hxx"
 #include "openturns/HaarWaveletFactory.hxx"
 #include "openturns/OrthogonalProductFunctionFactory.hxx"
-#include "openturns/SoizeGhanemFactory.hxx"
 #include "openturns/FiniteOrthogonalFunctionFactory.hxx"
 #include "openturns/BasisOrthonormalizationAlgorithm.hxx"
 #include "openturns/GaussLPQuadrature.hxx"
