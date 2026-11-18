@@ -8,6 +8,8 @@
 
 ==== API changes ====
 
+ * HiGHS moved out of experimental
+
 === Documentation ===
 
 === Python module ===

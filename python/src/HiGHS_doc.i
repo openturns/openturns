@@ -1,10 +1,6 @@
 %feature("docstring") OT::HiGHS
 R"RAW(Linear and quadratic optimization solver.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 This class exposes the linear and quadratic solvers from the
 `HiGHS <https://highs.dev/>`_ library. It solves continuous linear problems,
 mixed-integer linear problems and continuous convex quadratic problems.
@@ -149,7 +145,7 @@ and bound constraints:
 >>> cb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9], [False, True, True], [True, True, False])
 >>> problem = otexp.LinearProgrammingProblem(cost, bounds, A, cb)
 >>> problem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)
->>> algo = otexp.HiGHS(problem)
+>>> algo = ot.HiGHS(problem)
 >>> algo.run() # doctest: +SKIP
 >>> result = algo.getResult() # doctest: +SKIP
 >>> x_star = result.getOptimalPoint() # doctest: +SKIP
@@ -169,8 +165,8 @@ names : :class:`~openturns.Description`
 
 Examples
 --------
->>> import openturns.experimental as otexp
->>> print(otexp.HiGHS.GetAlgorithmNames())
+>>> import openturns as ot
+>>> print(ot.HiGHS.GetAlgorithmNames())
 [choose,simplex,qpasm,ipm,ipx,hipo,pdlp,hipdlp]"
 
 // ---------------------------------------------------------------------

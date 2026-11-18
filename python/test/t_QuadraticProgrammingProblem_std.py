@@ -63,9 +63,9 @@ assert implementation.getConstant() == 0.0
 with ott.assert_raises(RuntimeError):
     implementation.getHessian()
 
-algo = otexp.HiGHS(problem)
+algo = ot.HiGHS(problem)
 assert algo.getAlgorithmName() == "choose"
-assert "qpasm" in otexp.HiGHS.GetAlgorithmNames()
+assert "qpasm" in ot.HiGHS.GetAlgorithmNames()
 algo.run()
 result = algo.getResult()
 assert result.getStatus() == ot.OptimizationResult.SUCCESS
@@ -75,7 +75,7 @@ ott.assert_almost_equal(result.getOptimalValue(), [-3.75])
 # active-set QP solver: the qpasm name requires HiGHS 1.14 or later, so an
 # older version rejects it either when the algorithm is built or when it runs.
 try:
-    algo = otexp.HiGHS(problem, "qpasm")
+    algo = ot.HiGHS(problem, "qpasm")
     algo.run()
 except TypeError:
     pass
@@ -85,7 +85,7 @@ else:
 # HiGHS builds without the parallel interior point solver reject "hipo"
 # at run time: GetAlgorithmNames() lists it but not every build provides it.
 try:
-    algoHipo = otexp.HiGHS(problem, "hipo")
+    algoHipo = ot.HiGHS(problem, "hipo")
     algoHipo.run()
 except TypeError:
     pass
@@ -95,7 +95,7 @@ else:
 # LP-only solvers are rejected on a quadratic problem
 for solver in ["simplex", "ipm", "ipx", "pdlp", "hipdlp"]:
     with ott.assert_raises(TypeError):
-        otexp.HiGHS(problem, solver)
+        ot.HiGHS(problem, solver)
 
 # mixed-integer quadratic problems are not supported
 problemMIP = otexp.QuadraticProgrammingProblem(Q, c, bounds)
@@ -106,7 +106,7 @@ problemMIP.setVariablesType(
     ]
 )
 with ott.assert_raises(TypeError):
-    otexp.HiGHS(problemMIP)
+    ot.HiGHS(problemMIP)
 
 # linear constraint functions are converted to the combined linear storage,
 # nonlinear ones are rejected
@@ -172,7 +172,7 @@ problemFunctionEquality = otexp.QuadraticProgrammingProblem(Q, c, ot.Interval())
 problemFunctionEquality.setEqualityConstraint(
     ot.LinearFunction([0.0, 0.0], [-2.5], ot.Matrix([[1.0, 1.0]]))
 )
-algoFunctions = otexp.HiGHS(problemFunctionEquality)
+algoFunctions = ot.HiGHS(problemFunctionEquality)
 algoFunctions.run()
 ott.assert_almost_equal(algoFunctions.getResult().getOptimalPoint(), [0.75, 1.75])
 
@@ -180,7 +180,7 @@ ott.assert_almost_equal(algoFunctions.getResult().getOptimalPoint(), [0.75, 1.75
 baseProblem = ot.OptimizationProblem(ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1^2"]))
 baseProblem.setEqualityConstraint(ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"]))
 with ott.assert_raises(TypeError):
-    otexp.HiGHS(baseProblem)
+    ot.HiGHS(baseProblem)
 
 # least-squares factory: min ||A.x-b||^2 with 0 <= x0 <= 0.5, 0 <= x1 <= 10
 A = ot.Matrix([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]])
@@ -192,7 +192,7 @@ ott.assert_almost_equal(
 )
 ott.assert_almost_equal(problemLS.getLinearCost(), [-8.0, -10.0])
 ott.assert_almost_equal(problemLS.getConstant(), 14.0)
-algoLS = otexp.HiGHS(problemLS)
+algoLS = ot.HiGHS(problemLS)
 algoLS.run()
 resultLS = algoLS.getResult()
 ott.assert_almost_equal(resultLS.getOptimalPoint(), [0.5, 2.25])
@@ -203,7 +203,7 @@ ott.assert_almost_equal(resultLS.getOptimalValue(), [0.375])
 problemLSUnbounded = otexp.QuadraticProgrammingProblem.FromLeastSquares(
     A, b, ot.Interval()
 )
-algoLSUnbounded = otexp.HiGHS(problemLSUnbounded)
+algoLSUnbounded = ot.HiGHS(problemLSUnbounded)
 algoLSUnbounded.run()
 ott.assert_almost_equal(algoLSUnbounded.getResult().getOptimalPoint(), [1.0, 2.0])
 ott.assert_almost_equal(algoLSUnbounded.getResult().getOptimalValue(), [0.0])
@@ -214,7 +214,7 @@ constraintBounds = ot.Interval([2.5], [2.5])
 problemC = otexp.QuadraticProgrammingProblem(
     Q, c, ot.Interval(), Aconstraint, constraintBounds
 )
-algoC = otexp.HiGHS(problemC)
+algoC = ot.HiGHS(problemC)
 algoC.run()
 ott.assert_almost_equal(algoC.getResult().getOptimalPoint(), [0.75, 1.75])
 
@@ -223,7 +223,7 @@ constraintBoundsUpper = ot.Interval([-1e30], [2.5], [False], [True])
 problemIneq = otexp.QuadraticProgrammingProblem(
     Q, c, ot.Interval(), Aconstraint, constraintBoundsUpper
 )
-algoIneq = otexp.HiGHS(problemIneq)
+algoIneq = ot.HiGHS(problemIneq)
 algoIneq.run()
 ott.assert_almost_equal(algoIneq.getResult().getOptimalPoint(), [0.75, 1.75], 1e-4)
 

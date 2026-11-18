@@ -245,7 +245,6 @@ ot_add_python_module(experimental experimental_module.i
                      ActiveLearningGMMFunction.i ActiveLearningGMMFunction_doc.i
                      ActiveLearningReliabilityAlgorithm.i ActiveLearningReliabilityAlgorithm_doc.i
                      ActiveLearningReliabilityResult.i ActiveLearningReliabilityResult_doc.i
-                     HiGHS.i HiGHS_doc.i
                      LinearProgrammingProblem.i LinearProgrammingProblem_doc.i
                      QuadraticProgrammingProblem.i QuadraticProgrammingProblem_doc.i
                      SparseMatrix.i SparseMatrix_doc.i
@@ -727,6 +726,7 @@ ot_add_python_module(optim optim_module.i
                       CMinpack.i CMinpack_doc.i
                       Cobyla.i Cobyla_doc.i
                       Dlib.i Dlib_doc.i
+                      HiGHS.i HiGHS_doc.i
                       Ipopt.i Ipopt_doc.i
                       TNC.i TNC_doc.i
                       SQP.i SQP_doc.i
