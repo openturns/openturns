@@ -12,6 +12,7 @@
  * FiniteOrthogonalFunctionFactory moved out of experimental
  * Removed deprecated SoizeGhanemFactory class
  * Removed deprecated MixedHistogramUserDefined class alias
+ * Removed deprecated ProcessSample.setField(Field, int) in favor of ProcessSample.setField(int, Field)
 
 === Documentation ===
 
