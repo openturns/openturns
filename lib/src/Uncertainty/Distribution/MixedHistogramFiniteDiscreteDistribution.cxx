@@ -38,7 +38,6 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(MixedHistogramFiniteDiscreteDistribution)
 
 static const Factory<MixedHistogramFiniteDiscreteDistribution> Factory_MixedHistogramFiniteDiscreteDistribution;
-static const Factory<MixedHistogramFiniteDiscreteDistribution> Factory_MixedHistogramUserDefined("MixedHistogramUserDefined");
 
 /* Default constructor */
 MixedHistogramFiniteDiscreteDistribution::MixedHistogramFiniteDiscreteDistribution()

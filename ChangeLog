@@ -11,6 +11,7 @@
  * HiGHS moved out of experimental
  * FiniteOrthogonalFunctionFactory moved out of experimental
  * Removed deprecated SoizeGhanemFactory class
+ * Removed deprecated MixedHistogramUserDefined class alias
 
 === Documentation ===
 
