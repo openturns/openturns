@@ -222,7 +222,7 @@ view = otv.View(graph)
 # We build it from the orthonormal functions and the target measure, then
 # draw its PDF over a cloud of points sampled from it.
 christoffelBasis = ot.OrthogonalBasis(
-    otexp.FiniteOrthogonalFunctionFactory(orthonormalFunctions, measure)
+    ot.FiniteOrthogonalFunctionFactory(orthonormalFunctions, measure)
 )
 christoffel = otexp.ChristoffelDistribution(christoffelBasis, basisSize)
 sample = christoffel.getSample(1000)

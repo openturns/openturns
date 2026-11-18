@@ -301,7 +301,7 @@ whiten = ot.SymbolicFunction(
     ["x0", "x1"], ["x0", "(x1 - 0.5 * x0) / 0.8660254037844386"]
 )
 corrBasis = ot.OrthogonalBasis(
-    otexp.FiniteOrthogonalFunctionFactory(
+    ot.FiniteOrthogonalFunctionFactory(
         [ot.ComposedFunction(hermite.build(j), whiten) for j in range(3)], measureC
     )
 )
@@ -360,7 +360,7 @@ finally:
 # The sample is pinned to the rejection loop (proposal, envelope test) replayed
 # under the same seed, which no ratio-of-uniforms draw can match.
 basis1 = ot.OrthogonalBasis(
-    otexp.FiniteOrthogonalFunctionFactory(
+    ot.FiniteOrthogonalFunctionFactory(
         [ot.ComposedFunction(hermite.build(0), whiten)], measureC
     )
 )

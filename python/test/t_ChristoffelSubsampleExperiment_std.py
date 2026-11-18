@@ -252,7 +252,7 @@ assert abs(square - 7.0 / 15.0) < 0.05
 finiteFunctions = [
     ot.SymbolicFunction("x", formula) for formula in ["1.0", "x", "x^2", "x^3", "x^4"]
 ]
-finiteFactory = otexp.FiniteOrthogonalFunctionFactory(
+finiteFactory = ot.FiniteOrthogonalFunctionFactory(
     finiteFunctions, ot.Uniform(-1.0, 1.0)
 )
 finiteBasis = ot.OrthogonalBasis(finiteFactory)

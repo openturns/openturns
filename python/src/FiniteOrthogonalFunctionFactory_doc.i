@@ -1,10 +1,6 @@
 %feature("docstring") OT::FiniteOrthogonalFunctionFactory
 "FiniteOrthogonalFunction orthonormal multivariate functional family.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 functions : sequence of :class:`~openturns.Function`
@@ -29,7 +25,6 @@ openturns.UniVariateDistributionPolynomialFactory, openturns.OrthogonalProductPo
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> mean = [0.0] * 2
 >>> std = [1.0] * 2
 >>> R = ot.CorrelationMatrix([[1.0, 0.8], [0.8, 1.0]])
@@ -41,7 +36,7 @@ Examples
 >>> f4 = ot.SymbolicFunction(['x0', 'x1'], ['-4.0 / 3.0 - 1.885618083165693 * (-1.0 / sqrt(2.0) + x0^2 / sqrt(2.0)) + 5.0 * x0 * x1 / 3.0'])
 >>> f5 = ot.SymbolicFunction(['x0', 'x1'], ['2.5141574442076222 + 16.0 / 9.0 * (-1.0 / sqrt(2.0) + x0^2 / sqrt(2.0)) - 3.142696805266918 * x0 * x1 + 25.0 / 9.0 * (-1.0 / sqrt(2.0) + x1^2 / sqrt(2.0))'])
 >>> initialBasis = [f0, f1, f2, f3, f4, f5]
->>> factory = otexp.FiniteOrthogonalFunctionFactory(initialBasis, distribution)
+>>> factory = ot.FiniteOrthogonalFunctionFactory(initialBasis, distribution)
 >>> point = [0.5] * 2
 >>> for i in range(len(initialBasis)):
 ...     value = factory.build(i)(point)

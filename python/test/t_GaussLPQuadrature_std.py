@@ -12,7 +12,7 @@ ot.TESTPREAMBLE()
 
 def makeBasis(functions, measure):
     """Expose a collection of functions and its measure as an OrthogonalBasis."""
-    return ot.OrthogonalBasis(otexp.FiniteOrthogonalFunctionFactory(functions, measure))
+    return ot.OrthogonalBasis(ot.FiniteOrthogonalFunctionFactory(functions, measure))
 
 
 # The production defaults target high accuracy. The bases used here are of low
@@ -668,14 +668,14 @@ badInputDimension = [
     ot.SymbolicFunction(ot.Description(["x", "y", "z"]), ot.Description(["1"]))
 ] + functions[1:]
 with ott.assert_raises(TypeError):
-    otexp.FiniteOrthogonalFunctionFactory(badInputDimension, distribution)
+    ot.FiniteOrthogonalFunctionFactory(badInputDimension, distribution)
 with ott.assert_raises(TypeError):
     otexp.GaussLPQuadrature(badInputDimension, distribution)
 badOutputDimension = [
     ot.SymbolicFunction(ot.Description(["x"]), ot.Description(["1", "1"]))
 ] + functions[1:]
 with ott.assert_raises(TypeError):
-    otexp.FiniteOrthogonalFunctionFactory(badOutputDimension, distribution)
+    ot.FiniteOrthogonalFunctionFactory(badOutputDimension, distribution)
 with ott.assert_raises(TypeError):
     otexp.GaussLPQuadrature(badOutputDimension, distribution)
 

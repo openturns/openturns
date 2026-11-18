@@ -248,7 +248,6 @@ ot_add_python_module(experimental experimental_module.i
                      LinearProgrammingProblem.i LinearProgrammingProblem_doc.i
                      QuadraticProgrammingProblem.i QuadraticProgrammingProblem_doc.i
                      SparseMatrix.i SparseMatrix_doc.i
-                     FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                      BasisOrthonormalizationAlgorithm.i BasisOrthonormalizationAlgorithm_doc.i
                      GaussLPQuadrature.i GaussLPQuadrature_doc.i
                      GaussLPQuadratureRule.i GaussLPQuadratureRule_doc.i
@@ -830,6 +829,7 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       FourierSeriesFactory.i FourierSeriesFactory_doc.i
                       HaarWaveletFactory.i HaarWaveletFactory_doc.i
                       OrthogonalProductFunctionFactory.i OrthogonalProductFunctionFactory_doc.i
+                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                       UncertaintyOrthogonalBasisTemplateDefs.i
                    )
 ot_add_python_module(transformation transformation_module.i
@@ -1091,7 +1091,7 @@ ot_add_python_module(base base_module.i
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
 # only a subset of the modules actually need wrapping classes
-foreach (module algo experimental experiment func metamodel model_copula model_process)
+foreach (module algo experimental experiment func metamodel model_copula model_process orthogonalbasis)
   target_link_libraries (${module} OTPythonWrapping)
 endforeach ()
 

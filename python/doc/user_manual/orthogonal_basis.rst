@@ -101,7 +101,7 @@ Orthogonal multivariate functions
     :toctree: _generated/
     :template: class.rst_t
 
-    experimental.FiniteOrthogonalFunctionFactory
+    FiniteOrthogonalFunctionFactory
     experimental.BasisOrthonormalizationFactory
     experimental.GaussLPQuadrature
 
