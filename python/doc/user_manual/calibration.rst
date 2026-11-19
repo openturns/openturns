@@ -13,6 +13,8 @@ Calibration
     GaussianLinearCalibration
     GaussianNonLinearCalibration
     CalibrationAlgorithm
+    GaussianCalibrationResult
+    LeastSquaresCalibrationResult
 
 .. autosummary::
     :toctree: _generated/

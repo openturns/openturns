@@ -59,19 +59,20 @@ GaussianNonLinearCalibration::GaussianNonLinearCalibration(const Function & mode
 {
   // Check the input
   const UnsignedInteger parameterDimension = parameterMean.getDimension();
-  if (model.getParameterDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << parameterDimension << ", got parameter dimension=" << model.getParameterDimension();
-  if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
+  if (model.getInputDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << parameterDimension << ", got input dimension=" << model.getInputDimension();
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
-  if (model.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << inputDimension << ", got input dimension=" << model.getInputDimension();
+  if (model.getParameterDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << inputDimension << ", got parameter dimension=" << model.getParameterDimension();
+  if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
   const UnsignedInteger size = outputObservations.getSize();
   if (inputObservations.getDimension() && inputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an input sample of size=" << size << ", got size=" << inputObservations.getSize();
   globalErrorCovariance_ = errorCovariance.getDimension() != outputDimension;
   if (globalErrorCovariance_ && !(errorCovariance.getDimension() == outputDimension * size)) throw InvalidArgumentException(HERE) << "Error: expected an error covariance either of dimension=" << outputDimension << " or dimension=" << outputDimension * size << ", got dimension=" << errorCovariance.getDimension();
+
   // Now the automatic selection of the algorithm
   algorithm_ = OptimizationAlgorithm::Build(LeastSquaresProblem());
-  parameterPrior_.setDescription(model.getParameterDescription());
+  parameterPrior_.setDescription(model.getInputDescription());
 }
 
 namespace GaussianNonLinearFunctions
@@ -95,9 +96,9 @@ public:
     , globalErrorInverseCholesky_(errorInverseCholesky.getDimension() != outputObservations_.getDimension())
   {
     // Check if the given input observations are compatible with the model
-    if (inputObservations.getDimension() != model.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected input observations of dimension=" << model.getInputDimension() << ", got dimension=" << inputObservations.getDimension();
+    if (inputObservations.getDimension() != model.getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: expected input observations of dimension=" << model.getParameterDimension() << ", got dimension=" << inputObservations.getDimension();
     // Check if the given parameter Cholesky compatible with the model
-    if (parameterInverseCholesky.getDimension() != model.getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: expected parameter inverse Cholesky of dimension=" << model.getParameterDimension() << ", got dimension=" << parameterInverseCholesky.getDimension();
+    if (parameterInverseCholesky.getDimension() != model.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected parameter inverse Cholesky of dimension=" << model.getInputDimension() << ", got dimension=" << parameterInverseCholesky.getDimension();
     // Check if the given output observations are compatible with the model
     if (outputObservations.getDimension() != model.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected output observations of dimension=" << model.getOutputDimension() << ", got dimension=" << outputObservations.getDimension();
     // Check if the given error Cholesky is compatible with the model
@@ -112,18 +113,27 @@ public:
   Point operator() (const Point & point) const override
   {
     Function localModel(model_);
-    localModel.setParameter(point);
-    const Point residualModel(localModel(inputObservations_).getImplementation()->getData() - outputObservations_.getImplementation()->getData());
+    const UnsignedInteger size = inputObservations_.getSize();
+    Point predictions(localModel.getOutputDimension() * size);
+    UnsignedInteger shift = 0;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+        localModel.setParameter(inputObservations_[i]);
+        const Point prediction(localModel(point));
+        std::copy(prediction.begin(), prediction.end(), predictions.begin() + shift);
+        shift += prediction.getDimension();
+    }
+    const Point residuals(predictions - outputObservations_.getImplementation()->getData());
     Point result;
-    if (globalErrorInverseCholesky_) result = errorInverseCholesky_ * residualModel;
-    else result = errorInverseCholesky_.getImplementation()->triangularProd(MatrixImplementation(localModel.getOutputDimension(), inputObservations_.getSize(), Collection<Scalar>(residualModel)));
+    if (globalErrorInverseCholesky_) result = errorInverseCholesky_ * residuals;
+    else result = errorInverseCholesky_.getImplementation()->triangularProd(MatrixImplementation(localModel.getOutputDimension(), inputObservations_.getSize(), Collection<Scalar>(residuals)));
     result.add(parameterInverseCholesky_ * (point - parameterMean_));
     return result;
   }
 
   UnsignedInteger getInputDimension() const override
   {
-    return model_.getParameterDimension();
+    return model_.getInputDimension();
   }
 
   UnsignedInteger getOutputDimension() const override
@@ -133,7 +143,7 @@ public:
 
   Description getInputDescription() const override
   {
-    return model_.getParameterDescription();
+    return model_.getInputDescription();
   }
 
   Description getOutputDescription() const override
@@ -232,8 +242,7 @@ public:
   {
     const UnsignedInteger parameterDimension = point.getDimension();
     const UnsignedInteger outputDimension = evaluation_.getModel().getOutputDimension();
-    Function parametrizedModel(evaluation_.getModel());
-    parametrizedModel.setParameter(point);
+    Function model(evaluation_.getModel());
     const Sample inputObservations(evaluation_.getInputObservations());
     const UnsignedInteger size = inputObservations.getSize();
     const UnsignedInteger fullDimension = size * outputDimension;
@@ -243,12 +252,13 @@ public:
     if (evaluation_.getGlobalErrorInverseCholesky())
     {
       MatrixImplementation fullParameterGradient(parameterDimension, fullDimension);
-      UnsignedInteger skip = parameterDimension * outputDimension;
+      const UnsignedInteger skip = parameterDimension * outputDimension;
       UnsignedInteger shift = 0;
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        const MatrixImplementation parameterGradient(*parametrizedModel.parameterGradient(inputObservations[i]).getImplementation());
-        std::copy(parameterGradient.begin(), parameterGradient.end(), fullParameterGradient.begin() + shift);
+        model.setParameter(inputObservations[i]);
+        const MatrixImplementation gradient(*model.gradient(point).getImplementation());
+        std::copy(gradient.begin(), gradient.end(), fullParameterGradient.begin() + shift);
         shift += skip;
       }
       fullParameterGradient = fullParameterGradient.genProd(errorInverseCholesky, false, true);
@@ -260,9 +270,10 @@ public:
       UnsignedInteger shift = 0;
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        const MatrixImplementation parameterGradient(*parametrizedModel.parameterGradient(inputObservations[i]).getImplementation());
-        const MatrixImplementation scaledParameterGradient(parameterGradient.genProd(errorInverseCholesky, false, true));
-        std::copy(scaledParameterGradient.begin(), scaledParameterGradient.end(), gradientObservations.begin() + shift);
+        model.setParameter(inputObservations[i]);
+        const MatrixImplementation gradient(*model.gradient(point).getImplementation());
+        const MatrixImplementation scaledGradient(gradient.genProd(errorInverseCholesky, false, true));
+        std::copy(scaledGradient.begin(), scaledGradient.end(), gradientObservations.begin() + shift);
         shift += skip;
       }
     } // !evaluation_.getGlobalErrorInverseCholesky()
@@ -348,19 +359,19 @@ void GaussianNonLinearCalibration::run()
   else
   {
     // Compute the linearization
-    Function parametrizedModel(model_);
-    parametrizedModel.setParameter(thetaStar);
+    Function model(model_);
     // Flatten everything related to the model evaluations over the input observations
     const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
     const UnsignedInteger outputDimension = getOutputObservations().getDimension();
     const UnsignedInteger size = getOutputObservations().getSize();
     Matrix gradientObservations = MatrixImplementation(parameterDimension, size * outputDimension);
     UnsignedInteger shift = 0;
-    UnsignedInteger skip = parameterDimension * outputDimension;
+    const UnsignedInteger skip = parameterDimension * outputDimension;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Matrix parameterGradient(parametrizedModel.parameterGradient(getInputObservations()[i]));
-      std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations.getImplementation()->begin() + shift);
+      model.setParameter(getInputObservations()[i]);
+      const Matrix gradient(model.gradient(thetaStar));
+      std::copy(gradient.getImplementation()->begin(), gradient.getImplementation()->end(), gradientObservations.getImplementation()->begin() + shift);
       shift += skip;
     }
     gradientObservations = gradientObservations.transpose();
@@ -457,9 +468,7 @@ void GaussianNonLinearCalibration::run()
     }
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, true);
-  // A bootstrapped posterior is the MAP distribution, not a posterior (see #2889)
-  result_.setIsParameterDistributionPosterior(bootstrapSize_ == 0);
+  result_ = GaussianCalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, bootstrapSize_);
 }
 
 /* Perform a unique estimation */
@@ -556,6 +565,12 @@ void GaussianNonLinearCalibration::setBootstrapSize(const UnsignedInteger bootst
   bootstrapSize_ = bootstrapSize;
 }
 
+/* Calibration result accessor */
+GaussianCalibrationResult GaussianNonLinearCalibration::getResult() const
+{
+  return result_;
+}
+
 /* String converter */
 String GaussianNonLinearCalibration::__repr__() const
 {
@@ -563,12 +578,10 @@ String GaussianNonLinearCalibration::__repr__() const
          << " name=" << getName();
 }
 
-
 GaussianNonLinearCalibration * GaussianNonLinearCalibration::clone() const
 {
   return new GaussianNonLinearCalibration(*this);
 }
-
 
 /* Method save() stores the object through the StorageManager */
 void GaussianNonLinearCalibration::save(Advocate & adv) const
@@ -578,6 +591,7 @@ void GaussianNonLinearCalibration::save(Advocate & adv) const
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
   adv.saveAttribute("errorCovariance_", errorCovariance_);
   adv.saveAttribute("globalErrorCovariance_", globalErrorCovariance_);
+  adv.saveAttribute("result_", result_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -591,7 +605,7 @@ void GaussianNonLinearCalibration::load(Advocate & adv)
     adv.loadAttribute("errorCovariance_", errorCovariance_);
     adv.loadAttribute("globalErrorCovariance_", globalErrorCovariance_);
   }
+  adv.loadAttribute("result_", result_);
 }
-
 
 END_NAMESPACE_OPENTURNS

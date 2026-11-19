@@ -18,17 +18,22 @@ params = [0, 1, 2]
 model = ot.ParametricFunction(g, params, trueParameter)
 y = model(x)
 y += ot.Normal([0.0] * 2, [0.05] * 2, ot.IdentityMatrix(2)).getSample(m)
+
+# Parametric function needed by the calibration algorithm (input and parameters are swapped)
+input = [3]
+calibrationModel = ot.ParametricFunction(g, input, [0.0] * len(input))
+
 candidate = [1.0] * 3
 bootstrapSizes = [0, 100]
 for bootstrapSize in bootstrapSizes:
-    algo = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
+    algo = ot.NonLinearLeastSquaresCalibration(calibrationModel, x, y, candidate)
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
     result = algo.getResult()
-    # To avoid discrepance between the platforms with or without CMinpack
-    print("result (Auto)=", result.getParameterMAP())
+    # To avoid discrepancy between the platforms with or without CMinpack
+    print("result (Auto)=", result.getParameter())
     ott.assert_almost_equal(
-        result.getObservationsError().getMean(), [0.0051, -0.0028], 1e-1, 1e-3
+        result.getObservationsError().getMean(), [0.0051, -0.0028], 1e-2, 1e-3
     )
     multiStartSize = 10
     algo.setOptimizationAlgorithm(
@@ -45,10 +50,10 @@ for bootstrapSize in bootstrapSizes:
     )
     algo.run()
     result = algo.getResult()
-    # To avoid discrepance between the platforms with or without CMinpack
-    print("result  (TNC)=", result.getParameterMAP())
+    # To avoid discrepancy between the platforms with or without CMinpack
+    print("result  (TNC)=", result.getParameter())
     ott.assert_almost_equal(
-        result.getObservationsError().getMean(), [0.0051, -0.0028], 1e-1, 1e-3
+        result.getObservationsError().getMean(), [0.0051, -0.0028], 1e-2, 1e-3
     )
     # Draw result
     graph = result.drawParameterDistributions()
@@ -58,29 +63,29 @@ for bootstrapSize in bootstrapSizes:
 
 # Laplace approximation of the posterior covariance, see issue #3273
 # (analytic posterior path: bootstrap disabled)
-laplaceAlgo = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
+laplaceAlgo = ot.NonLinearLeastSquaresCalibration(calibrationModel, x, y, candidate)
 assert not laplaceAlgo.getUseLaplaceApproximation()
 laplaceAlgo.setUseLaplaceApproximation(True)
 assert laplaceAlgo.getUseLaplaceApproximation()
 laplaceAlgo.setBootstrapSize(0)
 laplaceAlgo.run()
 laplaceResult = laplaceAlgo.getResult()
-laplaceCovariance = laplaceResult.getParameterPosterior().getCovariance()
+laplaceCovariance = laplaceResult.getParameterDistribution().getCovariance()
 # a valid covariance: Normal construction requires definiteness
 ot.Normal(candidate, laplaceCovariance)
-gaussAlgo = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
+gaussAlgo = ot.NonLinearLeastSquaresCalibration(calibrationModel, x, y, candidate)
 gaussAlgo.setBootstrapSize(0)
 gaussAlgo.run()
 gaussResult = gaussAlgo.getResult()
 # the optimum is untouched, only the covariance changes
 ott.assert_almost_equal(
-    laplaceResult.getParameterMAP(), gaussResult.getParameterMAP(), 1e-12, 1e-12
+    laplaceResult.getParameter(), gaussResult.getParameter(), 1e-12, 1e-12
 )
-gaussCovariance = gaussResult.getParameterPosterior().getCovariance()
+gaussCovariance = gaussResult.getParameterDistribution().getCovariance()
 # brute-force check of the Laplace assembly: H = J'J + sum_k r_k Hess(r_k).
 # Both posteriors share the same residual variance, so L*H == G*gram
 # with L the Laplace covariance, G the Gauss-Newton one and gram = J'J
-thetaStar = laplaceResult.getParameterMAP()
+thetaStar = laplaceResult.getParameter()
 residualFunction = laplaceResult.getResidualFunction()
 residualHessian = residualFunction.hessian(thetaStar)
 residuals = residualFunction(thetaStar)
@@ -109,16 +114,17 @@ linearG = ot.SymbolicFunction(["a", "b", "x"], ["a + b * x", "a - b * x"])
 linearModel = ot.ParametricFunction(linearG, [0, 1], [2.8, 1.2])
 linearY = linearModel(x)
 linearY += ot.Normal([0.0] * 2, [0.05] * 2, ot.IdentityMatrix(2)).getSample(m)
-linearGauss = ot.NonLinearLeastSquaresCalibration(linearModel, x, linearY, [1.0, 1.0])
+linearCalibrationModel = ot.ParametricFunction(linearG, [2], [0.0])
+linearGauss = ot.NonLinearLeastSquaresCalibration(linearCalibrationModel, x, linearY, [1.0, 1.0])
 linearGauss.setBootstrapSize(0)
 linearGauss.run()
-linearLaplace = ot.NonLinearLeastSquaresCalibration(linearModel, x, linearY, [1.0, 1.0])
+linearLaplace = ot.NonLinearLeastSquaresCalibration(linearCalibrationModel, x, linearY, [1.0, 1.0])
 linearLaplace.setUseLaplaceApproximation(True)
 linearLaplace.setBootstrapSize(0)
 linearLaplace.run()
 ott.assert_almost_equal(
-    linearLaplace.getResult().getParameterPosterior().getCovariance(),
-    linearGauss.getResult().getParameterPosterior().getCovariance(),
+    linearLaplace.getResult().getParameterDistribution().getCovariance(),
+    linearGauss.getResult().getParameterDistribution().getCovariance(),
     1e-6,
     1e-6,
 )
@@ -128,20 +134,21 @@ ott.assert_almost_equal(
 ot.ResourceMap.SetAsString("LinearLeastSquaresCalibration-Method", "Cholesky")
 flatG = ot.SymbolicFunction(["theta", "x"], ["theta^2"])
 flatModel = ot.ParametricFunction(flatG, [0], [0.0])
+flatCalibrationModel = ot.ParametricFunction(flatG, [1], [0.0])
 flatX = [[0.0]] * 5
 flatY = [[-1.0]] * 5
-flatAlgo = ot.NonLinearLeastSquaresCalibration(flatModel, flatX, flatY, [0.0])
+flatAlgo = ot.NonLinearLeastSquaresCalibration(flatCalibrationModel, flatX, flatY, [0.0])
 flatAlgo.setOptimizationAlgorithm(ot.TNC())
 flatAlgo.setUseLaplaceApproximation(True)
 flatAlgo.setBootstrapSize(0)
 flatAlgo.run()
 flatResult = flatAlgo.getResult()
-ott.assert_almost_equal(flatResult.getParameterMAP(), [0.0], 1e-2, 1e-3)
-flatCovariance = flatResult.getParameterPosterior().getCovariance()
+ott.assert_almost_equal(flatResult.getParameter(), [0.0], 1e-2, 1e-3)
+flatCovariance = flatResult.getParameterDistribution().getCovariance()
 ot.Normal([0.0], flatCovariance)
 # Brute-force check of the Laplace assembly: cov * H == sigma2 with the
 # full Hessian H = J'J + sum_k r_k Hess(r_k) at the MAP
-flatThetaStar = flatResult.getParameterMAP()
+flatThetaStar = flatResult.getParameter()
 flatResidualFunction = flatResult.getResidualFunction()
 flatHessian = 0.0
 flatResiduals = flatResidualFunction(flatThetaStar)
@@ -160,11 +167,11 @@ ot.ResourceMap.Reset()
 # pseudo-inverted, which would give a tiny variance to an unidentified
 # parameter
 singularG = ot.SymbolicFunction(["a", "b", "x"], ["a * x"])
-singularModel = ot.ParametricFunction(singularG, [0, 1], [2.0, 3.0])
+singularCalibrationModel = ot.ParametricFunction(singularG, [2], [0.0])
 singularX = ot.Sample([[0.5], [1.0], [1.5], [2.0]])
 singularY = ot.Sample([[1.0], [2.0], [3.0], [4.0]])
 singularAlgo = ot.NonLinearLeastSquaresCalibration(
-    singularModel, singularX, singularY, [1.0, 1.0]
+    singularCalibrationModel, singularX, singularY, [1.0, 1.0]
 )
 singularAlgo.setUseLaplaceApproximation(True)
 singularAlgo.setBootstrapSize(0)
@@ -172,7 +179,7 @@ with ott.assert_raises(TypeError):
     singularAlgo.run()
 
 # test bounds
-algo = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
+algo = ot.NonLinearLeastSquaresCalibration(calibrationModel, x, y, candidate)
 algo.setBootstrapSize(0)
 bounds = ot.Interval([0.0] * 3, [2.0, 2.0, 1.0])
 algo.setBounds(bounds)
@@ -180,12 +187,12 @@ ott.assert_almost_equal(algo.getBounds().getLowerBound(), bounds.getLowerBound()
 ott.assert_almost_equal(algo.getBounds().getUpperBound(), bounds.getUpperBound())
 algo.setOptimizationAlgorithm(ot.TNC())
 algo.run()
-boundedMAP = algo.getResult().getParameterMAP()
+boundedMAP = algo.getResult().getParameter()
 print("result (bounded)=", boundedMAP)
 assert bounds.contains(boundedMAP), "MAP should respect bounds"
 ott.assert_almost_equal(boundedMAP[0], 2.0, 1e-1, 1e-2)
 # active-set posterior: Normal with zero variance in fixed directions
-posterior = algo.getResult().getParameterPosterior()
+posterior = algo.getResult().getParameterDistribution()
 assert posterior.getImplementation().getClassName() == "Normal"
 tol = ot.ResourceMap.GetAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance")
 for i in range(3):
@@ -208,7 +215,7 @@ boundedProblem = ot.OptimizationProblem(
     ot.Function(),
     bounds,
 )
-algo2 = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
+algo2 = ot.NonLinearLeastSquaresCalibration(calibrationModel, x, y, candidate)
 algo2.setOptimizationAlgorithm(ot.TNC(boundedProblem))
 print("bounds (from algo)=", algo2.getBounds())
 ott.assert_almost_equal(algo2.getBounds().getLowerBound(), bounds.getLowerBound())

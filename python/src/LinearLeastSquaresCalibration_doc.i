@@ -9,7 +9,8 @@ Available constructors:
 Parameters
 ----------
 model : :class:`~openturns.Function`
-    The parametric function to be calibrated.
+    The parametric function to be calibrated. Its inputs should correspond to the calibrated parameters
+    and its parameters should correspond to the input observations.
 inputObservations : 2-d sequence of float
     The sample of input observations.
     Can have dimension 0 to specify no observations.
@@ -96,7 +97,7 @@ GaussianLinearCalibration, NonLinearLeastSquaresCalibration, GaussianNonLinearCa
 
 Examples
 --------
-Calibrate a nonlinear model using linear least-squares:
+Calibrate a non-linear model using linear least squares:
 
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
@@ -104,17 +105,19 @@ Calibrate a nonlinear model using linear least-squares:
 >>> x = [[0.5 + i] for i in range(m)]
 >>> inVars = ['a', 'b', 'c', 'x']
 >>> formulas = ['a + b * exp(c * x)']
->>> model = ot.SymbolicFunction(inVars, formulas)
->>> p_ref = [2.8, 1.2, 0.5]
->>> params = [0, 1, 2]
->>> modelX = ot.ParametricFunction(model, params, p_ref)
->>> y = modelX(x)
+>>> g = ot.SymbolicFunction(inVars, formulas)
+>>> paramRef = [2.8, 1.2, 0.5]
+>>> paramIndices = [0, 1, 2]
+>>> model = ot.ParametricFunction(g, paramIndices, paramRef)
+>>> y = model(x)
 >>> y += ot.Normal(0.0, 0.05).getSample(m)
->>> startingPoint = [1.0]*3
+>>> inputIndices = [3]
+>>> calibrationModel = ot.ParametricFunction(g, inputIndices, [0.0] * len(inputIndices))
+>>> startingPoint = [1.0] * 3
 >>> method = 'SVD'
->>> algo = ot.LinearLeastSquaresCalibration(modelX, x, y, startingPoint, method)
+>>> algo = ot.LinearLeastSquaresCalibration(calibrationModel, x, y, startingPoint, method)
 >>> algo.run()
->>> print(algo.getResult().getParameterMAP())
+>>> print(algo.getResult().getParameter())
 [8.24019,0.0768046,0.992957]
 
 Calibrate a linear model with bounds on the parameters. The first parameter is
@@ -124,12 +127,13 @@ active at its upper bound:
 >>> modelXLinear = ot.ParametricFunction(modelLinear, [0, 1], [1.0, 0.0])
 >>> xLinear = [[1.0], [2.0], [3.0]]
 >>> yLinear = modelXLinear(xLinear)
+>>> calibrationModelXLinear = ot.ParametricFunction(modelLinear, [2], [0.0])
 >>> boundedAlgo = ot.LinearLeastSquaresCalibration(
-...     modelXLinear, xLinear, yLinear, [1.0, 0.0], method
+...     calibrationModelXLinear, xLinear, yLinear, [1.0, 0.0], method
 ... )
 >>> boundedAlgo.setBounds(ot.Interval([0.0, 0.0], [0.5, 10.0]))
 >>> boundedAlgo.run()
->>> print([round(value, 3) for value in boundedAlgo.getResult().getParameterMAP()])
+>>> print([round(value, 3) for value in boundedAlgo.getResult().getParameter()])
 [0.5, 1.0]
 >>> #
 )RAW"
@@ -174,3 +178,12 @@ Returns
 name : str
     Name of least-squares method used for the resolution."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::getResult
+"Accessor to the result object.
+
+Returns
+-------
+result : :class:`~openturns.LeastSquaresCalibrationResult`
+    Result object."

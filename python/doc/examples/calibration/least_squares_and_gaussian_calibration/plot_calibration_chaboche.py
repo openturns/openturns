@@ -84,7 +84,7 @@ print("Outputs:", cm.model.getOutputDescription())
 # Set the calibration parameters
 # ------------------------------
 # In this part, we begin the calibration study.
-# Define the value of the reference values of the :math:`\theta` parameter.
+# Define the reference values of the :math:`\theta` parameter.
 # In the Bayesian framework, this is called the mean of the *prior* Gaussian
 # distribution. In the data assimilation framework, this is called the *background*.
 
@@ -125,46 +125,48 @@ print("Physical Model Inputs:", cm.model.getInputDescription())
 print("Physical Model Parameters:", cm.model.getParameterDescription())
 
 # %%
-# In order to perform calibration, we have to define a parametric model,
-# with observed inputs and parameters to calibrate.
-# In order to do this, we create a :class:`~openturns.ParametricFunction` where the parameters
-# are `R`, `C` and `Gamma` which have the indices 1, 2 and 3 in the physical model.
+# In order to perform the calibration, we have to define a parametric model.
+# Its inputs correspond to the calibrated parameters
+# and its parameters correspond to the observed inputs.
+# In order to do this, we create a :class:`~openturns.ParametricFunction`
+# where the parameter is `Strain` (which has index 0 in the physical model).
 #
 # +-------+----------------+
 # | Index | Input variable |
 # +=======+================+
-# | 0     | Strain         |
+# | 0     | R              |
+# +-------+----------------+
+# | 1     | C              |
+# +-------+----------------+
+# | 2     | Gamma          |
 # +-------+----------------+
 #
 # +-------+-----------+
 # | Index | Parameter |
 # +=======+===========+
-# | 0     | R         |
-# +-------+-----------+
-# | 1     | C         |
-# +-------+-----------+
-# | 3     | Gamma     |
+# | 0     | Strain    |
 # +-------+-----------+
 #
 # **Table 2.** Indices and names of the inputs and parameters of the parametric model.
 #
 
 # %%
-# The following statement create the calibrated function from the model.
-# The calibrated parameters `R`, `C`, `Gamma` are at indices 1, 2, 3 in
-# the inputs arguments of the model.
+# The following statements create the calibration function from the physical model.
+# The observed input `Strain` is at index 0 in the input arguments of the model.
 
 # %%
-calibratedIndices = [1, 2, 3]
-mycf = ot.ParametricFunction(cm.model, calibratedIndices, thetaPrior)
+observedIndices = [0]
+calibrationFunction = ot.ParametricFunction(cm.model, observedIndices, [0.0] * len(observedIndices))
 
 # %%
 # Then we plot the model and compare it to the observations.
 
 # %%
 graph = ot.Graph("Model before calibration", "Strain", "Stress (MPa)")
-# Plot the model
-curve = mycf.draw(cm.strainMin, cm.strainMax, 50).getDrawable(0)
+# Plot the model before calibration
+calibratedIndices = [1, 2, 3]
+priorFunction = ot.ParametricFunction(cm.model, calibratedIndices, thetaPrior)
+curve = priorFunction.draw(cm.strainMin, cm.strainMax, 50).getDrawable(0)
 curve.setLegend("Model before calibration")
 curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
 graph.add(curve)
@@ -194,7 +196,7 @@ view = otv.View(graph)
 
 # %%
 algo = ot.LinearLeastSquaresCalibration(
-    mycf, observedStrain, observedStress, thetaPrior, "SVD"
+    calibrationFunction, observedStrain, observedStress, thetaPrior, "SVD"
 )
 
 # %%
@@ -208,8 +210,8 @@ calibrationResult = algo.getResult()
 # %%
 # Analysis of the results
 # -----------------------
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method
-# returns the maximum of the posterior density of :math:`\theta`.
+# The :meth:`~openturns.LeastSquaresCalibrationResult.getParameter` method
+# returns the optimal value of :math:`\theta`.
 
 
 def printRCGamma(parameter, indentation="   "):
@@ -223,9 +225,9 @@ def printRCGamma(parameter, indentation="   "):
 
 
 # %%
-thetaMAP = calibrationResult.getParameterMAP()
+thetaCalibrated = calibrationResult.getParameter()
 print("theta After = ")
-printRCGamma(thetaMAP)
+printRCGamma(thetaCalibrated)
 print("theta Before = ")
 printRCGamma(thetaPrior)
 print("theta True = ")
@@ -255,8 +257,8 @@ def printRCGammaInterval(interval, indentation="   "):
 
 
 # %%
-thetaPosterior = calibrationResult.getParameterPosterior()
-interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+thetaDistribution = calibrationResult.getParameterDistribution()
+interval = thetaDistribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )[0]
 print("95% C.I.:")
@@ -433,7 +435,7 @@ def plotDistributionGridPDF(distribution):
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionGridPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaDistribution)
 view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
@@ -451,15 +453,15 @@ plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 # parameter can be regularized using Gausssian calibration methods.
 
 # %%
-# Calibration with nonlinear least squares
-# ----------------------------------------
+# Calibration with non-linear least squares
+# -----------------------------------------
 # The :class:`~openturns.NonLinearLeastSquaresCalibration` class performs
-# the non linear least squares calibration by minimizing the squared
+# the non-linear least squares calibration by minimizing the squared
 # Euclidian norm between the predictions and the observations.
 
 # %%
 algo = ot.NonLinearLeastSquaresCalibration(
-    mycf, observedStrain, observedStress, thetaPrior
+    calibrationFunction, observedStrain, observedStress, thetaPrior
 )
 
 # %%
@@ -484,19 +486,19 @@ calibrationResult = algo.getResult()
 # -----------------------
 
 # %%
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method
-# returns the maximum of the posterior distribution of :math:`\theta`.
+# The :meth:`~openturns.LeastSquaresCalibrationResult.getParameter` method
+# returns the optimal value of :math:`\theta`.
 
 # %%
-thetaMAP = calibrationResult.getParameterMAP()
-print(thetaMAP)
+thetaCalibrated = calibrationResult.getParameter()
+print(thetaCalibrated)
 
 # %%
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 
 # %%
-thetaPosterior = calibrationResult.getParameterPosterior()
-interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+thetaDistribution = calibrationResult.getParameterDistribution()
+interval = thetaDistribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )[0]
 print("95% C.I.:")
@@ -583,7 +585,7 @@ view = otv.View(graph)
 # Plot the PDF values of the distribution of the optimum parameters.
 
 # %%
-grid = plotDistributionGridPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaDistribution)
 view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
@@ -647,7 +649,7 @@ print(sigma)
 
 # %%
 algo = ot.GaussianLinearCalibration(
-    mycf, observedStrain, observedStress, thetaPrior, sigma, errorCovariance
+    calibrationFunction, observedStrain, observedStress, thetaPrior, sigma, errorCovariance
 )
 
 # %%
@@ -661,7 +663,7 @@ calibrationResult = algo.getResult()
 # %%
 # Analysis of the results
 # -----------------------
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
+# The :meth:`~openturns.GaussianCalibrationResult.getParameterMAP` method returns the
 # maximum of the posterior distribution of :math:`\theta`.
 
 # %%
@@ -778,15 +780,15 @@ plot_space = 0.5
 plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 
 # %%
-# Gaussian nonlinear calibration
-# ------------------------------
+# Gaussian non-linear calibration
+# -------------------------------
 # The :class:`~openturns.GaussianNonLinearCalibration` class
-# performs the Gaussian nonlinear calibration.
+# performs the Gaussian non-linear calibration.
 # This algorithm is also known as 3DVar.
 
 # %%
 algo = ot.GaussianNonLinearCalibration(
-    mycf, observedStrain, observedStress, thetaPrior, sigma, errorCovariance
+    calibrationFunction, observedStrain, observedStress, thetaPrior, sigma, errorCovariance
 )
 
 # %%
@@ -802,7 +804,7 @@ calibrationResult = algo.getResult()
 # -----------------------
 
 # %%
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method
+# The :meth:`~openturns.GaussianCalibrationResult.getParameterMAP` method
 # returns the maximum of the posterior distribution of :math:`\theta`.
 
 # %%
@@ -811,8 +813,8 @@ print(thetaMAP)
 
 # %%
 # We can compute a 95% credibility interval of the parameter :math:`\theta^\star`.
-thetaPosterior = calibrationResult.getParameterPosterior()
-interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+MAPDistribution = calibrationResult.getMAPDistribution()
+interval = MAPDistribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )[0]
 print("95% C.I.:")

@@ -14,6 +14,7 @@ model = ot.ParametricFunction(g, [0, 1], [2.0, 3.0])
 x = ot.Sample([[0.0], [1.0], [2.0], [3.0], [4.0]])
 y = model(x)
 y += ot.Normal(0.0, 1.0).getSample(x.getSize())
+calibrationModel = ot.ParametricFunction(g, [2], [0.0])
 
 parameterMean = [1.0, 1.0]
 priorCovariance = ot.CovarianceMatrix(2)
@@ -29,7 +30,7 @@ boundedMapRtol = 1e-5 if ot.PlatformInfo.HasFeature("highs") else 1e-3
 
 # Unconstrained reference
 reference = ot.GaussianLinearCalibration(
-    model, x, y, parameterMean, priorCovariance, errorCovariance, methodName
+    calibrationModel, x, y, parameterMean, priorCovariance, errorCovariance, methodName
 )
 assert reference.getBounds().getDimension() == 0
 reference.run()
@@ -43,7 +44,7 @@ with ott.assert_raises(TypeError):
 # First parameter active at its upper bound
 bounds = ot.Interval([-10.0, -10.0], [0.5, 10.0])
 algo = ot.GaussianLinearCalibration(
-    model, x, y, parameterMean, priorCovariance, errorCovariance, methodName
+    calibrationModel, x, y, parameterMean, priorCovariance, errorCovariance, methodName
 )
 algo.setBounds(bounds)
 assert algo.getBounds() == bounds
@@ -69,7 +70,7 @@ assert activePosterior.getCovariance()[1, 1] > 0.0
 # Truncated handling: exact truncation of the unconstrained posterior
 ot.ResourceMap.SetAsString("GaussianLinearCalibration-BoundsHandling", "Truncated")
 truncatedAlgo = ot.GaussianLinearCalibration(
-    model, x, y, parameterMean, priorCovariance, errorCovariance, methodName
+    calibrationModel, x, y, parameterMean, priorCovariance, errorCovariance, methodName
 )
 truncatedAlgo.setBounds(bounds)
 truncatedAlgo.run()
@@ -103,7 +104,7 @@ with ott.assert_raises(TypeError):
 # Wide bounds: the constrained solution is the unconstrained one
 wideBounds = ot.Interval([-100.0, -100.0], [100.0, 100.0])
 wideAlgo = ot.GaussianLinearCalibration(
-    model, x, y, parameterMean, priorCovariance, errorCovariance, methodName
+    calibrationModel, x, y, parameterMean, priorCovariance, errorCovariance, methodName
 )
 wideAlgo.setBounds(wideBounds)
 wideAlgo.run()
@@ -113,7 +114,7 @@ ott.assert_almost_equal(
 )
 ot.ResourceMap.SetAsString("GaussianLinearCalibration-BoundsHandling", "Truncated")
 wideTruncatedAlgo = ot.GaussianLinearCalibration(
-    model, x, y, parameterMean, priorCovariance, errorCovariance, methodName
+    calibrationModel, x, y, parameterMean, priorCovariance, errorCovariance, methodName
 )
 wideTruncatedAlgo.setBounds(wideBounds)
 wideTruncatedAlgo.run()

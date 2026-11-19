@@ -64,9 +64,13 @@ class LogisticModel:
 
     model : :class:`~openturns.PythonFunction`
         The logistic model of growth.
-        The input has input dimension 24 and output dimension 22.
+        The input has dimension 24 and output dimension 22.
         More precisely, we have :math:`\vect{X} = (t_1, ..., t_{22}, a, c)`
         and  :math:`\vect{Y} = (y_1, ..., y_{22})`.
+
+    model1D : :class:`~openturns.PythonFunction`
+        The logistic model of growth for a single year.
+        The input has dimension 3 and output dimension 1.
 
     data : :class:`~openturns.Sample`
         A data set containing 22 dates from 1790 to 2000.
@@ -147,7 +151,17 @@ class LogisticModel:
             z = [yi / populationFactor for yi in y]  # Convert into millions
             return z
 
+        def logisticModel1D(X):
+            t = X[0]
+            a = X[1]
+            c = X[2]
+            b = math.exp(c)
+            y = a * y0 / (b * y0 + (a - b * y0) * math.exp(-a * (t - t0)))
+            z = y / populationFactor
+            return [z]
+
         self.model = ot.PythonFunction(24, nbdates, logisticModel)
+        self.model1D = ot.PythonFunction(3, 1, logisticModel1D)
         inputLabels = [f"t{i}" for i in range(nbdates)]
         inputLabels.append("a")
         inputLabels.append("c")

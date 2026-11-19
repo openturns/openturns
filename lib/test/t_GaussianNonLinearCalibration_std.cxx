@@ -18,7 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/OT.hxx"
+#include "openturns/GaussianNonLinearCalibration.hxx"
+#include "openturns/LowDiscrepancyExperiment.hxx"
+#include "openturns/MultiStart.hxx"
+#include "openturns/ParametricFunction.hxx"
+#include "openturns/SobolSequence.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/TNC.hxx"
 #include "openturns/OTtestcode.hxx"
 
 using namespace OT;
@@ -45,6 +51,11 @@ int main(int, char *[])
     ParametricFunction model(g, params, trueParameter);
     Sample y = model(x);
     y += Normal(Point(2), Point(2, 0.05), IdentityMatrix(2)).getSample(y.getSize());
+
+    // Parametric function needed by the calibration algorithm (input and parameters are swapped)
+    const Indices input = {3};
+    ParametricFunction calibrationModel(g, input, Point(input.getSize()));
+
     Point candidate(3, 1.0);
     CovarianceMatrix priorCovariance(3);
     for (UnsignedInteger i = 0; i < 3; ++i)
@@ -73,13 +84,13 @@ int main(int, char *[])
       // With default optim
       fullprint << "Bootstrap size =" << bootstrapSizes[n] << std::endl;
       fullprint << "1. Default optim" << std::endl;
-      GaussianNonLinearCalibration algo(model, x, y, candidate, priorCovariance, errorCovariance);
+      GaussianNonLinearCalibration algo(calibrationModel, x, y, candidate, priorCovariance, errorCovariance);
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
-      // To avoid discrepance between the platforms with or without CMinpack
+      // To avoid discrepancy between the platforms with or without CMinpack
       Point parameterMAP(algo.getResult().getParameterMAP());
       fullprint << "MAP =" << parameterMAP << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 5e-1);
+      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
       // With TNC
       fullprint << "2. TNC optim" << std::endl;
       const UnsignedInteger multiStartSize = 10;
@@ -88,16 +99,13 @@ int main(int, char *[])
       parameterMAP = algo.getResult().getParameterMAP();
       fullprint << "MAP =" << parameterMAP << std::endl;
       fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 5e-1);
+      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
       // With globalErrorCovariance
       fullprint << "3. globalErrorCovariance" << std::endl;
-      algo = GaussianNonLinearCalibration(model, x, y, candidate, priorCovariance, globalErrorCovariance);
+      algo = GaussianNonLinearCalibration(calibrationModel, x, y, candidate, priorCovariance, globalErrorCovariance);
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
       parameterMAP = algo.getResult().getParameterMAP();
-      //fullprint << "MAP =" << parameterMAP << std::endl;
-
-      //fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       assert_almost_equal(parameterMAP, trueParameter, 5e-1);
     } // n
   }
