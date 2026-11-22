@@ -22,7 +22,6 @@
 #include "openturns/FieldFunctionalChaosSobolIndices.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
-#include <limits>
 #include <cmath>
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
@@ -261,7 +260,7 @@ Field FieldFunctionalChaosSobolIndices::computePointwiseIndices(const Bool total
       throw InvalidArgumentException(HERE) << "Basis dimension must match input dimension.";
     Indices support;
     for (UnsignedInteger j = 0; j < inputDimension; ++ j)
-      if (alpha[j]) support.add(j);
+      if (alpha[j] > 0) support.add(j);
     if (!support.getSize()) continue; // the mean does not contribute to variance
     for (UnsignedInteger vertex = 0; vertex < vertexNumber; ++ vertex)
     {
@@ -292,7 +291,7 @@ Field FieldFunctionalChaosSobolIndices::computePointwiseIndices(const Bool total
   }
   for (UnsignedInteger vertex = 0; vertex < vertexNumber; ++ vertex)
     for (UnsignedInteger j = 0; j < inputDimension; ++ j)
-      values(vertex, j) = variance[vertex] > 0.0 ? values(vertex, j) / variance[vertex] : std::numeric_limits<Scalar>::quiet_NaN();
+      values(vertex, j) = variance[vertex] > 0.0 ? values(vertex, j) / variance[vertex] : 0.0;
   values.setDescription(chaos.getDistribution().getDescription());
   return Field(mesh, values);
 }

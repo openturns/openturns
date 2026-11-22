@@ -170,7 +170,7 @@ Returns
 -------
 indices : :class:`~openturns.Field`
     A field on the output mesh, with one component per input variable.
-    Vertices with exactly zero surrogate variance contain NaN values.
+    Vertices with exactly zero surrogate variance contain zero by convention.
 
 Notes
 -----
@@ -202,7 +202,7 @@ Returns
 -------
 indices : :class:`~openturns.Field`
     A field on the output mesh, with one component per input variable.
-    Vertices with exactly zero surrogate variance contain NaN values.
+    Vertices with exactly zero surrogate variance contain zero by convention.
 
 Notes
 -----

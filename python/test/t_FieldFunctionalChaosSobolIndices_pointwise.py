@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """Pointwise KL-PCE sensitivity with analytic scalar-field references."""
 
-import math
-
 import openturns as ot
 import openturns.testing as ott
 
@@ -98,7 +96,7 @@ try:
             0.0,
             1e-12,
         )
-    # Exactly zero chaos variance is undefined, not a claim of zero sensitivity.
+    # The conventional index at exactly zero chaos variance is zero.
     chaos = result.getFCEResult()
     zero_coefficients = ot.Sample(
         chaos.getCoefficients().getSize(), chaos.getCoefficients().getDimension()
@@ -128,7 +126,7 @@ try:
         zero_sensitivity.getPointwiseFirstOrderIndices(),
         zero_sensitivity.getPointwiseTotalOrderIndices(),
     ]:
-        assert all(math.isnan(value) for row in field.getValues() for value in row)
+        assert all(value == 0.0 for row in field.getValues() for value in row)
 
     # Basis indices, rather than coefficient-row order, determine support.
     def with_coefficients(coefficients, indices=None, reduced_basis=None):
@@ -172,8 +170,8 @@ try:
     cancelling[1, 0] = modes[1][vertex, 0]
     cancelling[1, 1] = -modes[0][vertex, 0]
     local = with_coefficients(cancelling).getPointwiseFirstOrderIndices().getValues()
-    assert all(math.isnan(value) for value in local[vertex])
-    assert any(not math.isnan(row[0]) for row in local)
+    assert all(value == 0.0 for value in local[vertex])
+    assert any(value > 0.0 for row in local for value in row)
 
     invalid = ot.Sample(coefficients)
     invalid[1, 0] = float("nan")

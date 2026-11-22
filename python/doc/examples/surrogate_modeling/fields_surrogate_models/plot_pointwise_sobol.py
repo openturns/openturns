@@ -55,6 +55,6 @@ view = otv.View(graph)
 # for the original model still depends on the KL truncation and PCE fit.
 # This API supports independent vector inputs, a componentwise transformation
 # to the polynomial basis, and one scalar output KL block. Exact zero-variance
-# vertices return NaN, since a Sobol ratio is undefined there. Very small
+# vertices return zero by convention. Very small
 # positive variances can make these ratios numerically unstable.
 otv.View.ShowAll()
