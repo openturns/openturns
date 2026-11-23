@@ -6,6 +6,12 @@
 
 ==== New classes ====
 
+ * SCIP mixed-integer nonlinear solver (openturns.experimental)
+
+==== New ResourceMap keys ====
+
+ * SCIP-DefaultMaximumCallsNumber, SCIP-DefaultMaximumIterationNumber: default evaluation and branch-and-bound node budgets of the SCIP solver (defaults are 1000000 and 10000)
+
 ==== API changes ====
 
  * HiGHS moved out of experimental
@@ -70,7 +76,6 @@
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
  * ActiveLearningReliabilityAlgorithm, ActiveLearningReliabilityResult, ActiveLearningReliabilityFunction, ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningGMMFunction, PythonActiveLearningReliabilityFunction (openturns.experimental)
- * SCIP mixed-integer nonlinear solver (openturns.experimental)
 
 ==== API changes ====
  * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases

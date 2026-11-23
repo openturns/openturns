@@ -20,7 +20,9 @@ LU = ot.Interval([0.0], [10.0])
 problem = otexp.LinearProgrammingProblem(cost, bounds, A, LU)
 problem.setVariablesType([ot.OptimizationProblemImplementation.BINARY] * 4)
 
-algo = ot.Bonmin(problem)
+# Bonmin takes a non-const OptimizationProblem reference: wrap the structured
+# implementation, the dynamic dispatch still reaches the LinearProgrammingProblem methods
+algo = ot.Bonmin(ot.OptimizationProblem(problem))
 algo.setStartingPoint([0.0] * 4)
 algo.setMaximumCallsNumber(1000)
 algo.setMaximumIterationNumber(1000)

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief SCIP mixed-integer nonlinear solver
+ *  @brief SCIP allows one to describe a MINLP optimization algorithm
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -21,26 +21,27 @@
 #ifndef OPENTURNS_SCIP_HXX
 #define OPENTURNS_SCIP_HXX
 
+#include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
-#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
 /**
  * @class SCIP
-*/
+ * SCIP allows one to solve a MINLP optimization problem, including:
+ * + objective functions of continuous, discrete or binary variables
+ * + multiple equality, inequality and bounds constraints
+ */
 class OT_API SCIP
   : public OptimizationAlgorithmImplementation
 {
-
   CLASSNAME
+
 public:
 
-  /** Default constructor */
+  /** Constructors */
   SCIP();
 
-  /** Constructor that sets starting points */
   explicit SCIP(const OptimizationProblem & problem);
 
   /** Name and version of the LP solver embedded in the SCIP library, empty if unavailable */
@@ -52,11 +53,12 @@ public:
   /** Virtual constructor */
   SCIP * clone() const override;
 
-  /** String converter */
-  String __repr__() const override;
-
-  /** Performs the actual computation. */
+  /** Performing the actual computation. */
   void run() override;
+
+  /** Description of object */
+  String __str__(const String & offset = "") const override;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -66,10 +68,8 @@ public:
 
 protected:
 
-  /** Check whether this problem can be solved by this solver */
+  /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   void checkProblem(const OptimizationProblem & problem) const override;
-
-private:
 
 }; /* class SCIP */
 

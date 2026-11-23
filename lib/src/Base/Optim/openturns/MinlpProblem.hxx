@@ -46,7 +46,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class owns the problem, the starting point, the evaluation history,
  * the time and evaluation budgets, the progress and stop callbacks and the
  * gradient/Hessian counters.  Solver specific adapters (BonminProblem,
- * ScipProblem, ...) only translate their native callbacks to the methods
+ * SCIPProblem, ...) only translate their native callbacks to the methods
  * below.
  *
  * The constraint view is normalized: when the problem is a structured
@@ -118,6 +118,9 @@ public:
   void setStopCallback(OptimizationAlgorithmImplementation::StopCallback callBack,
                        void * state = nullptr);
 
+  /** Check the time limit, the callbacks and the call budget */
+  Bool checkTermination();
+
   /** Termination diagnostics */
   Bool isTimeOut() const;
   Bool isCallLimitReached() const;
@@ -134,9 +137,6 @@ private:
 
   /** Build the normalized constraint view */
   void initializeConstraints();
-
-  /** Check the time limit, the callbacks and the call budget */
-  Bool checkTermination();
 
   /** Record an evaluation failure */
   Bool evaluationFailed(const Point & x, const String & message);

@@ -821,6 +821,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("OptimizationAlgorithm-DefaultCheckStatus", true);
 
   // SCIP parameters //
+  addAsUnsignedInteger("SCIP-DefaultMaximumCallsNumber", 1000000);
   addAsUnsignedInteger("SCIP-DefaultMaximumIterationNumber", 10000);
 
   // Pagmo parameters //

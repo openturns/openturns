@@ -176,6 +176,7 @@
   <OptimizationAlgorithm-DefaultCheckStatus             value_bool="true" />
 
   <!-- OT::SCIP parameters -->
+  <SCIP-DefaultMaximumCallsNumber     value_int="1000000" />
   <SCIP-DefaultMaximumIterationNumber value_int="10000" />
 
   <!-- OT::Pagmo parameters -->

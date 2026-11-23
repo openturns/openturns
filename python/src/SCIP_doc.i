@@ -1,29 +1,52 @@
 %feature("docstring") OT::SCIP
-R"RAW(Mixed-integer nonlinear optimization solver.
+R"RAW(Mixed integer nonlinear optimization solver.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
+    It also requires OpenTURNS to be built with the optional
+    `SCIP <https://www.scipopt.org/>`_ library.
 
-This class exposes the mixed-integer nonlinear solver from the `SCIP <https://scipopt.org/>`_ library.
-It handles continuous, integer and binary variables with linear or nonlinear
-objective and constraints. Linear functions are passed as linear constraints
-while other functions go through a black-box expression handler.
+This class exposes the MINLP solver from the SCIP library.
+It solves continuous, integer and binary problems with linear and nonlinear
+objective and constraints, using a spatial branch-and-bound algorithm.
+Least squares and nearest point problems are not supported.
 
 Parameters
 ----------
-problem : :class:`~openturns.OptimizationProblem`
-    The problem
+problem : :class:`~openturns.OptimizationProblem`, optional
+    Optimization problem to solve. Default is an empty problem.
 
 Notes
 -----
-One iteration of the solver is one branch-and-bound node, so the number of nodes is
-limited by :meth:`~openturns.experimental.SCIP.setMaximumIterationNumber`, which defaults
-to the ``SCIP-DefaultMaximumIterationNumber`` ResourceMap entry. The variable bounds
-must be tight: they are the only domain information available to bound a black-box function,
-and a variable left free over a huge interval cannot be bounded by the solver.
+The objective and constraint functions are passed to SCIP as black-box
+callbacks. Their values and gradients, either provided by the user or computed
+by finite differences, are provided to SCIP.
 
-The following :class:`~openturns.ResourceMap` key is used:
+The optimization limits are mapped to native SCIP limits whenever possible:
+
+* :meth:`~openturns.OptimizationAlgorithm.setMaximumTimeDuration` maps to
+  the ``limits/time`` parameter;
+* :meth:`~openturns.OptimizationAlgorithm.setMaximumIterationNumber` maps to
+  the ``limits/nodes`` parameter;
+* :meth:`~openturns.OptimizationAlgorithm.setMaximumConstraintError` maps to
+  the ``numerics/feastol`` parameter;
+* :meth:`~openturns.OptimizationAlgorithm.setMaximumCallsNumber` is enforced
+  cooperatively: the solve is interrupted as soon as the budget of objective
+  and constraint evaluations is exhausted.
+
+SCIP can be adapted using the numerous parameters described in its
+`online documentation <https://www.scipopt.org/doc/html/parameters.php>`_.
+These parameters can be modified through the :class:`~openturns.ResourceMap`.
+For every option ``optionName``, simply add a key named ``SCIP-optionName``
+with the value to use, as shown below::
+
+    >>> import openturns as ot
+    >>> ot.ResourceMap.AddAsUnsignedInteger('SCIP-limits/solutions', 10)
+    >>> ot.ResourceMap.AddAsScalar('SCIP-limits/gap', 1e-4)
+
+The following :class:`~openturns.ResourceMap` keys set the default budgets,
+they are not forwarded to SCIP:
 
 .. list-table::
    :widths: 50 50
@@ -31,51 +54,101 @@ The following :class:`~openturns.ResourceMap` key is used:
 
    * - Key
      - Description
+   * - ``SCIP-DefaultMaximumCallsNumber`` (``UnsignedInteger``, default: ``1000000``)
+     - Default number of function evaluations.
    * - ``SCIP-DefaultMaximumIterationNumber`` (``UnsignedInteger``, default: ``10000``)
      - Default number of branch-and-bound nodes.
 
-Black-box objective functions are handled through an auxiliary variable, which is bounded
-using the range of the objective over the domain. Reaching the global minimum of a
-nonconvex black-box function is not guaranteed, as it depends on the nonlinear capabilities
-of the underlying SCIP build (an NLP solver such as Ipopt must be linked in for the best
-results), and the returned solution may be a local minimum.
-
-SCIP solver parameters can be modified through the :class:`~openturns.ResourceMap`.
-For every option ``optionName``, simply add a key named ``SCIP-optionName`` with the value to use, as shown below::
-
-    >>> import openturns as ot
-    >>> ot.ResourceMap.AddAsScalar('SCIP-limits/time', 60.0)
-    >>> ot.ResourceMap.AddAsBool('SCIP-display/verblevel', False)
-
-The ``SCIP-DefaultMaximumIterationNumber`` key is an exception, it is not passed to SCIP
-but sets the default number of nodes, that is the default value of the
-:attr:`~openturns.experimental.SCIP.maximumIterationNumber` attribute::
-
 The capabilities of the linked SCIP library can be checked with the
 :meth:`~openturns.experimental.SCIP.GetLPsolver` and
-:meth:`~openturns.experimental.SCIP.GetNLPsolvers` static methods. They respectively
-give the LP solver used to solve the linear relaxations and the NLP solvers available
-to handle the nonlinear parts. An NLP solver can be selected using the ``nlp/solver``
-option, and the NLP relaxation can be turned off using the ``nlp/disable`` option::
+:meth:`~openturns.experimental.SCIP.GetNLPsolvers` static methods. They
+respectively give the LP solver used for the linear relaxations and the NLP
+solvers available for the nonlinear parts. An NLP solver can be selected using
+the ``nlp/solver`` option, and the NLP relaxation can be disabled using the
+``nlp/disable`` option::
 
-    >>> import openturns as ot
     >>> import openturns.experimental as otexp
     >>> nlpSolvers = otexp.SCIP.GetNLPsolvers()
     >>> ot.ResourceMap.AddAsString('SCIP-nlp/solver', 'ipopt')
     >>> ot.ResourceMap.AddAsBool('SCIP-nlp/disable', True)
 
+The nonlinear objective is reformulated with an auxiliary variable ``z`` and
+the constraint ``z = f(x)``. Black-box functions are not interval-evaluable,
+so SCIP cannot build a rigorous relaxation of a nonlinear term and cannot
+prove optimality for a nonlinear problem: the solve stops on the node budget
+with the best incumbent. When no feasible point has been found, the solve
+reports a failure and the optimal point is empty. Linear and mixed-integer
+linear problems are solved to optimality.
+
+See Also
+--------
+openturns.Bonmin, openturns.OptimizationProblem
+
 Examples
 --------
+The code below ensures the optimization of the following problem:
+
+.. math:: min \left( - x_0 - x_1 - x_2 \right)
+
+subject to
+
+.. math::
+
+    \left(x_1 - \frac{1}{2}\right)^2 + \left(x_2 - \frac{1}{2}\right)^2 \leq \frac{1}{4}
+
+    x_0 - x_1 \leq 0
+
+    x_0 + x_2 + x_3 \leq 2
+
+    x_0 \in \{0,1\}
+
+    (x_1, x_2) \in \mathbb{R}^2
+
+    x_3 \in \mathbb{N}
+
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
->>> objective = ot.SymbolicFunction(['x0', 'x1'], ['x0^2 + x1^2'])
->>> bounds = ot.Interval([0.0, 0.0], [5.0, 5.0])
->>> problem = ot.OptimizationProblem(objective)
+
+>>> # Definition of objective function
+>>> objectiveFunction = ot.SymbolicFunction(['x0','x1','x2','x3'], ['-x0 -x1 -x2'])
+
+>>> # Definition of variables bounds
+>>> # The disk constraint implies x1 <= 1 and x2 <= 1: keep finite bounds,
+>>> # they are the only domain information a black-box solver can use.
+>>> bounds = ot.Interval([0,0,0,0],[1,1,1,5],[True,True,True,True],[True,True,True,True])
+
+>>> # Definition of variables types
+>>> variablesType = [ot.OptimizationProblemImplementation.BINARY,
+... ot.OptimizationProblemImplementation.CONTINUOUS,
+... ot.OptimizationProblemImplementation.CONTINUOUS,
+... ot.OptimizationProblemImplementation.INTEGER]
+
+Inequality constraints are defined by a function :math:`h` such that :math:`h(x) \geq 0`.
+
+>>> # Definition of constraints
+>>> h = ot.SymbolicFunction(['x0','x1','x2','x3'], ['-(x1-1/2)^2 - (x2-1/2)^2 + 1/4', '-x0 + x1', '-x0 - x2 - x3 + 2'])
+
+>>> # Setting up the problem
+>>> problem = ot.OptimizationProblem(objectiveFunction)
 >>> problem.setBounds(bounds)
->>> algo = otexp.SCIP(problem) # doctest: +SKIP
->>> algo.run() # doctest: +SKIP
->>> result = algo.getResult() # doctest: +SKIP
+>>> problem.setVariablesType(variablesType)
+>>> problem.setInequalityConstraint(h)
+
+>>> scipAlgorithm = otexp.SCIP(problem)
+>>> scipAlgorithm.setStartingPoint([0,0,0,0])
+>>> scipAlgorithm.setMaximumCallsNumber(10000)
+>>> scipAlgorithm.setMaximumIterationNumber(1000)
+
+>>> # Running the solver
+>>> scipAlgorithm.run() # doctest: +SKIP
+
+>>> # Retrieving the results
+>>> result = scipAlgorithm.getResult() # doctest: +SKIP
+>>> optimalPoint = result.getOptimalPoint() # doctest: +SKIP
+>>> optimalValue = result.getOptimalValue() # doctest: +SKIP
+>>> evaluationNumber = result.getInputSample().getSize() # doctest: +SKIP
 )RAW"
+
 
 // ---------------------------------------------------------------------
 

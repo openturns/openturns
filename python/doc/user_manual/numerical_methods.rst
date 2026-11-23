@@ -31,11 +31,11 @@ Refer to :ref:`optimization_algorithm`.
     Dlib
     experimental.EfficientGlobalOptimization
     HiGHS
-    experimental.SCIP
     Ipopt
     MultiStart
     NLopt
     Pagmo
+    experimental.SCIP
     SQP
     TNC
 
