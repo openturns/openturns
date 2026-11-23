@@ -35,6 +35,28 @@ assert LU.getUpperBound()[2] == 50.0
 assert problem.getVariablesType()[1] == ot.OptimizationProblemImplementation.INTEGER
 assert problem.getBounds().getLowerBound() == [0.0, 1.0]
 
+# setLinearCost must preserve the variables types
+originalCost = linearProblem.getLinearCost()
+linearProblem.setVariablesType(
+    [
+        ot.OptimizationProblemImplementation.CONTINUOUS,
+        ot.OptimizationProblemImplementation.INTEGER,
+    ]
+)
+linearProblem.setLinearCost([2.0, 3.0])
+assert linearProblem.getLinearCost() == [2.0, 3.0]
+assert (
+    linearProblem.getVariablesType()[1]
+    == ot.OptimizationProblemImplementation.INTEGER
+)
+# restore the cost used by the remaining checks
+linearProblem.setLinearCost(originalCost)
+assert linearProblem.getLinearCost() == originalCost
+assert (
+    linearProblem.getVariablesType()[1]
+    == ot.OptimizationProblemImplementation.INTEGER
+)
+
 # equality and inequality constraints derived from the linear coefficients:
 # x0 + x1 = 2.5 and x0 - x1 <= 1
 mixedA = ot.Matrix([[1.0, 1.0], [1.0, -1.0]])

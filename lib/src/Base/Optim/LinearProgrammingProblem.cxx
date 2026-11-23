@@ -74,8 +74,15 @@ void LinearProgrammingProblem::setLinearCost(const Point & cost)
 {
   if ((constraintCoefficients_.getNbColumns() != 0) && (constraintCoefficients_.getNbColumns() != cost.getDimension()))
     throw InvalidDimensionException(HERE) << "Linear cost dimension (" << cost.getDimension() << ") must match constraint matrix column dimension (" << constraintCoefficients_.getNbColumns() << ")";
+  // updateObjective() calls setObjective(), which resets the variable types to
+  // CONTINUOUS: save and restore them so that calling setLinearCost() after
+  // setVariablesType() does not silently turn a mixed-integer problem into a
+  // continuous one.
+  const Indices variablesType(getVariablesType());
   cost_ = cost;
   updateObjective();
+  if (variablesType.getSize() == cost.getDimension())
+    setVariablesType(variablesType);
 }
 
 
@@ -202,7 +209,7 @@ LinearProgrammingProblem LinearProgrammingProblem::Linearize(const OptimizationP
   {
     const Point ineq0(problem.getInequalityConstraint()(location));
     lb = -1.0 * ineq0;
-    ub = Point(ineq0.getDimension(), SpecFunc::MaxScalar);
+    ub = Point(ineq0.getDimension(), SpecFunc::Infinity);
     A = problem.getInequalityConstraint().gradient(location).transpose();
   }
 
