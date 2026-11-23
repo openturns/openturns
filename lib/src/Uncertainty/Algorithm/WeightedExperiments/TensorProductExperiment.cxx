@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of a TensorProductExperiment
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
+#include "openturns/SpecFunc.hxx"
 #include <iostream>
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -49,7 +50,7 @@ TensorProductExperiment::TensorProductExperiment(const WeightedExperimentCollect
 {
   const UnsignedInteger numberOfMarginalExperiments = collection_.getSize();
   BlockIndependentDistribution::DistributionCollection distributionCollection(numberOfMarginalExperiments);
-  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger maxUInt = SpecFunc::MaxUnsignedInteger;
   UnsignedInteger size = 1;
   for (UnsignedInteger i = 0; i < numberOfMarginalExperiments; ++i)
   {

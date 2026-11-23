@@ -334,11 +334,18 @@ ott.assert_almost_equal(nuggetModel.computeAsScalar([0.0], [0.0]), 13.5, 1e-14, 
 model2d = ot.SphericalModel([2.0, 2.0], [3.0], 4.5)
 model2d.setNuggetFactor(0.0)
 ott.assert_almost_equal(model2d.computeAsScalar([0.0, 0.0]), 9.0, 1e-14, 1e-14)
-ott.assert_almost_equal(model2d.computeAsScalar([0.0, 0.0], [0.0, 0.0]), 9.0, 1e-14, 1e-14)
+ott.assert_almost_equal(
+    model2d.computeAsScalar([0.0, 0.0], [0.0, 0.0]), 9.0, 1e-14, 1e-14
+)
 ott.assert_almost_equal(model2d.computeAsScalar([20.0, 20.0]), 0.0, 1e-14, 1e-14)
 fp = refModel.getFullParameter()
 ott.assert_almost_equal(fp, [2.0, 0.0, 3.0, 4.5], 0, 0)
-assert refModel.getFullParameterDescription() == ["scale_0", "nuggetFactor", "amplitude_0", "radius"]
+assert refModel.getFullParameterDescription() == [
+    "scale_0",
+    "nuggetFactor",
+    "amplitude_0",
+    "radius",
+]
 refModel.setFullParameter([1.0, 0.1, 2.0, 3.0])
 ott.assert_almost_equal(refModel.getScale(), [1.0], 0, 0)
 ott.assert_almost_equal(refModel.getAmplitude(), [2.0], 0, 0)
@@ -350,8 +357,16 @@ with ott.assert_raises(Exception):
 with ott.assert_raises(Exception):
     refModel.setFullParameter([1.0, 0.1, 2.0, -1.0])
 model2dfp = ot.SphericalModel([2.0, 3.0], [4.0], 5.0)
-ott.assert_almost_equal(model2dfp.getFullParameter(), [2.0, 3.0, 1e-12, 4.0, 5.0], 1e-14, 1e-14)
-assert model2dfp.getFullParameterDescription() == ["scale_0", "scale_1", "nuggetFactor", "amplitude_0", "radius"]
+ott.assert_almost_equal(
+    model2dfp.getFullParameter(), [2.0, 3.0, 1e-12, 4.0, 5.0], 1e-14, 1e-14
+)
+assert model2dfp.getFullParameterDescription() == [
+    "scale_0",
+    "scale_1",
+    "nuggetFactor",
+    "amplitude_0",
+    "radius",
+]
 model2dfp.setFullParameter([2.5, 3.5, 0.01, 4.5, 5.5])
 ott.assert_almost_equal(model2dfp.getFullParameter(), [2.5, 3.5, 0.01, 4.5, 5.5], 0, 0)
 ott.assert_almost_equal(model2dfp.getRadius(), 5.5, 0, 0)
@@ -370,7 +385,9 @@ study.setStorageManager(storage)
 study.add("model", ot.CovarianceModel(paramModel))
 study.save()
 loadedStudy = ot.Study()
-loadedStudy.setStorageManager(ot.XMLStorageManager("t_CovarianceModel_std_Spherical.xml"))
+loadedStudy.setStorageManager(
+    ot.XMLStorageManager("t_CovarianceModel_std_Spherical.xml")
+)
 loadedStudy.load()
 loadedModel = ot.CovarianceModel()
 loadedStudy.fillObject("model", loadedModel)
@@ -390,8 +407,12 @@ for model in (
         for j in range(model.getInputDimension()):
             s_g = ot.Point(s)
             s_g[j] += eps
-            gradfd[j, 0] = (model.computeAsScalar(s_g, t) - model.computeAsScalar(s, t)) / eps
-        ott.assert_almost_equal(grad, gradfd, 1e-4, 1e-4, "in " + model.getClassName() + " grad extra")
+            gradfd[j, 0] = (
+                model.computeAsScalar(s_g, t) - model.computeAsScalar(s, t)
+            ) / eps
+        ott.assert_almost_equal(
+            grad, gradfd, 1e-4, 1e-4, "in " + model.getClassName() + " grad extra"
+        )
 
 # 7) FractionalBrownianMotionModel
 myModel = ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25])
@@ -461,12 +482,8 @@ myModel.setScale(scale)
 ott.assert_almost_equal(myModel.getScale(), [2.5, 1.5], 0, 0)
 ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 0, 0)
 # The other marginal models are rescaled relatively to the first one
-ott.assert_almost_equal(
-    myModel.getCollection()[1].getScale(), [2.5, 1.5], 1e-14, 1e-14
-)
-ott.assert_almost_equal(
-    myModel.getCollection()[2].getScale(), [2.5, 1.5], 1e-14, 1e-14
-)
+ott.assert_almost_equal(myModel.getCollection()[1].getScale(), [2.5, 1.5], 1e-14, 1e-14)
+ott.assert_almost_equal(myModel.getCollection()[2].getScale(), [2.5, 1.5], 1e-14, 1e-14)
 test_model(myModel)
 
 # The scale accessor is the effective scale of the first marginal model and
@@ -485,20 +502,14 @@ parameter = myModel.getParameter()
 myModel.setParameter(parameter)
 ott.assert_almost_equal(myModel(s, t), covariance_ref, 0, 0)
 ott.assert_almost_equal(myModel.getParameter(), parameter, 0, 0)
-ott.assert_almost_equal(
-    myModel.getCollection()[0].getScale(), [0.8, 1.7], 0, 0
-)
+ott.assert_almost_equal(myModel.getCollection()[0].getScale(), [0.8, 1.7], 0, 0)
 # A rejected scale leaves the model unchanged
 with ott.assert_raises(Exception):
     myModel.setScale([-0.8, 1.7])
 ott.assert_almost_equal(myModel.getScale(), [0.8, 1.7], 0, 0)
-ott.assert_almost_equal(
-    myModel.getCollection()[1].getScale(), [0.9, 1.3], 0, 0
-)
+ott.assert_almost_equal(myModel.getCollection()[1].getScale(), [0.9, 1.3], 0, 0)
 # getFullParameter() and getParameter() expose the effective scale
-ott.assert_almost_equal(
-    myModel.getFullParameter(), [0.8, 1.7, 0.0, 1.2, 0.9], 0, 1e-12
-)
+ott.assert_almost_equal(myModel.getFullParameter(), [0.8, 1.7, 0.0, 1.2, 0.9], 0, 1e-12)
 ott.assert_almost_equal(myModel.getParameter(), [0.8, 1.7, 1.2, 0.9], 0, 0)
 
 # new test for tensorized covariance model
@@ -709,78 +720,138 @@ assert myModel.getFullParameterDescription() == [
 
 # 14) equality tests
 # SquaredExponential
-assert ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([1.0], [2.0]), "SE==SE"
-assert not ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([2.0], [2.0]), "SE!=SE scale"
-assert not ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([1.0], [3.0]), "SE!=SE amplitude"
-assert not ot.SquaredExponential([1.0], [2.0]) != ot.SquaredExponential([1.0], [2.0]), "SE!=SE neg"
-assert ot.SquaredExponential([1.0], [2.0]) != ot.ExponentialModel([1.0], [2.0]), "SE!=Exp"
+assert ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential(
+    [1.0], [2.0]
+), "SE==SE"
+assert not ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential(
+    [2.0], [2.0]
+), "SE!=SE scale"
+assert not ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential(
+    [1.0], [3.0]
+), "SE!=SE amplitude"
+assert not ot.SquaredExponential([1.0], [2.0]) != ot.SquaredExponential(
+    [1.0], [2.0]
+), "SE!=SE neg"
+assert ot.SquaredExponential([1.0], [2.0]) != ot.ExponentialModel(
+    [1.0], [2.0]
+), "SE!=Exp"
 
 # ExponentialModel
-assert ot.ExponentialModel([1.0], [2.0]) == ot.ExponentialModel([1.0], [2.0]), "Exp==Exp"
-assert not ot.ExponentialModel([1.0], [2.0]) == ot.SquaredExponential([1.0], [2.0]), "Exp!=SE"
-assert ot.ExponentialModel([1.0], [3.0]) != ot.ExponentialModel([1.0], [2.0]), "Exp!=Exp amplitude"
+assert ot.ExponentialModel([1.0], [2.0]) == ot.ExponentialModel(
+    [1.0], [2.0]
+), "Exp==Exp"
+assert not ot.ExponentialModel([1.0], [2.0]) == ot.SquaredExponential(
+    [1.0], [2.0]
+), "Exp!=SE"
+assert ot.ExponentialModel([1.0], [3.0]) != ot.ExponentialModel(
+    [1.0], [2.0]
+), "Exp!=Exp amplitude"
 
 # AbsoluteExponential
-assert ot.AbsoluteExponential([1.0], [2.0]) == ot.AbsoluteExponential([1.0], [2.0]), "AE==AE"
-assert ot.AbsoluteExponential([1.0], [2.0]) != ot.SquaredExponential([1.0], [2.0]), "AE!=SE"
+assert ot.AbsoluteExponential([1.0], [2.0]) == ot.AbsoluteExponential(
+    [1.0], [2.0]
+), "AE==AE"
+assert ot.AbsoluteExponential([1.0], [2.0]) != ot.SquaredExponential(
+    [1.0], [2.0]
+), "AE!=SE"
 
 # GeneralizedExponential
-assert ot.GeneralizedExponential([1.0], [2.0], 1.5) == ot.GeneralizedExponential([1.0], [2.0], 1.5), "GE==GE"
-assert ot.GeneralizedExponential([1.0], [2.0], 1.5) != ot.GeneralizedExponential([1.0], [2.0], 2.0), "GE!=GE p"
+assert ot.GeneralizedExponential([1.0], [2.0], 1.5) == ot.GeneralizedExponential(
+    [1.0], [2.0], 1.5
+), "GE==GE"
+assert ot.GeneralizedExponential([1.0], [2.0], 1.5) != ot.GeneralizedExponential(
+    [1.0], [2.0], 2.0
+), "GE!=GE p"
 
 # MaternModel
 assert ot.MaternModel([1.0], [2.0], 1.5) == ot.MaternModel([1.0], [2.0], 1.5), "MM==MM"
-assert ot.MaternModel([1.0], [2.0], 1.5) != ot.MaternModel([1.0], [2.0], 2.5), "MM!=MM nu"
+assert ot.MaternModel([1.0], [2.0], 1.5) != ot.MaternModel(
+    [1.0], [2.0], 2.5
+), "MM!=MM nu"
 
 # ExponentiallyDampedCosineModel
-assert ot.ExponentiallyDampedCosineModel([1.0], [2.0], 0.5) == ot.ExponentiallyDampedCosineModel([1.0], [2.0], 0.5), "EDCM==EDCM"
-assert ot.ExponentiallyDampedCosineModel([1.0], [2.0], 0.5) != ot.ExponentiallyDampedCosineModel([1.0], [2.0], 1.0), "EDCM!=EDCM freq"
+assert ot.ExponentiallyDampedCosineModel(
+    [1.0], [2.0], 0.5
+) == ot.ExponentiallyDampedCosineModel([1.0], [2.0], 0.5), "EDCM==EDCM"
+assert ot.ExponentiallyDampedCosineModel(
+    [1.0], [2.0], 0.5
+) != ot.ExponentiallyDampedCosineModel([1.0], [2.0], 1.0), "EDCM!=EDCM freq"
 
 # SphericalModel
-assert ot.SphericalModel([1.0], [2.0], 3.0) == ot.SphericalModel([1.0], [2.0], 3.0), "SM==SM"
-assert ot.SphericalModel([1.0], [2.0], 3.0) != ot.SphericalModel([1.0], [2.0], 4.0), "SM!=SM radius"
+assert ot.SphericalModel([1.0], [2.0], 3.0) == ot.SphericalModel(
+    [1.0], [2.0], 3.0
+), "SM==SM"
+assert ot.SphericalModel([1.0], [2.0], 3.0) != ot.SphericalModel(
+    [1.0], [2.0], 4.0
+), "SM!=SM radius"
 
 # FractionalBrownianMotionModel
-assert ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]) == ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]), "FBMM==FBMM"
-assert ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]) != ot.FractionalBrownianMotionModel([3.0], [3.0], [0.25]), "FBMM!=FBMM scale"
+assert ot.FractionalBrownianMotionModel(
+    [2.0], [3.0], [0.25]
+) == ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]), "FBMM==FBMM"
+assert ot.FractionalBrownianMotionModel(
+    [2.0], [3.0], [0.25]
+) != ot.FractionalBrownianMotionModel([3.0], [3.0], [0.25]), "FBMM!=FBMM scale"
 
 # DiracCovarianceModel
-assert ot.DiracCovarianceModel(2, [1.0, 2.0]) == ot.DiracCovarianceModel(2, [1.0, 2.0]), "DCM==DCM"
-assert ot.DiracCovarianceModel(2, [1.0, 2.0]) != ot.DiracCovarianceModel(2, [3.0, 2.0]), "DCM!=DCM amplitude"
+assert ot.DiracCovarianceModel(2, [1.0, 2.0]) == ot.DiracCovarianceModel(
+    2, [1.0, 2.0]
+), "DCM==DCM"
+assert ot.DiracCovarianceModel(2, [1.0, 2.0]) != ot.DiracCovarianceModel(
+    2, [3.0, 2.0]
+), "DCM!=DCM amplitude"
 
 # IsotropicCovarianceModel
 kernel1 = ot.SquaredExponential([1.0], [2.0])
 kernel2 = ot.SquaredExponential([1.0], [2.0])
-assert ot.IsotropicCovarianceModel(kernel1, 2) == ot.IsotropicCovarianceModel(kernel2, 2), "ICM==ICM"
-assert ot.IsotropicCovarianceModel(kernel1, 2) != ot.IsotropicCovarianceModel(ot.MaternModel([1.0], [2.0], 1.5), 2), "ICM!=ICM kernel"
+assert ot.IsotropicCovarianceModel(kernel1, 2) == ot.IsotropicCovarianceModel(
+    kernel2, 2
+), "ICM==ICM"
+assert ot.IsotropicCovarianceModel(kernel1, 2) != ot.IsotropicCovarianceModel(
+    ot.MaternModel([1.0], [2.0], 1.5), 2
+), "ICM!=ICM kernel"
 
 # ProductCovarianceModel
 coll1 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([3.0], [4.0])]
 coll2 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([3.0], [4.0])]
 assert ot.ProductCovarianceModel(coll1) == ot.ProductCovarianceModel(coll2), "PCM==PCM"
 coll3 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([5.0], [4.0])]
-assert ot.ProductCovarianceModel(coll1) != ot.ProductCovarianceModel(coll3), "PCM!=PCM coll"
+assert ot.ProductCovarianceModel(coll1) != ot.ProductCovarianceModel(
+    coll3
+), "PCM!=PCM coll"
 
 # TensorizedCovarianceModel
 coll1 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([1.0], [3.0])]
 coll2 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([1.0], [3.0])]
-assert ot.TensorizedCovarianceModel(coll1) == ot.TensorizedCovarianceModel(coll2), "TCM==TCM"
+assert ot.TensorizedCovarianceModel(coll1) == ot.TensorizedCovarianceModel(
+    coll2
+), "TCM==TCM"
 coll3 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([1.0], [4.0])]
-assert ot.TensorizedCovarianceModel(coll1) != ot.TensorizedCovarianceModel(coll3), "TCM!=TCM coll"
+assert ot.TensorizedCovarianceModel(coll1) != ot.TensorizedCovarianceModel(
+    coll3
+), "TCM!=TCM coll"
 
 # KroneckerCovarianceModel
 rho1 = ot.GeneralizedExponential([1.0], 1.0)
 rho2 = ot.GeneralizedExponential([1.0], 1.0)
-assert ot.KroneckerCovarianceModel(rho1, [1.0, 2.0]) == ot.KroneckerCovarianceModel(rho2, [1.0, 2.0]), "KCM==KCM"
+assert ot.KroneckerCovarianceModel(rho1, [1.0, 2.0]) == ot.KroneckerCovarianceModel(
+    rho2, [1.0, 2.0]
+), "KCM==KCM"
 rho3 = ot.GeneralizedExponential([2.0], 1.0)
-assert ot.KroneckerCovarianceModel(rho1, [1.0, 2.0]) != ot.KroneckerCovarianceModel(rho3, [1.0, 2.0]), "KCM!=KCM rho"
+assert ot.KroneckerCovarianceModel(rho1, [1.0, 2.0]) != ot.KroneckerCovarianceModel(
+    rho3, [1.0, 2.0]
+), "KCM!=KCM rho"
 
 # StationaryFunctionalCovarianceModel
 f1 = ot.SymbolicFunction(["tau"], ["exp(-abs(tau))"])
 f2 = ot.SymbolicFunction(["tau"], ["exp(-abs(tau))"])
-assert ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f1) == ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f2), "SFCM==SFCM"
+assert ot.StationaryFunctionalCovarianceModel(
+    [1.0], [2.0], f1
+) == ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f2), "SFCM==SFCM"
 f3 = ot.SymbolicFunction(["tau"], ["exp(-2*abs(tau))"])
-assert ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f1) != ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f3), "SFCM!=SFCM rho"
+assert ot.StationaryFunctionalCovarianceModel(
+    [1.0], [2.0], f1
+) != ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f3), "SFCM!=SFCM rho"
 
 # Self equality
 se = ot.SquaredExponential([1.0], [2.0])
@@ -788,7 +859,9 @@ assert se == se, "self=="
 assert not se != se, "self!="
 
 # Nugget factor equality
-assert ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([1.0], [2.0]), "SE==SE no nugget"
+assert ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential(
+    [1.0], [2.0]
+), "SE==SE no nugget"
 with_nugget = ot.SquaredExponential([1.0], [2.0])
 with_nugget.setNuggetFactor(0.1)
 assert with_nugget != ot.SquaredExponential([1.0], [2.0]), "SE!=SE nugget"
@@ -884,7 +957,9 @@ models = [
     ot.IsotropicCovarianceModel(ot.MaternModel([0.12], [2.0], 2.5), 2),
     ot.SquaredExponential([0.3, 0.35], [2.0]),
 ]
-vertices = ot.IntervalMesher([15, 15]).build(ot.Interval([0.0, 0.0], [1.0, 1.0])).getVertices()
+vertices = (
+    ot.IntervalMesher([15, 15]).build(ot.Interval([0.0, 0.0], [1.0, 1.0])).getVertices()
+)
 parameters = otexp.HODLRMatrixParameters()
 parameters.setMinLeafSize(32)
 rhs = ot.Point(vertices.getSize())
@@ -910,11 +985,16 @@ for model in models:
         hodlrLoaded.factorize()
         hodlrReference = loaded.discretizeHODLRMatrix(vertices, parameters)
         hodlrReference.factorize()
-        assert hodlrLoaded.getRegularizationShift() == hodlrReference.getRegularizationShift()
+        assert (
+            hodlrLoaded.getRegularizationShift()
+            == hodlrReference.getRegularizationShift()
+        )
         if nugget > 0.0:
             # The comparison below is only meaningful on a well conditioned
             # problem, i.e. without a large healing shift
-            assert hodlrLoaded.getRegularizationShift() < 1.0e-3, hodlrLoaded.getRegularizationShift()
+            assert (
+                hodlrLoaded.getRegularizationShift() < 1.0e-3
+            ), hodlrLoaded.getRegularizationShift()
         ott.assert_almost_equal(
             ot.Point(hodlrReference.solve(rhs)),
             ot.Point(hodlrLoaded.solve(rhs)),
@@ -928,9 +1008,7 @@ kroneckerRho = ot.GeneralizedExponential([4.0, 5.0], 1.0)
 kroneckerDim = ot.KroneckerCovarianceModel(2)
 assert kroneckerDim.getInputDimension() == 2
 assert kroneckerDim.getOutputDimension() == 1
-kronecker1D = ot.KroneckerCovarianceModel(
-    ot.GeneralizedExponential([1.0], 1.0), [2.0]
-)
+kronecker1D = ot.KroneckerCovarianceModel(ot.GeneralizedExponential([1.0], 1.0), [2.0])
 assert kronecker1D.isParallel()
 ott.assert_almost_equal(
     kronecker1D.computeAsScalar([0.0], [0.0]),
@@ -971,9 +1049,7 @@ with ott.assert_raises(Exception):
     kronecker1D.setFullParameter([1.0])
 with ott.assert_raises(Exception):
     kronecker1D.setFullParameter([1.0, 0.0, -2.0])
-factorized = kroneckerDiag.discretizeAndFactorize(
-    ot.Sample([[0.0, 0.0], [1.0, 1.0]])
-)
+factorized = kroneckerDiag.discretizeAndFactorize(ot.Sample([[0.0, 0.0], [1.0, 1.0]]))
 assert factorized.getDimension() == 4
 kroneckerStudy = ot.Study()
 kroneckerStudy.setStorageManager(
@@ -1011,17 +1087,16 @@ with ott.assert_raises(Exception):
     ot.TensorizedCovarianceModel([])
 with ott.assert_raises(Exception):
     ot.TensorizedCovarianceModel(
-        [ot.AbsoluteExponential([1.0], [1.0]),
-         ot.AbsoluteExponential([1.0, 2.0], [1.0])]
+        [
+            ot.AbsoluteExponential([1.0], [1.0]),
+            ot.AbsoluteExponential([1.0, 2.0], [1.0]),
+        ]
     )
 with ott.assert_raises(Exception):
     ot.TensorizedCovarianceModel(
-        [ot.ExponentialModel([1.0], [1.0, 2.0]),
-         ot.AbsoluteExponential([1.0], [1.0])]
+        [ot.ExponentialModel([1.0], [1.0, 2.0]), ot.AbsoluteExponential([1.0], [1.0])]
     )
-tensorized1D = ot.TensorizedCovarianceModel(
-    [ot.AbsoluteExponential([1.0], [1.0])]
-)
+tensorized1D = ot.TensorizedCovarianceModel([ot.AbsoluteExponential([1.0], [1.0])])
 ott.assert_almost_equal(
     tensorized1D.computeAsScalar([0.0], [0.0]),
     tensorized1D.computeAsScalar([0.0]),
@@ -1043,7 +1118,7 @@ with ott.assert_raises(Exception):
 with ott.assert_raises(Exception):
     tensorized2D([0.0, 1.0], [0.0])
 with ott.assert_raises(Exception):
-    tensorized2D.setScale([1.0])
+    tensorized2D.setScale([1.0, 2.0, 3.0])
 with ott.assert_raises(Exception):
     tensorized2D.setAmplitude([1.0])
 with ott.assert_raises(Exception):
@@ -1121,9 +1196,7 @@ fullCov[0, 0] = 2.0
 fullCov[1, 1] = 3.0
 fullCov[1, 0] = 0.5
 rankMFull = ot.RankMCovarianceModel(fullCov, basis)
-ott.assert_almost_equal(
-    rankMFull.getCovariance(), fullCov, 1e-14, 1e-14
-)
+ott.assert_almost_equal(rankMFull.getCovariance(), fullCov, 1e-14, 1e-14)
 # C(s,t) = sum_ij phi_i(s) cov_ij phi_j(t)
 ott.assert_almost_equal(
     rankMFull([0.5], [0.25])[0, 0],
@@ -1142,9 +1215,10 @@ ott.assert_almost_equal(
 assert rankMFull.discretize(vertices).getNbRows() == 3
 with ott.assert_raises(Exception):
     rankM.discretize(ot.Sample([[0.0, 0.0]]))
-# partialGradient is not implemented
-with ott.assert_raises(Exception):
-    rankM.partialGradient([0.0], [1.0])
+# partialGradient falls back to finite differences
+ott.assert_almost_equal(
+    rankM.partialGradient([0.0], [1.0]), ot.Matrix([[3.0]]), 1e-12, 0.0
+)
 # operator() dimension check
 with ott.assert_raises(Exception):
     rankM([0.0, 1.0], [0.0])
@@ -1170,9 +1244,7 @@ verts = mesh.getVertices()
 C = rankM.discretize(verts)
 for j in range(len(verts)):
     for i in range(j, len(verts)):
-        ott.assert_almost_equal(
-            C[i, j], rankM(verts[i], verts[j])[0, 0], 1e-12, 1e-12
-        )
+        ott.assert_almost_equal(C[i, j], rankM(verts[i], verts[j])[0, 0], 1e-12, 1e-12)
 CFull = rankMFull.discretize(verts)
 for j in range(len(verts)):
     for i in range(j, len(verts)):

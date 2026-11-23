@@ -24,4 +24,6 @@ mu = estimated.getMu()[0]
 ref = use_case.getReferenceMu()
 gap = abs((mu - ref + math.pi) % (2.0 * math.pi) - math.pi)
 ott.assert_almost_equal(gap, 0.0, 0.0, 0.15)
-ott.assert_almost_equal(estimated.getSigma()[0, 0], use_case.getReferenceSigma2(), 0.0, 0.3)
+ott.assert_almost_equal(
+    estimated.getSigma()[0, 0], use_case.getReferenceSigma2(), 0.0, 0.3
+)

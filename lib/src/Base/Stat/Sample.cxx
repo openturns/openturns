@@ -2,7 +2,7 @@
 /**
  *  @brief The class Sample implements blank free samples
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -579,7 +579,7 @@ Sample Sample::computeQuantilePerComponent(const Point & prob,
  * Method computeQuantile() gives the N-dimension quantile of the sample
  */
 Point Sample::computeQuantile(const Scalar prob,
-    const Bool tail) const
+                              const Bool tail) const
 {
   return getImplementation()->computeQuantile(prob, tail);
 }

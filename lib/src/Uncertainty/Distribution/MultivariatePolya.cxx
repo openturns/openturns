@@ -2,7 +2,7 @@
 /**
  *  @brief The MultivariatePolya distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -196,7 +196,7 @@ void MultivariatePolya::updateSpectral()
 
 /* Draw one realization of a multinomial distribution with probabilities p */
 Point MultivariatePolya::drawMultinomial(const UnsignedInteger n,
-                                         const Point & p)
+    const Point & p)
 {
   const UnsignedInteger dimension = p.getDimension();
   Point realization(dimension);
@@ -385,7 +385,7 @@ Scalar MultivariatePolya::computePDF(const Point & point) const
 
 /* Compute the generating function of a sum of truncated negative binomial distributions as needed in the computeCDF() method */
 Complex MultivariatePolya::computeGlobalPhi(const Complex & z,
-                                            const Indices & x) const
+    const Indices & x) const
 {
   Complex value(1.0);
   const UnsignedInteger dimension = getDimension();
@@ -403,8 +403,8 @@ Complex MultivariatePolya::computeGlobalPhi(const Complex & z,
 
 /* Compute the generating function of a sum of truncated negative binomial distributions as needed in the computeProbability() method */
 Complex MultivariatePolya::computeGlobalPhi(const Complex & z,
-                                            const Indices & a,
-                                            const Indices & b) const
+    const Indices & a,
+    const Indices & b) const
 {
   Complex value(1.0);
   const UnsignedInteger dimension = getDimension();
@@ -422,19 +422,19 @@ Complex MultivariatePolya::computeGlobalPhi(const Complex & z,
 
 /* Compute the generating function of a truncated negative binomial distribution as needed in the computeCDF() method */
 Complex MultivariatePolya::computeLocalPhi(const Complex & z,
-                                           const Scalar u,
-                                           const Scalar t,
-                                           const UnsignedInteger a) const
+    const Scalar u,
+    const Scalar t,
+    const UnsignedInteger a) const
 {
   return PoissonFormula::localPhi0(z, PoissonFormula::NegativeBinomialKernel(u, t, z), a, smallA_);
 }
 
 /* Compute the generating function of a truncated negative binomial distribution as needed in the computeProbability() method */
 Complex MultivariatePolya::computeLocalPhi(const Complex & z,
-                                           const Scalar u,
-                                           const Scalar t,
-                                           const UnsignedInteger a,
-                                           const UnsignedInteger b) const
+    const Scalar u,
+    const Scalar t,
+    const UnsignedInteger a,
+    const UnsignedInteger b) const
 {
   return PoissonFormula::localPhi(z, PoissonFormula::NegativeBinomialKernel(u, t, z), a, b, smallA_);
 }
@@ -505,8 +505,11 @@ Scalar MultivariatePolya::computeCDF(const Point & point) const
   }
   if (fullCoverage) return 1.0;
   // Evaluation of P(W=n) using Poisson's formula
-  return PoissonFormula::computeCDF([&](const Complex & z) { return computeGlobalPhi(z, kPoint); },
-                                    n_, r_, normalizationCDF_, getClassName());
+  return PoissonFormula::computeCDF([&](const Complex & z)
+  {
+    return computeGlobalPhi(z, kPoint);
+  },
+  n_, r_, normalizationCDF_, getClassName());
 }
 
 /* Compute the probability content of an interval */
@@ -583,8 +586,11 @@ Scalar MultivariatePolya::computeProbability(const Interval & interval) const
   }
   // Diametral term
   const Scalar logBinomPDF = SpecFunc::LogGamma(U_ + n_) - SpecFunc::LogGamma(U_) - SpecFunc::LogGamma(1.0 * n_ + 1.0) + U_ * std::log(t_) + n_ * std::log(1.0 - t_);
-  return PoissonFormula::computeProbability([&](const Complex & z) { return computeGlobalPhi(z, a, b); },
-                                            nA, r, logCoefNorm, logBinomPDF);
+  return PoissonFormula::computeProbability([&](const Complex & z)
+  {
+    return computeGlobalPhi(z, a, b);
+  },
+  nA, r, logCoefNorm, logBinomPDF);
 }
 
 /* Get the survival function of the distribution */
@@ -961,7 +967,7 @@ Scalar MultivariatePolya::getEta() const
 
 /* Compute the scalar quantile of the 1D multivariate Polya distribution */
 Scalar MultivariatePolya::computeScalarQuantile(const Scalar prob,
-                                                const Bool tail) const
+    const Bool tail) const
 {
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;

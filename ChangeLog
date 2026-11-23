@@ -1,6 +1,30 @@
 = New Features =
 
-== 1.28 release (wip) == #release-1.28
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+
+ * HiGHS moved out of experimental
+ * FiniteOrthogonalFunctionFactory moved out of experimental
+ * Removed deprecated SoizeGhanemFactory class
+ * Removed deprecated MixedHistogramUserDefined class alias
+ * Removed deprecated ProcessSample.setField(Field, int) in favor of ProcessSample.setField(int, Field)
+ * Removed deprecated viewer.PlotDesign
+ * Added pointwise first/total Sobol indices for scalar vector-to-field chaos surrogates
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+
+
+== 1.28 release (2026-11-18) == #release-1.28
 
 === Library ===
 
@@ -9,6 +33,8 @@
  * Orthonormal basis construction and sparse functional chaos improvements
  * Speeding up Gaussian field simulation on large meshes with the FFT-based circulant embedding method and the P1 interpolation
  * Covariance models for functional spaces to generate trajectories within crucial functional spaces for physical simulations
+ * AK reliability methods
+ * built-in and external HODLR compression format APIs
 
 ==== New classes ====
  * BasisOrthonormalizationAlgorithm, BasisOrthonormalizationFactory, GaussLPQuadrature, GaussLPQuadratureRule (openturns.experimental)
@@ -28,6 +54,7 @@
  * PiecewiseLinearDistribution (openturns.experimental)
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
  * SparseExpansion (openturns.experimental)
+ * SparseMatrix (openturns.experimental)
  * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
@@ -36,7 +63,7 @@
  * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
- * QuadraticProblem (openturns.experimental)
+ * QuadraticProgrammingProblem (openturns.experimental)
  * RatioDistribution (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * UniformOverMeshFactory (openturns.experimental)
@@ -46,7 +73,6 @@
  * ActiveLearningReliabilityAlgorithm, ActiveLearningReliabilityResult, ActiveLearningReliabilityFunction, ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningGMMFunction, PythonActiveLearningReliabilityFunction (openturns.experimental)
 
 ==== API changes ====
- * Added pointwise first/total Sobol indices for scalar vector-to-field chaos surrogates
  * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases
  * Added LeastSquaresMethod.getPseudoInverse: the Moore-Penrose pseudo-inverse of the weighted design matrix, equal to (A^T A)^{-1} A^T for full-column-rank designs, evaluated per decomposition (QR, Cholesky, SVD)
  * Added Sample.computePairwiseDistance: the symmetric matrix of Euclidean distances between sample points
@@ -97,7 +123,8 @@
  * Added HiGHS.getSimplexIterationNumber/getIPMIterationNumber/getCrossoverIterationNumber/getPDLPIterationNumber/getQPIterationNumber to expose per-solver iteration counts (openturns.experimental)
  * Added OptimizationProblem.isQuadratic/getHessian/getConstant to describe quadratic objectives
  * Added HiGHS quadratic programming support through QuadraticProblem (openturns.experimental)
- * Added LinearLeastSquaresCalibration.getBounds/setBounds to solve a bounded linear least-squares calibration
+ * LinearProblem and QuadraticProblem derive getEqualityConstraint/getInequalityConstraint from their linear coefficients and accept linear constraint functions in setEqualityConstraint/setInequalityConstraint, rejecting nonlinear ones (openturns.experimental)
+ * Added LinearLeastSquaresCalibration.getBounds/setBounds to solve a bounded linear least-squares calibration, with a bounded-variable active-set fallback that keeps the directions identified by an ill-conditioned Jacobian
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
  * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
@@ -109,8 +136,14 @@
  * Deprecated viewer.PlotDesign in favor of VisualTest.DrawPairsWithGrid
  * Added ExperimentIntegration.getWeightedExperiment: accessor to the weighted experiment wrapped by the integration rule
  * ProbabilitySimulationResult is now a handle to ProbabilitySimulationResultImplementation, which holds the concrete result of all the simulation algorithms; EventSimulation.getResult() still returns a ProbabilitySimulationResult handle and the former result accessors are preserved, while the setters, getImportanceFactors, drawImportanceFactors and getConfidenceLength of the handle are deprecated in favour of the implementation class
+ * Deprecated LHSExperiment alwaysShuffle/randomShift flags, dedicated accessors must be used instead
+ * Deprecated KernelSmoothing boundaryCorrection flag argument, dedicated accessor must be used instead
+ * Added AssertionException mapped to AssertionError: openturns.testing.assert_almost_equal and the OTtestcode.hxx helpers now raise AssertionError instead of RuntimeError, and dimension/size mismatches raise AssertionException instead of InvalidArgumentException
+ * Deprecated Linear/QuadraticProblem in favor of Linear/QuadraticProgrammingProblem
 
 ==== New features ====
+ * Added SparseMatrix.getColumnPointer/getRowIndices/getValues, SparseMatrix.FromDenseMatrix, canonical triplet constructor (validated indices, sorted rows, summed duplicates) and persistence
+ * LinearProblem accepts and stores sparse constraint coefficients (SparseMatrix constructor and setLinearConstraint overload); new LinearProblem.getSparseLinearConstraintCoefficients avoids the densification, and HiGHS copies the sparse matrix into its model without densifying (openturns.experimental)
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
  * Added FittingTest.CopulaCramerVonMises and FittingTest.CopulaKolmogorov: rank-based Cramer-von Mises and Kolmogorov-Smirnov goodness-of-fit tests for copulas, with parametric bootstrap p-values (new FittingTest-CopulaMinimumSamplingSize/MaximumSamplingSize/Precision ResourceMap keys)
  * Added QuantileConfidence.computeUnilateralCoverage and QuantileConfidence.computeBilateralCoverage to compute the coverage probability of quantile confidence intervals without sample
@@ -129,6 +162,8 @@
  * Distribution.drawMarginalPDFs draws a grid of marginals for dimension greater than 2
  * NonLinearLeastSquaresCalibration.setUseLaplaceApproximation
  * Added GaussianNonLinearCalibration.getBounds/setBounds and NonLinearLeastSquaresCalibration.getBounds/setBounds: optional parameter bounds constraining the calibration optimization
+ * Added GaussianLinearCalibration.getBounds/setBounds and the GaussianLinearCalibration-BoundsHandling/GaussianNonLinearCalibration-BoundsHandling ResourceMap keys, with an opt-in truncated posterior for the bounded Gaussian calibrations
+ * Moved the calibration bounds accessors to CalibrationAlgorithmImplementation
  * Added getParameter/setParameter (and parameterGradient) to ComposedFunction, MarginalTransformationEvaluation, RosenblattEvaluation/InverseRosenblattEvaluation and NatafEllipticalDistributionEvaluation/InverseNatafEllipticalDistributionEvaluation: transformations expose distribution parameters with (mu, sigma) layout for elliptical cases, direct correlated setParameter without recorded scales throws
  * JointDistribution iso-probabilistic transformations now build the marginal parameter block from marginal accessors (robust to FiniteDiscrete) while keeping the core dependence parameters
  * Curve.setLabels/getLabels
@@ -145,6 +180,7 @@
  * Theory: add interpolation page
  * LeastSquaresMethod: document weights, indices and notation
  * Mentioned all ResourceMap entries for each class
+ * New unit commitment use case, solved with a sparse mixed integer linear problem
 
 === Python module ===
  * Add Process sample slicing operator
@@ -152,6 +188,7 @@
  * Add the title_kw argument to the viewer to style the figure suptitle
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
  * Deprecated coupling_tools.execute method (use subprocess.run)
+ * Added numpy __array_interface__/__array_ufunc__ support for Point/Sample (zero-copy np.asarray) and __array_ufunc__ support for Description: element-wise ufuncs (np.equal, np.add, ...) and np.where(np.asarray(...) == ...) workflow
 
 === Miscellaneous ===
  * Mixture.drawPDF now draws the probability of each discrete component as a text label above its arrow
@@ -162,7 +199,187 @@
  * DistributionImplementation: Select characteristic function panels by absolute argument, bound Filon grid points, document exponent convention, and make `operator /` return `RatioDistribution` for continuous univariate operands.
  * SimulationSensitivityAnalysis now supports importance sampling through optional importance weights for the mean point, importance factors and event probability sensitivity
 
-=== Bug fixes ===
+=== Bug fixes (total 180) ===
+ * #992 (The theory behind the buildEstimator method is not documented)
+ * #998 (The theory behind the interpolation methods is not documented)
+ * #1106 (computeBilateralConfidenceInterval sometimes fails.)
+ * #1232 (Truncated distribution estimation)
+ * #1237 (Anderson-Darling test for non gaussian distributions)
+ * #1243 (UserDefinedStationaryCovarianceModel ctor consistency)
+ * #1244 (Performance issues with OrthonormalizationAlgorithm::getNodesAndWeights)
+ * #1245 (Wrong comparison operator for interface classes with derivative implementation classes)
+ * #1318 (There is no example of a function with a discrete input)
+ * #1322 (Fititng methods documentation)
+ * #1357 (DrawQQplot can draw indistiguishible points)
+ * #1363 (The graph produced by DrawCorrelationCoefficients cannot draw SRC indices)
+ * #1410 (The SphericalModel  is not always definite positive)
+ * #1424 (ProcessSample has no split method)
+ * #1427 (We cannot extract a part of a Sample or ProcessSample)
+ * #1475 (Field has no arithmetic)
+ * #1477 (The KissFFT classes has no example)
+ * #1479 (Missing check type in CompositeDistribution ctors)
+ * #1481 (Inadequate solver options are not signaled)
+ * #1489 (A Mixture with a Dirac does not draw its PDF correctly)
+ * #1496 (There is no example of the configuration of the optimization algorithm in EfficientGlobalOptimization)
+ * #1511 (The LeastSquaresMethod classes have doc issues)
+ * #1546 (numerical issue in TruncatedNormal::computeScalarQuantile)
+ * #1554 (Handling of weigthed samples in Kernel Smoothing)
+ * #1582 (The definitions of a stochastic process in the theory are inconsistent)
+ * #1583 (It is uneasy to configure the bounds of a Graph)
+ * #1596 (Problem in the PDF of a Mixture with Discrete / Continuous distributions)
+ * #1678 (Process Event documentation Example)
+ * #1707 (ANCOVA indices greater than 1)
+ * #1730 (Sample.erase() does not manage a set of indices)
+ * #1734 (computeMinimumVolumeLevelSetCollectionWithThreshold)
+ * #1841 (AbdoRackwitz does not use parameters that can be set.)
+ * #1853 (Merging distributions using ComposedDistribution and ComposedCopula)
+ * #1886 (Jumbled high-dimensional PlotDesign)
+ * #1888 (numpy.where() not applicable to ot.Point() and ot.Sample() objets)
+ * #1892 (There is no example of Sobol' sensitivity analysis with low discrepancy experiment)
+ * #1928 (The default finite difference formula of a Function should have a doc)
+ * #1937 (FunctionalChaosSobolIndices may draw Sobol' indices)
+ * #1951 (CovarianceModel::discretizeRow is undocumented)
+ * #1957 (Improve the const-correctness of classes related to OptimalLHSExperiment)
+ * #1992 (HMatrix lacks clear theoretical documentation)
+ * #1996 (FunctionCollection slicing)
+ * #2000 (A method which set a collection should have a consistent doc)
+ * #2078 (Student parameter estimation inaccurate with degree of freedom < 2)
+ * #2119 (ComposedFunction should have accessors to the 'left' and 'right' function)
+ * #2151 (Pie chart: filter small values)
+ * #2208 (The Fehlberg class has undocumented features)
+ * #2248 (return of NormalCopula::getCorrelation)
+ * #2253 (promote getBasisSizeFromTotalDegree)
+ * #2334 (The exact coefficients of the Ishigami function should be used)
+ * #2365 (Document the order of the coefficients returned by KrigingResult.getTrendCoefficients)
+ * #2379 (The bootstrap keys of the SobolSimulationAlgorithm class are undocumented)
+ * #2385 (The doc of LeastSquaresMethod is wrong)
+ * #2408 (The LeastSquaresExpansion and IntegrationExpansion doc help pages are incomplete)
+ * #2432 (The error message for a sum of two Point is confusing)
+ * #2440 (copula FittingTest normalization)
+ * #2444 (multivariate goodness of fit test)
+ * #2465 (unused dNonCentralStudentAlt0)
+ * #2483 (How to combine OpenTURNS graphics with Matplotlib?)
+ * #2494 (LinearModelResult.getCoefficientsStandardErrors docstring)
+ * #2498 (The VisualTest.DrawQQplot method ignores the largest observation in the sample)
+ * #2502 (getCovariance can produce a wrong error message)
+ * #2521 (Normal::computeProbability does not account for infinite boundaries in dimension 1)
+ * #2540 (Viewer: more sensible default for PlotDesign `subdivisions` argument)
+ * #2551 (cannot load an object nested in another study object)
+ * #2580 (FractionalBrownianMotionModel constructors are not coherent)
+ * #2605 (The Binomial distribution does not draw its PDF for alpha = 0)
+ * #2664 (The pretty-print of a 1-dimension Distribution does not show its parameters)
+ * #2711 (MaximumEntropyOrderStatisticsDistribution)
+ * #2726 (KernelSmoothing: the boundary correction can be asymmetric)
+ * #2727 (The KernelSmoothing interface can apply boundary correction even with disabled boundary correction)
+ * #2740 (The restart option of LowDiscrepancySequence is a misnomer)
+ * #2741 (Vectorize the gradient functions)
+ * #2745 (Define a label for a drawable which is a curve)
+ * #2763 (Get functions from a distribution)
+ * #2767 (misc distribution issues)
+ * #2789 (use drawCrossCuts in plot_estimate_probability_form_oscillator)
+ * #2801 (The PointToFieldFunction has no getMarginal())
+ * #2802 (The PointToFieldFunction has no MemoizeFunction())
+ * #2814 (TruncatedNormalFactory.buildAsTruncatedNormal() can fail)
+ * #2829 (inaccurate n-d Student CDF)
+ * #2831 (Add transparency ("alpha") parameter to Clouds)
+ * #2833 (Linear-QuadraticEvaluation-Function are not coherent)
+ * #2841 (There is no Sample.computePairwiseDistance method)
+ * #2845 (The Spearman correlation and Kendall tau are wrong for multivariate discrete distributions)
+ * #2849 (Confidence interval of the estimated parameters of a Box-Cox estimator)
+ * #2869 (MarginalDistribution transformation is slow)
+ * #2870 (Multiply a function by a floating point constant)
+ * #2872 (sum of a Distribution and a Point or product of a Distribution and a Matrix)
+ * #2885 (Using Combinations can make Python crash)
+ * #2889 (GaussianNonLinearCalibration.drawParameterDistributions() has a wrong label)
+ * #2902 (Improve ParametricFunction when the underlying function is a SymbolicFunction)
+ * #2904 (There is no Distribution.drawPDF() for a distribution with dimension > 2.)
+ * #2910 (Linear regression: add the (exact or asymptotic) distributions of the estimator)
+ * #2926 (The use of Sample accessors is slow in Python)
+ * #2945 (PlotDesign does not plot the right and top edges of a 3D sample)
+ * #2968 (When we create a Sample from a list of floats, the exception message is wrong.)
+ * #2971 (The HyperbolicEnumerateFunction is very, very, slow)
+ * #3001 (View should support Text kwargs for Grid's setTitle.)
+ * #3007 (Refactor: The Memoize function has inconsistent method naming)
+ * #3013 (Provide the Sample.superQuantile() method)
+ * #3024 (TruncatedNormal failure 2)
+ * #3031 (QuantileMatchingFactory docstring fails with TNC)
+ * #3047 (LeastSquaresMethod.getPseudoInverse() would be useful)
+ * #3049 (Need for Von Mises-Fisher distribution implementation)
+ * #3061 (Contour for CopulaFactory does not work with setColorBarPosition(''))
+ * #3071 (The theory help page of random_mixture has a bug)
+ * #3075 (Cauchy model is not the spectral density of the ExponentialModel if scale.getDimension()>1)
+ * #3079 (There is no method to print summary statistics of a Sample)
+ * #3083 (coupling_tools.execute is not tested enough)
+ * #3085 (The taylor_moments theory help page has issues.)
+ * #3086 (The TaylorExpansionMoments class has issues)
+ * #3092 (FunctionalChaosValidation::ComputeMetamodelLeaveOneOutPredictions should take into account the weights)
+ * #3094 (`PointWithDescription` constructor and `setDescription` list incompatibility)
+ * #3100 (Cloud.setAlpha() does not work)
+ * #3112 (There is no multidimensional Uniform distribution)
+ * #3118 (Implementation of RMSE and MAE methods in `MetaModelValidation`)
+ * #3130 (Sample.computeQuantile with tail)
+ * #3144 (FunctionalChaosAlgorithm can be used wrongly)
+ * #3149 (The weights in FejerExperiment are wrongly scaled)
+ * #3150 (SimulatedAnnealingLHS does not propagate the distribution)
+ * #3154 (The UniformFactory has a wrong documentation)
+ * #3164 (Support for weighted samples in HistogramFactory and KernelSmoothing)
+ * #3166 (The doc of KernelMixture can be improved)
+ * #3169 (Modernization of the `GaussKronrod` API for state retrieval)
+ * #3171 (Allow to implement generateWithWeights in Python experiments)
+ * #3177 (Enable SQP for generic optimization problem)
+ * #3178 (The QuantileConfidence.computeUnilateralMinimumSampleSize() method is wrong)
+ * #3182 (QuantileConfidence.computeBilateralRank() can fail)
+ * #3185 (StudentCopulaFactory does not estimate the shape parameter nu)
+ * #3195 (Cannot build documentation with links to `auto_calibration`)
+ * #3196 (Technically not-independent Gaussian mixture sampling)
+ * #3197 (The doc of RandomVector lacks details)
+ * #3206 (The theory help page for linear regression has errors)
+ * #3208 (Result not close enough to 0 in python/test/t_KrigingAlgorithm_std.py)
+ * #3210 (Strange differences between PostAnalyticalControlledImportanceSampling and PostAnalyticalImportanceSampling)
+ * #3227 (TruncatedDistribution with 2 scalar lower ad upper bounds)
+ * #3231 (GaussianProcessFitter: when the amplitude is analytically computed, it is set to 1 in the Result)
+ * #3233 (ParametricFunction : .gradient() returns incorrect gradient after calling .setParameter())
+ * #3236 (MarginalDistribution.computeSequentialConditionalQuantile is very slow)
+ * #3241 (`ParametricFunction` performs unnecessary function evaluations when wrapping a marginal function)
+ * #3242 (NLopt.getLocalSolver segfaults if no LocalSolver is set)
+ * #3243 (SubsetSampling : doesn't warn user that maximumStandardDeviation cannot be used)
+ * #3245 (`Ceres` solver options are hardcoded to `SILENT`, disabling iteration logging configuration)
+ * #3246 (Backport workflow-hardening fix (excessive-permissions) to 3 release branches)
+ * #3248 (`TruncatedDistribution.getMarginal()` loses variable descriptions)
+ * #3255 (getIsoProbabilisticTransformation segfaults on a Joint Distribution with Student Copula)
+ * #3257 (FiniteDiscreteDistribution is not deep-copyable)
+ * #3263 (Memory Usage Increases During Repeated PythonFunction Evaluations)
+ * #3273 (NonLinearLeastSquaresCalibration should implement Laplace's approximation)
+ * #3274 (CompositeDistribution ignores the (in)finiteness of the underlying distribution's range bounds)
+ * #3275 (Some statistics of unbounded TruncatedNormal are NaN)
+ * #3282 (CompositeDistribution.getRange returns an incorrect range for the transformation 1/x)
+ * #3284 (Feature request: Support output-specific finite difference steps in gradient approximations)
+ * #3302 (Add a citation reference to the JOSS paper)
+ * #3307 (Gaussian Process Regression does not retain variable names)
+ * #3308 (CompositeDistribution: getSingularities and computeProbability bugs)
+ * #3321 (Build a PCE on a dataset having a singular covariance matrix)
+ * #3324 (CurlFreeModel/DivFreeModel leave isDiagonal_ at true while producing full blocks)
+ * #3342 (TBB Policy objects should be renamed to Body)
+ * #3351 (SparseMethod with KFold)
+ * #3361 (Truncated binomial CDF and quantile drop the lower atom)
+ * #3374 (TensorizedCovarianceModel: setParameter(getParameter()) corrupts the model)
+ * #3376 (MethodOfMomentsFactory can return a Normal far from the sample moments)
+ * #3377 (TruncatedDistribution rescales a one-dimensional Dirichlet instead of conditioning it)
+ * #3379 (BinomialFactory drops a known trial count for an all-zero sample)
+ * #3380 (Four-node Clenshaw-Curtis rule gives 5/6 for the integral of x squared)
+ * #3382 (FGM and AMH copula entropy returns NaN at allowed parameter endpoints)
+ * #3385 (ProductEvaluation does not propagate isParallel, crashing PythonFunction products in IteratedQuadrature)
+ * #3387 (LowDiscrepancyExperiment has a wrong description of the input distribution)
+ * #3418 (RosenblattEvaluation: expose distribution parameters and honour setParameter)
+ * #3419 (MarginalTransformationEvaluation: missing parameters, inert setParameter and incomplete parameterGradient)
+ * #3420 (ComposedFunction: setParameter does not update gradient, hessian and parameterGradient)
+ * #3421 (Elliptical Nataf transformation: wrong parameter layout for Student and inert setParameter)
+ * #3423 (Nataf parameterGradient misses correlation-induced sigma terms)
+ * #3424 (Elliptical iso-probabilistic transformation is ill-defined for zero sigma)
+ * #3426 (DistFunc::qNormal(Point) is inconsistent with the scalar overload at the extremes)
+ * #3435 (Rename LinearProblem and QuadraticProblem to LinearProgrammingProblem and QuadraticProgrammingProblem)
+ * #3437 (DistributionTransformation: Student marginal uses the elliptical inverse iso-probabilistic map)
+ * #3439 (SpecFunc entry for std::numeric_limits<UnsignedInteger>)
 
 
 == 1.27 release (2026-04-28) == #release-1.27

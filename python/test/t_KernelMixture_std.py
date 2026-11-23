@@ -197,9 +197,7 @@ ott.assert_almost_equal(
 )
 
 # --- KernelMixture: the log-PDF stays finite when every kernel PDF underflows ---
-tail_kernel = ot.KernelMixture(
-    ot.Exponential(1.0), [1.0, 1.0], ot.Sample([[0.0, 0.0]])
-)
+tail_kernel = ot.KernelMixture(ot.Exponential(1.0), [1.0, 1.0], ot.Sample([[0.0, 0.0]]))
 tail_point = [800.0, 0.0]
 assert tail_kernel.computePDF(tail_point) == 0.0
 ott.assert_almost_equal(tail_kernel.computeLogPDF(tail_point), -800.0, 1e-12, 0.0)
@@ -207,9 +205,7 @@ ott.assert_almost_equal(tail_kernel.computeLogPDF(tail_point), -800.0, 1e-12, 0.
 # --- KernelMixture: the normalization factor underflows to zero for a huge
 # bandwidth, the log-PDF must still be computed in the log domain ---
 ot.ResourceMap.SetAsBool("KernelMixture-EnableInterpolation", False)
-huge_bandwidth = ot.KernelMixture(
-    ot.Normal(), [1.0e308], ot.Sample([[0.0], [1.0]])
-)
+huge_bandwidth = ot.KernelMixture(ot.Normal(), [1.0e308], ot.Sample([[0.0], [1.0]]))
 ot.ResourceMap.SetAsBool("KernelMixture-EnableInterpolation", True)
 ott.assert_almost_equal(
     huge_bandwidth.computeLogPDF([0.5]),

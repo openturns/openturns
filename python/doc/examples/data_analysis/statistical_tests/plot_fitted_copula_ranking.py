@@ -114,9 +114,11 @@ ot.ResourceMap.SetAsUnsignedInteger("FittingTest-CopulaMinimumSamplingSize", 10)
 ot.ResourceMap.SetAsUnsignedInteger("FittingTest-CopulaMaximumSamplingSize", 100)
 for factory in [ot.GumbelCopulaFactory(), ot.ClaytonCopulaFactory()]:
     estimated, result = ot.FittingTest.CopulaCramerVonMises(sample, factory)
-    print(f"{factory.getClassName():25s} p-value={result.getPValue():.3f} "
-          f"statistic={result.getStatistic():.4f} "
-          f"accept={result.getBinaryQualityMeasure()} estimated={estimated}")
+    print(
+        f"{factory.getClassName():25s} p-value={result.getPValue():.3f} "
+        f"statistic={result.getStatistic():.4f} "
+        f"accept={result.getBinaryQualityMeasure()} estimated={estimated}"
+    )
 ot.ResourceMap.Reset()
 
 # %%

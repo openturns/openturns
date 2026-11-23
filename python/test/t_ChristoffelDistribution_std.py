@@ -24,7 +24,9 @@ factory = ot.OrthogonalProductPolynomialFactory([ot.Uniform(-1.0, 1.0)])
 basis = ot.OrthogonalBasis(factory)
 # OrthogonalBasis equality is value-based on the factory description
 assert ot.OrthogonalBasis(factory) == ot.OrthogonalBasis(factory)
-assert ot.OrthogonalBasis(factory) != ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Normal()]))
+assert ot.OrthogonalBasis(factory) != ot.OrthogonalBasis(
+    ot.OrthogonalProductPolynomialFactory([ot.Normal()])
+)
 distribution = otexp.ChristoffelDistribution(basis, 3)
 
 # accessors
@@ -42,10 +44,17 @@ assert distribution.getOrthogonalBasis() == basis
 # with P_2(0.5) = -0.125 (orthonormal Legendre: L_2 = sqrt(5)*P_2),
 # hence k_3(0.5) = 1.828125
 ott.assert_almost_equal(distribution.computeChristoffelFunction([0.5]), 1.828125)
-ott.assert_almost_equal(distribution.computeChristoffelFunction(ot.Sample([[0.5]]))[0, 0], 1.828125)
+ott.assert_almost_equal(
+    distribution.computeChristoffelFunction(ot.Sample([[0.5]]))[0, 0], 1.828125
+)
 # the stable logarithm agrees with the logarithm of the direct value on tame points
-ott.assert_almost_equal(distribution.computeLogChristoffelFunction([0.5]), math.log(1.828125))
-ott.assert_almost_equal(distribution.computeLogChristoffelFunction(ot.Sample([[0.5]]))[0, 0], math.log(1.828125))
+ott.assert_almost_equal(
+    distribution.computeLogChristoffelFunction([0.5]), math.log(1.828125)
+)
+ott.assert_almost_equal(
+    distribution.computeLogChristoffelFunction(ot.Sample([[0.5]]))[0, 0],
+    math.log(1.828125),
+)
 
 # PDF: 0.5 * 1.828125 / 3
 ott.assert_almost_equal(distribution.computePDF([0.5]), 0.3046875)
@@ -78,7 +87,9 @@ finally:
 ott.assert_almost_equal(distribution.computeKn(), kn)
 
 # the PDF integrates to 1 over the range
-probability = ot.GaussLegendre([41]).integrate(distribution.getPDF(), ot.Interval([-1.0], [1.0]))[0]
+probability = ot.GaussLegendre([41]).integrate(
+    distribution.getPDF(), ot.Interval([-1.0], [1.0])
+)[0]
 ott.assert_almost_equal(probability, 1.0)
 
 # sampling stays inside the range
@@ -101,7 +112,9 @@ normalBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Norma
 normalDistribution = otexp.ChristoffelDistribution(normalBasis, 3)
 ot.RandomGenerator.SetSeed(0)
 normalSample = normalDistribution.getSample(5000)
-normalKnMean = normalDistribution.computeChristoffelFunction(normalSample).computeMean()[0]
+normalKnMean = normalDistribution.computeChristoffelFunction(
+    normalSample
+).computeMean()[0]
 assert abs(normalKnMean - 11.0) < 1.5
 
 # A high-degree Hermite slice must not reject proposals in the tails. The
@@ -112,16 +125,30 @@ ot.RandomGenerator.SetSeed(0)
 highSample = highDistribution.getSample(2000)
 assert highSample.getSize() == 2000
 for x in [-4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0]:
-    assert abs(highSample.computeEmpiricalCDF([x]) - highDistribution.computeConditionalCDF(x, [])) < 0.05
+    assert (
+        abs(
+            highSample.computeEmpiricalCDF([x])
+            - highDistribution.computeConditionalCDF(x, [])
+        )
+        < 0.05
+    )
 
 # A one-sided unbounded marginal exercises the half-Cauchy proposal.
-gammaBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Gamma(2.0, 1.0)]))
+gammaBasis = ot.OrthogonalBasis(
+    ot.OrthogonalProductPolynomialFactory([ot.Gamma(2.0, 1.0)])
+)
 gammaDistribution = otexp.ChristoffelDistribution(gammaBasis, 8)
 ot.RandomGenerator.SetSeed(0)
 gammaSample = gammaDistribution.getSample(2000)
 assert gammaSample.getMin()[0] >= 0.0
 for x in [1.0, 2.0, 5.0, 10.0, 20.0]:
-    assert abs(gammaSample.computeEmpiricalCDF([x]) - gammaDistribution.computeConditionalCDF(x, [])) < 0.06
+    assert (
+        abs(
+            gammaSample.computeEmpiricalCDF([x])
+            - gammaDistribution.computeConditionalCDF(x, [])
+        )
+        < 0.06
+    )
 
 # The degree-29 case named in the review must complete as well. Its target has
 # polynomial tails beyond the normal numerical range, so the sample is allowed
@@ -145,7 +172,9 @@ ott.assert_almost_equal(pickle.load(buf).computePDF([0.5]), 0.3046875)
 # errors: null size, discrete reference, wrong point dimension
 with ott.assert_raises(TypeError):
     otexp.ChristoffelDistribution(basis, 0)
-poissonBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Poisson(2.0)]))
+poissonBasis = ot.OrthogonalBasis(
+    ot.OrthogonalProductPolynomialFactory([ot.Poisson(2.0)])
+)
 with ott.assert_raises(TypeError):
     otexp.ChristoffelDistribution(poissonBasis, 2)
 with ott.assert_raises(TypeError):
@@ -154,14 +183,36 @@ with ott.assert_raises(RuntimeError):
     distribution.getParametersCollection()
 
 # documented ResourceMap defaults
-assert ot.ResourceMap.GetAsString("ChristoffelDistribution-OptimizationAlgorithm") == "TNC"
-assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelDistribution-RatioUniformCandidateNumber") == 10000
-assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension") == 5
-assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize") == 100000
+assert (
+    ot.ResourceMap.GetAsString("ChristoffelDistribution-OptimizationAlgorithm") == "TNC"
+)
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger(
+        "ChristoffelDistribution-RatioUniformCandidateNumber"
+    )
+    == 10000
+)
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger(
+        "ChristoffelDistribution-RatioUniformMaxDimension"
+    )
+    == 5
+)
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize")
+    == 100000
+)
 assert ot.ResourceMap.GetAsBool("ChristoffelDistribution-ExactKn")
-assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelDistribution-KnMaximumMultiStart") == 16
-ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelDistribution-KnSafetyFactor"), 1.1)
-assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelDistribution-SliceGridSize") == 1000
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger("ChristoffelDistribution-KnMaximumMultiStart")
+    == 16
+)
+ott.assert_almost_equal(
+    ot.ResourceMap.GetAsScalar("ChristoffelDistribution-KnSafetyFactor"), 1.1
+)
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger("ChristoffelDistribution-SliceGridSize") == 1000
+)
 
 # the Monte-Carlo-only mode cannot exceed the exact estimate
 ot.ResourceMap.SetAsBool("ChristoffelDistribution-ExactKn", False)
@@ -178,23 +229,35 @@ assert 8.0 < knMonteCarlo <= kn
 # factors instead of their monomial coefficients, which lose all their digits in the
 # tails of high-degree factors. The pool is kept small here: the search climbs from any
 # in-range seed to the range edge, so the assertion does not depend on it
-bigBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Normal()], ot.LinearEnumerateFunction(1)))
+bigBasis = ot.OrthogonalBasis(
+    ot.OrthogonalProductPolynomialFactory([ot.Normal()], ot.LinearEnumerateFunction(1))
+)
 ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize", 10000)
 try:
     for solver in ("Cobyla", "TNC"):
-        ot.ResourceMap.SetAsString("ChristoffelDistribution-OptimizationAlgorithm", solver)
+        ot.ResourceMap.SetAsString(
+            "ChristoffelDistribution-OptimizationAlgorithm", solver
+        )
         try:
             knNormal = otexp.ChristoffelDistribution(bigBasis, 401).computeKn()
         finally:
-            ot.ResourceMap.SetAsString("ChristoffelDistribution-OptimizationAlgorithm", "TNC")
+            ot.ResourceMap.SetAsString(
+                "ChristoffelDistribution-OptimizationAlgorithm", "TNC"
+            )
         # both solvers reach 1.1 times the supremum of the numerical range, ~8.84e+13
         assert math.isfinite(knNormal)
-        assert 8.8e+13 <= knNormal <= 8.9e+13
+        assert 8.8e13 <= knNormal <= 8.9e13
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize", 100000)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelDistribution-KnSamplingSize", 100000
+    )
 
 # 2D tensor case: k_2(x) = 1 + 3*x0**2 with the linear enumerate
-basis2 = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)]))
+basis2 = ot.OrthogonalBasis(
+    ot.OrthogonalProductPolynomialFactory(
+        [ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)]
+    )
+)
 distribution2 = otexp.ChristoffelDistribution(basis2, 2)
 ott.assert_almost_equal(distribution2.computePDF([0.5, -0.3]), 0.21875)
 # X1 | X0 is uniform here since k_2 ignores x1
@@ -203,9 +266,13 @@ ott.assert_almost_equal(distribution2.computeConditionalPDF(0.3, [0.2]), 0.5)
 point2 = [0.5, -0.3]
 seqPDF = distribution2.computeSequentialConditionalPDF(point2)
 ott.assert_almost_equal(seqPDF[0], 0.4375)
-ott.assert_almost_equal(seqPDF[1], distribution2.computeConditionalPDF(point2[1], [point2[0]]))
+ott.assert_almost_equal(
+    seqPDF[1], distribution2.computeConditionalPDF(point2[1], [point2[0]])
+)
 seqCDF = distribution2.computeSequentialConditionalCDF(point2)
-ott.assert_almost_equal(seqCDF[1], distribution2.computeConditionalCDF(point2[1], [point2[0]]))
+ott.assert_almost_equal(
+    seqCDF[1], distribution2.computeConditionalCDF(point2[1], [point2[0]])
+)
 # quantile inverts the conditional CDF
 level = distribution2.computeConditionalCDF(0.3, [0.2])
 ott.assert_almost_equal(distribution2.computeConditionalQuantile(level, [0.2]), 0.3)
@@ -220,7 +287,9 @@ for point in sample2:
 corr = ot.CorrelationMatrix(2)
 corr[0, 1] = 0.5
 measureC = ot.Normal([0.0, 0.0], [1.0, 1.0], corr)
-hermite = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Normal(), ot.Normal()]))
+hermite = ot.OrthogonalBasis(
+    ot.OrthogonalProductPolynomialFactory([ot.Normal(), ot.Normal()])
+)
 # Orthonormality under a correlated measure is the caller's responsibility:
 # FiniteOrthogonalFunctionFactory stores the functions as given (dimension checks
 # only), so compose the orthonormal Hermite functions -- orthonormal under the
@@ -228,8 +297,14 @@ hermite = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Normal(),
 # which pushes measureC (rho = 0.5) back to the standard normal: phi_j(w(x)) is
 # then orthonormal under measureC. The trace identity E[k_3] = 3 checked below
 # is the cheap numerical check of that construction.
-whiten = ot.SymbolicFunction(['x0', 'x1'], ['x0', '(x1 - 0.5 * x0) / 0.8660254037844386'])
-corrBasis = ot.OrthogonalBasis(otexp.FiniteOrthogonalFunctionFactory([ot.ComposedFunction(hermite.build(j), whiten) for j in range(3)], measureC))
+whiten = ot.SymbolicFunction(
+    ["x0", "x1"], ["x0", "(x1 - 0.5 * x0) / 0.8660254037844386"]
+)
+corrBasis = ot.OrthogonalBasis(
+    ot.FiniteOrthogonalFunctionFactory(
+        [ot.ComposedFunction(hermite.build(j), whiten) for j in range(3)], measureC
+    )
+)
 assert not corrBasis.getMeasure().hasIndependentCopula()
 distributionC = otexp.ChristoffelDistribution(corrBasis, 3)
 assert distributionC.computePDF([0.1, -0.2]) >= 0.0
@@ -241,18 +316,24 @@ assert 2.5 < knVals.computeMean()[0] < 3.5
 
 # sampling stays available when RoU is disabled by the dimension key
 # (the tensor sequential path has priority and remains selected here)
-ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension", 0)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "ChristoffelDistribution-RatioUniformMaxDimension", 0
+)
 try:
     keySample = distribution.getSample(5)
     assert keySample.getSize() == 5
     for point in keySample:
         assert -1.0 <= point[0] <= 1.0
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension", 5)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelDistribution-RatioUniformMaxDimension", 5
+    )
 
 # the crude rejection branch: non-tensor basis with RoU out of range
 # forces getRealization() through drawByRejection
-ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension", 0)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "ChristoffelDistribution-RatioUniformMaxDimension", 0
+)
 try:
     rejSample = distributionC.getSample(5)
     assert rejSample.getSize() == 5
@@ -260,7 +341,9 @@ try:
     for point in rejSample:
         assert distributionC.computePDF(point) >= 0.0
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension", 5)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelDistribution-RatioUniformMaxDimension", 5
+    )
 
 # a null slice grid size is rejected by the tensor sampler
 ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-SliceGridSize", 0)
@@ -276,7 +359,11 @@ finally:
 # select rejection even though the dimension guard allows ratio-of-uniforms.
 # The sample is pinned to the rejection loop (proposal, envelope test) replayed
 # under the same seed, which no ratio-of-uniforms draw can match.
-basis1 = ot.OrthogonalBasis(otexp.FiniteOrthogonalFunctionFactory([ot.ComposedFunction(hermite.build(0), whiten)], measureC))
+basis1 = ot.OrthogonalBasis(
+    ot.FiniteOrthogonalFunctionFactory(
+        [ot.ComposedFunction(hermite.build(0), whiten)], measureC
+    )
+)
 ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize", 10000)
 try:
     dist1 = otexp.ChristoffelDistribution(basis1, 1)
@@ -288,7 +375,9 @@ try:
     replay = []
     while len(replay) < 5:
         proposal = measureC.getRealization()
-        if ot.RandomGenerator.Generate() * envelope1 <= float(dist1.computeChristoffelFunction(proposal)):
+        if ot.RandomGenerator.Generate() * envelope1 <= float(
+            dist1.computeChristoffelFunction(proposal)
+        ):
             replay.append(proposal)
     assert pinned.getSize() == 5
     assert [list(point) for point in pinned] == [list(point) for point in replay]
@@ -298,20 +387,34 @@ try:
     # its sample must match the one an externally built sampler draws under the
     # same seed -- computing the stability factor consumes no random number
     externalRoU = ot.RatioOfUniforms()
-    externalRoU.setCandidateNumber(ot.ResourceMap.GetAsUnsignedInteger("ChristoffelDistribution-RatioUniformCandidateNumber"))
-    externalRoU.setOptimizationAlgorithm(ot.OptimizationAlgorithm.GetByName(ot.ResourceMap.GetAsString("ChristoffelDistribution-OptimizationAlgorithm")))
-    externalRoU.setLogUnscaledPDFAndRange(distributionC.getLogPDF(), distributionC.getRange(), True)
+    externalRoU.setCandidateNumber(
+        ot.ResourceMap.GetAsUnsignedInteger(
+            "ChristoffelDistribution-RatioUniformCandidateNumber"
+        )
+    )
+    externalRoU.setOptimizationAlgorithm(
+        ot.OptimizationAlgorithm.GetByName(
+            ot.ResourceMap.GetAsString("ChristoffelDistribution-OptimizationAlgorithm")
+        )
+    )
+    externalRoU.setLogUnscaledPDFAndRange(
+        distributionC.getLogPDF(), distributionC.getRange(), True
+    )
     distributionC.computeKn()
     ot.RandomGenerator.SetSeed(1)
     expectedRoU = externalRoU.getSample(5)
     ot.RandomGenerator.SetSeed(1)
     actualRoU = distributionC.getSample(5)
-    assert [list(point) for point in actualRoU] == [list(point) for point in expectedRoU]
+    assert [list(point) for point in actualRoU] == [
+        list(point) for point in expectedRoU
+    ]
 
     # a failing ratio-of-uniforms setup must not break the constructor: the
     # sampler stays unset and sampling falls back to rejection (here the key
     # asks for zero candidates, which the sampler rejects)
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-RatioUniformCandidateNumber", 0)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelDistribution-RatioUniformCandidateNumber", 0
+    )
     try:
         fallback = otexp.ChristoffelDistribution(corrBasis, 3)
         fbSample = fallback.getSample(5)
@@ -319,9 +422,13 @@ try:
         for point in fbSample:
             assert fallback.computePDF(point) >= 0.0
     finally:
-        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-RatioUniformCandidateNumber", 10000)
+        ot.ResourceMap.SetAsUnsignedInteger(
+            "ChristoffelDistribution-RatioUniformCandidateNumber", 10000
+        )
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize", 100000)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelDistribution-KnSamplingSize", 100000
+    )
 
 # --- generic paths of the reference workflows ---
 
@@ -351,7 +458,9 @@ seqCDFC = distributionC.computeSequentialConditionalCDF([0.1, -0.2])
 assert all(0.0 <= value <= 1.0 for value in seqCDFC)
 
 # an unknown solver name falls back to the Monte-Carlo candidate estimate
-ot.ResourceMap.SetAsString("ChristoffelDistribution-OptimizationAlgorithm", "NoSuchSolver")
+ot.ResourceMap.SetAsString(
+    "ChristoffelDistribution-OptimizationAlgorithm", "NoSuchSolver"
+)
 try:
     knFallback = otexp.ChristoffelDistribution(basis, 3).computeKn()
 finally:
@@ -359,7 +468,9 @@ finally:
 assert 8.0 < knFallback <= kn
 
 # a tensor function factory builds the cached factors from the function families
-fourierBasis = ot.OrthogonalBasis(ot.OrthogonalProductFunctionFactory([ot.FourierSeriesFactory()] * 2))
+fourierBasis = ot.OrthogonalBasis(
+    ot.OrthogonalProductFunctionFactory([ot.FourierSeriesFactory()] * 2)
+)
 fourierDistribution = otexp.ChristoffelDistribution(fourierBasis, 2)
 assert fourierDistribution.getDimension() == 2
 assert fourierDistribution.computePDF([0.5, -0.3]) >= 0.0
@@ -383,7 +494,9 @@ finally:
 # the envelope far below k, so the first proposals above it restart the loop
 ot.ResourceMap.SetAsBool("ChristoffelDistribution-ExactKn", False)
 ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize", 1)
-ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension", 0)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "ChristoffelDistribution-RatioUniformMaxDimension", 0
+)
 try:
     tightRejection = otexp.ChristoffelDistribution(corrBasis, 3)
     tightSample = tightRejection.getSample(20)
@@ -392,8 +505,12 @@ try:
         assert tightRejection.computePDF(point) >= 0.0
 finally:
     ot.ResourceMap.SetAsBool("ChristoffelDistribution-ExactKn", True)
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize", 100000)
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension", 5)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelDistribution-KnSamplingSize", 100000
+    )
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelDistribution-RatioUniformMaxDimension", 5
+    )
 
 # the standard validation battery: checks of the overloaded methods plus the
 # cheap generic ones; the law has no parameters and no analytic gradients, and

@@ -24,8 +24,12 @@ dist1 = otexp.PushForwardDistribution(f1, antecedent1)
 xs = [-1.0 + 2.0 * i / 100 for i in range(101)]
 curve = ot.Sample([[0.8 * x, 0.4 * (x * x - 0.5)] for x in xs])
 pdf1 = [dist1.computePDF(p) for p in curve]
-ax1.plot([p[0] for p in circle], [p[1] for p in circle], "k--", lw=1.0, label="unit disk")
-sc = ax1.scatter([p[0] for p in curve], [p[1] for p in curve], c=pdf1, cmap="viridis", s=8)
+ax1.plot(
+    [p[0] for p in circle], [p[1] for p in circle], "k--", lw=1.0, label="unit disk"
+)
+sc = ax1.scatter(
+    [p[0] for p in curve], [p[1] for p in curve], c=pdf1, cmap="viridis", s=8
+)
 ax1.set_aspect("equal", adjustable="box")
 ax1.set_title("p > n: PDF on a curve (n=1, p=2)")
 ax1.set_xlabel(r"$y_0$")
@@ -83,9 +87,16 @@ sValues = [-halfWidth + 2.0 * halfWidth * i / 100 for i in range(101)]
 fibre = [[s, -s] for s in sValues]
 integrand = [antecedent3.computePDF(x) / math.sqrt(2.0) for x in fibre]
 ax3.plot([p[0] for p in fibre], [p[1] for p in fibre], "-", color="0.4", lw=1.0)
-sc3 = ax3.scatter([p[0] for p in fibre], [p[1] for p in fibre], c=integrand, cmap="viridis", s=16)
-ax3.text(0.04, 0.04, r"$f_Y(y) = \int_{f^{-1}(y)} p_X(x) / \sqrt{2}\ \mathrm{d}H^1$",
-         transform=ax3.transAxes, fontsize=10)
+sc3 = ax3.scatter(
+    [p[0] for p in fibre], [p[1] for p in fibre], c=integrand, cmap="viridis", s=16
+)
+ax3.text(
+    0.04,
+    0.04,
+    r"$f_Y(y) = \int_{f^{-1}(y)} p_X(x) / \sqrt{2}\ \mathrm{d}H^1$",
+    transform=ax3.transAxes,
+    fontsize=10,
+)
 ax3.set_xlim(-halfWidth - 0.3, halfWidth + 0.3)
 ax3.set_ylim(-halfWidth - 0.3, halfWidth + 0.3)
 ax3.set_aspect("equal", adjustable="box")
@@ -102,14 +113,24 @@ values = [-4.0 + 8.0 * i / 160 for i in range(161)]
 pdf3 = [dist3.computePDF([y]) for y in values]
 pdfReference = [reference.computePDF([y]) for y in values]
 difference = max(abs(a - b) for a, b in zip(pdf3, pdfReference))
-ax4.hist([x[0] for x in dist3.getSample(10000)],
-         bins=60, density=True, alpha=0.3, color="0.6", label="sample histogram")
+ax4.hist(
+    [x[0] for x in dist3.getSample(10000)],
+    bins=60,
+    density=True,
+    alpha=0.3,
+    color="0.6",
+    label="sample histogram",
+)
 ax4.plot(values, pdf3, "-", color="C0", lw=2.0, label="PushForwardDistribution")
-ax4.plot(values, pdfReference, "k--", lw=1.0, label=r"reference $\mathcal{N}(0, \sqrt{2})$")
+ax4.plot(
+    values, pdfReference, "k--", lw=1.0, label=r"reference $\mathcal{N}(0, \sqrt{2})$"
+)
 ax4.set_title(f"p < n: co-area PDF, max |diff| = {difference:.1e} (n=2, p=1)")
 ax4.set_xlabel(r"$y$")
 ax4.set_ylabel("PDF")
 ax4.legend(loc="upper right", fontsize="small")
 
-fig.suptitle("PushForwardDistribution: image of dimension p from an antecedent of dimension n")
+fig.suptitle(
+    "PushForwardDistribution: image of dimension p from an antecedent of dimension n"
+)
 fig.tight_layout()

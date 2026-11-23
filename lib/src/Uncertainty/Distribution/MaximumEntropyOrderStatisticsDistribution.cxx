@@ -2,7 +2,7 @@
 /**
  *  @brief The maximum entropy order statistics distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
  *
  */
 #include <cmath>
-#include <limits>
 #include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"
 #include "openturns/Beta.hxx"
 #include "openturns/MarginalUniformOrderStatistics.hxx"
@@ -583,7 +582,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
     size = 1;
     for (UnsignedInteger k = 1; k < dimension; ++k)
     {
-      if (size > std::numeric_limits<UnsignedInteger>::max() / marginalNodesNumber) throw InvalidArgumentException(HERE) << "Error: the CDF computation requires " << marginalNodesNumber << "^" << dimension - 1 << " integration points, more than supported";
+      if (size > SpecFunc::MaxUnsignedInteger / marginalNodesNumber) throw InvalidArgumentException(HERE) << "Error: the CDF computation requires " << marginalNodesNumber << "^" << dimension - 1 << " integration points, more than supported";
       size *= marginalNodesNumber;
     }
   }
@@ -935,10 +934,21 @@ void MaximumEntropyOrderStatisticsDistribution::setParametersCollection(const Po
   const UnsignedInteger dimension = getDimension();
   if (parametersCollection.getSize() != dimension) throw InvalidArgumentException(HERE) << "The collection is too small(" << parametersCollection.getSize() << "). Expected (" << dimension << ")";
 
-  // set marginal parameters
+  // No partial update on error: work on copies before committing
+  DistributionCollection newDistributions(dimension);
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
-    distributionCollection_[marginalIndex].setParameter(parametersCollection[marginalIndex]);
-  setDistributionCollection(distributionCollection_);
+  {
+    Distribution marginal(distributionCollection_[marginalIndex]);
+    marginal.setParameter(parametersCollection[marginalIndex]);
+    newDistributions[marginalIndex] = marginal;
+  }
+  // All slices accepted: commit the staged updates through a candidate,
+  // as setDistributionCollection rebuilds dimension/partition and can throw
+  const Description description(getDescription());
+  MaximumEntropyOrderStatisticsDistribution stagedDistribution(*this);
+  stagedDistribution.setDistributionCollection(newDistributions);
+  stagedDistribution.setDescription(description);
+  *this = stagedDistribution;
 }
 
 

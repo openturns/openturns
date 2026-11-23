@@ -2,7 +2,7 @@
 /**
  *  @brief This is a nD function build as a product of n 1D function
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -100,34 +100,6 @@ Point ProductUniVariateFunctionEvaluation::operator() (const Point & inP) const
   return result;
 }
 
-struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection & functions_;
-
-  ProductUniVariateFunctionEvaluationComputeSamplePolicy(const Sample & input,
-      Sample & output,
-      const ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection & functions)
-    : input_(input)
-    , output_(output)
-    , functions_(functions)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
-    {
-      Scalar value = functions_[0](input_(i, 0));
-      for (UnsignedInteger j = 1; j < functions_.getSize(); ++j)
-        value *= functions_[j](input_(i, j));
-      output_(i, 0) = value;
-    } // i
-  } // operator ()
-};  // struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
-
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
 Sample ProductUniVariateFunctionEvaluation::operator() (const Sample & inS) const
 {
@@ -135,8 +107,16 @@ Sample ProductUniVariateFunctionEvaluation::operator() (const Sample & inS) cons
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getOutputDimension());
-  const ProductUniVariateFunctionEvaluationComputeSamplePolicy policy( inS, result, functions_ );
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
+    {
+      Scalar value = functions_[0](inS(i, 0));
+      for (UnsignedInteger j = 1; j < functions_.getSize(); ++j)
+        value *= functions_[j](inS(i, j));
+      result(i, 0) = value;
+    } // i
+  }, 1024);
   result.setDescription(getOutputDescription());
   callsNumber_.fetchAndAdd(size);
   return result;

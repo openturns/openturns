@@ -2,7 +2,7 @@
 /**
  *  @brief LOLA-Voronoi sequential design
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -94,7 +94,7 @@ void LOLAVoronoi::computeVoronoiScore() const
 }
 
 
-struct LVLOLAScorePolicy
+struct LVLOLAScoreBody
 {
   const LOLAVoronoi & lola_;
 
@@ -108,7 +108,7 @@ struct LVLOLAScorePolicy
   String methodName_ = ResourceMap::Get("LOLAVoronoi-DecompositionMethod");
   String aggregationMethod_ = ResourceMap::GetAsString("LOLAVoronoi-NonLinearityAggregationMethod");
 
-  LVLOLAScorePolicy(const LOLAVoronoi & lola, const UnsignedInteger previousSize)
+  LVLOLAScoreBody(const LOLAVoronoi & lola, const UnsignedInteger previousSize)
     : lola_(lola)
     , previousSize_(previousSize)
 
@@ -271,8 +271,8 @@ void LOLAVoronoi::computeLOLAScore() const
   neighbourhood_.resize(x_.getSize());
 
   lolaScore_.resize(x_.getSize());
-  const LVLOLAScorePolicy policy(*this, previousSize);
-  TBBImplementation::ParallelFor(0, x_.getSize(), policy);
+  const LVLOLAScoreBody body(*this, previousSize);
+  TBBImplementation::ParallelFor(0, x_.getSize(), body, 1024);
 }
 
 Sample LOLAVoronoi::generate(const UnsignedInteger size) const

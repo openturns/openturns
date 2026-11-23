@@ -11,9 +11,7 @@ ot.TESTPREAMBLE()
 
 def makeBasis(functions, measure):
     """Expose a collection of functions and its measure as an OrthogonalBasis."""
-    return ot.OrthogonalBasis(
-        otexp.FiniteOrthogonalFunctionFactory(functions, measure)
-    )
+    return ot.OrthogonalBasis(ot.FiniteOrthogonalFunctionFactory(functions, measure))
 
 
 # Check the parameter constructor
@@ -100,7 +98,9 @@ partialExperiment = ot.GaussProductExperiment(
     ot.JointDistribution([ot.Uniform(0.0, 0.5)] * dim), [4] * dim
 )
 with ott.assert_raises(TypeError):
-    partialFactory = otexp.BasisOrthonormalizationFactory(initialBasis, distribution, kMax)
+    partialFactory = otexp.BasisOrthonormalizationFactory(
+        initialBasis, distribution, kMax
+    )
     partialFactory.setIntegrationAlgorithm(ot.ExperimentIntegration(partialExperiment))
     partialFactory.build(0)
 
@@ -109,7 +109,9 @@ with ott.assert_raises(TypeError):
 # orthonormal for the experiment measure, not for the target measure.
 wrongMeasureExperiment = ot.GaussProductExperiment(ot.Normal(dim), [4] * dim)
 with ott.assert_raises(TypeError):
-    wrongMeasureFactory = otexp.BasisOrthonormalizationFactory(initialBasis, distribution, kMax)
+    wrongMeasureFactory = otexp.BasisOrthonormalizationFactory(
+        initialBasis, distribution, kMax
+    )
     wrongMeasureFactory.setIntegrationAlgorithm(
         ot.ExperimentIntegration(wrongMeasureExperiment)
     )
@@ -123,10 +125,10 @@ smallImportance = ot.ImportanceSamplingExperiment(
     1000,
 )
 with ott.assert_raises(TypeError):
-    importanceFactory = otexp.BasisOrthonormalizationFactory(initialBasis, distribution, kMax)
-    importanceFactory.setIntegrationAlgorithm(
-        ot.ExperimentIntegration(smallImportance)
+    importanceFactory = otexp.BasisOrthonormalizationFactory(
+        initialBasis, distribution, kMax
     )
+    importanceFactory.setIntegrationAlgorithm(ot.ExperimentIntegration(smallImportance))
     importanceFactory.build(0)
 
 # An unbounded target cannot be covered by a bounded instrumental support.
@@ -180,9 +182,13 @@ ott.assert_almost_equal(M4, ot.IdentityMatrix(kMax))
 # The rank and coefficient thresholds are relative: rescaling the initial
 # functions must not change the orthonormal basis, on both factorization paths.
 for scale in (1.0e-12, 1.0e12):
-    scaledFunctions = [ot.LinearCombinationFunction([f], [scale]) for f in initialFunctions]
+    scaledFunctions = [
+        ot.LinearCombinationFunction([f], [scale]) for f in initialFunctions
+    ]
     scaledBasis = makeBasis(scaledFunctions, distribution)
-    scaledFactory = otexp.BasisOrthonormalizationFactory(scaledBasis, distribution, kMax)
+    scaledFactory = otexp.BasisOrthonormalizationFactory(
+        scaledBasis, distribution, kMax
+    )
     scaledFunctions = [scaledFactory.build(k) for k in range(kMax)]
     ott.assert_almost_equal(scaledFunctions[0](x), [1.0])
     scaledAlgo = otexp.BasisOrthonormalizationAlgorithm(scaledBasis, distribution, kMax)
@@ -230,9 +236,7 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(TypeError):
     otexp.BasisOrthonormalizationFactory(initialBasis, distribution, kMax + 1)
 with ott.assert_raises(TypeError):
-    otexp.BasisOrthonormalizationAlgorithm(
-        ot.OrthogonalBasis(), distribution, 1
-    )
+    otexp.BasisOrthonormalizationAlgorithm(ot.OrthogonalBasis(), distribution, 1)
 with ott.assert_raises(TypeError):
     otexp.BasisOrthonormalizationFactory(ot.OrthogonalBasis(), distribution, 1)
 
@@ -254,15 +258,9 @@ with ott.assert_raises(TypeError):
 # The target measure drives the orthonormalization, not the instrumental
 # measure of the source basis: the Frank copula couples the coordinates even
 # though the source basis is orthonormal for the product-uniform measure.
-copulaMeasure = ot.JointDistribution(
-    [ot.Uniform(0.0, 1.0)] * dim, ot.FrankCopula(4.0)
-)
-legendreBasis = ot.OrthogonalProductPolynomialFactory(
-    [ot.LegendreFactory()] * dim
-)
-copulaAlgo = otexp.BasisOrthonormalizationAlgorithm(
-    legendreBasis, copulaMeasure, kMax
-)
+copulaMeasure = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dim, ot.FrankCopula(4.0))
+legendreBasis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()] * dim)
+copulaAlgo = otexp.BasisOrthonormalizationAlgorithm(legendreBasis, copulaMeasure, kMax)
 copulaCoefficients = copulaAlgo.getCoefficients()
 assert abs(copulaCoefficients[1, 2]) > 1.0e-3
 
@@ -299,47 +297,69 @@ loadedStudy.fillObject("factory", loadedFactory)
 ott.assert_almost_equal(loadedFactory.build(0)(x), [1.0])
 assert loadedFactory.getCoefficients().getDimension() == kMax
 assert loadedFactory.getSize() == kMax
-assert loadedFactory.getOrthonormalizationAlgorithm().getOrthogonalBasis() == initialBasis
+assert (
+    loadedFactory.getOrthonormalizationAlgorithm().getOrthogonalBasis() == initialBasis
+)
 assert loadedFactory.getOrthonormalizationAlgorithm().getSize() == kMax
 os.remove(studyFile)
 
 # The default tensor rule is capped so that a high-dimensional measure does
 # not materialize a huge tensor product.
-ot.ResourceMap.SetAsUnsignedInteger("BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 100)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 100
+)
 try:
-    cappedFactory = otexp.BasisOrthonormalizationFactory(initialBasis, distribution, kMax)
+    cappedFactory = otexp.BasisOrthonormalizationFactory(
+        initialBasis, distribution, kMax
+    )
     cappedFunctions = [cappedFactory.build(k) for k in range(kMax)]
     MCapped = ot.SymmetricMatrix(3)
     for m in range(3):
         for n in range(m + 1):
 
             def wrapperCapped(x):
-                return cappedFunctions[m](x) * cappedFunctions[n](x)[0] * distribution.computePDF(x)
+                return (
+                    cappedFunctions[m](x)
+                    * cappedFunctions[n](x)[0]
+                    * distribution.computePDF(x)
+                )
 
             kernelCapped = ot.PythonFunction(dim, 1, wrapperCapped)
-            valueCapped = integrationAlgo.integrate(kernelCapped, distribution.getRange())[0]
+            valueCapped = integrationAlgo.integrate(
+                kernelCapped, distribution.getRange()
+            )[0]
             if abs(valueCapped) >= 1.0e-6:
                 MCapped[m, n] = valueCapped
     ott.assert_almost_equal(MCapped, ot.IdentityMatrix(3))
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1000000)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1000000
+    )
 
 # A null tensor budget is rejected
-ot.ResourceMap.SetAsUnsignedInteger("BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 0)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 0
+)
 try:
     with ott.assert_raises(TypeError):
         otexp.BasisOrthonormalizationFactory(initialBasis, distribution, kMax).build(0)
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1000000)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1000000
+    )
 
 # A budget that cannot even hold the order-2 tensor rule is rejected instead
 # of materializing 2^dimension nodes
-ot.ResourceMap.SetAsUnsignedInteger("BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1
+)
 try:
     with ott.assert_raises(TypeError):
         otexp.BasisOrthonormalizationFactory(initialBasis, distribution, kMax).build(0)
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1000000)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1000000
+    )
 
 # Test with a dependent measure: default integration uses Gauss-Legendre on the
 # numerical range with the density folded into the weights
@@ -359,10 +379,16 @@ for m in range(kMax):
     for n in range(m + 1):
 
         def wrapperDep(x):
-            return functionsDep[m](x) * functionsDep[n](x)[0] * depDistribution.computePDF(x)
+            return (
+                functionsDep[m](x)
+                * functionsDep[n](x)[0]
+                * depDistribution.computePDF(x)
+            )
 
         kernelDep = ot.PythonFunction(dim, 1, wrapperDep)
-        valueDep = integrationAlgoDep.integrate(kernelDep, depDistribution.getRange())[0]
+        valueDep = integrationAlgoDep.integrate(kernelDep, depDistribution.getRange())[
+            0
+        ]
         if abs(valueDep) >= 1.0e-6:
             MDep[m, n] = valueDep
 ott.assert_almost_equal(MDep, ot.IdentityMatrix(kMax))
@@ -373,9 +399,9 @@ ott.assert_almost_equal(MDep, ot.IdentityMatrix(kMax))
 studentDistribution = ot.Student(3, [0.0] * dim, [1.0] * dim, correlation)
 studentBasis = makeBasis(initialFunctions, studentDistribution)
 with ott.assert_raises(TypeError):
-    otexp.BasisOrthonormalizationFactory(
-        studentBasis, studentDistribution, kMax
-    ).build(0)
+    otexp.BasisOrthonormalizationFactory(studentBasis, studentDistribution, kMax).build(
+        0
+    )
 
 # Linearly dependent initial functions are rejected on both routes
 duplicateFunctions = [initialFunctions[0], initialFunctions[0]]

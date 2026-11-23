@@ -14,7 +14,11 @@ threshold = 3.0
 
 # Monte Carlo reference
 memo_mc = ot.MemoizeFunction(model)
-event_mc = ot.ThresholdEvent(ot.CompositeRandomVector(memo_mc, ot.RandomVector(distribution)), ot.Greater(), threshold)
+event_mc = ot.ThresholdEvent(
+    ot.CompositeRandomVector(memo_mc, ot.RandomVector(distribution)),
+    ot.Greater(),
+    threshold,
+)
 algo_mc = ot.ProbabilitySimulationAlgorithm(event_mc)
 algo_mc.setMaximumOuterSampling(20000)
 algo_mc.setBlockSize(500)
@@ -26,7 +30,11 @@ mean_mc = ssa_mc.computeMeanPointInEventDomain()
 
 # Importance sampling in physical space
 memo_is = ot.MemoizeFunction(model)
-event_is = ot.ThresholdEvent(ot.CompositeRandomVector(memo_is, ot.RandomVector(distribution)), ot.Greater(), threshold)
+event_is = ot.ThresholdEvent(
+    ot.CompositeRandomVector(memo_is, ot.RandomVector(distribution)),
+    ot.Greater(),
+    threshold,
+)
 importance = ot.Normal([1.0, 2.0], [1.0] * dim)
 experiment = ot.ImportanceSamplingExperiment(importance)
 algo_is = ot.ProbabilitySimulationAlgorithm(event_is, experiment)
@@ -44,7 +52,9 @@ ssa_unweighted = ot.SimulationSensitivityAnalysis(event_is, input_sample, output
 assert ssa_unweighted.getWeights().getSize() == 0
 
 # With weights it matches Monte Carlo
-ssa_is = ot.SimulationSensitivityAnalysis(event_is, input_sample, output_sample, weights)
+ssa_is = ot.SimulationSensitivityAnalysis(
+    event_is, input_sample, output_sample, weights
+)
 ott.assert_almost_equal(ssa_is.getWeights().getSize(), size)
 sens_is = ssa_is.computeEventProbabilitySensitivity()
 mean_is = ssa_is.computeMeanPointInEventDomain()
@@ -55,7 +65,9 @@ ott.assert_almost_equal(list(mean_is), list(mean_mc), 1e-1, 5e-2)
 # setWeights accessor
 ssa_check = ot.SimulationSensitivityAnalysis(event_is, input_sample, output_sample)
 ssa_check.setWeights(weights)
-ott.assert_almost_equal(list(ssa_check.computeEventProbabilitySensitivity()), list(sens_is), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    list(ssa_check.computeEventProbabilitySensitivity()), list(sens_is), 1e-12, 1e-12
+)
 
 # Standard-space IS mapped back to physical space (discourse #102)
 marg_L = ot.LogNormalMuSigmaOverMu(5.0, 0.02, 0.0).getDistribution()
@@ -67,7 +79,9 @@ phys_event = ot.ThresholdEvent(ot.CompositeRandomVector(beam, ante), ot.Greater(
 std_event = ot.StandardEvent(phys_event)
 beam_std = ot.MemoizeFunction(std_event.getFunction())
 ante_std = ot.CompositeRandomVector(beam_std, std_event.getAntecedent())
-std_event_is = ot.ThresholdEvent(ante_std, std_event.getOperator(), std_event.getThreshold())
+std_event_is = ot.ThresholdEvent(
+    ante_std, std_event.getOperator(), std_event.getThreshold()
+)
 # design point from a cheap FORM-like guess: use quantile-based shift here, fixed for determinism
 mpfp = [1.0, 2.0]
 std_importance = ot.Normal(mpfp, ot.CovarianceMatrix(2))

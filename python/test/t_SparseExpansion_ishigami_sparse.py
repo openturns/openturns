@@ -61,8 +61,13 @@ listFittingAlgorithm = [ot.KFold(), ot.CorrectedLeaveOneOut()]
 
 for fittingAlgorithm in listFittingAlgorithm:
     algo = otexp.SparseExpansion(
-        inputSample, outputSample, distribution,
-        productBasis, basisSize, "QR", fittingAlgorithm
+        inputSample,
+        outputSample,
+        distribution,
+        productBasis,
+        basisSize,
+        "QR",
+        fittingAlgorithm,
     )
     algo.run()
     result = algo.getResult()

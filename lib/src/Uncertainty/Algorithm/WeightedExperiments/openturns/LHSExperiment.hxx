@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an LHSExperiment plane
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,13 +44,13 @@ public:
 
   /** Parameters constructor */
   explicit LHSExperiment(const UnsignedInteger size,
-                         const Bool alwaysShuffle = false,
+                         const Bool alwaysShuffle = false, // deprecated shuffle/shift arguments
                          const Bool randomShift = true);
 
   /** Parameters constructor */
   LHSExperiment(const Distribution & distribution,
                 const UnsignedInteger size,
-                const Bool alwaysShuffle = false,
+                const Bool alwaysShuffle = false, // deprecated shuffle/shift arguments
                 const Bool randomShift = true);
 
   /** Virtual constructor */
@@ -69,6 +69,9 @@ public:
   /** Sample generation */
   Sample generateStandard() const;
   Sample generateWithWeights(Point & weightsOut) const override;
+
+  /** Return isRandom flag */
+  Bool isRandom() const override;
 
   /** Shuffle the cells. */
   static Matrix ComputeShuffle(const UnsignedInteger dimension,

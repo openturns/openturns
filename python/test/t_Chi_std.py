@@ -91,7 +91,9 @@ ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [0.40578]), 1e-5, 0.0
 parameters = distribution.getParametersCollection()
 assert len(parameters) == 1
 ott.assert_almost_equal(parameters[0], [1.5], 0.0, 0.0)
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Chi"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName() == "Chi"
+)
 
 # Specific to this distribution
 nu = distribution.getNu()

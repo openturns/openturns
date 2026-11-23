@@ -2,7 +2,7 @@
 /**
  *  @brief The Normal distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -164,6 +164,8 @@ public:
   void setR(const CorrelationMatrix & R);
 
   /** Parameters accessors */
+  using EllipticalDistribution::setParametersCollection;
+  void setParametersCollection(const PointCollection & parametersCollection) override;
   void setParameter(const Point & parameter) override;
 
   /** Get the copula of a distribution */

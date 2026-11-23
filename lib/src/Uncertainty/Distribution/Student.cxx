@@ -2,7 +2,7 @@
 /**
  *  @brief The Student distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -90,10 +90,10 @@ Student::Student(const Scalar nu,
 Student::Student(const Scalar nu,
                  const Point & mean,
                  const CovarianceMatrix & C)
-: EllipticalDistribution(mean,
-                         Point(mean.getDimension(), 1.0),
-                         CorrelationMatrix(mean.getDimension()),
-                         1.0)
+  : EllipticalDistribution(mean,
+                           Point(mean.getDimension(), 1.0),
+                           CorrelationMatrix(mean.getDimension()),
+                           1.0)
 
 {
   const UnsignedInteger dimension = mean.getDimension();
@@ -456,7 +456,11 @@ Scalar Student::computeConditionalPDF(const Scalar xj, const Point & xcond) cons
   // Identify non-degenerate conditioning dimensions
   Bool hasDegenerate = false;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (sigma_[i] == 0.0) { hasDegenerate = true; break; }
+    if (sigma_[i] == 0.0)
+    {
+      hasDegenerate = true;
+      break;
+    }
   if (hasDegenerate)
   {
     Indices activeIndices;
@@ -560,7 +564,11 @@ Scalar Student::computeConditionalCDF(const Scalar xj, const Point & xcond) cons
   // Identify non-degenerate conditioning dimensions
   Bool hasDegenerate = false;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (sigma_[i] == 0.0) { hasDegenerate = true; break; }
+    if (sigma_[i] == 0.0)
+    {
+      hasDegenerate = true;
+      break;
+    }
   if (hasDegenerate)
   {
     Indices activeIndices;
@@ -657,7 +665,11 @@ Scalar Student::computeConditionalQuantile(const Scalar p, const Point & xcond) 
   // Identify non-degenerate conditioning dimensions
   Bool hasDegenerate = false;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (sigma_[i] == 0.0) { hasDegenerate = true; break; }
+    if (sigma_[i] == 0.0)
+    {
+      hasDegenerate = true;
+      break;
+    }
   if (hasDegenerate)
   {
     Indices activeIndices;
@@ -849,10 +861,23 @@ Student::PointWithDescriptionCollection Student::getParametersCollection() const
 void Student::setParametersCollection(const PointCollection & parametersCollection)
 {
   const UnsignedInteger size = parametersCollection.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: empty parameters collection";
   const UnsignedInteger dimension = size > 1 ? size - 1 : size;
-  if (dimension == 1) *this = Student(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: empty parameters collection";
+  if (dimension == 1)
+  {
+    if (size != 1) throw InvalidArgumentException(HERE) << "Error: invalid parameters collection size " << size << ", expected 1 for dimension 1";
+    if (parametersCollection[0].getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: invalid marginal parameter dimension at index 0, expected 3, got " << parametersCollection[0].getDimension();
+    *this = Student(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  }
   else
   {
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      if (parametersCollection[i].getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: invalid marginal parameter dimension at index " << i << ", expected 3, got " << parametersCollection[i].getDimension();
+    }
+    const UnsignedInteger dependenceDimension = dimension * (dimension - 1) / 2;
+    if (parametersCollection[size - 1].getDimension() != dependenceDimension + 1) throw InvalidArgumentException(HERE) << "Error: invalid dependence parameter dimension, expected " << dependenceDimension + 1 << ", got " << parametersCollection[size - 1].getDimension();
     const Scalar nu = parametersCollection[0][0];
     Point mean(dimension);
     Point sigma(dimension);

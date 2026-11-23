@@ -3,7 +3,7 @@
  *  @brief ActiveLearningEFFFunction implements the "EFF" active learning
  *  criterion used in reliability analysis
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,9 +45,9 @@ ActiveLearningEFFFunction::ActiveLearningEFFFunction()
 
 /* Constructor with parameters */
 ActiveLearningEFFFunction::ActiveLearningEFFFunction(const Scalar reliabilityThreshold,
-                                                     const Scalar learningThreshold)
+    const Scalar learningThreshold)
   : ActiveLearningReliabilityFunctionImplementation(reliabilityThreshold,
-                                                    learningThreshold)
+      learningThreshold)
 {
 }
 
@@ -59,7 +59,7 @@ ActiveLearningEFFFunction * ActiveLearningEFFFunction::clone() const
 
 /* Return sample corresponding to EFF criterion*/
 Sample ActiveLearningEFFFunction::getInfillSample(const Sample & inputSample,
-                                                  const Sample & criterionValues) const
+    const Sample & criterionValues) const
 {
   Indices indextoReturn(1);
 
@@ -98,9 +98,9 @@ Scalar ActiveLearningEFFFunction::computeAsScalar(const Point & x) const
   const Scalar CDF_x_plus_epsilon = DistFunc::pNormal(reduced_x_plus_epsilon);
   const Scalar CDF_x_minus_epsilon = DistFunc::pNormal(reduced_x_minus_epsilon);
 
-  const Scalar EFF = ( mx - reliabilityThreshold_ ) * ( 2.0 * CDF_x - CDF_x_plus_epsilon - CDF_x_minus_epsilon ) -\
-                sk * ( 2.0 * PDF_x - PDF_x_plus_epsilon - PDF_x_minus_epsilon ) +\
-                epsilon * ( CDF_x_plus_epsilon  - CDF_x_minus_epsilon );
+  const Scalar EFF = ( mx - reliabilityThreshold_ ) * ( 2.0 * CDF_x - CDF_x_plus_epsilon - CDF_x_minus_epsilon ) - \
+                     sk * ( 2.0 * PDF_x - PDF_x_plus_epsilon - PDF_x_minus_epsilon ) + \
+                     epsilon * ( CDF_x_plus_epsilon  - CDF_x_minus_epsilon );
   return EFF;
 }
 

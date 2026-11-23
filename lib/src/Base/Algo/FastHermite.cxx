@@ -2,7 +2,7 @@
 /**
  *  @brief Fast Gauss-Hermite quadrature via polished tridiagonal eigensolver
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,9 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 #include <cmath>
+#ifdef OPENTURNS_HAVE_BOOST
 #include <boost/math/special_functions/airy.hpp>
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,8 +43,11 @@ BEGIN_NAMESPACE_OPENTURNS
  * they move to SpecFunc if the path is kept.
  */
 
-    // Large rules use the Townsend-Trogdon-Olver Airy path, small ones the
-    // polished eigensolver; threshold from the ResourceMap
+// Large rules use the Townsend-Trogdon-Olver Airy path, small ones the
+// polished eigensolver; threshold from the ResourceMap.
+// The Airy path needs Boost and is skipped without it: large rules then
+// use the polished eigensolver directly.
+#ifdef OPENTURNS_HAVE_BOOST
 
 // Exact first 10 Airy Ai roots (used by the Gatteschi initial guesses)
 static const Scalar AiryRootsExact[10] = {-2.338107410459762, -4.087949444130970, -5.520559828095555, -6.786708090071765, -7.944133587120863, -9.022650853340979, -10.040174341558084, -11.008524303733260, -11.936015563236262, -12.828776752865757};
@@ -69,10 +74,10 @@ static void HermiteInitialGuesses(const UnsignedInteger n,
   {
     const Scalar r = airyrts[k];
     const Scalar value = nu + std::pow(2.0, 2.0 / 3.0) * r * std::pow(nu, 1.0 / 3.0)
-      + 1.0 / 5.0 * std::pow(2.0, 4.0 / 3.0) * r * r * std::pow(nu, -1.0 / 3.0)
-      + (11.0 / 35.0 - a * a - 12.0 / 175.0 * r * r * r) / nu
-      + (16.0 / 1575.0 * r + 92.0 / 7875.0 * r * r * r * r) * std::pow(2.0, 2.0 / 3.0) * std::pow(nu, -5.0 / 3.0)
-      - (15152.0 / 3031875.0 * r * r * r * r * r + 1088.0 / 121275.0 * r * r) * std::pow(2.0, 1.0 / 3.0) * std::pow(nu, -7.0 / 3.0);
+                         + 1.0 / 5.0 * std::pow(2.0, 4.0 / 3.0) * r * r * std::pow(nu, -1.0 / 3.0)
+                         + (11.0 / 35.0 - a * a - 12.0 / 175.0 * r * r * r) / nu
+                         + (16.0 / 1575.0 * r + 92.0 / 7875.0 * r * r * r * r) * std::pow(2.0, 2.0 / 3.0) * std::pow(nu, -5.0 / 3.0)
+                         - (15152.0 / 3031875.0 * r * r * r * r * r + 1088.0 / 121275.0 * r * r) * std::pow(2.0, 1.0 / 3.0) * std::pow(nu, -7.0 / 3.0);
     xAiry[m - 1 - k] = (value > 0.0) ? std::sqrt(value) : 0.0;
   }
   Point xSin(m);
@@ -171,8 +176,8 @@ static void EvaluateAiryAsymptotics(const UnsignedInteger n,
 // Returns false on any structural defect so the caller falls back to the
 // polished eigensolver, mirroring the Laguerre/Jacobi paths.
 static Bool ComputeNodesAndWeightsAsymptotic(const UnsignedInteger n,
-                                             Scalar * nodes,
-                                             Scalar * weights)
+    Scalar * nodes,
+    Scalar * weights)
 {
   Point x0;
   HermiteInitialGuesses(n, x0);
@@ -262,6 +267,8 @@ static Bool ComputeNodesAndWeightsAsymptotic(const UnsignedInteger n,
   return true;
 }
 
+#endif /* OPENTURNS_HAVE_BOOST */
+
 /**
  * @namespace FastHermite
  *
@@ -284,38 +291,40 @@ static Bool ComputeNodesAndWeightsAsymptotic(const UnsignedInteger n,
  */
 namespace FastHermite
 {
-  void ComputeNodesAndWeights(const UnsignedInteger n,
-                              Scalar * nodes,
-                              Scalar * weights)
+void ComputeNodesAndWeights(const UnsignedInteger n,
+                            Scalar * nodes,
+                            Scalar * weights)
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be > 0";
+  if (n == 1)
   {
-    if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be > 0";
-    if (n == 1)
-    {
-      nodes[0] = 0.0;
-      weights[0] = 1.0;
-      return;
-    }
-
-    // Symmetric recurrence coefficients for orthonormal Hermite polynomials:
-    // gamma_j = 0, b_j = sqrt(j), b_0 = 0
-    Point gamma(n, 0.0);
-    Point b(n, 0.0);
-    for (UnsignedInteger j = 1; j < n; ++j)
-      b[j] = std::sqrt((1.0 * j));
-
-    // Large rules use the Townsend-Trogdon-Olver Airy path, small ones the
-    // polished eigensolver; threshold from the ResourceMap.
-    // Above the threshold the relative accuracy is better than 5e-13 and
-    // the asymptotic path is faster. A failed asymptotic evaluation falls
-    // back to the polished eigensolver.
-    const UnsignedInteger asymptoticThreshold = ResourceMap::GetAsUnsignedInteger("FastHermite-AsymptoticThreshold");
-    if (n >= asymptoticThreshold)
-    {
-      if (ComputeNodesAndWeightsAsymptotic(n, nodes, weights)) return;
-      // fall through to the polished eigensolver on asymptotic failure
-    }
-    FastGaussQuadrature::PolishedSolve(gamma.data(), b.data(), n, nodes, weights);
+    nodes[0] = 0.0;
+    weights[0] = 1.0;
+    return;
   }
+
+  // Symmetric recurrence coefficients for orthonormal Hermite polynomials:
+  // gamma_j = 0, b_j = sqrt(j), b_0 = 0
+  Point gamma(n, 0.0);
+  Point b(n, 0.0);
+  for (UnsignedInteger j = 1; j < n; ++j)
+    b[j] = std::sqrt((1.0 * j));
+
+#ifdef OPENTURNS_HAVE_BOOST
+  // Large rules use the Townsend-Trogdon-Olver Airy path, small ones the
+  // polished eigensolver; threshold from the ResourceMap.
+  // Above the threshold the relative accuracy is better than 5e-13 and
+  // the asymptotic path is faster. A failed asymptotic evaluation falls
+  // back to the polished eigensolver.
+  const UnsignedInteger asymptoticThreshold = ResourceMap::GetAsUnsignedInteger("FastHermite-AsymptoticThreshold");
+  if (n >= asymptoticThreshold)
+  {
+    if (ComputeNodesAndWeightsAsymptotic(n, nodes, weights)) return;
+    // fall through to the polished eigensolver on asymptotic failure
+  }
+#endif
+  FastGaussQuadrature::PolishedSolve(gamma.data(), b.data(), n, nodes, weights);
+}
 } // namespace FastHermite
 
 END_NAMESPACE_OPENTURNS

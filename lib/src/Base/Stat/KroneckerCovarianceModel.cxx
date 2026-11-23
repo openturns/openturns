@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -324,7 +324,7 @@ Scalar KroneckerCovarianceModel::computeAsScalar(const Collection<Scalar>::const
   return amplitude_[0] * amplitude_[0] * rho_.getImplementation()->computeAsScalar(s_begin, t_begin);
 }
 
-struct KroneckerModelDiscretizePolicy
+struct KroneckerModelDiscretizeBody
 {
   const SampleImplementation &input_;
   // output_ is a CovarianceMatrix, but since we fill only its half part,
@@ -334,7 +334,7 @@ struct KroneckerModelDiscretizePolicy
   const KroneckerCovarianceModel & model_;
   const UnsignedInteger inputDimension_;
 
-  KroneckerModelDiscretizePolicy(const Sample &input,
+  KroneckerModelDiscretizeBody(const Sample &input,
                                  CovarianceMatrix & output,
                                  const KroneckerCovarianceModel & model)
     : input_(*input.getImplementation()), output_(*output.getImplementation()), model_(model), inputDimension_(input_.getDimension())
@@ -385,7 +385,7 @@ struct KroneckerModelDiscretizePolicy
     genericKroneckerProduct(rhoCholeskyFactor, spatialCovarianceCholeskyFactor, outputMatrix);
     return outputMatrix;
   }
-}; /* end struct KroneckerModelDiscretizePolicy */
+}; /* end struct KroneckerModelDiscretizeBody */
 
 CovarianceMatrix KroneckerCovarianceModel::discretize(const Sample &vertices) const
 {
@@ -393,27 +393,27 @@ CovarianceMatrix KroneckerCovarianceModel::discretize(const Sample &vertices) co
     throw InvalidArgumentException(HERE) << "In KroneckerCovarianceModel::discretize: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << inputDimension_;
   const UnsignedInteger size = vertices.getSize();
   CovarianceMatrix rhoMatrix(size);
-  const KroneckerModelDiscretizePolicy policy(vertices, rhoMatrix, *this);
+  const KroneckerModelDiscretizeBody body(vertices, rhoMatrix, *this);
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
   rhoMatrix.checkSymmetry();
   outputCovariance_.checkSymmetry();
   // Compute the Kronecker product of rhoMatrix by outputCovariance_
-  return policy.kroneckerProduct(outputCovariance_);
+  return body.kroneckerProduct(outputCovariance_);
 }
 
 TriangularMatrix KroneckerCovarianceModel::discretizeAndFactorize(const Sample &vertices) const
 {
   const UnsignedInteger size = vertices.getSize();
   CovarianceMatrix rhoMatrix(size);
-  const KroneckerModelDiscretizePolicy policy(vertices, rhoMatrix, *this);
+  const KroneckerModelDiscretizeBody body(vertices, rhoMatrix, *this);
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
   // Compute the Cholesky factor of outputCovariance_
   if (outputCovarianceCholeskyFactor_.getDimension() == 0)
     outputCovarianceCholeskyFactor_ = outputCovariance_.computeCholesky();
   // Compute the Kronecker product of rhoCholeskyFactor by outputCovarianceCholeskyFactor_
-  return policy.kroneckerProductCholeskyFactor(outputCovarianceCholeskyFactor_);
+  return body.kroneckerProductCholeskyFactor(outputCovarianceCholeskyFactor_);
 }
 
 Point KroneckerCovarianceModel::getFullParameter() const

@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -180,7 +180,7 @@ Bool CurlFreeModel::isDiagonal() const
 
 /* Gradient */
 Matrix CurlFreeModel::partialGradient(const Point & s,
-                                       const Point & t) const
+                                      const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
@@ -274,7 +274,7 @@ SymmetricMatrix CurlFreeModel::partialHessian(const Point & s,
 
 /* Parameter gradient: C_ij = -H_ij, so dC/dp = -dH/dp via base parameterHessian */
 Matrix CurlFreeModel::parameterGradient(const Point & s,
-    const Point & t) const
+                                        const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;

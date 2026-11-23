@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,33 +26,6 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 typedef kissfft<Scalar> KISSFFTScalar;
-
-struct FFTPolicy
-{
-  const KissFFT::ComplexCollection & input_;
-  KissFFT::ComplexCollection  & output_;
-  KISSFFTScalar & fft_;
-  const UnsignedInteger fftSize_;
-
-  FFTPolicy(const KissFFT::ComplexCollection & input,
-            KissFFT::ComplexCollection & output,
-            KISSFFTScalar & fft,
-            UnsignedInteger fftSize)
-    : input_(input)
-    , output_(output)
-    , fft_(fft)
-    , fftSize_(fftSize)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const UnsignedInteger first = fftSize_ * i;
-      fft_.transform( &input_[first], &output_[first] );
-    }
-  }
-}; /* end struct FFTPolicy */
 
 /**
  * @class KissFFT
@@ -158,8 +131,8 @@ KissFFT::ComplexCollection KissFFT::inverseTransform(const ComplexCollection & c
 }
 
 KissFFT::ComplexCollection KissFFT::fftND(const ComplexCollection & data,
-                                const Indices & dimensions,
-                                const Bool isIFFT) const
+    const Indices & dimensions,
+    const Bool isIFFT) const
 {
   const UnsignedInteger nDims = dimensions.getSize();
   UnsignedInteger totalSize = 1;
@@ -181,7 +154,7 @@ KissFFT::ComplexCollection KissFFT::fftND(const ComplexCollection & data,
     const UnsignedInteger dimSize = dimensions[dim];
     const UnsignedInteger numFFTs = totalSize / dimSize;
     KISSFFTScalar fft(dimSize, isIFFT);
-    struct FFTPolicyND
+    struct FFTBodyND
     {
       const ComplexCollection & work_;
       ComplexCollection & result_;
@@ -207,8 +180,8 @@ KissFFT::ComplexCollection KissFFT::fftND(const ComplexCollection & data,
       }
     };
 
-    const FFTPolicyND policy{work, result, fft, dimSize, stride};
-    TBBImplementation::ParallelFor( 0, numFFTs, policy );
+    const FFTBodyND body{work, result, fft, dimSize, stride};
+    TBBImplementation::ParallelFor( 0, numFFTs, body, 1024);
     stride *= dimSize;
     if (dim < nDims - 1) work = result;
   }

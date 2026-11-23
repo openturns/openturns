@@ -2,7 +2,7 @@
 /**
  *  @brief ProcessSample Class
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -159,13 +159,6 @@ void ProcessSample::setField(const UnsignedInteger index,
 {
   copyOnWrite();
   getImplementation()->setField(index, field);
-}
-
-void ProcessSample::setField(const Field & field,
-                             const UnsignedInteger index)
-{
-  copyOnWrite();
-  getImplementation()->setField(field, index);
 }
 
 Sample & ProcessSample::operator[] (const UnsignedInteger index)

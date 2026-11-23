@@ -3,7 +3,7 @@
  *  @brief ActiveLearningEFFFunction implements the "EFF" active learning
  *  criterion used in reliability analysis
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,7 @@ class OT_API ActiveLearningEFFFunction
 
   CLASSNAME
 public:
- /** Default constructor */
+  /** Default constructor */
   ActiveLearningEFFFunction();
 
   /** Default constructor */

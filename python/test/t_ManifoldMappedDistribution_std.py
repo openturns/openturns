@@ -31,7 +31,9 @@ ott.assert_almost_equal(distribution.getChartCenter(), chartCenter, 1e-12, 1e-12
 assert distribution.getTangentBasis().getSize() == 2
 
 # PDF at the chart center: standard normal density at 0 divided by density 1
-ott.assert_almost_equal(distribution.computePDF(chartCenter), 1.0 / (2.0 * math.pi), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    distribution.computePDF(chartCenter), 1.0 / (2.0 * math.pi), 1e-12, 1e-12
+)
 
 # PDF at angle theta from the pole: normal density corrected by sin(theta)/theta
 theta = 0.5
@@ -40,7 +42,12 @@ expected = math.exp(-0.5 * theta * theta) / (2.0 * math.pi) * theta / math.sin(t
 ott.assert_almost_equal(distribution.computePDF(point), expected, 1e-10, 1e-10)
 
 # Log PDF consistency with PDF
-ott.assert_almost_equal(distribution.computeLogPDF(point), math.log(distribution.computePDF(point)), 1e-10, 1e-10)
+ott.assert_almost_equal(
+    distribution.computeLogPDF(point),
+    math.log(distribution.computePDF(point)),
+    1e-10,
+    1e-10,
+)
 
 # At the cut locus (antipode) the exponential map collapses the whole sphere
 # of tangent vectors of radius pi onto the antipode, so the volume density of
@@ -66,7 +73,9 @@ ott.assert_almost_equal(mean[2], 0.2752, 1e-1, 2e-2)
 
 # Parameters are delegated to the background distribution
 assert distribution.getParameterDescription() == background.getParameterDescription()
-ott.assert_almost_equal(distribution.getParameter(), background.getParameter(), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    distribution.getParameter(), background.getParameter(), 1e-12, 1e-12
+)
 
 # Background dimension must match the intrinsic dimension
 with ott.assert_raises(TypeError):
@@ -75,14 +84,20 @@ with ott.assert_raises(TypeError):
 # Moving the chart center updates the tangent basis
 distribution.setChartCenter([0.0, 1.0, 0.0])
 ott.assert_almost_equal(distribution.getChartCenter(), [0.0, 1.0, 0.0], 1e-12, 1e-12)
-ott.assert_almost_equal(distribution.computePDF([0.0, 1.0, 0.0]), 1.0 / (2.0 * math.pi), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    distribution.computePDF([0.0, 1.0, 0.0]), 1.0 / (2.0 * math.pi), 1e-12, 1e-12
+)
 
 # SO(3) case: background Normal(3) charted at the identity
 rotations = otexp.Manifold(otexp.SO3Manifold())
 identity = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
-rotationDistribution = otexp.ManifoldMappedDistribution(ot.Normal(3), rotations, identity)
+rotationDistribution = otexp.ManifoldMappedDistribution(
+    ot.Normal(3), rotations, identity
+)
 assert rotationDistribution.getDimension() == 9
-ott.assert_almost_equal(rotationDistribution.computePDF(identity), (2.0 * math.pi) ** (-1.5), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    rotationDistribution.computePDF(identity), (2.0 * math.pi) ** (-1.5), 1e-12, 1e-12
+)
 oneRealization = rotationDistribution.getRealization()
 assert rotations.isOnManifold(oneRealization)
 

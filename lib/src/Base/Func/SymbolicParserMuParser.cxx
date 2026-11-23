@@ -2,7 +2,7 @@
 /**
  *  @brief A math expression parser
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -150,13 +150,13 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
 
 
 
-struct SymbolicParserMuParserPolicy
+struct SymbolicParserMuParserBody
 {
   const SampleImplementation & input_;
   SampleImplementation & output_;
   const SymbolicParserMuParser & evaluation_;
 
-  SymbolicParserMuParserPolicy(const Sample & input,
+  SymbolicParserMuParserBody(const Sample & input,
                                Sample & output,
                                const SymbolicParserMuParser & evaluation)
     : input_(*input.getImplementation())
@@ -195,7 +195,7 @@ struct SymbolicParserMuParserPolicy
     }
   }
 
-}; /* end struct SymbolicParserMuParserPolicy */
+}; /* end struct SymbolicParserMuParserBody */
 
 
 Sample SymbolicParserMuParser::operator() (const Sample & inS) const
@@ -230,8 +230,8 @@ Sample SymbolicParserMuParser::operator() (const Sample & inS) const
         threadStack_.resize(TBBImplementation::GetThreadsNumber());
       }
     }
-    const SymbolicParserMuParserPolicy policy(inS, result, *this);
-    TBBImplementation::ParallelFor(0, size, policy, smallSize_);
+    const SymbolicParserMuParserBody body(inS, result, *this);
+    TBBImplementation::ParallelFor(0, size, body, smallSize_);
   }
   return result;
 }

@@ -2,7 +2,7 @@
 /**
  *  @brief Exception defines top-most exception strategies
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -227,6 +227,13 @@ NEW_EXCEPTION( InvalidArgumentException );
  * @internal
  */
 NEW_EXCEPTION( InvalidDimensionException );
+
+/**
+ * @class AssertionException
+ * @brief Raised when an assertion fails in test code
+ * @internal
+ */
+NEW_EXCEPTION( AssertionException );
 
 /**
  * @class NotYetImplementedException

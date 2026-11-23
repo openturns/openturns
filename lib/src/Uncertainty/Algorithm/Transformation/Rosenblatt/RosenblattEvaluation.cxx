@@ -2,7 +2,7 @@
 /**
  *  @brief Class for the Nataf transformation evaluation for elliptical
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -174,7 +174,10 @@ Description RosenblattEvaluation::getParameterDescription() const
   // empty description), and fail fast on a short non-empty description
   const UnsignedInteger dimension = distribution_.getParameterDimension();
   Description description;
-  try { description = distribution_.getParameterDescription(); }
+  try
+  {
+    description = distribution_.getParameterDescription();
+  }
   catch (const NotYetImplementedException &) { /* fall through to the default below */ }
   if (description.getSize() != dimension)
   {

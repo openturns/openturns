@@ -3,7 +3,7 @@
 /**
  * @brief HSICEstimatorImplementation implements the HSIC sensitivity indices.
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -205,9 +205,9 @@ struct HSICPValuesPermutationFunctor
   Point accumulator_;
 
   HSICPValuesPermutationFunctor(const Collection<Indices> & indicesCollection,
-                                 const Point & HSICobs,
-                                 const HSICEstimatorImplementation & hsic,
-                                 const Collection<CovarianceMatrix> & inputCovarianceMatrices)
+                                const Point & HSICobs,
+                                const HSICEstimatorImplementation & hsic,
+                                const Collection<CovarianceMatrix> & inputCovarianceMatrices)
     : indicesCollection_(indicesCollection)
     , HSICobs_(HSICobs)
     , p_hsic_(hsic.clone())

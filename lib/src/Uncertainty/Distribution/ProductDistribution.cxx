@@ -2,7 +2,7 @@
 /**
  *  @brief The ProductDistribution distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -262,8 +262,8 @@ public:
     const Scalar value = p_left_->computePDF(u);
     if (value == 0.0) return 0.0;
     const Scalar right = (u > 0.0)
-                          ? (complementary_ ? p_right_->computeComplementaryCDF(t) : p_right_->computeCDF(t))
-                          : (complementary_ ? p_right_->computeCDF(t) : p_right_->computeComplementaryCDF(t));
+                         ? (complementary_ ? p_right_->computeComplementaryCDF(t) : p_right_->computeCDF(t))
+                         : (complementary_ ? p_right_->computeCDF(t) : p_right_->computeComplementaryCDF(t));
     return value * std::abs(x_) / (t * t) * right;
   }
 
@@ -1042,9 +1042,9 @@ Complex ProductDistribution::computeCharacteristicFunction(const Scalar x) const
   if (std::abs(x) > ResourceMap::GetAsScalar("ProductDistribution-LargeCharacteristicFunctionArgument"))
     cfAlgorithm.setMaximumSubIntervals(2 * cfAlgorithm.getMaximumSubIntervals());
   const Scalar realPart = cfAlgorithm.integrate(realKernel, aLeft, muLeft)
-                        + cfAlgorithm.integrate(realKernel, muLeft, bLeft);
+                          + cfAlgorithm.integrate(realKernel, muLeft, bLeft);
   const Scalar imaginaryPart = cfAlgorithm.integrate(imaginaryKernel, aLeft, muLeft)
-                             + cfAlgorithm.integrate(imaginaryKernel, muLeft, bLeft);
+                               + cfAlgorithm.integrate(imaginaryKernel, muLeft, bLeft);
   return Complex(realPart, imaginaryPart);
 }
 

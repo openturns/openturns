@@ -3,7 +3,7 @@
  *  @brief Ridgway algorithm (SMC) to compute orthant probabilities of
  *         multivariate Normal distributions.
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,32 +29,32 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 OT_API Scalar mvn_orthant_probability(
-    const Point& a, const Point& b,
-    const Point& mu, const TriangularMatrix& L,
-    UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
-    Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"));
+  const Point& a, const Point& b,
+  const Point& mu, const TriangularMatrix& L,
+  UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
+  Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"));
 
 OT_API Scalar mvn_orthant_probability(
-    const Point& a, const Point& b,
-    const TriangularMatrix& L,
-    UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
-    Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"));
+  const Point& a, const Point& b,
+  const TriangularMatrix& L,
+  UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
+  Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"));
 
 OT_API Scalar mvt_orthant_probability(
-    const Point& a, const Point& b,
-    const Point& mu, const TriangularMatrix& L,
-    Scalar nu,
-    UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
-    Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"),
-    UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize"));
+  const Point& a, const Point& b,
+  const Point& mu, const TriangularMatrix& L,
+  Scalar nu,
+  UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
+  Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"),
+  UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize"));
 
 OT_API Scalar mvt_orthant_probability(
-    const Point& a, const Point& b,
-    const TriangularMatrix& L,
-    Scalar nu,
-    UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
-    Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"),
-    UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize"));
+  const Point& a, const Point& b,
+  const TriangularMatrix& L,
+  Scalar nu,
+  UnsignedInteger M = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber"),
+  Scalar alpha = ResourceMap::GetAsScalar("Ridgway-DefaultAlpha"),
+  UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize"));
 
 END_NAMESPACE_OPENTURNS
 

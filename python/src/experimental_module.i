@@ -26,6 +26,7 @@
 /* Base/Type */
 %include BaseTypCollection.i
 %import typ_module.i
+%include SparseMatrix.i
 
 /* Base/Func */
 %include BaseFuncCollection.i
@@ -36,9 +37,8 @@
 
 /* Base/Optim */
 %import optim_module.i
-%include LinearProblem.i
-%include QuadraticProblem.i
-%include HiGHS.i
+%include LinearProgrammingProblem.i
+%include QuadraticProgrammingProblem.i
 
 /* Base/Algo */
 %include SlicedInverseRegressionResult.i
@@ -57,7 +57,6 @@
 %import weightedexperiment_module.i
 %import orthogonalbasis_module.i
 %import UncertaintyOrthogonalBasisTemplateDefs.i
-%include FiniteOrthogonalFunctionFactory.i
 %include BasisOrthonormalizationAlgorithm.i
 %include GaussLPQuadratureRule.i
 %include GaussLPQuadrature.i

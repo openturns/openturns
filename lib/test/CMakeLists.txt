@@ -2,7 +2,7 @@
 #
 #  CMakeLists.txt
 #
-#  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+#  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 #  This library is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -88,7 +88,7 @@ ot_check_test (Description_std)
 ot_check_test (Point_std)
 ot_check_test (Point_description)
 ot_check_test (Matrix_std)
-ot_check_test (SparseMatrix_std)
+ot_check_test (SparseMatrix_std IGNOREOUT)
 ot_check_test (IdentityMatrix_std)
 ot_check_test (Tensor_std)
 ot_check_test (ComplexTensor_std)

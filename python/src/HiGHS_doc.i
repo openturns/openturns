@@ -1,10 +1,6 @@
 %feature("docstring") OT::HiGHS
 R"RAW(Linear and quadratic optimization solver.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 This class exposes the linear and quadratic solvers from the
 `HiGHS <https://highs.dev/>`_ library. It solves continuous linear problems,
 mixed-integer linear problems and continuous convex quadratic problems.
@@ -52,8 +48,8 @@ unsupported name raises an error.
 
 All solvers accept finite and infinite bounds on variables and linear constraints;
 mark infinite bounds with finite flags set to ``False`` in the
-:class:`~openturns.Interval` (see :class:`~openturns.experimental.LinearProblem`
-and :class:`~openturns.experimental.QuadraticProblem`).
+:class:`~openturns.Interval` (see :class:`~openturns.experimental.LinearProgrammingProblem`
+and :class:`~openturns.experimental.QuadraticProgrammingProblem`).
 
 Quadratic problems are solved by ``qpasm`` or ``hipo``. The ``choose``
 default selects the quadratic solver available in the linked HiGHS build.
@@ -85,6 +81,11 @@ the per-variable reduced costs; :func:`getConstraintValues` returns the
 linear constraint activity row values.
 There is no dual solution on problems with discrete variables.
 
+The linear constraint matrix is handed over to HiGHS in compressed sparse
+column form. When the problem provides its sparse coefficients (see
+:class:`~openturns.experimental.LinearProgrammingProblem`), they are copied directly, so
+a large sparse problem is neither densified nor scanned element by element.
+
 HiGHS solver can be adapted using the parameters described `here <https://ergo-code.github.io/HiGHS/dev/options/definitions/>`_.
 These parameters can be modified through the :class:`~openturns.ResourceMap`.
 For every option ``optionName``, simply add a key named ``HiGHS-optionName`` with the value to use, as shown below::
@@ -96,8 +97,8 @@ For every option ``optionName``, simply add a key named ``HiGHS-optionName`` wit
 Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
-    The problem, must be linear (see :class:`~openturns.experimental.LinearProblem`)
-    or quadratic (see :class:`~openturns.experimental.QuadraticProblem`).
+    The problem, must be linear (see :class:`~openturns.experimental.LinearProgrammingProblem`)
+    or quadratic (see :class:`~openturns.experimental.QuadraticProgrammingProblem`).
 algoName : str, default is ``choose``
     The solver, use :func:`GetAlgorithmNames` to list the recognized names.
     Problems with discrete variables are solved by the MIP solver,
@@ -105,7 +106,7 @@ algoName : str, default is ``choose``
 
 See Also
 --------
-openturns.experimental.LinearProblem, openturns.experimental.QuadraticProblem
+openturns.experimental.LinearProgrammingProblem, openturns.experimental.QuadraticProgrammingProblem
 
 Examples
 --------
@@ -142,9 +143,9 @@ and bound constraints:
 >>> bounds = ot.Interval([0.0, 1.0], [4.0, 1e30], [True, True], [True, False])
 >>> A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
 >>> cb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9], [False, True, True], [True, True, False])
->>> problem = otexp.LinearProblem(cost, bounds, A, cb)
+>>> problem = otexp.LinearProgrammingProblem(cost, bounds, A, cb)
 >>> problem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)
->>> algo = otexp.HiGHS(problem)
+>>> algo = ot.HiGHS(problem)
 >>> algo.run() # doctest: +SKIP
 >>> result = algo.getResult() # doctest: +SKIP
 >>> x_star = result.getOptimalPoint() # doctest: +SKIP
@@ -164,8 +165,8 @@ names : :class:`~openturns.Description`
 
 Examples
 --------
->>> import openturns.experimental as otexp
->>> print(otexp.HiGHS.GetAlgorithmNames())
+>>> import openturns as ot
+>>> print(ot.HiGHS.GetAlgorithmNames())
 [choose,simplex,qpasm,ipm,ipx,hipo,pdlp,hipdlp]"
 
 // ---------------------------------------------------------------------

@@ -2,7 +2,7 @@
 /**
  *  @brief Fast Gauss-Hermite quadrature via polished tridiagonal eigensolver
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,15 +56,15 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 namespace FastHermite
 {
-  /** Compute n standard Gauss-Hermite nodes and weights.
-   *  @param n number of quadrature nodes (> 0)
-   *  @param nodes output array of length n, strictly increasing
-   *  @param weights output array of length n, positive and normalized to sum
-   *         to 1
-   */
-  OT_API void ComputeNodesAndWeights(const UnsignedInteger n,
-                              Scalar * nodes,
-                              Scalar * weights);
+/** Compute n standard Gauss-Hermite nodes and weights.
+ *  @param n number of quadrature nodes (> 0)
+ *  @param nodes output array of length n, strictly increasing
+ *  @param weights output array of length n, positive and normalized to sum
+ *         to 1
+ */
+OT_API void ComputeNodesAndWeights(const UnsignedInteger n,
+                                   Scalar * nodes,
+                                   Scalar * weights);
 } // namespace FastHermite
 
 END_NAMESPACE_OPENTURNS

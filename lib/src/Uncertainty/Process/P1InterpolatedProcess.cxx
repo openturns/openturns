@@ -2,7 +2,7 @@
 /**
  *  @brief P1InterpolatedProcess implements a process whose realizations are obtained by P1 Lagrange interpolation of another process on a finer mesh.
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -95,9 +95,9 @@ void P1InterpolatedProcess::setMesh(const Mesh & mesh)
 {
   if (mesh.getDimension() != compoundProcess_.getInputDimension())
     throw InvalidArgumentException(HERE) << "Error: trying to set a mesh with dimension "
-                                          << mesh.getDimension()
-                                          << " on a P1InterpolatedProcess whose compound process has input dimension "
-                                          << compoundProcess_.getInputDimension();
+                                         << mesh.getDimension()
+                                         << " on a P1InterpolatedProcess whose compound process has input dimension "
+                                         << compoundProcess_.getInputDimension();
   const UnsignedInteger outputDim = compoundProcess_.getOutputDimension();
   const P1LagrangeInterpolation interpolation(compoundProcess_.getMesh(), mesh, outputDim);
   const FieldFunction p1Interpolation(interpolation);

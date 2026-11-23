@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief QuadraticProblem allows one to describe an optimization problem
+ *  @brief QuadraticProgrammingProblem allows one to describe an optimization problem
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,19 +18,19 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_QUADRATICPROBLEM_HXX
-#define OPENTURNS_QUADRATICPROBLEM_HXX
+#ifndef OPENTURNS_QUADRATICPROGRAMMINGPROBLEM_HXX
+#define OPENTURNS_QUADRATICPROGRAMMINGPROBLEM_HXX
 
 #include "openturns/OptimizationProblemImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class QuadraticProblem
- * QuadraticProblem allows one to describe a convex quadratic optimization problem
+ * @class QuadraticProgrammingProblem
+ * QuadraticProgrammingProblem allows one to describe a convex quadratic optimization problem
  */
 
-class OT_API QuadraticProblem
+class OT_API QuadraticProgrammingProblem
   : public OptimizationProblemImplementation
 {
 
@@ -39,36 +39,24 @@ class OT_API QuadraticProblem
 public:
 
   /** Default constructor */
-  QuadraticProblem();
+  QuadraticProgrammingProblem();
 
   /** Constructor with parameters */
-  QuadraticProblem(const SymmetricMatrix & hessian,
-                   const Point & linearCost,
-                   const Interval & bounds);
+  QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
+                              const Point & linearCost,
+                              const Interval & bounds,
+                              const Scalar constant = 0.0);
 
   /** Constructor with parameters */
-  QuadraticProblem(const SymmetricMatrix & hessian,
-                   const Point & linearCost,
-                   const Interval & bounds,
-                   const Scalar constant);
-
-  /** Constructor with parameters */
-  QuadraticProblem(const SymmetricMatrix & hessian,
-                   const Point & linearCost,
-                   const Interval & bounds,
-                   const Matrix & constraintCoefficients,
-                   const Interval & constraintBounds);
-
-  /** Constructor with parameters */
-  QuadraticProblem(const SymmetricMatrix & hessian,
-                   const Point & linearCost,
-                   const Interval & bounds,
-                   const Matrix & constraintCoefficients,
-                   const Interval & constraintBounds,
-                   const Scalar constant);
+  QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
+                              const Point & linearCost,
+                              const Interval & bounds,
+                              const Matrix & constraintCoefficients,
+                              const Interval & constraintBounds,
+                              const Scalar constant = 0.0);
 
   /** Virtual constructor */
-  QuadraticProblem * clone() const override;
+  QuadraticProgrammingProblem * clone() const override;
 
   /** Quadratic flag accessor */
   Bool isQuadratic() const override;
@@ -102,9 +90,9 @@ public:
   Bool hasInequalityConstraint() const override;
 
   /** Build a least-squares problem min ||A.x-b||^2 subject to bounds */
-  static QuadraticProblem FromLeastSquares(const Matrix & matrix,
-                                           const Point & rhs,
-                                           const Interval & bounds);
+  static QuadraticProgrammingProblem FromLeastSquares(const Matrix & matrix,
+      const Point & rhs,
+      const Interval & bounds);
 
   /** String converter */
   String __repr__() const override;
@@ -129,9 +117,9 @@ private:
   Matrix constraintCoefficients_;
   Interval constraintBounds_;
 
-}; /* class QuadraticProblem */
+}; /* class QuadraticProgrammingProblem */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_QUADRATICPROBLEM_HXX */
+#endif /* OPENTURNS_QUADRATICPROGRAMMINGPROBLEM_HXX */

@@ -21,5 +21,7 @@ for i in range(data.getSize()):
 estimated = otexp.VonMisesFisherFactory().build(data).getImplementation()
 mu = estimated.getMu()
 ref = use_case.getReferenceMeanDirection()
-ott.assert_almost_equal(mu[0] * ref[0] + mu[1] * ref[1] + mu[2] * ref[2], 1.0, 1e-3, 0.0)
+ott.assert_almost_equal(
+    mu[0] * ref[0] + mu[1] * ref[1] + mu[2] * ref[2], 1.0, 1e-3, 0.0
+)
 ott.assert_almost_equal(estimated.getKappa(), use_case.getReferenceKappa(), 0.0, 2.0)

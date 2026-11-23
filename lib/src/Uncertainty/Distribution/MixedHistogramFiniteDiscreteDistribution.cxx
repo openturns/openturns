@@ -2,7 +2,7 @@
 /**
  *  @brief The MixedHistogramFiniteDiscreteDistribution distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,6 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(MixedHistogramFiniteDiscreteDistribution)
 
 static const Factory<MixedHistogramFiniteDiscreteDistribution> Factory_MixedHistogramFiniteDiscreteDistribution;
-static const Factory<MixedHistogramFiniteDiscreteDistribution> Factory_MixedHistogramUserDefined("MixedHistogramUserDefined");
 
 /* Default constructor */
 MixedHistogramFiniteDiscreteDistribution::MixedHistogramFiniteDiscreteDistribution()

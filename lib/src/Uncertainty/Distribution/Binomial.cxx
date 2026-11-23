@@ -2,7 +2,7 @@
 /**
  *  @brief The Binomial distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -318,6 +318,7 @@ Scalar Binomial::computeScalarQuantile(const Scalar prob,
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   // Degenerate cases first: the quantile is the single atom whatever the level, see #2605
+  if (n_ == 0) return 0.0;
   if (p_ == 0.0) return 0.0;
   if (p_ == 1.0) return n_;
   if (prob == 0.0) return (tail ? n_ : 0.0);

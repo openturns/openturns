@@ -3,7 +3,7 @@
  *  @brief Efficient implementation of the CDF computation for a bi-dimensional
  *         Normal distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,10 +32,10 @@ Scalar Normal2DCDF(const Scalar x1,
                    const Bool tail);
 
 Scalar Normal2DRectangularProbability(const Scalar a1,
-                                       const Scalar a2,
-                                       const Scalar b1,
-                                       const Scalar b2,
-                                       const Scalar rho);
+                                      const Scalar a2,
+                                      const Scalar b1,
+                                      const Scalar b2,
+                                      const Scalar rho);
 
 END_NAMESPACE_OPENTURNS
 

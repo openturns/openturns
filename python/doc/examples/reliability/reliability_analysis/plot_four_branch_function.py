@@ -150,8 +150,9 @@ print("\n--- Reliability Analysis ---")
 
 # Monte Carlo
 ot.RandomGenerator.SetSeed(0)
-event = ot.ThresholdEvent(ot.CompositeRandomVector(fb.model, ot.RandomVector(fb.distribution)),
-                          ot.Less(), 0.0)
+event = ot.ThresholdEvent(
+    ot.CompositeRandomVector(fb.model, ot.RandomVector(fb.distribution)), ot.Less(), 0.0
+)
 
 mc_algo = ot.ProbabilitySimulationAlgorithm(event, ot.MonteCarloExperiment())
 mc_algo.setMaximumCoefficientOfVariation(0.05)

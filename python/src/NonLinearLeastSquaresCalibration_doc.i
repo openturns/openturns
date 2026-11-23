@@ -44,6 +44,31 @@ The calibrated parameter distribution is approximated based on a kernel density 
 obtained from the bootstrap sample.
 By default, a bootstrap algorithm is used.
 
+Bounds can be set with :meth:`setBounds`. They always constrain the
+optimization. When the parameter posterior is built from the linear
+approximation, i.e. when ``NonLinearLeastSquaresCalibration-BootstrapSize``
+is set to zero, parameters lying on a bound up to the absolute
+``LinearLeastSquaresCalibration-ActiveBoundTolerance`` tolerance are
+considered fixed: the posterior covariance is computed from the free Jacobian
+block (or from the free block of the Hessian when the Laplace approximation is
+used) and is zero in the fixed directions, and the residual degrees of freedom
+exclude the fixed parameters. With a nonzero bootstrap size the posterior is
+a kernel smoothing of the bootstrap estimates, so this active-set covariance
+does not apply and the bounds only constrain each calibration.
+
+The linearization of the model at the optimum may be ill-conditioned, for
+example when two parameters have a nearly identical influence on the model.
+The MAP minimizes the residual sum of squares, so no normal matrix is formed,
+but a direction whose contribution to this sum is below the machine precision
+cannot be identified from the data: the returned MAP then depends on the
+optimization algorithm and on its stopping criterion, and a bound acting on
+that direction may not be detected as active. The posterior variance is large
+in such a direction, which signals the non-identifiability. Rescale the
+parameterization so that the directions have comparable influence on the
+model, or set a proper prior through
+:class:`~openturns.GaussianNonLinearCalibration`, whose prior term resolves the
+direction. See :any:`ill_conditioned_calibration` for details.
+
 The output (observation) error is modeled as a Normal random variable whose variance
 is estimated from the calibration residuals.
 This is performed whatever the value of the `NonLinearLeastSquaresCalibration-BootstrapSize`
@@ -110,41 +135,6 @@ Parameters
 ----------
 algo : :class:`~openturns.OptimizationAlgorithm`
     Optimization algorithm to use for the computation."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::NonLinearLeastSquaresCalibration::getBounds
-"Return the parameter bounds used to constrain the optimization.
-
-Returns
--------
-bounds : :class:`~openturns.Interval`
-    Parameter bounds used to constrain the optimization.
-    An empty interval means no bounds are applied."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::NonLinearLeastSquaresCalibration::setBounds
-"Set the parameter bounds used to constrain the optimization.
-
-Parameters
-----------
-bounds : :class:`~openturns.Interval`
-    Parameter bounds used to constrain the optimization.
-    An empty interval means no bounds are applied.
-    A non-empty interval must have the calibration parameter dimension.
-
-Notes
------
-:meth:`~openturns.NonLinearLeastSquaresCalibration.setOptimizationAlgorithm`
-adopts the bounds carried by the given algorithm problem when it has some
-and keeps the current bounds otherwise. Call this method after
-:meth:`~openturns.NonLinearLeastSquaresCalibration.setOptimizationAlgorithm`
-to enforce specific bounds. With a zero bootstrap size, parameters active
-at a bound up to the absolute ``LinearLeastSquaresCalibration-ActiveBoundTolerance``
-tolerance are considered fixed: the posterior covariance is computed from
-the free Jacobian block only and is zero in the fixed directions, and the
-residual degrees of freedom exclude the fixed parameters."
 
 // ---------------------------------------------------------------------
 

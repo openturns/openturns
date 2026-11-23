@@ -188,7 +188,9 @@ for i in range(10):
     ott.assert_almost_equal(norm, 1.0)
 
 # Test getEpsilon
-ott.assert_almost_equal(distribution.getEpsilon(), ot.ResourceMap.GetAsScalar("Kent-OrthogonalityThreshold"))
+ott.assert_almost_equal(
+    distribution.getEpsilon(), ot.ResourceMap.GetAsScalar("Kent-OrthogonalityThreshold")
+)
 
 # Test __repr__ and __str__
 repr_str = repr(distribution)
@@ -258,9 +260,7 @@ identity = ot.SquareMatrix([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
 theta = 0.5
 cos_t = math.cos(theta)
 sin_t = math.sin(theta)
-rotated = ot.SquareMatrix(
-    [[cos_t, -sin_t, 0.0], [sin_t, cos_t, 0.0], [0.0, 0.0, 1.0]]
-)
+rotated = ot.SquareMatrix([[cos_t, -sin_t, 0.0], [sin_t, cos_t, 0.0], [0.0, 0.0, 1.0]])
 dist_setter3 = otexp.Kent(10.0, 0.5, identity)
 dist_setter3.setGamma(rotated)
 g = dist_setter3.getGamma()
@@ -298,7 +298,7 @@ rot_mean = rot_sample.computeMean()
 # Mean should be aligned with gamma_1 = (cos(0.7), sin(0.7), 0)
 expected_gamma1_x = cos_t
 expected_gamma1_y = sin_t
-norm_mean = math.sqrt(rot_mean[0]**2 + rot_mean[1]**2)
+norm_mean = math.sqrt(rot_mean[0] ** 2 + rot_mean[1] ** 2)
 if norm_mean > 0.01:
     dir_x = rot_mean[0] / norm_mean
     dir_y = rot_mean[1] / norm_mean
@@ -326,8 +326,12 @@ assert distribution.isContinuous()
 # Test entropy
 entropy = distribution.computeEntropy()
 # Ground truth from high-precision series: H = log(C) - kappa*r1 - beta*r2
-ott.assert_almost_equal(entropy, 23.61970947016114 - 25.0 * 0.9599468514772579
-                        - 0.5 * 0.002834469807834422, 1e-12, 0.0)
+ott.assert_almost_equal(
+    entropy,
+    23.61970947016114 - 25.0 * 0.9599468514772579 - 0.5 * 0.002834469807834422,
+    1e-12,
+    0.0,
+)
 # Entropy of a Kent(10, 0.5)
 entropy_k = otexp.Kent(10.0, 0.5, gamma_matrix).computeEntropy()
 ott.assert_almost_equal(entropy_k, 0.5377389709666636, 1e-12, 0.0)

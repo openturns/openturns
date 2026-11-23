@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class DistFunc for orthant methods
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -84,7 +84,9 @@ int main(int, char *[])
     {
       fullprint << "Error: dimension mismatch" << std::endl;
       TriangularMatrix L(2);
-      L(0, 0) = 1.0; L(1, 0) = 0.0; L(1, 1) = 1.0;
+      L(0, 0) = 1.0;
+      L(1, 0) = 0.0;
+      L(1, 1) = 1.0;
       try
       {
         DistFunc::pNormalOrthantND({-1.0}, {1.0}, L);
@@ -148,7 +150,9 @@ int main(int, char *[])
       fullprint << "Edge: wide interval" << std::endl;
       const UnsignedInteger dim = 2;
       TriangularMatrix L(dim);
-      L(0, 0) = 1.0; L(1, 0) = 0.0; L(1, 1) = 1.0;
+      L(0, 0) = 1.0;
+      L(1, 0) = 0.0;
+      L(1, 1) = 1.0;
       const Scalar p = DistFunc::pNormalOrthantND({-10.0, -10.0}, {10.0, 10.0}, L);
       assert_almost_equal(p, 1.0, 1.0, 1e-10);
     }
@@ -156,8 +160,12 @@ int main(int, char *[])
       fullprint << "MVN orthant d=3 independent" << std::endl;
       const UnsignedInteger dim = 3;
       TriangularMatrix L(dim);
-      L(0, 0) = 1.0; L(1, 0) = 0.0; L(2, 0) = 0.0;
-      L(1, 1) = 1.0; L(2, 1) = 0.0; L(2, 2) = 1.0;
+      L(0, 0) = 1.0;
+      L(1, 0) = 0.0;
+      L(2, 0) = 0.0;
+      L(1, 1) = 1.0;
+      L(2, 1) = 0.0;
+      L(2, 2) = 1.0;
       const Point a = {-1.0, -1.0, -1.0};
       const Point b = {1.0, 1.0, 1.0};
       const Scalar p = DistFunc::pNormalOrthantND(a, b, L, 1000);

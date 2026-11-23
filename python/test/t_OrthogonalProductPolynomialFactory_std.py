@@ -121,9 +121,7 @@ assert evaluation.getOutputDimension() == 1
 assert "ProductPolynomialEvaluation" in repr(evaluation)
 str(evaluation)
 ott.assert_almost_equal(evaluation([0.5, 0.5]), [1.0])
-ott.assert_almost_equal(
-    evaluation([[0.5, 0.5], [1.0, 1.0]]), [[1.0], [3.0]]
-)
+ott.assert_almost_equal(evaluation([[0.5, 0.5], [1.0, 1.0]]), [[1.0], [3.0]])
 with ott.assert_raises(Exception):
     evaluation([0.5])
 with ott.assert_raises(Exception):

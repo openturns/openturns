@@ -121,8 +121,10 @@ ott.assert_almost_equal(iter2.getMean(), referenceMean)
 ott.assert_almost_equal(iter2.getVariance(), referenceVariance)
 ott.assert_almost_equal(
     iter2.getCoefficientOfVariation(),
-    [referenceVariance[0] ** 0.5 / referenceMean[0],
-     referenceVariance[1] ** 0.5 / referenceMean[1]],
+    [
+        referenceVariance[0] ** 0.5 / referenceMean[0],
+        referenceVariance[1] ** 0.5 / referenceMean[1],
+    ],
     1e-12,
     1e-12,
 )

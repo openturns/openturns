@@ -103,7 +103,9 @@ cf = dist2.computeCharacteristicFunction(x)
 ott.assert_almost_equal(cf, 2.655225e-12 + 1.321260e-18j)
 
 # DistributionCollection slicing
-dc = ot.DistributionCollection([ot.Normal(), ot.Uniform(), ot.Exponential(), ot.Gamma(2.0, 3.0)])
+dc = ot.DistributionCollection(
+    [ot.Normal(), ot.Uniform(), ot.Exponential(), ot.Gamma(2.0, 3.0)]
+)
 sliced_dc = dc[1:3]
 assert isinstance(sliced_dc, ot.DistributionCollection)
 assert sliced_dc.getSize() == 2
@@ -116,7 +118,9 @@ assert dc.getSize() == 4
 # minimum volume level sets for several levels, see issue #1734
 distribution = ot.Normal(2.0, 3.0)
 probs = [0.5, 0.8, 0.95]
-levelSets, thresholds = distribution.computeMinimumVolumeLevelSetCollectionWithThreshold(probs)
+levelSets, thresholds = (
+    distribution.computeMinimumVolumeLevelSetCollectionWithThreshold(probs)
+)
 assert levelSets.getSize() == 3, "collection size"
 assert thresholds.getSize() == 3, "threshold size"
 # consistent with the scalar version
@@ -125,8 +129,8 @@ for i, p in enumerate(probs):
     ott.assert_almost_equal(thresholds[i], refThreshold, 1e-6, 0.0)
 # shared-sampling path agrees with the analytic path
 ot.ResourceMap.SetAsBool("Distribution-MinimumVolumeLevelSetBySampling", True)
-levelSetsQMC, thresholdsQMC = distribution.computeMinimumVolumeLevelSetCollectionWithThreshold(
-    probs
+levelSetsQMC, thresholdsQMC = (
+    distribution.computeMinimumVolumeLevelSetCollectionWithThreshold(probs)
 )
 ot.ResourceMap.SetAsBool("Distribution-MinimumVolumeLevelSetBySampling", False)
 ott.assert_almost_equal(thresholdsQMC, thresholds, 0.0, 1e-4)
@@ -157,7 +161,11 @@ try:
         # closed form (lam / (lam - i*x)) * (1 - exp(-(lam - i*x) * b)) / norm
         lam, b = 1.0, 5.0
         norm = 1.0 - math.exp(-lam * b)
-        cf_ref = (lam / complex(lam, -x)) * (1.0 - cmath.exp(complex(-lam * b, x * b))) / norm
+        cf_ref = (
+            (lam / complex(lam, -x))
+            * (1.0 - cmath.exp(complex(-lam * b, x * b)))
+            / norm
+        )
         ott.assert_almost_equal(cf, cf_ref, 1e-6, 1e-6)
 finally:
     ot.ResourceMap.SetAsUnsignedInteger(
@@ -210,9 +218,7 @@ mat = ot.Matrix([[1.0, 0.0, 0.0, 0.0], [0.0, 2.0, 0.0, 0.0]])
 scaled = mat * ot.Normal(4)
 assert scaled.getDimension() == 2
 ott.assert_almost_equal(scaled.getMean(), [0.0, 0.0])
-ott.assert_almost_equal(
-    scaled.getCovariance(), ot.Matrix([[1.0, 0.0], [0.0, 4.0]])
-)
+ott.assert_almost_equal(scaled.getCovariance(), ot.Matrix([[1.0, 0.0], [0.0, 4.0]]))
 ott.assert_almost_equal((ot.IdentityMatrix(4) * d4).getMean(), [0.0] * 4)
 # Degenerate null matrix maps the distribution to the origin
 nullDist = ot.Matrix(2, 4) * d4

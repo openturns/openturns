@@ -25,6 +25,11 @@ inverseTransformation= (| y0 = [x0]->[x0]
 | y1 = Triangular(a = -1, m = 0, b = 1) -> y1 : Uniform(a = 0, b = 1)
 ))
 ----------------------------------------------------------------------------------------------------
+left= Normal(mu = 0, sigma = 1)
+right= Student(nu = 8, mu = 1, sigma = 2)
+transformation= (InverseRosenblattEvaluation(Normal(1)->Student(nu = 8, mu = 1, sigma = 2)))o(class=LinearEvaluation name=Unnamed center=[0] constant=[0] linear=[[ 1 ]])
+inverseTransformation= (class=LinearEvaluation name=Unnamed center=[0] constant=[0] linear=[[ 1 ]])o(RosenblattEvaluation(Student(nu = 8, mu = 1, sigma = 2)->Normal(1)))
+----------------------------------------------------------------------------------------------------
 (| y0 = [x0]->[x0]
 | y1 = [x1]->[x1]
 | y2 = [x2]->[x2]

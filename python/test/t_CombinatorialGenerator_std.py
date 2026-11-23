@@ -3,9 +3,11 @@
 import openturns as ot
 import openturns.testing as ott
 
-generators = [(ot.Tuples([4, 6, 9]), 216),
-              (ot.KPermutations(4, 6), 360),
-              (ot.Combinations(4, 6), 15)]
+generators = [
+    (ot.Tuples([4, 6, 9]), 216),
+    (ot.KPermutations(4, 6), 360),
+    (ot.Combinations(4, 6), 15),
+]
 
 for generator, expectedSize in generators:
     print("generator:", generator)
@@ -14,15 +16,13 @@ for generator, expectedSize in generators:
     generator.restart()
     # collect through generateNext
     generator.restart()
-    first_pass = [generator.generateNext()
-                  for _ in range(expectedSize)]
+    first_pass = [generator.generateNext() for _ in range(expectedSize)]
     with ott.assert_raises(Exception):
         generator.generateNext()
     # collect through the python iterator protocol
     second_pass = [indices for indices in generator]
     assert first_pass == second_pass, "iterator mismatch"
-    print("size:", len(first_pass), "first:", first_pass[0],
-          "last:", first_pass[-1])
+    print("size:", len(first_pass), "first:", first_pass[0], "last:", first_pass[-1])
     # restart restarts the sequence
     generator.restart()
     assert generator.generateNext() == first_pass[0]

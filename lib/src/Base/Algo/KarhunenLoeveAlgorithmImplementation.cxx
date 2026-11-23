@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and projection
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,8 +21,7 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
-
-#include <limits>
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +32,7 @@ static const Factory<KarhunenLoeveAlgorithmImplementation> Factory_KarhunenLoeve
 /* Default constructor */
 KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation()
   : PersistentObject()
-  , nbModes_(std::numeric_limits<UnsignedInteger>::max())
+  , nbModes_(SpecFunc::MaxUnsignedInteger)
 {
   // Nothing to do
 }
@@ -44,7 +43,7 @@ KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation(const
   : PersistentObject()
   , covariance_(covariance)
   , threshold_(threshold)
-  , nbModes_(std::numeric_limits<UnsignedInteger>::max())
+  , nbModes_(SpecFunc::MaxUnsignedInteger)
 {
   // Nothing to do
 }

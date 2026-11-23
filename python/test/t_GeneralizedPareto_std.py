@@ -221,11 +221,15 @@ for xi in [-0.2, 0.0, 0.2]:
         ott.assert_almost_equal(kurtosis, [73.8], 1e-5, 0.0)
     covariance = distribution.getCovariance()
     if xi == -0.2:
-        ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [1.11607]), 1e-5, 0.0)
+        ott.assert_almost_equal(
+            covariance, ot.CovarianceMatrix(1, [1.11607]), 1e-5, 0.0
+        )
     elif xi == 0.0:
         ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [2.25]), 1e-5, 0.0)
     else:
-        ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [5.85938]), 1e-5, 0.0)
+        ott.assert_almost_equal(
+            covariance, ot.CovarianceMatrix(1, [5.85938]), 1e-5, 0.0
+        )
     parameters = distribution.getParametersCollection()
     assert len(parameters) == 1
     if xi == -0.2:
@@ -234,7 +238,10 @@ for xi in [-0.2, 0.0, 0.2]:
         ott.assert_almost_equal(parameters[0], [1.5, 0.0, 0.5], 0.0, 0.0)
     else:
         ott.assert_almost_equal(parameters[0], [1.5, 0.2, 0.5], 0.0, 0.0)
-    assert distribution.getStandardRepresentative().getImplementation().getClassName() == "GeneralizedPareto"
+    assert (
+        distribution.getStandardRepresentative().getImplementation().getClassName()
+        == "GeneralizedPareto"
+    )
 
     ot.Log.Show(ot.Log.TRACE)
     ot.RandomGenerator.SetSeed(1)

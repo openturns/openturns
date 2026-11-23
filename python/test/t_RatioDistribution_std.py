@@ -175,12 +175,8 @@ ott.assert_almost_equal(bounded.getCovariance()[0, 0], variance, 1e-10, 1e-10)
 logNormalRatio = otexp.RatioDistribution(ot.Normal(), ot.LogNormal())
 ott.assert_almost_equal(logNormalRatio.getMean(), [0.0], 1e-10, 1e-10)
 ott.assert_almost_equal(logNormalRatio.getMoment(1), [0.0], 1e-10, 1e-10)
-ott.assert_almost_equal(
-    logNormalRatio.getMoment(2), [math.exp(2.0)], 1e-8, 1e-8
-)
-ott.assert_almost_equal(
-    logNormalRatio.getCovariance()[0, 0], math.exp(2.0), 1e-8, 1e-8
-)
+ott.assert_almost_equal(logNormalRatio.getMoment(2), [math.exp(2.0)], 1e-8, 1e-8)
+ott.assert_almost_equal(logNormalRatio.getCovariance()[0, 0], math.exp(2.0), 1e-8, 1e-8)
 gammaRatio = otexp.RatioDistribution(ot.Normal(), ot.Gamma(3.0, 1.0))
 ott.assert_almost_equal(gammaRatio.getMean(), [0.0], 1e-10, 1e-10)
 ott.assert_almost_equal(gammaRatio.getMoment(1), [0.0], 1e-10, 1e-10)

@@ -150,11 +150,15 @@ print(sampleFractional._repr_html_())
 # erase a set of indices, see issue #1730
 sample = ot.Sample([[float(x)] for x in range(10)])
 sample.erase([3, 5, 8])
-ott.assert_almost_equal(sample, ot.Sample([[0.0], [1.0], [2.0], [4.0], [6.0], [7.0], [9.0]]))
+ott.assert_almost_equal(
+    sample, ot.Sample([[0.0], [1.0], [2.0], [4.0], [6.0], [7.0], [9.0]])
+)
 # unsorted indices are fine
 sample = ot.Sample([[float(x)] for x in range(10)])
 sample.erase([8, 3, 5])
-ott.assert_almost_equal(sample, ot.Sample([[0.0], [1.0], [2.0], [4.0], [6.0], [7.0], [9.0]]))
+ott.assert_almost_equal(
+    sample, ot.Sample([[0.0], [1.0], [2.0], [4.0], [6.0], [7.0], [9.0]])
+)
 # empty list is a no-op
 reference = ot.Sample([[float(x)] for x in range(10)])
 sample = ot.Sample(reference)
@@ -185,19 +189,11 @@ ott.assert_almost_equal(stats["mean"], descSample.computeMean())
 ott.assert_almost_equal(stats["std"], descSample.computeStandardDeviation())
 ott.assert_almost_equal(stats["min"], descSample.getMin())
 ott.assert_almost_equal(stats["max"], descSample.getMax())
-ott.assert_almost_equal(
-    stats["25%"], descSample.computeQuantilePerComponent(0.25)
-)
-ott.assert_almost_equal(
-    stats["50%"], descSample.computeQuantilePerComponent(0.5)
-)
-ott.assert_almost_equal(
-    stats["75%"], descSample.computeQuantilePerComponent(0.75)
-)
+ott.assert_almost_equal(stats["25%"], descSample.computeQuantilePerComponent(0.25))
+ott.assert_almost_equal(stats["50%"], descSample.computeQuantilePerComponent(0.5))
+ott.assert_almost_equal(stats["75%"], descSample.computeQuantilePerComponent(0.75))
 custom = descSample.describe([0.1, 0.9])
-ott.assert_almost_equal(
-    custom["10%"], descSample.computeQuantilePerComponent(0.1)
-)
+ott.assert_almost_equal(custom["10%"], descSample.computeQuantilePerComponent(0.1))
 with ott.assert_raises(ValueError):
     descSample.describe([1.5])
 # Closely spaced percentiles keep distinct results
@@ -276,6 +272,4 @@ with ott.assert_raises(Exception):
 # phi(q)/((1 - Phi(q))) with q the 0.9 quantile, about 1.755
 ot.RandomGenerator.SetSeed(1)
 normalSample = ot.Normal().getSample(20000)
-ott.assert_almost_equal(
-    normalSample.computeSuperQuantile(0.9), [1.755], 1e-1, 1e-1
-)
+ott.assert_almost_equal(normalSample.computeSuperQuantile(0.9), [1.755], 1e-1, 1e-1)

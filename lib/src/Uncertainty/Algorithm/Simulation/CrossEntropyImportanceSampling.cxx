@@ -2,7 +2,7 @@
 /**
  *  @brief CrossEntropyImportanceSampling implement parent class for Cross Entropy Importance Sampling algorithms
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -353,7 +353,7 @@ Sample CrossEntropyImportanceSampling::getInputSample() const
   if (!keepSample_)
     throw InvalidArgumentException(HERE) << "CrossEntropyImportanceSampling keepSample was not set";
 
-  return getInputSample(getStepsNumber()-1, BOTH);
+  return getInputSample(getStepsNumber() - 1, BOTH);
 }
 
 Sample CrossEntropyImportanceSampling::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const

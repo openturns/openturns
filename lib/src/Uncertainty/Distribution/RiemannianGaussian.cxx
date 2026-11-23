@@ -2,7 +2,7 @@
 /**
  *  @brief The Riemannian Gaussian distribution on SPD manifold
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,8 @@ CLASSNAMEINIT(RiemannianGaussian)
 
 static const Factory<RiemannianGaussian> Factory_RiemannianGaussian;
 
-namespace {
+namespace
+{
 
 // Gauss-Hermite nodes and weights for the N(0,1) expectation by Golub-Welsch:
 // the Jacobi matrix has a zero diagonal and sqrt(i) off-diagonal entries,
@@ -64,7 +65,7 @@ void RiemannianGaussianGaussHermiteRule(const UnsignedInteger order,
 // order^dimension <= budget, at least 2, at most budget^{1/3} to keep the
 // Golub-Welsch eigendecomposition negligible
 UnsignedInteger RiemannianGaussianGaussHermiteOrder(const UnsignedInteger dimension,
-                                                    const UnsignedInteger budget)
+    const UnsignedInteger budget)
 {
   const Scalar maxOrder = std::cbrt((1.0 * budget));
   const Scalar tensorOrder = std::pow((1.0 * budget), 1.0 / (1.0 * dimension));
@@ -168,8 +169,8 @@ Bool RiemannianGaussian::operator ==(const RiemannianGaussian & other) const
 {
   if (this == &other) return true;
   return (n_ == other.n_)
-      && (meanMatrix_ == other.meanMatrix_)
-      && (sigma_ == other.sigma_);
+         && (meanMatrix_ == other.meanMatrix_)
+         && (sigma_ == other.sigma_);
 }
 
 Bool RiemannianGaussian::equals(const DistributionImplementation & other) const

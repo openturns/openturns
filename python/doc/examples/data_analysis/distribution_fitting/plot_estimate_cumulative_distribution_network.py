@@ -58,9 +58,7 @@ view = otv.View(graph_sample)
 # factor.
 # The templates define the parametric families; their parameters are used as
 # the starting point of the maximum likelihood optimization.
-factory = otexp.CumulativeDistributionNetworkFactory(
-    graph, [ot.Beta(), ot.Normal(2)]
-)
+factory = otexp.CumulativeDistributionNetworkFactory(graph, [ot.Beta(), ot.Normal(2)])
 print(factory)
 
 # %%
@@ -82,12 +80,8 @@ estimated = factory.build(sample)
 # network, and the BIC of both distributions on the sample.
 print("Estimated parameter:", estimated.getParameter())
 print("Reference parameter:", reference.getParameter())
-bic_estimated = ot.FittingTest.BIC(
-    sample, estimated, estimated.getParameterDimension()
-)
-bic_reference = ot.FittingTest.BIC(
-    sample, reference, reference.getParameterDimension()
-)
+bic_estimated = ot.FittingTest.BIC(sample, estimated, estimated.getParameterDimension())
+bic_reference = ot.FittingTest.BIC(sample, reference, reference.getParameterDimension())
 print("BIC of the estimate:", bic_estimated)
 print("BIC of the reference:", bic_reference)
 

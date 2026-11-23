@@ -24,13 +24,9 @@ print("vect sample =", repr(vect.getSample(5)))
 
 assert "ConstantRandomVector" in repr(ot.ConstantRandomVector(point))
 ott.assert_almost_equal(vect.getMean(), point)
-ott.assert_almost_equal(
-    ot.Matrix(vect.getCovariance()), ot.Matrix(4, 4)
-)
+ott.assert_almost_equal(ot.Matrix(vect.getCovariance()), ot.Matrix(4, 4))
 ott.assert_almost_equal(vect.getMarginal(1).getRealization(), [102.0])
-ott.assert_almost_equal(
-    vect.getMarginal([3, 1]).getRealization(), [104.0, 102.0]
-)
+ott.assert_almost_equal(vect.getMarginal([3, 1]).getRealization(), [104.0, 102.0])
 with ott.assert_raises(Exception):
     vect.getMarginal(4)
 with ott.assert_raises(Exception):

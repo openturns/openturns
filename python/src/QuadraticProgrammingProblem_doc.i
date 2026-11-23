@@ -1,4 +1,4 @@
-%feature("docstring") OT::QuadraticProblem
+%feature("docstring") OT::QuadraticProgrammingProblem
 R"RAW(Quadratic optimization problem.
 
 .. warning::
@@ -30,16 +30,16 @@ The constant :math:`d` does not change the optimal point; it is included so
 that :meth:`~openturns.OptimizationResult.getOptimalValue` returns the value
 of the original objective, for instance the residual sum of squares when the
 problem is built with
-:meth:`~openturns.experimental.QuadraticProblem.FromLeastSquares`.
+:meth:`~openturns.experimental.QuadraticProgrammingProblem.FromLeastSquares`.
 
 Available constructors:
-    QuadraticProblem(*hessian, linearCost, bounds*)
+    QuadraticProgrammingProblem(*hessian, linearCost, bounds*)
 
-    QuadraticProblem(*hessian, linearCost, bounds, constant*)
+    QuadraticProgrammingProblem(*hessian, linearCost, bounds, constant*)
 
-    QuadraticProblem(*hessian, linearCost, bounds, A, cb*)
+    QuadraticProgrammingProblem(*hessian, linearCost, bounds, A, cb*)
 
-    QuadraticProblem(*hessian, linearCost, bounds, A, cb, constant*)
+    QuadraticProgrammingProblem(*hessian, linearCost, bounds, A, cb, constant*)
 
 Parameters
 ----------
@@ -50,7 +50,7 @@ linearCost : sequence of float
 bounds : :class:`~openturns.Interval`
     Bound constraints :math:`B = \{\vect{x} : \vect{\ell} \leq \vect{x} \leq \vect{u}\}`.
     An empty interval means no bounds.
-constant : float
+constant : float, optional
     The constant term :math:`d`. Default is 0.
 A : :class:`~openturns.Matrix`
     Linear constraint matrix :math:`\mat{A}`.
@@ -59,7 +59,7 @@ cb : :class:`~openturns.Interval`
 
 See Also
 --------
-openturns.experimental.HiGHS, openturns.experimental.LinearProblem
+openturns.HiGHS, openturns.experimental.LinearProgrammingProblem
 
 Examples
 --------
@@ -70,8 +70,8 @@ Define and solve a bounded quadratic problem:
 >>> Q = ot.SymmetricMatrix([[2.0, 0.0], [0.0, 2.0]])
 >>> c = [-2.0, -4.0]
 >>> bounds = ot.Interval([0.0, 0.0], [0.5, 10.0])
->>> problem = otexp.QuadraticProblem(Q, c, bounds)
->>> algo = otexp.HiGHS(problem)
+>>> problem = otexp.QuadraticProgrammingProblem(Q, c, bounds)
+>>> algo = ot.HiGHS(problem)
 >>> algo.run() # doctest: +SKIP
 >>> result = algo.getResult() # doctest: +SKIP
 >>> x_star = result.getOptimalPoint() # doctest: +SKIP
@@ -81,14 +81,14 @@ Build the equivalent least-squares problem
 
 >>> A = ot.Matrix([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]])
 >>> b = [1.0, 2.0, 3.0]
->>> problem = otexp.QuadraticProblem.FromLeastSquares(A, b, bounds)
+>>> problem = otexp.QuadraticProgrammingProblem.FromLeastSquares(A, b, bounds)
 >>> problem.getConstant()
 14.0
 )RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::setHessian
+%feature("docstring") OT::QuadraticProgrammingProblem::setHessian
 "Accessor to the Hessian matrix.
 
 Parameters
@@ -98,7 +98,7 @@ hessian : :class:`~openturns.SymmetricMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::getHessian
+%feature("docstring") OT::QuadraticProgrammingProblem::getHessian
 "Accessor to the Hessian matrix.
 
 Returns
@@ -108,7 +108,7 @@ hessian : :class:`~openturns.SymmetricMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::setLinearCost
+%feature("docstring") OT::QuadraticProgrammingProblem::setLinearCost
 "Accessor to the linear cost.
 
 Parameters
@@ -118,7 +118,7 @@ linearCost : sequence of float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::getLinearCost
+%feature("docstring") OT::QuadraticProgrammingProblem::getLinearCost
 "Accessor to the linear cost.
 
 Returns
@@ -128,7 +128,7 @@ linearCost : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::setConstant
+%feature("docstring") OT::QuadraticProgrammingProblem::setConstant
 "Accessor to the constant term of the objective.
 
 Parameters
@@ -138,7 +138,7 @@ constant : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::getConstant
+%feature("docstring") OT::QuadraticProgrammingProblem::getConstant
 "Accessor to the constant term of the objective.
 
 Returns
@@ -148,7 +148,7 @@ constant : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::getEqualityConstraint
+%feature("docstring") OT::QuadraticProgrammingProblem::getEqualityConstraint
 "Accessor to the equality constraints.
 
 The equality constraints are derived from the linear constraints: a row whose
@@ -166,22 +166,26 @@ equality : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::setEqualityConstraint
+%feature("docstring") OT::QuadraticProgrammingProblem::setEqualityConstraint
 "Set the equality constraint function.
 
-QuadraticProblem only supports linear constraints: this method always raises
-an exception. Define equality constraints through
-:meth:`~openturns.experimental.QuadraticProblem.setLinearConstraint` with equal
-lower and upper bounds.
+The function must be linear: either a :class:`~openturns.LinearFunction`, or a
+:class:`~openturns.Function` whose :meth:`~openturns.Function.isLinear` method
+returns *True*. It is converted to the linear constraints
+:math:`\\mat{A} \\vect{x} = \\vect{L}`, where :math:`\\mat{A}` is the transpose
+of its gradient at the origin and :math:`\\vect{L} = -h(\\vect{0})` for a
+function :math:`h` such that :math:`h(\\vect{x}) = \\vect{0}` is the expected
+equality constraint. Existing inequality constraints are preserved.
 
 Parameters
 ----------
 equalityConstraint : :class:`~openturns.Function`
-    Equality constraint function."
+    Linear equality constraint :math:`h(\\vect{x}) = \\vect{0}`. An empty
+    function clears the equality constraints."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::hasEqualityConstraint
+%feature("docstring") OT::QuadraticProgrammingProblem::hasEqualityConstraint
 "Test whether equality constraints are defined.
 
 Returns
@@ -192,7 +196,7 @@ hasEqualityConstraint : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::getInequalityConstraint
+%feature("docstring") OT::QuadraticProgrammingProblem::getInequalityConstraint
 "Accessor to the inequality constraints.
 
 The inequality constraints are derived from the linear constraints: each
@@ -212,21 +216,26 @@ inequality : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::setInequalityConstraint
+%feature("docstring") OT::QuadraticProgrammingProblem::setInequalityConstraint
 "Set the inequality constraint function.
 
-QuadraticProblem only supports linear constraints: this method always raises
-an exception. Define inequality constraints through
-:meth:`~openturns.experimental.QuadraticProblem.setLinearConstraint`.
+The function must be linear: either a :class:`~openturns.LinearFunction`, or a
+:class:`~openturns.Function` whose :meth:`~openturns.Function.isLinear` method
+returns *True*. It is converted to the linear constraints
+:math:`\\mat{A} \\vect{x} \\geq \\vect{L}`, where :math:`\\mat{A}` is the
+transpose of its gradient at the origin and :math:`\\vect{L} = -g(\\vect{0})`
+for a function :math:`g` such that :math:`g(\\vect{x}) \\geq 0` is the expected
+inequality constraint. Existing equality constraints are preserved.
 
 Parameters
 ----------
 inequalityConstraint : :class:`~openturns.Function`
-    Inequality constraint function."
+    Linear inequality constraint :math:`g(\\vect{x}) \\geq 0`. An empty
+    function clears the inequality constraints."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::hasInequalityConstraint
+%feature("docstring") OT::QuadraticProgrammingProblem::hasInequalityConstraint
 "Test whether inequality constraints are defined.
 
 Returns
@@ -237,7 +246,7 @@ hasInequalityConstraint : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::setLinearConstraint
+%feature("docstring") OT::QuadraticProgrammingProblem::setLinearConstraint
 "Accessor to the linear constraints.
 
 Each row :math:`i` of the constraint matrix defines
@@ -255,7 +264,7 @@ cb : :class:`~openturns.Interval`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::getLinearConstraintCoefficients
+%feature("docstring") OT::QuadraticProgrammingProblem::getLinearConstraintCoefficients
 "Accessor to the linear constraint coefficients.
 
 Returns
@@ -265,7 +274,7 @@ A : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::getLinearConstraintBounds
+%feature("docstring") OT::QuadraticProgrammingProblem::getLinearConstraintBounds
 "Accessor to the linear constraint bounds.
 
 Returns
@@ -275,7 +284,7 @@ cb : :class:`~openturns.Interval`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticProblem::FromLeastSquares
+%feature("docstring") OT::QuadraticProgrammingProblem::FromLeastSquares
 R"RAW(Build a least-squares problem.
 
 This builds the quadratic problem:
@@ -304,6 +313,6 @@ bounds : :class:`~openturns.Interval`
 
 Returns
 -------
-problem : :class:`~openturns.experimental.QuadraticProblem`
+problem : :class:`~openturns.experimental.QuadraticProgrammingProblem`
     The equivalent quadratic problem.
 )RAW"

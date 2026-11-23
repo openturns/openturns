@@ -2,7 +2,7 @@
 /**
  *  @brief Pagmo optimization algorithm
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,7 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/DatabaseFunction.hxx"
 #include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
 
 #ifdef OPENTURNS_HAVE_PAGMO
 #include <pagmo/algorithm.hpp>
@@ -335,7 +336,7 @@ static const Factory<Pagmo> Factory_Pagmo;
 static UnsignedInteger GetReferenceDirectionsNumber(const UnsignedInteger objectives,
     const UnsignedInteger divisions)
 {
-  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
+  const UnsignedInteger maxUInt = SpecFunc::MaxUnsignedInteger;
   UnsignedInteger directions = 1;
   for (UnsignedInteger i = 1; i <= divisions; ++ i)
   {
@@ -397,7 +398,8 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
 #if PAGMO_VERSION_NR >= 202000
                                          "nsga3",
 #endif
-                                         "mhaco"};
+                                         "mhaco"
+                                        };
   if (!problem.isContinuous() && !integerAlgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support non continuous problems";
 #else
@@ -494,7 +496,7 @@ void Pagmo::run()
     const UnsignedInteger variant = ResourceMap::GetAsUnsignedInteger("Pagmo-de-variant");
     pagmo::de algorithm_impl(gen, F, CR, variant, getMaximumResidualError(), getMaximumAbsoluteError());
 #if PAGMO_VERSION_NR >= 202000
-    algorithm_impl.set_bfe(pagmo::bfe{});
+    algorithm_impl.set_bfe(pagmo::bfe {});
 #endif
     algo = algorithm_impl;
   }

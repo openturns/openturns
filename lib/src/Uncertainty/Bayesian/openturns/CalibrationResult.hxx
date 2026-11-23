@@ -2,7 +2,7 @@
 /**
  *  @brief CalibrationResult implements the result of an algorithm for solving a calibration problem
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -119,6 +119,11 @@ public:
 
 private:
 
+  /* Compute the output at the posterior mean when it is first requested: the
+     mean of a truncated posterior is obtained by numerical integration, which
+     must not be paid by every calibration result construction */
+  void computeOutputAtPosteriorMean() const;
+
   /* Parameter prior distribution */
   Distribution parameterPrior_;
 
@@ -142,7 +147,8 @@ private:
 
   /* Output at prior/posterior */
   Sample outputAtPriorMean_;
-  Sample outputAtPosteriorMean_;
+  mutable Sample outputAtPosteriorMean_;
+  mutable Bool isAlreadyComputedOutputAtPosteriorMean_ = false;
 
   /* Bayesian */
   Bool bayesian_ = false;

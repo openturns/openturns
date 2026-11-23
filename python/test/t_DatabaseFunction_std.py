@@ -41,7 +41,9 @@ _ = dbEval.getNearestNeighbourAlgorithm()
 dbEval.setNearestNeighbourAlgorithm(dbEval.getNearestNeighbourAlgorithm())
 ott.assert_almost_equal(dbEval(x), database(x), 1e-12, 1e-12)
 ott.assert_almost_equal(dbEval(inputSample), outputSample, 1e-12, 1e-12)
-ott.assert_almost_equal(dbEval(ot.Sample([[1.1, 1.1]])), dbEval(ot.Sample([[1.1, 1.1]])), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    dbEval(ot.Sample([[1.1, 1.1]])), dbEval(ot.Sample([[1.1, 1.1]])), 1e-12, 1e-12
+)
 ott.assert_almost_equal(dbEval.getMarginal(0)(x), database(x), 1e-12, 1e-12)
 assert dbEval == ot.DatabaseEvaluation(inputSample, outputSample)
 assert not (dbEval != ot.DatabaseEvaluation(inputSample, outputSample))
@@ -50,7 +52,9 @@ otherOut.add([6.0])
 otherOut.add([7.0])
 assert dbEval != ot.DatabaseEvaluation(inputSample, otherOut)
 ott.assert_almost_equal(database.getEvaluation()(x), database(x), 1e-12, 1e-12)
-ott.assert_almost_equal(database.getEvaluation()(inputSample), outputSample, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    database.getEvaluation()(inputSample), outputSample, 1e-12, 1e-12
+)
 _ = str(database.getEvaluation())
 _ = database.getCallsNumber()
 assert database == database

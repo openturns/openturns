@@ -2,7 +2,7 @@
 /**
  *  @brief Validation of a functional chaos expansion
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -149,8 +149,8 @@ Sample FunctionalChaosValidation::ComputeMetamodelLeaveOneOutPredictions(
   const Bool useUniformWeights = (weights.getSize() == 1);
   if (!useUniformWeights && (weights.getSize() != sampleSize)) throw InvalidArgumentException(HERE) << "FunctionalChaosValidation: design weights size (" << weights.getSize() << ") must match the sample size (" << sampleSize << ") or be a single uniform value";
   LeastSquaresMethod leastSquaresMethod(useUniformWeights ?
-      LeastSquaresMethod::Build(methodName, designProxy, allIndices) :
-      LeastSquaresMethod::Build(methodName, designProxy, weights, allIndices));
+                                        LeastSquaresMethod::Build(methodName, designProxy, allIndices) :
+                                        LeastSquaresMethod::Build(methodName, designProxy, weights, allIndices));
   leastSquaresMethod.update(Indices(0), allIndices, Indices(0));
   const Point hMatrixDiag = leastSquaresMethod.getHDiag();
   const Sample cvPredictions(MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
@@ -183,8 +183,8 @@ Sample FunctionalChaosValidation::ComputeMetamodelKFoldPredictions(
   const Bool useUniformWeights = (weights.getSize() == 1);
   if (!useUniformWeights && (weights.getSize() != sampleSize)) throw InvalidArgumentException(HERE) << "FunctionalChaosValidation: design weights size (" << weights.getSize() << ") must match the sample size (" << sampleSize << ") or be a single uniform value";
   LeastSquaresMethod leastSquaresMethod(useUniformWeights ?
-    LeastSquaresMethod::Build(methodName, designProxy, allIndices) :
-    LeastSquaresMethod::Build(methodName, designProxy, weights, allIndices));
+                                        LeastSquaresMethod::Build(methodName, designProxy, allIndices) :
+                                        LeastSquaresMethod::Build(methodName, designProxy, weights, allIndices));
   leastSquaresMethod.update(Indices(0), allIndices, Indices(0));
   if (useUniformWeights)
   {

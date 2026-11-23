@@ -3,7 +3,7 @@
  *  @brief ActiveLearningUFunction implements the "U" active learning
  *  criterion used in reliability algorithms
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,9 +45,9 @@ ActiveLearningUFunction::ActiveLearningUFunction()
 
 /* Constructor with parameters */
 ActiveLearningUFunction::ActiveLearningUFunction(const Scalar reliabilityThreshold,
-                                                 const Scalar learningThreshold)
+    const Scalar learningThreshold)
   : ActiveLearningReliabilityFunctionImplementation(reliabilityThreshold,
-                                                    learningThreshold)
+      learningThreshold)
 {
 }
 
@@ -104,7 +104,7 @@ Bool ActiveLearningUFunction::checkConvergenceLearning(const Sample & criterionV
 
 /* Return sample corresponding to U criterion*/
 Sample ActiveLearningUFunction::getInfillSample(const Sample & inputSample,
-                                                const Sample & criterionValues) const
+    const Sample & criterionValues) const
 {
   const Indices selection(1, criterionValues.argsort(true)[0]);
 

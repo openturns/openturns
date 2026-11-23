@@ -42,9 +42,7 @@ ott.assert_almost_equal(
 )
 evaluation2.setEnableExtrapolation(True)
 ott.assert_almost_equal(evaluation2([-1.0]), [0.0, 1.0], 1e-14, 1e-14)
-ott.assert_almost_equal(
-    evaluation2([[10.0]]), [[4.0, 9.0]], 1e-14, 1e-14
-)
+ott.assert_almost_equal(evaluation2([[10.0]]), [[4.0, 9.0]], 1e-14, 1e-14)
 evaluation2.setEnableExtrapolation(False)
 assert not evaluation2.getEnableExtrapolation()
 _ = repr(evaluation2)
@@ -98,6 +96,4 @@ ott.assert_almost_equal(evaluation2([0.5]), [0.5], 1e-14, 1e-14)
 # Single-location shortcut returns the stored value everywhere
 singleEval = ot.PiecewiseLinearEvaluation([1.0], [2.0])
 ott.assert_almost_equal(singleEval([0.0]), [2.0], 1e-14, 1e-14)
-ott.assert_almost_equal(
-    singleEval([[0.0], [5.0]]), [[2.0], [2.0]], 1e-14, 1e-14
-)
+ott.assert_almost_equal(singleEval([[0.0], [5.0]]), [[2.0], [2.0]], 1e-14, 1e-14)

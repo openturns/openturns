@@ -64,9 +64,7 @@ assert samplePolygon.getEdgeColor() == samplePolygon.getColor()
 xyPolygon = ot.Polygon(data1[:, 0], data1[:, 1], "xy legend")
 ott.assert_almost_equal(xyPolygon.getData(), data1, 1e-14, 1e-14)
 pointPolygon = ot.Polygon(ot.Point([0.0, 1.0]), ot.Point([2.0, 3.0]), "point legend")
-ott.assert_almost_equal(
-    pointPolygon.getData(), [[0.0, 2.0], [1.0, 3.0]], 1e-14, 1e-14
-)
+ott.assert_almost_equal(pointPolygon.getData(), [[0.0, 2.0], [1.0, 3.0]], 1e-14, 1e-14)
 oneDPolygon = ot.Polygon(ot.Sample([[1.0], [2.0], [3.0]]), "red", "blue", "1d legend")
 ott.assert_almost_equal(
     oneDPolygon.getData(), [[0.0, 1.0], [1.0, 2.0], [2.0, 3.0]], 1e-14, 1e-14

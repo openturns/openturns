@@ -21,7 +21,10 @@ assert defaultMultivariatePolya.getDimension() == 1
 # The estimated distribution must be a valid distribution
 ott.assert_almost_equal(
     estimatedMultivariatePolya.computeCDF(
-        [estimatedMultivariatePolya.getRange().getUpperBound()[i] + 0.5 for i in range(3)]
+        [
+            estimatedMultivariatePolya.getRange().getUpperBound()[i] + 0.5
+            for i in range(3)
+        ]
     ),
     1.0,
 )

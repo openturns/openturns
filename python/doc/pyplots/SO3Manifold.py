@@ -25,12 +25,15 @@ ax1 = fig.add_subplot(121, projection="3d")
 # radius pi in the axis-angle representation
 u = np.linspace(0.0, 2.0 * math.pi, 40)
 v = np.linspace(0.0, math.pi, 40)
-ax1.plot_surface(math.pi * np.outer(np.cos(u), np.sin(v)),
-                 math.pi * np.outer(np.sin(u), np.sin(v)),
-                 math.pi * np.outer(np.ones(np.size(u)), np.cos(v)),
-                 color="lightgray", alpha=0.3, edgecolor="none")
-ax1.scatter([0.0], [0.0], [0.0], color="red", s=80, label="identity",
-            depthshade=False)
+ax1.plot_surface(
+    math.pi * np.outer(np.cos(u), np.sin(v)),
+    math.pi * np.outer(np.sin(u), np.sin(v)),
+    math.pi * np.outer(np.ones(np.size(u)), np.cos(v)),
+    color="lightgray",
+    alpha=0.3,
+    edgecolor="none",
+)
+ax1.scatter([0.0], [0.0], [0.0], color="red", s=80, label="identity", depthshade=False)
 
 # The chart maps the axis-angle ball onto SO(3) by a rotation about the axis of
 # the tangent vector: the displayed images lie along the three coordinate axes
@@ -55,13 +58,26 @@ for k in range(3):
         norm = math.sqrt(sum(value * value for value in axisAngle))
         if norm <= 1.0e-12:
             continue
-        rotationAngle = math.atan2(norm, 0.5 * (pushed[0] + pushed[4] + pushed[8] - 1.0))
+        rotationAngle = math.atan2(
+            norm, 0.5 * (pushed[0] + pushed[4] + pushed[8] - 1.0)
+        )
         axisAngle = [rotationAngle * value / norm for value in axisAngle]
-        ax1.plot([0.0, axisAngle[0]], [0.0, axisAngle[1]], [0.0, axisAngle[2]],
-                 color=colors[k], linewidth=2.0,
-                 label=labels[k] if angle == angles[0] else "")
-        ax1.scatter([axisAngle[0]], [axisAngle[1]], [axisAngle[2]],
-                    color=colors[k], s=30, depthshade=False)
+        ax1.plot(
+            [0.0, axisAngle[0]],
+            [0.0, axisAngle[1]],
+            [0.0, axisAngle[2]],
+            color=colors[k],
+            linewidth=2.0,
+            label=labels[k] if angle == angles[0] else "",
+        )
+        ax1.scatter(
+            [axisAngle[0]],
+            [axisAngle[1]],
+            [axisAngle[2]],
+            color=colors[k],
+            s=30,
+            depthshade=False,
+        )
 
 ax1.set_xlim(-math.pi, math.pi)
 ax1.set_ylim(-math.pi, math.pi)
@@ -69,8 +85,9 @@ ax1.set_zlim(-math.pi, math.pi)
 ax1.set_xlabel("axis $\\cdot$ angle")
 ax1.set_ylabel("axis $\\cdot$ angle")
 ax1.set_zlabel("axis $\\cdot$ angle")
-ax1.set_title("Axis-angle ball, cut locus at angle $\\pi$\n"
-              "and exp-map from the identity")
+ax1.set_title(
+    "Axis-angle ball, cut locus at angle $\\pi$\n" "and exp-map from the identity"
+)
 ax1.legend(loc="upper left", fontsize=8)
 
 # ======================================================================
@@ -87,14 +104,40 @@ nPoints = 129
 radius = [cutRadius * i / (nPoints - 1) for i in range(nPoints)]
 density = [so3.getExpMapVolumeDensity([value, 0.0, 0.0]) for value in radius]
 
-graph = ot.Graph("Exp-map volume density $(\\sin(\\theta/2)/(\\theta/2))^2$",
-                 "tangent space radius", "volume density", True, "best")
-graph.add(ot.Curve(ot.Sample([[radius[i], density[i]] for i in range(nPoints)]),
-                   "darkgreen", "solid", 2.5, "volume density"))
-graph.add(ot.Curve(ot.Sample([[0.0, 1.0], [cutRadius, 1.0]]),
-                   "grey", "dashed", 1.5, "density at the origin"))
-graph.add(ot.Curve(ot.Sample([[cutRadius, 0.0], [cutRadius, 1.0]]),
-                   "red", "solid", 1.5, "cut locus"))
+graph = ot.Graph(
+    "Exp-map volume density $(\\sin(\\theta/2)/(\\theta/2))^2$",
+    "tangent space radius",
+    "volume density",
+    True,
+    "best",
+)
+graph.add(
+    ot.Curve(
+        ot.Sample([[radius[i], density[i]] for i in range(nPoints)]),
+        "darkgreen",
+        "solid",
+        2.5,
+        "volume density",
+    )
+)
+graph.add(
+    ot.Curve(
+        ot.Sample([[0.0, 1.0], [cutRadius, 1.0]]),
+        "grey",
+        "dashed",
+        1.5,
+        "density at the origin",
+    )
+)
+graph.add(
+    ot.Curve(
+        ot.Sample([[cutRadius, 0.0], [cutRadius, 1.0]]),
+        "red",
+        "solid",
+        1.5,
+        "cut locus",
+    )
+)
 otv.View(graph, figure=fig, axes=[ax2], add_legend=True)
 ax2.set_title("The volume density vanishes at the cut locus")
 ax2.set_xlim(0.0, cutRadius * 1.02)

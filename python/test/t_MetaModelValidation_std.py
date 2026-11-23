@@ -89,9 +89,7 @@ ott.assert_almost_equal(weightedValidation.getWeights(), validationWeights)
 yValues = [outputValidation[i, 0] for i in range(validationSize)]
 yHatValues = [metamodelPredictions[i, 0] for i in range(validationSize)]
 weightSum = sum(validationWeights)
-weightedMean = (
-    sum(w * y for w, y in zip(validationWeights, yValues)) / weightSum
-)
+weightedMean = sum(w * y for w, y in zip(validationWeights, yValues)) / weightSum
 expectedVariance = (
     sum(w * (y - weightedMean) ** 2 for w, y in zip(validationWeights, yValues))
     / weightSum
@@ -111,20 +109,29 @@ ott.assert_almost_equal(
     weightedValidation.computeMeanAbsoluteError()[0], expectedMAE, 1e-12, 1e-12
 )
 ott.assert_almost_equal(
-    weightedValidation.computeRootMeanSquaredError()[0], math.sqrt(expectedMSE), 1e-12, 1e-12
+    weightedValidation.computeRootMeanSquaredError()[0],
+    math.sqrt(expectedMSE),
+    1e-12,
+    1e-12,
 )
 # residuals drawing runs (see issue #3118)
 residualsLayout = weightedValidation.drawResiduals()
 assert residualsLayout.getNbRows() == 1
 assert residualsLayout.getNbColumns() == outputValidation.getDimension()
 ott.assert_almost_equal(
-    weightedValidation.computeR2Score()[0], 1.0 - expectedMSE / expectedVariance, 1e-12, 1e-12
+    weightedValidation.computeR2Score()[0],
+    1.0 - expectedMSE / expectedVariance,
+    1e-12,
+    1e-12,
 )
 # Uniform weights reproduce the unweighted scores
 uniformValidation = ot.MetaModelValidation(outputValidation, metamodelPredictions)
 uniformValidation.setWeights([2.0] * validationSize)
 ott.assert_almost_equal(
-    uniformValidation.computeR2Score(), metaModelValidationSPC.computeR2Score(), 1e-12, 1e-12
+    uniformValidation.computeR2Score(),
+    metaModelValidationSPC.computeR2Score(),
+    1e-12,
+    1e-12,
 )
 ott.assert_almost_equal(
     uniformValidation.computeMeanSquaredError(),

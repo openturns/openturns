@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -220,35 +220,6 @@ Scalar DiracCovarianceModel::computeAsScalar(const Scalar tau) const
     return 0.0;
 }
 
-// The following structure helps to compute the full covariance matrix
-struct DiracCovarianceModelDiscretizePolicy
-{
-  const Sample & input_;
-  CovarianceMatrix & output_;
-  const DiracCovarianceModel & model_;
-  const UnsignedInteger dimension_;
-
-  DiracCovarianceModelDiscretizePolicy(const Sample & input,
-                                       CovarianceMatrix & output,
-                                       const DiracCovarianceModel & model)
-    : input_(input)
-    , output_(output)
-    , model_(model)
-    , dimension_(model.getOutputDimension())
-  {}
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
-  {
-    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
-    {
-      const UnsignedInteger indexBlock = index * dimension_;
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        for (UnsignedInteger i = j; i < dimension_; ++i)
-          output_(indexBlock + i, indexBlock + j) = model_.outputCovariance_.getImplementation()->operator()(i, j);
-    }
-  }
-}; /* end struct DiracCovarianceModelDiscretizePolicy */
-
 CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
 {
   // If we have to check for repeated points and there are repeated points, use the generic discretization method
@@ -267,41 +238,20 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
   const UnsignedInteger fullSize = size * outputDimension_;
   CovarianceMatrix covarianceMatrix(fullSize);
 
-  const DiracCovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelFor( 0, size, policy );
-
-  return covarianceMatrix;
-}
-
-// The following structure helps to compute the full covariance matrix
-struct DiracCovarianceModelDiscretizeAndFactorizePolicy
-{
-  const Sample & input_;
-  TriangularMatrix & output_;
-  const DiracCovarianceModel & model_;
-  const UnsignedInteger dimension_;
-
-  DiracCovarianceModelDiscretizeAndFactorizePolicy(const Sample & input,
-      TriangularMatrix & output,
-      const DiracCovarianceModel & model)
-    : input_(input)
-    , output_(output)
-    , model_(model)
-    , dimension_(model.getOutputDimension())
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
+  TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
-      const UnsignedInteger indexBlock = index * dimension_;
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        for (UnsignedInteger i = j; i < dimension_; ++i)
-          output_(indexBlock + i, indexBlock + j) = model_.covarianceFactor_(i, j);
+      const UnsignedInteger indexBlock = index * outputDimension_;
+      for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+        for (UnsignedInteger i = j; i < outputDimension_; ++i)
+          covarianceMatrix(indexBlock + i, indexBlock + j) = outputCovariance_.getImplementation()->operator()(i, j);
     }
-  }
-}; /* end struct DiracCovarianceModelDiscretizeAndFactorizePolicy */
+  }, 1024);
+
+  return covarianceMatrix;
+}
 
 TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & vertices) const
 {
@@ -321,9 +271,17 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
   const UnsignedInteger fullSize = size * outputDimension_;
   TriangularMatrix covarianceFactor(fullSize);
 
-  const DiracCovarianceModelDiscretizeAndFactorizePolicy policy( vertices, covarianceFactor, *this );
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
+    {
+      const UnsignedInteger indexBlock = index * outputDimension_;
+      for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+        for (UnsignedInteger i = j; i < outputDimension_; ++i)
+          covarianceFactor(indexBlock + i, indexBlock + j) = covarianceFactor_(i, j);
+    }
+  }, 1024);
 
   return covarianceFactor;
 }

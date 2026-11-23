@@ -32,7 +32,15 @@ assert not copula.hasIndependentCopula()
 oneRealization = copula.getRealization()
 ott.assert_almost_equal(
     oneRealization,
-    [0.62987656, 0.89375790, 0.10272556, 0.15561710, 0.81617192, 0.06320608, 0.05604015],
+    [
+        0.62987656,
+        0.89375790,
+        0.10272556,
+        0.15561710,
+        0.81617192,
+        0.06320608,
+        0.05604015,
+    ],
     1e-6,
     0.0,
 )
@@ -55,7 +63,15 @@ ott.assert_almost_equal(point, [0.6] * 7, 0.0, 0.0)
 DDF = copula.computeDDF(point)
 ott.assert_almost_equal(
     DDF,
-    [0.58090522, 0.58090522, 0.91183031, 0.26052294, 0.13026147, 0.17764792, 0.17764792],
+    [
+        0.58090522,
+        0.58090522,
+        0.91183031,
+        0.26052294,
+        0.13026147,
+        0.17764792,
+        0.17764792,
+    ],
     1e-6,
     1e-8,
 )
@@ -296,7 +312,9 @@ reverseMarginal = copula.getMarginal([3, 2, 1, 0])
 assert reverseMarginal.getDimension() == 4
 ott.assert_almost_equal(
     reverseMarginal.getCovariance(),
-    ot.CovarianceMatrix(4, [1.0 / 12.0 if i == j else 0.0 for j in range(4) for i in range(4)]),
+    ot.CovarianceMatrix(
+        4, [1.0 / 12.0 if i == j else 0.0 for j in range(4) for i in range(4)]
+    ),
     1e-12,
     1e-12,
 )

@@ -48,8 +48,7 @@ randomParameters = ot.JointDistribution([ot.Uniform(), ot.Normal()])
 p3 = ot.FunctionalBasisProcess(
     randomParameters,
     ot.Basis(
-        [ot.SymbolicFunction(["t"], ["1", "0"]),
-         ot.SymbolicFunction(["t"], ["0", "1"])]
+        [ot.SymbolicFunction(["t"], ["1", "0"]), ot.SymbolicFunction(["t"], ["0", "1"])]
     ),
 )
 

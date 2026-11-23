@@ -3,7 +3,7 @@
  *  @file  HODLRMatrixImplementation.hxx
  *  @brief HODLR compressed matrix implementation
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,8 +70,14 @@ class OT_API HODLRRealAssemblyFunction
 {
 public:
   virtual ~HODLRRealAssemblyFunction() {}
-  HODLRRealAssemblyFunction* clone() const override { return new HODLRRealAssemblyFunction(*this); }
-  UnsignedInteger getSize() const override { return 0; }
+  HODLRRealAssemblyFunction* clone() const override
+  {
+    return new HODLRRealAssemblyFunction(*this);
+  }
+  UnsignedInteger getSize() const override
+  {
+    return 0;
+  }
 };
 
 /**
@@ -97,9 +103,15 @@ public:
     return f_(i, j);
   }
 
-  UnsignedInteger getSize() const override { return size_; }
+  UnsignedInteger getSize() const override
+  {
+    return size_;
+  }
 
-  Bool isParallel() const override { return parallel_; }
+  Bool isParallel() const override
+  {
+    return parallel_;
+  }
 
 private:
   EvalFunction f_;
@@ -116,7 +128,10 @@ class OT_API HODLRCovarianceAssemblyFunction
 public:
   HODLRCovarianceAssemblyFunction(const CovarianceModel & covarianceModel,
                                   const Sample & vertices);
-  HODLRCovarianceAssemblyFunction* clone() const override { return new HODLRCovarianceAssemblyFunction(*this); }
+  HODLRCovarianceAssemblyFunction* clone() const override
+  {
+    return new HODLRCovarianceAssemblyFunction(*this);
+  }
   Scalar operator()(UnsignedInteger i, UnsignedInteger j) const override;
   UnsignedInteger getSize() const override;
 

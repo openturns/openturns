@@ -111,9 +111,7 @@ with ott.assert_raises(Exception):
     ot.Ceres(ot.OptimizationProblem(ot.SymbolicFunction(["x"], ["x", "2*x"])))
 with ott.assert_raises(Exception):
     ot.Ceres(
-        ot.NearestPointProblem(
-            ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2^2"]), 1.0
-        )
+        ot.NearestPointProblem(ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2^2"]), 1.0)
     )
 boundedProblem = ot.OptimizationProblem(simpleObjective)
 boundedProblem.setBounds(ot.Interval([-1.0] * 2, [1.0] * 2))
@@ -128,9 +126,7 @@ constrainedProblem.setInequalityConstraint(
 with ott.assert_raises(Exception):
     ot.Ceres(constrainedProblem)
 integerProblem = ot.OptimizationProblem(simpleObjective)
-integerProblem.setVariablesType(
-    [ot.OptimizationProblemImplementation.INTEGER] * 2
-)
+integerProblem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)
 with ott.assert_raises(Exception):
     ot.Ceres(integerProblem, "LBFGS")
 badStart = ot.Ceres(ot.OptimizationProblem(simpleObjective), "LBFGS")

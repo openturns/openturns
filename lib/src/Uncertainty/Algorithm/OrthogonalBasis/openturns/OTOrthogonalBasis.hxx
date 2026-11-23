@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir OrthogonalBasis
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,7 +48,6 @@
 #include "openturns/FourierSeriesFactory.hxx"
 #include "openturns/HaarWaveletFactory.hxx"
 #include "openturns/OrthogonalProductFunctionFactory.hxx"
-#include "openturns/SoizeGhanemFactory.hxx"
 #include "openturns/FiniteOrthogonalFunctionFactory.hxx"
 #include "openturns/BasisOrthonormalizationAlgorithm.hxx"
 #include "openturns/GaussLPQuadrature.hxx"

@@ -2,7 +2,7 @@
 /**
  *  @brief CalibrationResult stores the result of a CalibrationAlgorithmImplementation
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,14 +58,10 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   , residualFunction_(residualFunction)
   , bayesian_(bayesian)
 {
-  // compute output at prior/posterior mean using the fact that model(inputObs)|p = residualFunction(p) + outputObs as the model is not available
+  // compute output at prior mean using the fact that model(inputObs)|p = residualFunction(p) + outputObs as the model is not available
   SampleImplementation outputAtPriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
   outputAtPriorMean.setData(residualFunction_(parameterPrior_.getMean()) + outputObservations_.getImplementation()->getData());
   outputAtPriorMean_ = outputAtPriorMean;
-
-  SampleImplementation outputAtPosteriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
-  outputAtPosteriorMean.setData(residualFunction_(parameterPosterior_.getMean()) + outputObservations_.getImplementation()->getData());
-  outputAtPosteriorMean_ = outputAtPosteriorMean;
 
   // Set default colors
   const Description colors = DrawableImplementation::BuildDefaultPalette(3);
@@ -74,6 +70,24 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   observationColor_ = colors[2];
 }
 
+
+/* Compute the output at the posterior mean on demand */
+void CalibrationResult::computeOutputAtPosteriorMean() const
+{
+  if (isAlreadyComputedOutputAtPosteriorMean_) return;
+  // a default-constructed or observation-free result has nothing to predict
+  if (outputObservations_.getSize() == 0 || residualFunction_.getInputDimension() == 0)
+  {
+    outputAtPosteriorMean_ = Sample(0, outputObservations_.getDimension());
+    isAlreadyComputedOutputAtPosteriorMean_ = true;
+    return;
+  }
+  // model(inputObs)|p = residualFunction(p) + outputObs, as the model is not available
+  SampleImplementation outputAtPosteriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
+  outputAtPosteriorMean.setData(residualFunction_(parameterPosterior_.getMean()) + outputObservations_.getImplementation()->getData());
+  outputAtPosteriorMean_ = outputAtPosteriorMean;
+  isAlreadyComputedOutputAtPosteriorMean_ = true;
+}
 
 /* Virtual constructor */
 CalibrationResult * CalibrationResult::clone() const
@@ -101,6 +115,8 @@ Distribution CalibrationResult::getParameterPosterior() const
 void CalibrationResult::setParameterPosterior(const Distribution & parameterPosterior)
 {
   parameterPosterior_ = parameterPosterior;
+  // the cached output at the posterior mean depends on the posterior
+  isAlreadyComputedOutputAtPosteriorMean_ = false;
 }
 
 /* Parameter MAP accessors */
@@ -144,6 +160,11 @@ Sample CalibrationResult::getOutputObservations() const
 
 void CalibrationResult::setOutputObservations(const Sample & outputObservations)
 {
+  // the output at the posterior mean is defined in the observation layout of
+  // the result: compute it before the observations are replaced (the logistic
+  // example transposes a single observation of large dimension into many
+  // scalar observations and overrides both means explicitly afterwards)
+  computeOutputAtPosteriorMean();
   outputObservations_ = outputObservations;
 }
 
@@ -156,6 +177,8 @@ Function CalibrationResult::getResidualFunction() const
 void CalibrationResult::setResidualFunction(const Function & residualFunction)
 {
   residualFunction_ = residualFunction;
+  // the cached output at the posterior mean depends on the residual function
+  isAlreadyComputedOutputAtPosteriorMean_ = false;
 }
 
 /* String converter */
@@ -189,6 +212,7 @@ void CalibrationResult::save(Advocate & adv) const
   adv.saveAttribute( "residualFunction_", residualFunction_ );
   adv.saveAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
   adv.saveAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
+  adv.saveAttribute( "isAlreadyComputedOutputAtPosteriorMean_", isAlreadyComputedOutputAtPosteriorMean_ );
   adv.saveAttribute( "bayesian_", bayesian_ );
   adv.saveAttribute( "isParameterDistributionPosterior_", isParameterDistributionPosterior_ );
   adv.saveAttribute( "priorColor_", priorColor_ );
@@ -209,6 +233,11 @@ void CalibrationResult::load(Advocate & adv)
   adv.loadAttribute( "residualFunction_", residualFunction_ );
   adv.loadAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
   adv.loadAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
+  if (adv.hasAttribute("isAlreadyComputedOutputAtPosteriorMean_"))
+    adv.loadAttribute( "isAlreadyComputedOutputAtPosteriorMean_", isAlreadyComputedOutputAtPosteriorMean_ );
+  else
+    // a study written before the on-demand computation stores the sample
+    isAlreadyComputedOutputAtPosteriorMean_ = true;
   if (adv.hasAttribute("bayesian_"))
   {
     adv.loadAttribute( "bayesian_", bayesian_ );
@@ -236,6 +265,7 @@ void CalibrationResult::setOutputAtPriorAndPosteriorMean(const Sample & outputAt
 {
   outputAtPriorMean_ = outputAtPrior;
   outputAtPosteriorMean_ = outputAtPosterior;
+  isAlreadyComputedOutputAtPosteriorMean_ = true;
 }
 
 Sample CalibrationResult::getOutputAtPriorMean() const
@@ -245,6 +275,7 @@ Sample CalibrationResult::getOutputAtPriorMean() const
 
 Sample CalibrationResult::getOutputAtPosteriorMean() const
 {
+  computeOutputAtPosteriorMean();
   return outputAtPosteriorMean_;
 }
 
@@ -318,6 +349,7 @@ GridLayout CalibrationResult::drawResiduals() const
   GridLayout grid(1, outputDimension);
   grid.setTitle("Residual analysis");
   const Sample priorResiduals(outputObservations_ - outputAtPriorMean_);
+  computeOutputAtPosteriorMean();
   const Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
@@ -404,6 +436,7 @@ GridLayout CalibrationResult::drawResiduals() const
 
 GridLayout CalibrationResult::drawObservationsVsInputs() const
 {
+  computeOutputAtPosteriorMean();
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(outputDimension, inputDimension);
@@ -462,6 +495,7 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
 
 GridLayout CalibrationResult::drawObservationsVsPredictions() const
 {
+  computeOutputAtPosteriorMean();
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   const Description yDescription(outputObservations_.getDescription());
@@ -513,6 +547,7 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
 
 GridLayout CalibrationResult::drawResidualsNormalPlot() const
 {
+  computeOutputAtPosteriorMean();
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   const Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);

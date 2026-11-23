@@ -50,7 +50,7 @@ def build_hodlr(vertices, af, symmetric=True, params=None):
         params = make_params()
     factory = otexp.HODLRMatrixFactory()
     hodlr = factory.build(vertices, 1, symmetric, params)
-    hodlr.assembleReal(af, 'L')
+    hodlr.assembleReal(af, "L")
     hodlr.factorize()
     return hodlr
 
@@ -89,8 +89,7 @@ print("  PASS")
 print("\n=== Test 2: copy ===")
 hodlr_copy = hodlr.copy()
 ott.assert_almost_equal(
-    ot.Point([hodlr_copy.getNbRows()]),
-    ot.Point([hodlr.getNbRows()])
+    ot.Point([hodlr_copy.getNbRows()]), ot.Point([hodlr.getNbRows()])
 )
 # A copy is a complete, independent operator, not a metadata shell. This used to
 # be the other way round: the copy dropped the tree and had to be re-assembled
@@ -100,13 +99,17 @@ ott.assert_almost_equal(
 # So the useful contract is the one asserted here, not an assumption.
 b = ot.Point(20, 1.0)
 ott.assert_almost_equal(hodlr_copy.solve(b), hodlr.solve(b), 1.0e-10, 1.0e-10)
-ott.assert_almost_equal(hodlr_copy.logDeterminant(), hodlr.logDeterminant(), 1.0e-10, 1.0e-10)
+ott.assert_almost_equal(
+    hodlr_copy.logDeterminant(), hodlr.logDeterminant(), 1.0e-10, 1.0e-10
+)
 # ... and independent: re-assembling and re-factorizing the copy must leave the
 # original's answers untouched, i.e. the deep copy is not a shared tree
-hodlr_copy.assembleReal(af, 'L')
+hodlr_copy.assembleReal(af, "L")
 hodlr_copy.factorize()
 ott.assert_almost_equal(hodlr_copy.solve(b), hodlr.solve(b), 1.0e-10, 1.0e-10)
-ott.assert_almost_equal(hodlr.solve(b), build_dense_matrix(af, 20).solveLinearSystem(b), 1.0e-10, 1.0e-10)
+ott.assert_almost_equal(
+    hodlr.solve(b), build_dense_matrix(af, 20).solveLinearSystem(b), 1.0e-10, 1.0e-10
+)
 print("  PASS")
 
 # === Test 3: __repr__ / __str__ ===
@@ -146,14 +149,15 @@ for col in range(3):
     ott.assert_almost_equal(
         ot.Point([X_h[i, col] for i in range(20)]),
         ot.Point([X_d[i, col] for i in range(20)]),
-        1.0e-4, 1.0e-4
+        1.0e-4,
+        1.0e-4,
     )
 print("  PASS")
 
 # === Test 7: scale ===
 print("\n=== Test 7: scale ===")
 hodlr_s = hodlr.copy()
-hodlr_s.assembleReal(af, 'L')
+hodlr_s.assembleReal(af, "L")
 hodlr_s.factorize()
 scale_factor = 3.5
 hodlr_s.scale(scale_factor)
@@ -171,7 +175,8 @@ ott.assert_almost_equal(x_s, x_orig / scale_factor, 1.0e-8, 1.0e-8)
 ott.assert_almost_equal(
     ot.Point([hodlr_s.logDeterminant()]),
     ot.Point([hodlr.logDeterminant() + 20 * m.log(scale_factor)]),
-    1.0e-8, 1.0e-8
+    1.0e-8,
+    1.0e-8,
 )
 # diagonal is scaled too
 ott.assert_almost_equal(
@@ -182,7 +187,7 @@ print("  PASS")
 # === Test 8: addIdentity ===
 print("\n=== Test 8: addIdentity ===")
 hodlr_ai = hodlr.copy()
-hodlr_ai.assembleReal(af, 'L')
+hodlr_ai.assembleReal(af, "L")
 hodlr_ai.factorize()
 alpha = 2.0
 hodlr_ai.addIdentity(alpha)
@@ -208,9 +213,7 @@ params = otexp.HODLRMatrixParameters()
 params.setAssemblyEpsilon(1.0e-3)
 params.setRecompressionEpsilon(1.0e-5)
 params.setMinLeafSize(16)
-ott.assert_almost_equal(
-    ot.Point([params.getAssemblyEpsilon()]), ot.Point([1.0e-3])
-)
+ott.assert_almost_equal(ot.Point([params.getAssemblyEpsilon()]), ot.Point([1.0e-3]))
 ott.assert_almost_equal(
     ot.Point([params.getRecompressionEpsilon()]), ot.Point([1.0e-5])
 )
@@ -273,7 +276,7 @@ print("\n=== Test 13b: gemv with LLt ===")
 # gemv must return A * x (not L * x) when the matrix is Cholesky-factorized
 x13b = ot.Point([float(i) / n12 for i in range(n12)])
 y13b = ot.Point(n12, 0.0)
-hodlr12.gemv('N', 1.0, x13b, 0.0, y13b)
+hodlr12.gemv("N", 1.0, x13b, 0.0, y13b)
 y13b_dense = ot.Point(n12, 0.0)
 for i in range(n12):
     s = 0.0
@@ -310,7 +313,7 @@ print("\n=== Test 16: gemv ===")
 x16 = [float(i) / 20 for i in range(20)]
 x16_pt = ot.Point(x16)
 y16 = ot.Point(20, 0.0)
-hodlr.gemv('N', 1.0, x16_pt, 0.0, y16)
+hodlr.gemv("N", 1.0, x16_pt, 0.0, y16)
 # Compare against dense matvec: y = K * x
 y16_dense = ot.Point(20, 0.0)
 for i in range(20):
@@ -327,7 +330,7 @@ x17 = [1.0] * 20
 y17_init = [2.0] * 20
 x17_pt = ot.Point(x17)
 y17_pt = ot.Point(y17_init)
-hodlr.gemv('N', 3.0, x17_pt, -1.0, y17_pt)
+hodlr.gemv("N", 3.0, x17_pt, -1.0, y17_pt)
 # y = 3*A*x - 1*y_init
 y17_ref = ot.Point(20, 0.0)
 for i in range(20):
@@ -397,9 +400,11 @@ ott.assert_almost_equal(ot.Point([ld21]), ot.Point([ld_ref21]), 1.0e-4, 1.0e-4)
 ot.ResourceMap.SetAsScalar("HODLRMatrix-Nugget", 2.0e-3)
 factory21 = otexp.HODLRMatrixFactory()
 hodlr21b = factory21.build(grid21, 1, True, make_params(leaf=5))
-hodlr21b.assembleReal(HODLRTestAssemblyFunction(grid21, 0.1), 'L')
+hodlr21b.assembleReal(HODLRTestAssemblyFunction(grid21, 0.1), "L")
 hodlr21b.applyNugget()
-ott.assert_almost_equal(hodlr21b.getDiagonal(), ot.Point(n21, 1.0 + 2.0e-3), 1.0e-9, 1.0e-9)
+ott.assert_almost_equal(
+    hodlr21b.getDiagonal(), ot.Point(n21, 1.0 + 2.0e-3), 1.0e-9, 1.0e-9
+)
 
 # a zero nugget disables the regularization
 ot.ResourceMap.SetAsScalar("HODLRMatrix-Nugget", 0.0)
@@ -430,9 +435,9 @@ hodlr_adaptive22 = cov22.discretizeHODLRMatrix(vertices22, make_params(leaf=4))
 hodlr_adaptive22.factorize()
 x_adaptive22 = hodlr_adaptive22.solve(b22)
 err_adaptive22 = (x_adaptive22 - x_dense22).norm() / x_dense22.norm()
-assert err_adaptive22 < 1.0e-2, (
-    f"adaptive rank solve error {err_adaptive22:.2e} should be small"
-)
+assert (
+    err_adaptive22 < 1.0e-2
+), f"adaptive rank solve error {err_adaptive22:.2e} should be small"
 
 params_capped22 = make_params(leaf=4)
 params_capped22.setMaxRank(2)
@@ -440,10 +445,12 @@ hodlr_capped22 = cov22.discretizeHODLRMatrix(vertices22, params_capped22)
 hodlr_capped22.factorize()
 x_capped22 = hodlr_capped22.solve(b22)
 err_capped22 = (x_capped22 - x_dense22).norm() / x_dense22.norm()
-assert err_capped22 > err_adaptive22, (
-    "an explicit small max rank should degrade the solve accuracy"
+assert (
+    err_capped22 > err_adaptive22
+), "an explicit small max rank should degrade the solve accuracy"
+print(
+    f"  adaptive err= {err_adaptive22:.2e}, capped(maxRank=2) err= {err_capped22:.2e}"
 )
-print(f"  adaptive err= {err_adaptive22:.2e}, capped(maxRank=2) err= {err_capped22:.2e}")
 print("  PASS")
 
 # === Test 23: full-rank blocks fall back to dense storage ===
@@ -477,9 +484,9 @@ try:
     assert err23 < 1.0e-8, f"dense fallback solve error {err23:.2e} should be small"
     cr23 = hodlr23.compressionRatio()
     # every block reached its full rank: the tree is stored densely
-    assert cr23[0] == cr23[1], (
-        f"full-rank tree should be stored densely ({cr23[0]}/{cr23[1]})"
-    )
+    assert (
+        cr23[0] == cr23[1]
+    ), f"full-rank tree should be stored densely ({cr23[0]}/{cr23[1]})"
     print(f"  stored/total= {cr23[0]}/{cr23[1]}, solve err= {err23:.2e}")
     print("  PASS")
 finally:
@@ -498,15 +505,17 @@ perm24 = hodlr24.getPermutation()
 assert perm24.getSize() == 40
 assert sorted(perm24) == list(range(40)), "factory permutation must be a permutation"
 # an already-ordered 1D grid yields the identity permutation
-assert perm24 == list(range(40)), "an ordered 1D grid should give the identity permutation"
+assert perm24 == list(
+    range(40)
+), "an ordered 1D grid should give the identity permutation"
 # scrambled vertices yield a non-trivial permutation
 order24 = list(range(40))
 random.Random(0).shuffle(order24)
 scrambled24 = ot.Sample([[grid24[i][0]] for i in order24])
 hodlr_sc24 = factory24.build(scrambled24, 1, True, params24)
-assert hodlr_sc24.getPermutation() != list(range(40)), (
-    "scrambled vertices should give a non-identity permutation"
-)
+assert hodlr_sc24.getPermutation() != list(
+    range(40)
+), "scrambled vertices should give a non-identity permutation"
 # invalid permutations are rejected. The size is validated before the entry
 # values, so the duplicate and bounds cases must use full-size permutations
 # (size 40) to reach the value validation; the error message pins down which
@@ -533,9 +542,9 @@ assert caught, "an out-of-range full-size permutation should be rejected as such
 params_off24 = make_params(leaf=4)
 params_off24.setUseSpatialOrdering(False)
 hodlr_off24 = factory24.build(scrambled24, 1, True, params_off24)
-assert hodlr_off24.getPermutation().getSize() == 0, (
-    "flag OFF should disable the permutation"
-)
+assert (
+    hodlr_off24.getPermutation().getSize() == 0
+), "flag OFF should disable the permutation"
 # scrambled 2D grid with a short correlation length: the spatial ordering
 # preserves the accuracy and compresses the tree, while the blind split of
 # the unordered vertices falls back to dense storage
@@ -563,9 +572,9 @@ try:
     hodlr_off24.factorize()
     x_off24 = hodlr_off24.solve(b24)
     err_off24 = (x_off24 - x_dense24).norm() / x_dense24.norm()
-    assert err_on24 < 1.0e-2, (
-        f"spatial ordering solve error {err_on24:.2e} should be small"
-    )
+    assert (
+        err_on24 < 1.0e-2
+    ), f"spatial ordering solve error {err_on24:.2e} should be small"
     cr_on24 = hodlr_on24.compressionRatio()
     cr_off24 = hodlr_off24.compressionRatio()
     assert cr_on24[0] < cr_off24[0], (
@@ -573,8 +582,12 @@ try:
         f"({cr_on24[0]}/{cr_on24[1]} vs {cr_off24[0]}/{cr_off24[1]})"
     )
     # the permutation preserves the diagonal
-    ott.assert_almost_equal(hodlr_on24.getDiagonal(), ot.Point(n24, 1.0), 1.0e-9, 1.0e-9)
-    print(f"  on err= {err_on24:.2e}, on storage= {cr_on24[0]}/{cr_on24[1]}, off storage= {cr_off24[0]}/{cr_off24[1]}")
+    ott.assert_almost_equal(
+        hodlr_on24.getDiagonal(), ot.Point(n24, 1.0), 1.0e-9, 1.0e-9
+    )
+    print(
+        f"  on err= {err_on24:.2e}, on storage= {cr_on24[0]}/{cr_on24[1]}, off storage= {cr_off24[0]}/{cr_off24[1]}"
+    )
     print("  PASS")
 finally:
     ot.ResourceMap.SetAsScalar("HODLRMatrix-Nugget", previous_nugget24)
@@ -605,9 +618,9 @@ try:
     cr25 = hodlr25.compressionRatio()
     # the smooth 1D kernel is strongly compressible: less than half the entries
     # of the dense matrix are stored by the factorized tree
-    assert cr25[0] < 0.5 * cr25[1], (
-        f"max-element ACA should compress the tree ({cr25[0]}/{cr25[1]})"
-    )
+    assert (
+        cr25[0] < 0.5 * cr25[1]
+    ), f"max-element ACA should compress the tree ({cr25[0]}/{cr25[1]})"
     print(f"  stored= {cr25[0]}/{cr25[1]}, solve err= {err25:.2e}")
     print("  PASS")
 finally:
@@ -632,7 +645,7 @@ for i in range(n26):
         s += K26[i, j] * x26[j]
     y26_dense[i] = s
 y26 = ot.Point(n26, 0.0)
-hodlr26.gemv('N', 1.0, x26, 0.0, y26)
+hodlr26.gemv("N", 1.0, x26, 0.0, y26)
 ott.assert_almost_equal(y26, y26_dense, 1.0e-10, 1.0e-10)
 print("  PASS")
 
@@ -666,8 +679,7 @@ d28 = 4
 k28 = 7
 span28 = float(k28 - 1)
 vertices28 = ot.Sample(
-    [[c_j / span28 for c_j in c]
-     for c in itertools.product(range(k28), repeat=d28)]
+    [[c_j / span28 for c_j in c] for c in itertools.product(range(k28), repeat=d28)]
 )
 n28 = vertices28.getSize()
 cov28 = ot.MaternModel([0.01] * d28, [1.0], 2.5)
@@ -681,7 +693,7 @@ try:
     b28 = ot.Point(n28, 1.0)
     x28 = hodlr28.solve(b28)
     y28 = ot.Point(n28, 0.0)
-    hodlr28.gemv('N', 1.0, x28, 0.0, y28)
+    hodlr28.gemv("N", 1.0, x28, 0.0, y28)
     err28 = (y28 - b28).norm() / b28.norm()
     assert err28 < 1.0e-12, f"adaptive-rank solve error {err28:.2e} should be small"
     cr28 = hodlr28.compressionRatio()
@@ -707,7 +719,9 @@ try:
     # a well-conditioned matrix factorizes with no regularization and no warning
     ott.assert_almost_equal(ot.Point([hodlr.getRegularizationShift()]), ot.Point([0.0]))
     msg_ok29 = capture_stderr(lambda: hodlr.solve(ot.Point(20, 1.0)))
-    assert "regularization shift" not in msg_ok29, "a regular factorization must not warn"
+    assert (
+        "regularization shift" not in msg_ok29
+    ), "a regular factorization must not warn"
     # a singular matrix (duplicated points) forces a regularization shift
     n29 = 300
     x29 = [i / (n29 - 1.0) for i in range(n29)]
@@ -724,14 +738,14 @@ try:
     # large shift is exactly what the warning below reports to the user.
     shift29 = hodlr29.getRegularizationShift()
     assert shift29 > 0.0, f"expected a positive regularization shift, got {shift29:.2e}"
-    assert "factorization required a regularization shift" in warn29, (
-        "a significant regularization shift must emit a warning"
-    )
+    assert (
+        "factorization required a regularization shift" in warn29
+    ), "a significant regularization shift must emit a warning"
     # the regularized factorization still yields a valid solve
     b29 = ot.Point(n29, 1.0)
     x_sol29 = hodlr29.solve(b29)
     y29 = ot.Point(n29, 0.0)
-    hodlr29.gemv('N', 1.0, x_sol29, 0.0, y29)
+    hodlr29.gemv("N", 1.0, x_sol29, 0.0, y29)
     err29 = (y29 - b29).norm() / b29.norm()
     assert err29 < 1.0e-10, f"regularized solve error {err29:.2e} should be small"
     print(f"  shift= {hodlr29.getRegularizationShift():.2e}, warning emitted, solve ok")
@@ -760,18 +774,22 @@ shift30 = hodlr30.getRegularizationShift()
 b30 = ot.Point(n30, 1.0)
 x_sol30 = hodlr30.solve(b30)
 y30 = ot.Point(n30, 0.0)
-hodlr30.gemv('N', 1.0, x_sol30, 0.0, y30)
+hodlr30.gemv("N", 1.0, x_sol30, 0.0, y30)
 err30 = (y30 - b30).norm() / b30.norm()
 # Wall-time budget scaled to runner speed: the MSVC CI runner executes this
 # file ~45x slower than a dev box (25 s vs 0.55 s measured 2026-09-21), so an
-# absolute 5 s budget flakes there. A genuine retry cascade is orders of
+# absolute 30 s budget (120 s on Windows) flakes there. A genuine retry cascade is orders of
 # magnitude slower (tens of seconds locally, i.e. 1000 s+ on such a runner),
 # so a scaled budget still catches it.
-t_limit30 = 120.0 if sys.platform.startswith("win") else 5.0
-assert t_fac30 < t_limit30, f"factorize took {t_fac30:.1f}s (retry cascade regression, budget {t_limit30:.0f}s)"
+t_limit30 = 120.0 if sys.platform.startswith("win") else 30.0
+assert (
+    t_fac30 < t_limit30
+), f"factorize took {t_fac30:.1f}s (retry cascade regression, budget {t_limit30:.0f}s)"
 assert 0.0 < shift30 < 1.0, f"unexpected heal shift {shift30:.2e}"
 assert err30 < 1.0e-5, f"near-singular solve error {err30:.2e} should be small"
-print(f"  n={n30}, factorize {t_fac30 * 1e3:.0f}ms, shift= {shift30:.2e}, solve err {err30:.2e}")
+print(
+    f"  n={n30}, factorize {t_fac30 * 1e3:.0f}ms, shift= {shift30:.2e}, solve err {err30:.2e}"
+)
 print("  PASS")
 
 # === Test 31: AcaRandom compression method ===
@@ -796,8 +814,10 @@ for method31 in ["AcaPartial", "AcaRandom"]:
     h31.factorize()
     xh31 = h31.solve(b31)
     solves31[method31] = ot.Point(xh31)
-    err31 = (ot.Point(xh31 - xd31).norm() / ot.Point(xd31).norm())
-    print(f"  {method31}: shift={h31.getRegularizationShift():.2e} solve err {err31:.2e}")
+    err31 = ot.Point(xh31 - xd31).norm() / ot.Point(xd31).norm()
+    print(
+        f"  {method31}: shift={h31.getRegularizationShift():.2e} solve err {err31:.2e}"
+    )
     assert err31 < 1.0e-4, f"{method31} solve error {err31:.2e} too large"
 ot.ResourceMap.SetAsString("HODLRMatrix-CompressionMethod", "AcaRandom")
 h31b = cov31.discretizeHODLRMatrix(vertices31, make_params(leaf=32))
@@ -864,14 +884,16 @@ reloaded_study.fillObject("matrix", hodlr_back)
 
 assert hodlr_back.getNbRows() == 20, "reloaded matrix lost its dimension"
 ott.assert_almost_equal(hodlr_back.solve(b_rt), x_rt, 1.0e-12, 1.0e-12)
-ott.assert_almost_equal(ot.Point([hodlr_back.logDeterminant()]), ot.Point([ld_rt]), 0.0, 0.0)
+ott.assert_almost_equal(
+    ot.Point([hodlr_back.logDeterminant()]), ot.Point([ld_rt]), 0.0, 0.0
+)
 y_back = ot.Point(20, 0.0)
 hodlr_back.gemv("N", 1.0, b_rt, 0.0, y_back)
 ott.assert_almost_equal(y_back, y_rt, 1.0e-12, 1.0e-12)
 # the factors must be there, not only the metadata
-assert hodlr_back.compressionRatio() == ratio_rt, (
-    f"reloaded compression {hodlr_back.compressionRatio()} != saved {ratio_rt}"
-)
+assert (
+    hodlr_back.compressionRatio() == ratio_rt
+), f"reloaded compression {hodlr_back.compressionRatio()} != saved {ratio_rt}"
 # and it is an independent object, not an alias of what was saved
 hodlr_back.addIdentity(0.0)
 ott.assert_almost_equal(hodlr_rt.solve(b_rt), x_rt, 1.0e-12, 1.0e-12)

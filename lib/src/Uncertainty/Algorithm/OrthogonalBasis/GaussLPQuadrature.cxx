@@ -2,7 +2,7 @@
 /**
  *  @brief Gauss-LP quadrature rule builder
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,7 @@
 #include "openturns/GaussLegendre.hxx"
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/LinearProblem.hxx"
+#include "openturns/LinearProgrammingProblem.hxx"
 #include "openturns/HiGHS.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/OptimizationProblem.hxx"
@@ -409,7 +409,7 @@ Point SolveLinearProgram(const Point & cost,
 {
   const auto runSolver = [&](const String & solverName) -> Point
   {
-    LinearProblem lpProblem(cost, bounds, constraintCoefficients, constraintBounds);
+    LinearProgrammingProblem lpProblem(cost, bounds, constraintCoefficients, constraintBounds);
     HiGHS highs(lpProblem, solverName);
     highs.setMaximumConstraintError(maximumConstraintError);
     highs.run();
@@ -424,7 +424,7 @@ Point SolveLinearProgram(const Point & cost,
   {
     if (fallbackSolver.empty() || (fallbackSolver == primarySolver)) throw;
     LOGWARN(OSS() << "GaussLPQuadrature: HiGHS solve failed with solver="
-                  << primarySolver << ", retrying with solver=" << fallbackSolver);
+            << primarySolver << ", retrying with solver=" << fallbackSolver);
     alpha = runSolver(fallbackSolver);
   }
   if ((alpha.getDimension() != cost.getDimension()) || !IsFinitePoint(alpha))
@@ -500,12 +500,12 @@ Point SolveForcedMinWeightLP(const Sample & nodes,
   for (UnsignedInteger k = 0; k < n; ++k)
     constraintLower[k] = constraintUpper[k] = moments[k];
   const Point alphaExtended(SolveLinearProgram(cost,
-                                               Interval(Point(size + 1, 0.0), Point(size + 1, 1.0)),
-                                               extendedA,
-                                               Interval(constraintLower, constraintUpper),
-                                               primarySolver,
-                                               fallbackSolver,
-                                               maximumConstraintError));
+                            Interval(Point(size + 1, 0.0), Point(size + 1, 1.0)),
+                            extendedA,
+                            Interval(constraintLower, constraintUpper),
+                            primarySolver,
+                            fallbackSolver,
+                            maximumConstraintError));
   const Scalar minimumAnchorWeight = alphaExtended[size];
   if (!(minimumAnchorWeight > 0.0))
     throw InvalidArgumentException(HERE) << "Error: the anchors cannot all carry a positive weight while reproducing the moments"
@@ -806,7 +806,7 @@ Sample GaussLPQuadrature::build(const UnsignedInteger n,
     catch (const Exception & linearProgramError)
     {
       LOGINFO(OSS() << "GaussLPQuadrature: no anchor-only rule (" << linearProgramError.what()
-                    << "), adding candidate nodes");
+              << "), adding candidate nodes");
     }
   }
 
@@ -852,7 +852,7 @@ Sample GaussLPQuadrature::build(const UnsignedInteger n,
     catch (const Exception & linearProgramError)
     {
       LOGINFO(OSS() << "GaussLPQuadrature: linear program failed on " << candidates.getSize()
-                    << " candidate node(s): " << linearProgramError.what());
+              << " candidate node(s): " << linearProgramError.what());
       return false;
     }
   };
@@ -896,7 +896,7 @@ Sample GaussLPQuadrature::build(const UnsignedInteger n,
       suppWeights = fallbackWeights;
     }
     LOGWARN(OSS() << "GaussLPQuadrature: the linear program on the sampled candidates failed, starting from a measure-adapted rule with "
-                  << suppNodes.getSize() << " node(s)");
+            << suppNodes.getSize() << " node(s)");
   }
   if (!IsFiniteRule(suppNodes, suppWeights))
     throw InvalidArgumentException(HERE) << "Error: the starting rule is not a valid quadrature rule";
@@ -923,8 +923,8 @@ Sample GaussLPQuadrature::build(const UnsignedInteger n,
   // at a time; without the path only the largest rule is refined.
   const UnsignedInteger minimumRuleSize = anchorCount
                                           + (useClusterPath
-                                             ? ((addedCount > 0) ? 1 : 0)
-                                             : (maximumRuleSize - anchorCount));
+                                              ? ((addedCount > 0) ? 1 : 0)
+                                              : (maximumRuleSize - anchorCount));
 
   const Interval support(measure_.getRange());
   Point a(support.getLowerBound());
@@ -1164,7 +1164,7 @@ Sample GaussLPQuadrature::getAnchors() const
 }
 
 void GaussLPQuadrature::setMeasureAndFunctions(const Distribution & measure,
-                                               const FunctionCollection & functions)
+    const FunctionCollection & functions)
 {
   if (functions.getSize() == 0)
     throw InvalidArgumentException(HERE) << "Error: the number of functions must be > 0";

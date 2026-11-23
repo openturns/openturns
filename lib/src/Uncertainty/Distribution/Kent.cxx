@@ -2,7 +2,7 @@
 /**
  *  @brief The Kent (Fisher-Bingham) distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -85,8 +85,8 @@ Bool Kent::operator ==(const Kent & other) const
 {
   if (this == &other) return true;
   return (kappa_ == other.kappa_)
-      && (beta_ == other.beta_)
-      && (gamma_ == other.gamma_);
+         && (beta_ == other.beta_)
+         && (gamma_ == other.gamma_);
 }
 
 Bool Kent::equals(const DistributionImplementation & other) const

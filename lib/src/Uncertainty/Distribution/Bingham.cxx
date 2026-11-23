@@ -2,7 +2,7 @@
 /**
  *  @brief The Bingham distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -77,7 +77,7 @@ Bingham::Bingham(const Point & zeta,
   // Check that zeta is ordered: zeta[0] >= zeta[1] >= ... >= zeta[n-1]
   for (UnsignedInteger i = 1; i < n; ++i)
   {
-    if (zeta[i-1] < zeta[i])
+    if (zeta[i - 1] < zeta[i])
       throw InvalidArgumentException(HERE) << "in Bingham: zeta must be in non-increasing order";
   }
 
@@ -103,8 +103,8 @@ Bool Bingham::operator ==(const Bingham & other) const
 {
   if (this == &other) return true;
   return (getDimension() == other.getDimension())
-      && (zeta_ == other.zeta_)
-      && (gamma_ == other.gamma_);
+         && (zeta_ == other.zeta_)
+         && (gamma_ == other.gamma_);
 }
 
 Bool Bingham::equals(const DistributionImplementation & other) const
@@ -533,7 +533,7 @@ void Bingham::setZeta(const Point & zeta)
   // Check ordering
   for (UnsignedInteger i = 1; i < n; ++i)
   {
-    if (zeta[i-1] < zeta[i])
+    if (zeta[i - 1] < zeta[i])
       throw InvalidArgumentException(HERE) << "in Bingham::setZeta: zeta must be in non-increasing order";
   }
 

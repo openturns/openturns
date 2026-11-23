@@ -148,7 +148,9 @@ class TestInverseWishartMethods(ut.TestCase):
         """Test InverseWishart.getSample and InverseWishart.getMean"""
         d, Scale, DoF, N = self.dimension, self.Scale, self.DoF, int(1e4)
         Identity = ot.CovarianceMatrix(d)
-        Scale_wishart = ot.CovarianceMatrix(Scale.solveLinearSystem(Identity).getImplementation())
+        Scale_wishart = ot.CovarianceMatrix(
+            Scale.solveLinearSystem(Identity).getImplementation()
+        )
         inverse_wishart = ot.InverseWishart(Scale, DoF)
         sample_inverse = ot.Sample(N, (d * (d + 1)) // 2)
         sample = ot.Sample(N, (d * (d + 1)) // 2)

@@ -76,9 +76,7 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         assert len(repr(klreduce)) > 0
         assert len(str(klreduce)) > 0
         # setTrend / trend constructor
-        trend = ot.TrendTransform(
-            ot.P1LagrangeEvaluation(sample.computeMean()), mesh
-        )
+        trend = ot.TrendTransform(ot.P1LagrangeEvaluation(sample.computeMean()), mesh)
         klreduce.setTrend(trend)
         klreduce_trend = ot.KarhunenLoeveReduction(klresult, trend)
         assert klreduce == klreduce_trend

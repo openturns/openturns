@@ -2,7 +2,7 @@
 /**
  *  @brief Class for the inverse Box cox function
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -104,43 +104,25 @@ Point InverseBoxCoxEvaluation::getShift() const
   return shift_;
 }
 
-struct InverseBoxCoxEvaluationComputeSamplePolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const InverseBoxCoxEvaluation & evaluation_;
-
-  InverseBoxCoxEvaluationComputeSamplePolicy(const Sample & input,
-      Sample & output,
-      const InverseBoxCoxEvaluation & evaluation)
-    : input_(input)
-    , output_(output)
-    , evaluation_(evaluation)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
-      {
-        const Scalar lambda_j = evaluation_.getLambda()[j];
-        const Scalar x = input_(i, j);
-        if (std::abs(lambda_j * x * x) < 1e-8) output_(i, j) = exp(x) * (1.0 - 0.5 * lambda_j * x * x) - evaluation_.getShift()[j];
-        else output_(i, j) = pow(lambda_j * x + 1.0, 1.0 / lambda_j) - evaluation_.getShift()[j];
-      } // j
-    } // i
-  } // operator ()
-}; /* end struct InverseBoxCoxEvaluationComputeSamplePolicy */
-
 /* Operator () */
 Sample InverseBoxCoxEvaluation::operator() (const Sample & inS) const
 {
   if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getInputDimension());
-  const InverseBoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      for (UnsignedInteger j = 0; j < getInputDimension(); ++j)
+      {
+        const Scalar lambda_j = getLambda()[j];
+        const Scalar x = inS(i, j);
+        if (std::abs(lambda_j * x * x) < 1e-8) result(i, j) = exp(x) * (1.0 - 0.5 * lambda_j * x * x) - getShift()[j];
+        else result(i, j) = pow(lambda_j * x + 1.0, 1.0 / lambda_j) - getShift()[j];
+      } // j
+    } // i
+  }, 1024);
   callsNumber_.fetchAndAdd(size);
   result.setDescription(getOutputDescription());
   return result;

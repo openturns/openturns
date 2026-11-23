@@ -131,7 +131,9 @@ for UseRandomSVD, RandomSVDVariant in [
 
     # 2d test
     mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
-    cov2D = ot.ExponentialModel([1.0], [1.0, 2.0], ot.CorrelationMatrix(2, [1.0, 0.5, 0.5, 1.0]))
+    cov2D = ot.ExponentialModel(
+        [1.0], [1.0, 2.0], ot.CorrelationMatrix(2, [1.0, 0.5, 0.5, 1.0])
+    )
     sample = ot.GaussianProcess(cov2D, mesh).getSample(16)
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
     algo.run()

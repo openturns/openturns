@@ -2,7 +2,7 @@
 /**
  *  @brief The class SampleImplementation implements blank free samples
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,6 @@
 #include <algorithm>
 #include <iterator>
 #include <regex>
-#include <limits>
 
 #include "openturns/OTconfig.hxx"
 #include "openturns/SampleImplementation.hxx"
@@ -666,7 +665,7 @@ SampleImplementation & SampleImplementation::add(const Point & point)
                                          << getDimension();
   const UnsignedInteger oldSize = size_;
   const UnsignedInteger newCount = oldSize + 1;
-  if (dimension_ != 0 && newCount > std::numeric_limits<UnsignedInteger>::max() / dimension_)
+  if (dimension_ != 0 && newCount > SpecFunc::MaxUnsignedInteger / dimension_)
     throw InternalException(HERE) << "Error: cannot add point, overflow detected";
   data_.resize(newCount * dimension_);
   ++ size_;
@@ -1232,47 +1231,6 @@ CorrelationMatrix SampleImplementation::computeSpearmanCorrelation() const
  * Gives the Kendall tau matrix of the sample, including ties correction
  */
 
-struct ComputeKendallPolicy
-{
-  const SampleImplementation & input_;
-  Point & output_;
-  const Indices & indicesX_;
-  const Indices & indicesY_;
-  const Bool smallCase_;
-
-  ComputeKendallPolicy( const SampleImplementation & input,
-                        Point & output,
-                        const Indices & indicesX,
-                        const Indices & indicesY,
-                        const Bool smallCase)
-    : input_(input)
-    , output_(output)
-    , indicesX_(indicesX)
-    , indicesY_(indicesY)
-    , smallCase_(smallCase)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    const UnsignedInteger size = input_.getSize();
-    Point x(size);
-    Point y(size);
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const UnsignedInteger indX = indicesX_[i];
-      const UnsignedInteger indY = indicesY_[i];
-      for (UnsignedInteger k = 0; k < size; ++k)
-      {
-        x[k] = input_(k, indX);
-        y[k] = input_(k, indY);
-      }
-      if (smallCase_) output_[i] = kendallSmallN(&x[0], &y[0], size);
-      else output_[i] = kendallNlogN(&x[0], &y[0], size);
-    }
-  }
-
-}; /* end struct ComputeKendallPolicy */
-
 CorrelationMatrix SampleImplementation::computeKendallTau() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
@@ -1298,8 +1256,24 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
   } // end for i
   // Now the computation
   Point result(caseNumber);
-  const ComputeKendallPolicy policy( *this, result, indX, indY, smallCase );
-  TBBImplementation::ParallelFor( 0, caseNumber, policy );
+  TBBImplementation::ParallelFor(0, caseNumber, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    const UnsignedInteger size = getSize();
+    Point x(size);
+    Point y(size);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const UnsignedInteger columnX = indX[i];
+      const UnsignedInteger columnY = indY[i];
+      for (UnsignedInteger k = 0; k < size; ++k)
+      {
+        x[k] = (*this)(k, columnX);
+        y[k] = (*this)(k, columnY);
+      }
+      if (smallCase) result[i] = kendallSmallN(&x[0], &y[0], size);
+      else result[i] = kendallNlogN(&x[0], &y[0], size);
+    }
+  }, 1024);
   index = 0;
   for (UnsignedInteger i = 0; i < dimension_ - 1; ++i)
   {
@@ -1641,7 +1615,7 @@ Pointer<SampleImplementation> SampleImplementation::computeQuantile(const Point 
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Point & prob) const";
 }
 
-struct CDFPolicy
+struct CDFBody
 {
   typedef Scalar value_type;
 
@@ -1649,7 +1623,7 @@ struct CDFPolicy
   const Bool tail_;
   const UnsignedInteger dimension_;
 
-  CDFPolicy( const SampleImplementation & nsi,
+  CDFBody( const SampleImplementation & nsi,
              const Point & point,
              const Bool tail )
     : point_(point), tail_(tail), dimension_(nsi.getDimension()) {}
@@ -1675,7 +1649,7 @@ struct CDFPolicy
     return a;
   }
 
-}; /* end struct CDFPolicy */
+}; /* end struct CDFBody */
 
 /*
  * Get the empirical CDF of the sample
@@ -1687,8 +1661,8 @@ Scalar SampleImplementation::computeEmpiricalCDF(const Point & x,
   if (getDimension() != x.getDimension()) throw InvalidArgumentException(HERE) << "Point has incorrect dimension. Got "
         << x.getDimension() << ". Expected " << getDimension();
 
-  const CDFPolicy policy( *this, x, survival );
-  ReductionFunctor<CDFPolicy> functor( *this, policy );
+  const CDFBody body( *this, x, survival );
+  ReductionFunctor<CDFBody> functor( *this, body );
   TBBImplementation::ParallelReduce(0, size_, functor, 1024);
   return static_cast < Scalar > (functor.accumulator_) / size_;
 }

@@ -39,14 +39,18 @@ for point in sample:
 # default Removal: weights are exactly the density ratios, no reweighting
 reference = experiment.getDistribution()
 christoffel = otexp.ChristoffelDistribution(basis, 30)
-ott.assert_almost_equal(weights[0], reference.computePDF(sample[0]) / christoffel.computePDF(sample[0]))
+ott.assert_almost_equal(
+    weights[0], reference.computePDF(sample[0]) / christoffel.computePDF(sample[0])
+)
 
 # no absolute frame bounds at m = n: the projection DPP is still far more
 # stable than a uniform design at the same budget, whose Gramian is
 # numerically singular in a 30-function space
 eigenvalues = experiment.computeDesignEigenvalues(sample, weights)
 ot.RandomGenerator.SetSeed(1)
-uniformEigenvalues = experiment.computeDesignEigenvalues(basis.getMeasure().getSample(30), ot.Point(30, 1.0))
+uniformEigenvalues = experiment.computeDesignEigenvalues(
+    basis.getMeasure().getSample(30), ot.Point(30, 1.0)
+)
 assert min(eigenvalues) > max(0.0, min(uniformEigenvalues))
 with ott.assert_raises(TypeError):
     experiment.computeDesignEigenvalues(ot.Sample(0, 1), ot.Point(0))
@@ -78,17 +82,32 @@ ott.assert_almost_equal(weightsA, weightsB)
 # the default sizing rule is m = n-k; the certified mode is opt-in and the
 # pool, thinning and barrier controls are gone
 assert not ot.ResourceMap.GetAsBool("ChristoffelSubsampleExperiment-Certified")
-ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-Gamma"), 9.242343873386666)
-assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts") == 10
-assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxProjectionAttempts") == 1000000
+ott.assert_almost_equal(
+    ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-Gamma"),
+    9.242343873386666,
+)
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts")
+    == 10
+)
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger(
+        "ChristoffelSubsampleExperiment-MaxProjectionAttempts"
+    )
+    == 1000000
+)
 
 # a zero projection attempt limit is rejected before looping
-ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxProjectionAttempts", 0)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "ChristoffelSubsampleExperiment-MaxProjectionAttempts", 0
+)
 try:
     with ott.assert_raises(TypeError):
         experiment.generateWithWeights()
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxProjectionAttempts", 1000000)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelSubsampleExperiment-MaxProjectionAttempts", 1000000
+    )
 for key in [
     "ChristoffelSubsampleExperiment-PoolOversamplingFactor",
     "ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor",
@@ -97,7 +116,9 @@ for key in [
     "ChristoffelSubsampleExperiment-BarrierRegularization",
 ]:
     assert not ot.ResourceMap.HasKey(key)
-ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance"), 0.5)
+ott.assert_almost_equal(
+    ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance"), 0.5
+)
 existing = reference.getSample(20)
 
 # certified mode: n = gamma m log(m), n independent Christoffel points and
@@ -124,21 +145,31 @@ try:
     ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 1)
     try:
         oneAttempt = otexp.ChristoffelSubsampleExperiment(basis, 60)
-        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 2)
+        ot.ResourceMap.SetAsUnsignedInteger(
+            "ChristoffelSubsampleExperiment-MaxAttempts", 2
+        )
         twoAttempts = otexp.ChristoffelSubsampleExperiment(basis, 60)
         for seed in (2, 6):
             ot.RandomGenerator.SetSeed(seed)
             firstSample, firstWeights = oneAttempt.generateWithWeights()
             secondSample, secondWeights = oneAttempt.generateWithWeights()
-            firstEigenvalue = min(oneAttempt.computeDesignEigenvalues(firstSample, firstWeights))
-            secondEigenvalue = min(oneAttempt.computeDesignEigenvalues(secondSample, secondWeights))
-            bestSample = firstSample if firstEigenvalue >= secondEigenvalue else secondSample
+            firstEigenvalue = min(
+                oneAttempt.computeDesignEigenvalues(firstSample, firstWeights)
+            )
+            secondEigenvalue = min(
+                oneAttempt.computeDesignEigenvalues(secondSample, secondWeights)
+            )
+            bestSample = (
+                firstSample if firstEigenvalue >= secondEigenvalue else secondSample
+            )
             ot.RandomGenerator.SetSeed(seed)
             retainedSample, _ = twoAttempts.generateWithWeights()
             ott.assert_almost_equal(retainedSample, bestSample)
     finally:
         ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5)
-        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
+        ot.ResourceMap.SetAsUnsignedInteger(
+            "ChristoffelSubsampleExperiment-MaxAttempts", 10
+        )
 
     # a failed refresh keeps the previous valid settings: a zero attempt cap
     # must not leave the experiment with a null maxAttempts_
@@ -157,10 +188,14 @@ try:
         ott.assert_almost_equal(recoveredSample, baselineSample)
         ott.assert_almost_equal(recoveredWeights, baselineWeights)
     finally:
-        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
+        ot.ResourceMap.SetAsUnsignedInteger(
+            "ChristoffelSubsampleExperiment-MaxAttempts", 10
+        )
 finally:
     ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsScalar(
+        "ChristoffelSubsampleExperiment-Gamma", 9.242343873386666
+    )
 
 # a non-positive gamma is rejected when the certified mode is selected
 ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
@@ -169,7 +204,9 @@ try:
     with ott.assert_raises(TypeError):
         otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(10)
 finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsScalar(
+        "ChristoffelSubsampleExperiment-Gamma", 9.242343873386666
+    )
     ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
 
 # the certified redraw cap must be positive
@@ -179,7 +216,9 @@ try:
     with ott.assert_raises(TypeError):
         otexp.ChristoffelSubsampleExperiment(basis, 10)
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelSubsampleExperiment-MaxAttempts", 10
+    )
     ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
 assert otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(60) == 60
 
@@ -210,8 +249,12 @@ assert abs(squaredDifference - 1.6) < 0.12
 assert abs(square - 7.0 / 15.0) < 0.05
 
 # finite basis: k is deduced by trial, m = n-k supplied by the basis
-finiteFunctions = [ot.SymbolicFunction("x", formula) for formula in ["1.0", "x", "x^2", "x^3", "x^4"]]
-finiteFactory = otexp.FiniteOrthogonalFunctionFactory(finiteFunctions, ot.Uniform(-1.0, 1.0))
+finiteFunctions = [
+    ot.SymbolicFunction("x", formula) for formula in ["1.0", "x", "x^2", "x^3", "x^4"]
+]
+finiteFactory = ot.FiniteOrthogonalFunctionFactory(
+    finiteFunctions, ot.Uniform(-1.0, 1.0)
+)
 finiteBasis = ot.OrthogonalBasis(finiteFactory)
 finiteExperiment = otexp.ChristoffelSubsampleExperiment(finiteBasis, 30)
 assert finiteExperiment.getSpaceDimension() == 5
@@ -256,7 +299,9 @@ ott.assert_almost_equal(freshWeights, emptyWeights)
 
 # an empty sample of any dimension selects the fresh path: the empty check
 # comes before the dimension check
-twoDimBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Uniform(-1.0, 1.0)] * 2))
+twoDimBasis = ot.OrthogonalBasis(
+    ot.OrthogonalProductPolynomialFactory([ot.Uniform(-1.0, 1.0)] * 2)
+)
 twoDimExperiment = otexp.ChristoffelSubsampleExperiment(twoDimBasis, 10)
 ot.RandomGenerator.SetSeed(2)
 fresh2D, fresh2DWeights = twoDimExperiment.generateWithWeights()
@@ -320,7 +365,9 @@ try:
     certifiedPersisted = otexp.ChristoffelSubsampleExperiment(basis, 60)
     assert certifiedPersisted.getSpaceDimension() == 6
     ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsScalar(
+        "ChristoffelSubsampleExperiment-Gamma", 9.242343873386666
+    )
     ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 1)
     buf = BytesIO()
     pickle.dump(certifiedPersisted, buf)
@@ -330,8 +377,12 @@ try:
     assert restored.getSpaceDimension() == 6
 finally:
     ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
+    ot.ResourceMap.SetAsScalar(
+        "ChristoffelSubsampleExperiment-Gamma", 9.242343873386666
+    )
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "ChristoffelSubsampleExperiment-MaxAttempts", 10
+    )
 
 # errors: the reference distribution is embedded in the basis
 with ott.assert_raises(TypeError):
@@ -345,7 +396,9 @@ with ott.assert_raises(TypeError):
 # dimension until setOrthogonalBasis() and setSize() are called
 assert experiment.getOrthogonalBasis() == basis
 defaultExperiment = otexp.ChristoffelSubsampleExperiment()
-assert defaultExperiment.getSize() == ot.ResourceMap.GetAsUnsignedInteger("WeightedExperiment-DefaultSize")
+assert defaultExperiment.getSize() == ot.ResourceMap.GetAsUnsignedInteger(
+    "WeightedExperiment-DefaultSize"
+)
 assert defaultExperiment.getSpaceDimension() == 0
 with ott.assert_raises(TypeError):
     defaultExperiment.generateWithWeights()

@@ -18,6 +18,9 @@
 %include OTexceptions.i
 %include std_vector.i
 
+/* Base/Func */
+%include BaseFuncCollection.i
+
 %import base_module.i
 
 /* Uncertainty/Model */
@@ -55,9 +58,9 @@
 %include OrthogonalUniVariatePolynomialFunctionFactory.i
 %include OrthogonalProductFunctionFactory.i
 %include OrthogonalProductPolynomialFactory.i
+%include FiniteOrthogonalFunctionFactory.i
 %include FourierSeriesFactory.i
 %include HaarWaveletFactory.i
-%include SoizeGhanemFactory.i
 
 /* At last we include template definitions */
 %include UncertaintyOrthogonalBasisTemplateDefs.i

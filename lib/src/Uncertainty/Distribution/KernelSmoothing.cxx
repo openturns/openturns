@@ -2,7 +2,7 @@
 /**
  *  @brief This class acts like a KernelMixture factory, implementing a
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -329,6 +329,11 @@ Distribution KernelSmoothing::buildWeighted(const Sample & sample,
   const UnsignedInteger dimension = sample.getDimension();
   if (bandwidth.getDimension() != dimension)
     throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+  // Check all values: getMin/getMax below skip non-finite values, so an
+  // explicit scan is needed to reject them
+  for (UnsignedInteger i = 0; i < sample.getSize(); ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      if (!std::isfinite(sample(i, j))) throw InvalidArgumentException(HERE) << "Error: cannot build a kernel smoothing estimate from a sample with non-finite values";
   const Point xmin(sample.getMin());
   const Point xmax(sample.getMax());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
@@ -603,9 +608,17 @@ TruncatedDistribution KernelSmoothing::buildWeightedAsTruncatedDistribution(cons
   {
     const Scalar x = newSampleData[i];
     // lower < 0
-    if (doLower && (x <= xMin - h * lower)) { newSampleData.add(2.0 * xMin - x); newWeights.add(weights[i]); }
+    if (doLower && (x <= xMin - h * lower))
+    {
+      newSampleData.add(2.0 * xMin - x);
+      newWeights.add(weights[i]);
+    }
     // upper > 0
-    if (doUpper && (x >= xMax - h * upper)) { newSampleData.add(2.0 * xMax - x); newWeights.add(weights[i]); }
+    if (doUpper && (x >= xMax - h * upper))
+    {
+      newSampleData.add(2.0 * xMax - x);
+      newWeights.add(weights[i]);
+    }
   }
   // Now, work on the extended sample
   SampleImplementation newSample(newSampleData.getSize(), 1);
@@ -623,7 +636,8 @@ TruncatedDistribution KernelSmoothing::buildWeightedAsTruncatedDistribution(cons
 }
 
 /* Build a Normal kernel mixture based on the given sample. If no bandwidth has already been set, Silverman's rule is used */
-Distribution KernelSmoothing::build(const Sample & sample) const{
+Distribution KernelSmoothing::build(const Sample & sample) const
+{
   // For 1D sample, use the rule that give the best tradeoff between speed and precision
   if (sample.getDimension() == 1)
   {

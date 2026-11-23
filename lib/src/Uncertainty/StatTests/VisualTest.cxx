@@ -2,7 +2,7 @@
 /**
  *  @brief VisualTest implements statistical tests
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -780,8 +780,8 @@ Graph VisualTest::DrawLowerExtremalDependenceFunction(const Sample & data)
 
 /* Draw 2-d projections of a design with grid lines in each plane */
 GridLayout VisualTest::DrawPairsWithGrid(const Sample & sample,
-                                         const Interval & bounds,
-                                         const Indices & subdivisions)
+    const Interval & bounds,
+    const Indices & subdivisions)
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension < 2)

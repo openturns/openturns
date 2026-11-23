@@ -105,7 +105,13 @@ class SampleEstimatorLinearRegression(ot.PythonRandomVector):
 
 
 def plot_sample_by_kernel_smoothing(
-    sample_size, true_standard_deviation, coefficients, estimator, repetitions_size, true_value, description
+    sample_size,
+    true_standard_deviation,
+    coefficients,
+    estimator,
+    repetitions_size,
+    true_value,
+    description,
 ):
     """
     Plot the estimated distribution of a linear-regression estimator.
@@ -137,7 +143,9 @@ def plot_sample_by_kernel_smoothing(
         The plot of the PDF of the estimated distribution.
 
     """
-    pyRV = SampleEstimatorLinearRegression(sample_size, true_standard_deviation, coefficients, estimator)
+    pyRV = SampleEstimatorLinearRegression(
+        sample_size, true_standard_deviation, coefficients, estimator
+    )
     myRV = ot.RandomVector(pyRV)
     sample_estimator = myRV.getSample(repetitions_size)
     sample_estimator.setDescription([description])
@@ -145,7 +153,9 @@ def plot_sample_by_kernel_smoothing(
 
     graph = ot.KernelSmoothing().build(sample_estimator).drawPDF()
     graph.setLegends(["Sample"])
-    min_size = ot.ResourceMap.GetAsUnsignedInteger("LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions")
+    min_size = ot.ResourceMap.GetAsUnsignedInteger(
+        "LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions"
+    )
     if sample_size >= min_size:
         # Add the asymptotic distribution
         bb = graph.getBoundingBox()
@@ -175,11 +185,7 @@ def plot_sample_by_kernel_smoothing(
     graph.add(curve)
     graph.setTitle(
         "Size = %d, True = %.4f, Mean = %.4f"
-        % (
-            sample_size,
-            true_value,
-            mean_sample_estimator[0]
-        )
+        % (sample_size, true_value, mean_sample_estimator[0])
     )
     return graph
 
@@ -201,7 +207,13 @@ estimator = "variance"
 description = r"$\hat{\sigma}^2$"
 view = otv.View(
     plot_sample_by_kernel_smoothing(
-        sample_size, true_standard_deviation, coefficients, estimator, repetitions_size, true_standard_deviation**2, description
+        sample_size,
+        true_standard_deviation,
+        coefficients,
+        estimator,
+        repetitions_size,
+        true_standard_deviation**2,
+        description,
     ),
     figure_kw={"figsize": (6.0, 3.5)},
 )
@@ -224,7 +236,13 @@ estimator = "variance"
 description = r"$\hat{\sigma}^2$"
 view = otv.View(
     plot_sample_by_kernel_smoothing(
-        sample_size, true_standard_deviation, coefficients, estimator, repetitions_size, true_standard_deviation**2, description
+        sample_size,
+        true_standard_deviation,
+        coefficients,
+        estimator,
+        repetitions_size,
+        true_standard_deviation**2,
+        description,
     ),
     figure_kw={"figsize": (6.0, 3.5)},
 )
@@ -250,7 +268,13 @@ estimator = "standard-deviation"
 description = r"$\hat{\sigma}$"
 view = otv.View(
     plot_sample_by_kernel_smoothing(
-        sample_size, true_standard_deviation, coefficients, estimator, repetitions_size, true_standard_deviation, description
+        sample_size,
+        true_standard_deviation,
+        coefficients,
+        estimator,
+        repetitions_size,
+        true_standard_deviation,
+        description,
     ),
     figure_kw={"figsize": (6.0, 3.5)},
 )
@@ -273,7 +297,13 @@ estimator = "standard-deviation"
 description = r"$\hat{\sigma}$"
 view = otv.View(
     plot_sample_by_kernel_smoothing(
-        sample_size, true_standard_deviation, coefficients, estimator, repetitions_size, true_standard_deviation, description
+        sample_size,
+        true_standard_deviation,
+        coefficients,
+        estimator,
+        repetitions_size,
+        true_standard_deviation,
+        description,
     ),
     figure_kw={"figsize": (6.0, 3.5)},
 )
@@ -300,14 +330,19 @@ grid = ot.GridLayout(1, coefficients_dimension)
 for i in range(coefficients_dimension):
     estimator = f"coefficient_{i}"
     description = rf"$\hat{{a}}_{i}$"
-    graph = plot_sample_by_kernel_smoothing(sample_size, true_standard_deviation, coefficients, estimator, repetitions_size, coefficients[i], description)
+    graph = plot_sample_by_kernel_smoothing(
+        sample_size,
+        true_standard_deviation,
+        coefficients,
+        estimator,
+        repetitions_size,
+        coefficients[i],
+        description,
+    )
     if i > 0:
         graph.setYTitle("")
     grid.setGraph(0, i, graph)
-view = otv.View(
-    grid,
-    figure_kw={"figsize": (14.0, 3.5)}
-)
+view = otv.View(grid, figure_kw={"figsize": (14.0, 3.5)})
 plt.subplots_adjust(left=0.04, right=0.98, bottom=0.2)
 
 # %%

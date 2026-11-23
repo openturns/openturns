@@ -53,7 +53,7 @@ def make_params(leaf, max_rank):
 def build_hodlr(vertices, af, params):
     factory = otexp.HODLRMatrixFactory()
     hodlr = factory.build(vertices, 1, True, params)
-    hodlr.assembleReal(af, 'L')
+    hodlr.assembleReal(af, "L")
     hodlr.factorize()
     return hodlr
 
@@ -95,20 +95,19 @@ for col in range(3):
     ott.assert_almost_equal(
         ot.Point([X_h1[i, col] for i in range(n1)]),
         ot.Point([X_d1[i, col] for i in range(n1)]),
-        1.0e-10, 1.0e-10
+        1.0e-10,
+        1.0e-10,
     )
 print("  PASS (solve Matrix)")
 
 x1 = ot.Point([m.sin(float(i)) for i in range(n1)])
 y_h1 = ot.Point(n1, 0.0)
-hodlr1.gemv('N', 1.0, x1, 0.0, y_h1)
+hodlr1.gemv("N", 1.0, x1, 0.0, y_h1)
 ott.assert_almost_equal(y_h1, dense_matvec(af1, n1, x1), 1.0e-10, 1.0e-10)
 print("  PASS (gemv)")
 
 ott.assert_almost_equal(
-    ot.Point([hodlr1.logDeterminant()]),
-    ot.Point([dense_logdet(K1)]),
-    1.0e-10, 1.0e-10
+    ot.Point([hodlr1.logDeterminant()]), ot.Point([dense_logdet(K1)]), 1.0e-10, 1.0e-10
 )
 print("  PASS (logDeterminant)")
 
@@ -137,14 +136,12 @@ print("  PASS (solve)")
 
 x2 = ot.Point([m.sin(float(i)) for i in range(n2)])
 y_h2 = ot.Point(n2, 0.0)
-hodlr2.gemv('N', 1.0, x2, 0.0, y_h2)
+hodlr2.gemv("N", 1.0, x2, 0.0, y_h2)
 ott.assert_almost_equal(y_h2, dense_matvec(af2, n2, x2), 1.0e-10, 1.0e-10)
 print("  PASS (gemv)")
 
 ott.assert_almost_equal(
-    ot.Point([hodlr2.logDeterminant()]),
-    ot.Point([dense_logdet(K2)]),
-    1.0e-10, 1.0e-10
+    ot.Point([hodlr2.logDeterminant()]), ot.Point([dense_logdet(K2)]), 1.0e-10, 1.0e-10
 )
 print("  PASS (logDeterminant)")
 
@@ -176,7 +173,7 @@ print("  PASS (solve)")
 
 x4 = ot.Point([m.sin(float(i)) for i in range(n4)])
 y_h4 = ot.Point(n4, 0.0)
-hodlr4.gemv('N', 1.0, x4, 0.0, y_h4)
+hodlr4.gemv("N", 1.0, x4, 0.0, y_h4)
 ott.assert_almost_equal(y_h4, dense_matvec(af4, n4, x4), 1.0e-10, 1.0e-10)
 print("  PASS (gemv)")
 
@@ -190,7 +187,7 @@ af5 = BlockAssemblyFunction(vertices5, n5 // 2, 0.2)
 params5 = make_params(leaf=4, max_rank=0)
 ot.ResourceMap.SetAsUnsignedInteger("HODLRMatrix-RegularizationAttempts", 0)
 hodlr5 = otexp.HODLRMatrixFactory().build(vertices5, 1, True, params5)
-hodlr5.assembleReal(af5, 'L')
+hodlr5.assembleReal(af5, "L")
 with ott.assert_raises(TypeError):
     hodlr5.factorize()
 ot.ResourceMap.SetAsUnsignedInteger("HODLRMatrix-RegularizationAttempts", 60)
@@ -213,7 +210,7 @@ def zero_assembly(i, j):
 params6 = make_params(leaf=2, max_rank=2)
 ot.ResourceMap.SetAsUnsignedInteger("HODLRMatrix-FactorizationIterations", 1)
 hodlr6 = otexp.HODLRMatrixFactory().build(vertices6, 1, True, params6)
-hodlr6.assembleReal(zero_assembly, 'L')
+hodlr6.assembleReal(zero_assembly, "L")
 with ott.assert_raises(RuntimeError):
     hodlr6.factorize()
 ot.ResourceMap.SetAsUnsignedInteger("HODLRMatrix-FactorizationIterations", 20)
@@ -231,18 +228,18 @@ params7 = make_params(leaf=4, max_rank=2)
 
 hodlr7 = otexp.HODLRMatrixFactory().build(vertices7, 1, True, params7)
 with ott.assert_raises(TypeError):
-    hodlr7.assembleReal(af7, 'N')
+    hodlr7.assembleReal(af7, "N")
 
 hodlr8 = otexp.HODLRMatrixFactory().build(vertices7, 1, False, params7)
 with ott.assert_raises(TypeError):
-    hodlr8.assembleReal(af7, 'L')
+    hodlr8.assembleReal(af7, "L")
 
 hodlr9 = otexp.HODLRMatrixFactory().build(vertices7, 1, True, params7)
 with ott.assert_raises(TypeError):
-    hodlr9.assembleReal(af7, 'X')
+    hodlr9.assembleReal(af7, "X")
 
 hodlr10 = otexp.HODLRMatrixFactory().build(vertices7, 1, True, params7)
-hodlr10.assembleReal(af7, 'L')
+hodlr10.assembleReal(af7, "L")
 hodlr10.factorize()
 print("  PASS")
 
@@ -260,7 +257,12 @@ params8 = make_params(leaf=4, max_rank=2)
 hodlr8 = build_hodlr(vertices8, af8, params8)
 
 b8 = ot.Point(n8, 1.0)
-ott.assert_almost_equal(hodlr8.solve(b8), build_dense_matrix(af8, n8).solveLinearSystem(b8), 1.0e-10, 1.0e-10)
+ott.assert_almost_equal(
+    hodlr8.solve(b8),
+    build_dense_matrix(af8, n8).solveLinearSystem(b8),
+    1.0e-10,
+    1.0e-10,
+)
 
 copy8 = hodlr8.copy()
 ott.assert_almost_equal(copy8.getNbRows(), n8)
@@ -270,17 +272,26 @@ ott.assert_almost_equal(copy8.getDiagonal(), hodlr8.getDiagonal())
 # metadata shell, which cannot be kept now that the matrix is persisted (a Study
 # stores a clone, and a clone that dropped the tree would load as a shell).
 ott.assert_almost_equal(copy8.solve(b8), hodlr8.solve(b8), 1.0e-10, 1.0e-10)
-ott.assert_almost_equal(copy8.logDeterminant(), hodlr8.logDeterminant(), 1.0e-10, 1.0e-10)
+ott.assert_almost_equal(
+    copy8.logDeterminant(), hodlr8.logDeterminant(), 1.0e-10, 1.0e-10
+)
 y8 = ot.Point(n8, 0.0)
 y8b = ot.Point(n8, 0.0)
-copy8.gemv('N', 1.0, b8, 0.0, y8)
-hodlr8.gemv('N', 1.0, b8, 0.0, y8b)
+copy8.gemv("N", 1.0, b8, 0.0, y8)
+hodlr8.gemv("N", 1.0, b8, 0.0, y8b)
 ott.assert_almost_equal(y8, y8b, 1.0e-10, 1.0e-10)
 # independent, not a shared tree: re-factorizing the copy leaves the original alone
-copy8.assembleReal(af8, 'L')
+copy8.assembleReal(af8, "L")
 copy8.factorize()
-ott.assert_almost_equal(copy8.solve(b8), build_dense_matrix(af8, n8).solveLinearSystem(b8), 1.0e-10, 1.0e-10)
-ott.assert_almost_equal(hodlr8.solve(b8), build_dense_matrix(af8, n8).solveLinearSystem(b8), 1.0e-10, 1.0e-10)
+ott.assert_almost_equal(
+    copy8.solve(b8), build_dense_matrix(af8, n8).solveLinearSystem(b8), 1.0e-10, 1.0e-10
+)
+ott.assert_almost_equal(
+    hodlr8.solve(b8),
+    build_dense_matrix(af8, n8).solveLinearSystem(b8),
+    1.0e-10,
+    1.0e-10,
+)
 print("  PASS")
 
 # === Test 9: zero factorization iterations is rejected ===
@@ -294,7 +305,7 @@ af9 = BlockAssemblyFunction(vertices9, n9 // 2, 0.2)
 params9 = make_params(leaf=4, max_rank=2)
 ot.ResourceMap.SetAsUnsignedInteger("HODLRMatrix-FactorizationIterations", 0)
 hodlr9 = otexp.HODLRMatrixFactory().build(vertices9, 1, True, params9)
-hodlr9.assembleReal(af9, 'L')
+hodlr9.assembleReal(af9, "L")
 with ott.assert_raises(TypeError):
     hodlr9.factorize()
 ot.ResourceMap.SetAsUnsignedInteger("HODLRMatrix-FactorizationIterations", 20)

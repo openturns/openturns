@@ -30,7 +30,7 @@ reliability analysis.
 - 2023: (1.21, 1.22) Cross-Entropy simulation algorithms, Uniform/TruncatedOverMesh distributions
 - 2024: (1.23, 1.24) New GP API, conditional PCE, rank-based Sobol', conditional distribution, GEV/GPD services, Cuba
 - 2025: (1.25, 1.26) Quantile CI, LOLA-Voronoi, Line Sampling, HiGHS solver
-- 2026: (1.27) Completed GPR API
+- 2026: (1.27, 1.28) Completed GPR API, PCE work, manifold distributions, AK reliability methods, HODLR, QP solver
 
 People
 ------

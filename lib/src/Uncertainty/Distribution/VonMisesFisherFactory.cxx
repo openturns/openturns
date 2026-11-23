@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for VonMisesFisher distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -153,13 +153,13 @@ VonMisesFisher VonMisesFisherFactory::buildAsVonMisesFisher(const Sample & sampl
     const Scalar largeValue = std::sqrt(SpecFunc::MaxScalar);
     // While f has the same sign at the two bounds, update the interval
     while ((fA * fB > 0.0) && (std::abs(fA) < largeValue) && (std::abs(fB) < largeValue) && (b < largeValue))
-      {
-        a = 0.5 * a;
-        fA = f(Point(1, a))[0];
-        if (fA * fB <= 0.0) break;
-        b = 2.0 * b;
-        fB = f(Point(1, b))[0];
-      }
+    {
+      a = 0.5 * a;
+      fA = f(Point(1, a))[0];
+      if (fA * fB <= 0.0) break;
+      b = 2.0 * b;
+      fB = f(Point(1, b))[0];
+    }
     if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (fA * fB > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a VonMisesFisher distribution from the given sample";
     // Solve the constraint equation
     Brent solver(ResourceMap::GetAsScalar( "VonMisesFisherFactory-AbsolutePrecision" ), ResourceMap::GetAsScalar( "VonMisesFisherFactory-RelativePrecision" ), ResourceMap::GetAsScalar( "VonMisesFisherFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "VonMisesFisherFactory-MaximumIteration" ));

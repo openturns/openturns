@@ -76,13 +76,17 @@ for distribution in [ot.Gamma(1.5, 2.5, -0.5), ot.Gamma(15.0, 2.5)]:
     if distribution.getK() == 1.5:
         ott.assert_almost_equal(PDFgr, [0.16512, -0.115624, 0.278355], 1e-5, 0.0)
     else:
-        ott.assert_almost_equal(PDFgr, [-1.54166e-06, 4.38456e-06, -1.00845e-05], 1e-5, 0.0)
+        ott.assert_almost_equal(
+            PDFgr, [-1.54166e-06, 4.38456e-06, -1.00845e-05], 1e-5, 0.0
+        )
 
     CDFgr = distribution.computeCDFGradient(point)
     if distribution.getK() == 1.5:
         ott.assert_almost_equal(CDFgr, [-0.0875625, 0.0770828, -0.128471], 1e-5, 0.0)
     else:
-        ott.assert_almost_equal(CDFgr, [-1.26959e-07, 3.50764e-07, -8.76911e-07], 1e-5, 0.0)
+        ott.assert_almost_equal(
+            CDFgr, [-1.26959e-07, 3.50764e-07, -8.76911e-07], 1e-5, 0.0
+        )
 
     quantile = distribution.computeQuantile(0.95)
     if distribution.getK() == 1.5:
@@ -181,7 +185,10 @@ for distribution in [ot.Gamma(1.5, 2.5, -0.5), ot.Gamma(15.0, 2.5)]:
         ott.assert_almost_equal(parameters[0], [1.5, 2.5, -0.5], 0.0, 0.0)
     else:
         ott.assert_almost_equal(parameters[0], [15.0, 2.5, 0.0], 0.0, 0.0)
-    assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Gamma"
+    assert (
+        distribution.getStandardRepresentative().getImplementation().getClassName()
+        == "Gamma"
+    )
 
     standardDeviation = distribution.getStandardDeviation()
     if distribution.getK() == 1.5:

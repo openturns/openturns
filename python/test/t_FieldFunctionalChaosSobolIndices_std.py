@@ -47,8 +47,7 @@ randomParameters = ot.JointDistribution([ot.Uniform(), ot.Normal()])
 p3 = ot.FunctionalBasisProcess(
     randomParameters,
     ot.Basis(
-        [ot.SymbolicFunction(["t"], ["1", "0"]),
-         ot.SymbolicFunction(["t"], ["0", "1"])]
+        [ot.SymbolicFunction(["t"], ["1", "0"]), ot.SymbolicFunction(["t"], ["0", "1"])]
     ),
 )
 
@@ -90,8 +89,7 @@ graph = sensitivity.draw()
 # ot.Show(graph)
 
 sobol2 = dict(
-    [((j, i), sensitivity.getSobolIndex([i, j]))
-     for i in range(4) for j in range(i)]
+    [((j, i), sensitivity.getSobolIndex([i, j])) for i in range(4) for j in range(i)]
 )
 print(sobol2)
 ott.assert_almost_equal(sobol2[(0, 1)], 0.476518)

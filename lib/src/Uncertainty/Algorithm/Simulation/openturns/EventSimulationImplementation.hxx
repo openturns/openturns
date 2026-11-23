@@ -3,7 +3,7 @@
  *  @brief EventSimulationImplementation is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,14 +49,14 @@ public:
 
   /** Constructor with parameters */
   explicit EventSimulationImplementation(const RandomVector & event,
-                           const HistoryStrategy & convergenceStrategy = Compact());
+                                         const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
   EventSimulationImplementation * clone() const override;
 
   /** Event accessor */
   RandomVector getEvent() const;
-  
+
   /** Event accessor */
   virtual void setEvent(const RandomVector & event);
 
@@ -80,13 +80,13 @@ public:
 
   /** Input accessor */
   virtual Sample getInputSample() const;
-  
+
   /** Setter keep sample */
   virtual void setKeepSample(const Bool);
 
   /** For save/load mechanism*/
   EventSimulationImplementation(const HistoryStrategy & convergenceStrategy = Compact());
-    
+
 protected:
 
   /** Result accessor */

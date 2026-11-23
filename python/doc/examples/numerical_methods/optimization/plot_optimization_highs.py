@@ -42,13 +42,13 @@ LU = ot.Interval([-1e30, 1.0], [4.0, 1e30], [False, True], [True, False])
 A = ot.Matrix([[1.0, 2.0, 3.0], [1.0, 1.0, 0.0]])
 BINARY = ot.OptimizationProblemImplementation.BINARY
 bounds = ot.Interval(3)
-problem = otexp.LinearProblem(cost, bounds, A, LU)
+problem = otexp.LinearProgrammingProblem(cost, bounds, A, LU)
 problem.setVariablesType([BINARY] * 3)
 problem.setMinimization(False)
 
 # %%
 # Run the algorithm with default settings
-algo = otexp.HiGHS(problem)
+algo = ot.HiGHS(problem)
 algo.setStartingPoint([0.0] * 3)
 algo.run()
 
@@ -64,7 +64,7 @@ print(" -- Evaluation number = " + str(result.getInputSample().getSize()))
 # --------------------------------------------------
 #
 # On continuous linear problems the LP solver can be selected
-# among the recognized names returned by :func:`~openturns.experimental.HiGHS.GetAlgorithmNames`
+# among the recognized names returned by :func:`~openturns.HiGHS.GetAlgorithmNames`
 # (whether a name is accepted at runtime depends on the HiGHS build).
 # Let us solve the following problem with several solvers:
 #
@@ -80,7 +80,7 @@ print(" -- Evaluation number = " + str(result.getInputSample().getSize()))
 #    y \geq 0\\
 #    \end{array}
 #
-print(" -- Recognized LP solver names = " + str(otexp.HiGHS.GetAlgorithmNames()))
+print(" -- Recognized LP solver names = " + str(ot.HiGHS.GetAlgorithmNames()))
 
 # %%
 # Definition of the continuous linear problem
@@ -89,16 +89,16 @@ print(" -- Recognized LP solver names = " + str(otexp.HiGHS.GetAlgorithmNames())
 bounds2 = ot.Interval([1.0, 0.0], [1e30, 1e30], [True, True], [False, False])
 A2 = ot.Matrix([[1.0, 2.0]])
 cb2 = ot.Interval([6.0], [1e30], [True], [False])
-problem2 = otexp.LinearProblem([1.0, 1.0], bounds2, A2, cb2)
+problem2 = otexp.LinearProgrammingProblem([1.0, 1.0], bounds2, A2, cb2)
 
 # %%
 # Solve with each LP solver
 # HiGHS solves the LP directly without Function evaluations,
 # so error histories stay empty (no convergence curve to draw);
 # solvers are compared on final point, value, status and per-solver iterations.
-for solver in otexp.HiGHS.GetAlgorithmNames():
+for solver in ot.HiGHS.GetAlgorithmNames():
     try:
-        algo2 = otexp.HiGHS(problem2, solver)
+        algo2 = ot.HiGHS(problem2, solver)
         algo2.setMaximumConstraintError(0.0)
         algo2.run()
     except Exception as ex:
@@ -133,7 +133,7 @@ for solver in otexp.HiGHS.GetAlgorithmNames():
 # A basic-solution solver also exposes the dual solution:
 # constraint duals and per-variable reduced costs
 # (first-order solvers without crossover have no dual to expose).
-algoDual = otexp.HiGHS(problem2, "simplex")
+algoDual = ot.HiGHS(problem2, "simplex")
 algoDual.run()
 print(" -- Duals = " + str(algoDual.getDualPoint()))
 print(" -- Reduced costs = " + str(algoDual.getReducedCosts()))
@@ -142,7 +142,7 @@ print(" -- Reduced costs = " + str(algoDual.getReducedCosts()))
 # Solve a quadratic problem
 # -------------------------
 #
-# The :class:`~openturns.experimental.QuadraticProblem` class defines a convex
+# The :class:`~openturns.experimental.QuadraticProgrammingProblem` class defines a convex
 # quadratic problem:
 #
 # .. math::
@@ -153,8 +153,8 @@ print(" -- Reduced costs = " + str(algoDual.getReducedCosts()))
 # quadratic solver available in the linked HiGHS build.
 Q = ot.SymmetricMatrix([[2.0, 0.0], [0.0, 2.0]])
 boundsQP = ot.Interval([0.0, 0.0], [0.5, 10.0])
-problemQP = otexp.QuadraticProblem(Q, [-2.0, -4.0], boundsQP)
-algoQP = otexp.HiGHS(problemQP, "choose")
+problemQP = otexp.QuadraticProgrammingProblem(Q, [-2.0, -4.0], boundsQP)
+algoQP = ot.HiGHS(problemQP, "choose")
 algoQP.run()
 resultQP = algoQP.getResult()
 print(" -- QP optimal point = " + str(resultQP.getOptimalPoint()))

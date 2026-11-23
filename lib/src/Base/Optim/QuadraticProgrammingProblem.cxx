@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief QuadraticProblem allows one to describe an optimization problem
+ *  @brief QuadraticProgrammingProblem allows one to describe an optimization problem
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,43 +19,33 @@
  *
  */
 
-#include "openturns/QuadraticProblem.hxx"
+#include "openturns/QuadraticProgrammingProblem.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/QuadraticFunction.hxx"
-#include "openturns/LinearFunction.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(QuadraticProblem)
+CLASSNAMEINIT(QuadraticProgrammingProblem)
 
-static const Factory<QuadraticProblem> Factory_QuadraticProblem;
-
-namespace
-{
-// A constraint row with equal finite bounds encodes an equality constraint
-Bool IsEqualityConstraintRow(const Interval & bounds, const UnsignedInteger i)
-{
-  return bounds.getFiniteLowerBound()[i]
-         && bounds.getFiniteUpperBound()[i]
-         && (bounds.getLowerBound()[i] == bounds.getUpperBound()[i]);
-}
-}
+static const Factory<QuadraticProgrammingProblem> Factory_QuadraticProgrammingProblem;
 
 /* Default constructor */
-QuadraticProblem::QuadraticProblem()
+QuadraticProgrammingProblem::QuadraticProgrammingProblem()
   : OptimizationProblemImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-QuadraticProblem::QuadraticProblem(const SymmetricMatrix & hessian,
-                                   const Point & linearCost,
-                                   const Interval & bounds)
+QuadraticProgrammingProblem::QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
+    const Point & linearCost,
+    const Interval & bounds,
+    const Scalar constant)
   : OptimizationProblemImplementation()
   , hessian_(hessian)
   , linearCost_(linearCost)
+  , constant_(constant)
 {
   if (hessian_.getDimension() != linearCost_.getDimension())
     throw InvalidDimensionException(HERE) << "Hessian dimension (" << hessian_.getDimension() << ") must match linear cost dimension (" << linearCost_.getDimension() << ")";
@@ -64,24 +54,16 @@ QuadraticProblem::QuadraticProblem(const SymmetricMatrix & hessian,
 }
 
 /* Parameter constructor */
-QuadraticProblem::QuadraticProblem(const SymmetricMatrix & hessian,
-                                   const Point & linearCost,
-                                   const Interval & bounds,
-                                   const Scalar constant)
-  : QuadraticProblem(hessian, linearCost, bounds)
-{
-  setConstant(constant);
-}
-
-/* Parameter constructor */
-QuadraticProblem::QuadraticProblem(const SymmetricMatrix & hessian,
-                                   const Point & linearCost,
-                                   const Interval & bounds,
-                                   const Matrix & constraintCoefficients,
-                                   const Interval & constraintBounds)
+QuadraticProgrammingProblem::QuadraticProgrammingProblem(const SymmetricMatrix & hessian,
+    const Point & linearCost,
+    const Interval & bounds,
+    const Matrix & constraintCoefficients,
+    const Interval & constraintBounds,
+    const Scalar constant)
   : OptimizationProblemImplementation()
   , hessian_(hessian)
   , linearCost_(linearCost)
+  , constant_(constant)
 {
   if (hessian_.getDimension() != linearCost_.getDimension())
     throw InvalidDimensionException(HERE) << "Hessian dimension (" << hessian_.getDimension() << ") must match linear cost dimension (" << linearCost_.getDimension() << ")";
@@ -90,35 +72,23 @@ QuadraticProblem::QuadraticProblem(const SymmetricMatrix & hessian,
   setLinearConstraint(constraintCoefficients, constraintBounds);
 }
 
-/* Parameter constructor */
-QuadraticProblem::QuadraticProblem(const SymmetricMatrix & hessian,
-                                   const Point & linearCost,
-                                   const Interval & bounds,
-                                   const Matrix & constraintCoefficients,
-                                   const Interval & constraintBounds,
-                                   const Scalar constant)
-  : QuadraticProblem(hessian, linearCost, bounds, constraintCoefficients, constraintBounds)
-{
-  setConstant(constant);
-}
-
 
 /* Virtual constructor */
-QuadraticProblem * QuadraticProblem::clone() const
+QuadraticProgrammingProblem * QuadraticProgrammingProblem::clone() const
 {
-  return new QuadraticProblem(*this);
+  return new QuadraticProgrammingProblem(*this);
 }
 
 
 /* Quadratic flag accessor */
-Bool QuadraticProblem::isQuadratic() const
+Bool QuadraticProgrammingProblem::isQuadratic() const
 {
   return true;
 }
 
 
 /* Objective accessor */
-void QuadraticProblem::setHessian(const SymmetricMatrix & hessian)
+void QuadraticProgrammingProblem::setHessian(const SymmetricMatrix & hessian)
 {
   if (hessian.getDimension() != linearCost_.getDimension())
     throw InvalidDimensionException(HERE) << "Hessian dimension (" << hessian.getDimension() << ") must match linear cost dimension (" << linearCost_.getDimension() << ")";
@@ -127,13 +97,13 @@ void QuadraticProblem::setHessian(const SymmetricMatrix & hessian)
 }
 
 
-SymmetricMatrix QuadraticProblem::getHessian() const
+SymmetricMatrix QuadraticProgrammingProblem::getHessian() const
 {
   return hessian_;
 }
 
 
-void QuadraticProblem::setLinearCost(const Point & linearCost)
+void QuadraticProgrammingProblem::setLinearCost(const Point & linearCost)
 {
   if (hessian_.getDimension() != linearCost.getDimension())
     throw InvalidDimensionException(HERE) << "Linear cost dimension (" << linearCost.getDimension() << ") must match hessian dimension (" << hessian_.getDimension() << ")";
@@ -144,27 +114,27 @@ void QuadraticProblem::setLinearCost(const Point & linearCost)
 }
 
 
-Point QuadraticProblem::getLinearCost() const
+Point QuadraticProgrammingProblem::getLinearCost() const
 {
   return linearCost_;
 }
 
 
-void QuadraticProblem::setConstant(const Scalar constant)
+void QuadraticProgrammingProblem::setConstant(const Scalar constant)
 {
   constant_ = constant;
   updateObjective();
 }
 
 
-Scalar QuadraticProblem::getConstant() const
+Scalar QuadraticProgrammingProblem::getConstant() const
 {
   return constant_;
 }
 
 
 /* Constraint accessor */
-void QuadraticProblem::setLinearConstraint(const Matrix & constraintCoefficients, const Interval & constraintBounds)
+void QuadraticProgrammingProblem::setLinearConstraint(const Matrix & constraintCoefficients, const Interval & constraintBounds)
 {
   if (constraintCoefficients.getNbColumns() != linearCost_.getDimension())
     throw InvalidDimensionException(HERE) << "Matrix column dimension (" << constraintCoefficients.getNbColumns() << ") must match problem dimension (" << linearCost_.getDimension() << ")";
@@ -175,121 +145,57 @@ void QuadraticProblem::setLinearConstraint(const Matrix & constraintCoefficients
 }
 
 
-Matrix QuadraticProblem::getLinearConstraintCoefficients() const
+Matrix QuadraticProgrammingProblem::getLinearConstraintCoefficients() const
 {
   return constraintCoefficients_;
 }
 
 
-Interval QuadraticProblem::getLinearConstraintBounds() const
+Interval QuadraticProgrammingProblem::getLinearConstraintBounds() const
 {
   return constraintBounds_;
 }
 
 
 /* Equality and inequality constraints, derived from the linear constraints */
-Bool QuadraticProblem::hasEqualityConstraint() const
+Bool QuadraticProgrammingProblem::hasEqualityConstraint() const
 {
-  const UnsignedInteger rowDimension = constraintBounds_.getDimension();
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-    if (IsEqualityConstraintRow(constraintBounds_, i))
-      return true;
-  return false;
+  return HasLinearEqualityConstraint(constraintBounds_);
 }
 
 
-Function QuadraticProblem::getEqualityConstraint() const
+Function QuadraticProgrammingProblem::getEqualityConstraint() const
 {
-  const UnsignedInteger rowDimension = constraintBounds_.getDimension();
-  Indices equalityRows;
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-    if (IsEqualityConstraintRow(constraintBounds_, i))
-      equalityRows.add(i);
-  const UnsignedInteger dimension = linearCost_.getDimension();
-  const UnsignedInteger outputDimension = equalityRows.getSize();
-  Matrix coefficients(outputDimension, dimension);
-  Point constant(outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-  {
-    const UnsignedInteger row = equalityRows[i];
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-      coefficients(i, j) = constraintCoefficients_(row, j);
-    constant[i] = -constraintBounds_.getLowerBound()[row];
-  }
-  return LinearFunction(Point(dimension), constant, coefficients);
+  return GetLinearEqualityConstraint(constraintCoefficients_, constraintBounds_, linearCost_.getDimension());
 }
 
 
-void QuadraticProblem::setEqualityConstraint(const Function & )
+void QuadraticProgrammingProblem::setEqualityConstraint(const Function & equalityConstraint)
 {
-  throw InvalidArgumentException(HERE) << "QuadraticProblem only supports linear constraints, use setLinearConstraint with equal lower and upper bounds to define an equality constraint";
+  SetLinearEqualityConstraint(constraintCoefficients_, constraintBounds_, equalityConstraint, linearCost_.getDimension());
 }
 
 
-Bool QuadraticProblem::hasInequalityConstraint() const
+Bool QuadraticProgrammingProblem::hasInequalityConstraint() const
 {
-  const UnsignedInteger rowDimension = constraintBounds_.getDimension();
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-    if (!IsEqualityConstraintRow(constraintBounds_, i)
-        && (constraintBounds_.getFiniteLowerBound()[i] || constraintBounds_.getFiniteUpperBound()[i]))
-      return true;
-  return false;
+  return HasLinearInequalityConstraint(constraintBounds_);
 }
 
 
-Function QuadraticProblem::getInequalityConstraint() const
+Function QuadraticProgrammingProblem::getInequalityConstraint() const
 {
-  const UnsignedInteger rowDimension = constraintBounds_.getDimension();
-  const Interval::BoolCollection finiteLowerBound(constraintBounds_.getFiniteLowerBound());
-  const Interval::BoolCollection finiteUpperBound(constraintBounds_.getFiniteUpperBound());
-  UnsignedInteger outputDimension = 0;
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-    if (!IsEqualityConstraintRow(constraintBounds_, i))
-    {
-      if (finiteLowerBound[i])
-        ++outputDimension;
-      if (finiteUpperBound[i])
-        ++outputDimension;
-    }
-  const UnsignedInteger dimension = linearCost_.getDimension();
-  if (outputDimension == 0)
-    return LinearFunction(Point(dimension), Point(0), Matrix(0, dimension));
-  Matrix coefficients(outputDimension, dimension);
-  Point constant(outputDimension);
-  UnsignedInteger row = 0;
-  for (UnsignedInteger i = 0; i < rowDimension; ++i)
-  {
-    if (IsEqualityConstraintRow(constraintBounds_, i))
-      continue;
-    // L <= a.x is written a.x - L >= 0
-    if (finiteLowerBound[i])
-    {
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        coefficients(row, j) = constraintCoefficients_(i, j);
-      constant[row] = -constraintBounds_.getLowerBound()[i];
-      ++row;
-    }
-    // a.x <= U is written U - a.x >= 0
-    if (finiteUpperBound[i])
-    {
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        coefficients(row, j) = -constraintCoefficients_(i, j);
-      constant[row] = constraintBounds_.getUpperBound()[i];
-      ++row;
-    }
-  }
-  return LinearFunction(Point(dimension), constant, coefficients);
+  return GetLinearInequalityConstraint(constraintCoefficients_, constraintBounds_, linearCost_.getDimension());
 }
 
 
-void QuadraticProblem::setInequalityConstraint(const Function & )
+void QuadraticProgrammingProblem::setInequalityConstraint(const Function & inequalityConstraint)
 {
-  throw InvalidArgumentException(HERE) << "QuadraticProblem only supports linear constraints, use setLinearConstraint to define inequality constraints";
+  SetLinearInequalityConstraint(constraintCoefficients_, constraintBounds_, inequalityConstraint, linearCost_.getDimension());
 }
 
 
 /* Build a least-squares problem */
-QuadraticProblem QuadraticProblem::FromLeastSquares(const Matrix & matrix,
+QuadraticProgrammingProblem QuadraticProgrammingProblem::FromLeastSquares(const Matrix & matrix,
     const Point & rhs,
     const Interval & bounds)
 {
@@ -307,7 +213,7 @@ QuadraticProblem QuadraticProblem::FromLeastSquares(const Matrix & matrix,
   for (UnsignedInteger i = 0; i < dimension; ++i)
     linearCost[i] = -2.0 * atb[i];
 
-  QuadraticProblem problem(hessian, linearCost, bounds);
+  QuadraticProgrammingProblem problem(hessian, linearCost, bounds);
   problem.setConstant(rhs.normSquare());
   return problem;
 }
@@ -316,14 +222,14 @@ QuadraticProblem QuadraticProblem::FromLeastSquares(const Matrix & matrix,
 /* Objective accessor: the quadratic coefficients are the reference, so a
  * generic objective replacement is rejected instead of leaving a stale
  * Hessian, linear cost or constant for the solvers. */
-void QuadraticProblem::setObjective(const Function &)
+void QuadraticProgrammingProblem::setObjective(const Function &)
 {
-  throw InvalidArgumentException(HERE) << "QuadraticProblem does not support setObjective, use setHessian, setLinearCost and setConstant instead";
+  throw InvalidArgumentException(HERE) << "QuadraticProgrammingProblem does not support setObjective, use setHessian, setLinearCost and setConstant instead";
 }
 
 
 /* Rebuild the objective function from the quadratic data */
-void QuadraticProblem::updateObjective()
+void QuadraticProgrammingProblem::updateObjective()
 {
   const UnsignedInteger dimension = linearCost_.getDimension();
   Matrix linear(1, dimension);
@@ -343,10 +249,10 @@ void QuadraticProblem::updateObjective()
 
 
 /* String converter */
-String QuadraticProblem::__repr__() const
+String QuadraticProgrammingProblem::__repr__() const
 {
   OSS oss;
-  oss << "class=" << QuadraticProblem::GetClassName();
+  oss << "class=" << QuadraticProgrammingProblem::GetClassName();
   oss << " hessian=" << hessian_
       << " linearCost=" << linearCost_
       << " constant=" << constant_
@@ -356,7 +262,7 @@ String QuadraticProblem::__repr__() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void QuadraticProblem::save(Advocate & adv) const
+void QuadraticProgrammingProblem::save(Advocate & adv) const
 {
   OptimizationProblemImplementation::save(adv);
   adv.saveAttribute("hessian_", hessian_);
@@ -367,7 +273,7 @@ void QuadraticProblem::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void QuadraticProblem::load(Advocate & adv)
+void QuadraticProgrammingProblem::load(Advocate & adv)
 {
   OptimizationProblemImplementation::load(adv);
   adv.loadAttribute("hessian_", hessian_);

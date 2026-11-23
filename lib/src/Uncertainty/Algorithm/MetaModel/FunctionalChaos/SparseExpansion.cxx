@@ -53,8 +53,8 @@ SparseExpansion::SparseExpansion()
 
 /* Constructor */
 SparseExpansion::SparseExpansion(const Sample & inputSample,
-			     const Sample & outputSample,
-			     const Distribution & distribution)
+                                 const Sample & outputSample,
+                                 const Distribution & distribution)
   : SparseExpansion(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, distribution)
 {
   // Nothing to do
@@ -62,9 +62,9 @@ SparseExpansion::SparseExpansion(const Sample & inputSample,
 
 /* Constructor */
 SparseExpansion::SparseExpansion(const Sample & inputSample,
-			     const Point & weights,
-			     const Sample & outputSample,
-			     const Distribution & distribution)
+                                 const Point & weights,
+                                 const Sample & outputSample,
+                                 const Distribution & distribution)
   : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution)
 {
   // Extract the basis from the adaptive strategy attribute of the base class
@@ -84,12 +84,12 @@ SparseExpansion::SparseExpansion(const Sample & inputSample,
 
 /* Constructor */
 SparseExpansion::SparseExpansion(const Sample & inputSample,
-			     const Sample & outputSample,
-			     const Distribution & distribution,
-			     const OrthogonalBasis & basis,
-			     const UnsignedInteger basisSize,
-			     const String & methodName,
-			     const FittingAlgorithm & fitting)
+                                 const Sample & outputSample,
+                                 const Distribution & distribution,
+                                 const OrthogonalBasis & basis,
+                                 const UnsignedInteger basisSize,
+                                 const String & methodName,
+                                 const FittingAlgorithm & fitting)
   : SparseExpansion(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, distribution, basis, basisSize, methodName, fitting)
 {
   // Nothing to do
@@ -97,14 +97,14 @@ SparseExpansion::SparseExpansion(const Sample & inputSample,
 
 /* Constructor with active functions */
 SparseExpansion::SparseExpansion(const Sample & inputSample,
-			     const Point & weights,
-			     const Sample & outputSample,
-			     const Distribution & distribution,
-			     const OrthogonalBasis & basis,
-			     const UnsignedInteger basisSize,
-			     const Indices & activeFunctions,
-			     const String & methodName,
-			     const FittingAlgorithm & fitting)
+                                 const Point & weights,
+                                 const Sample & outputSample,
+                                 const Distribution & distribution,
+                                 const OrthogonalBasis & basis,
+                                 const UnsignedInteger basisSize,
+                                 const Indices & activeFunctions,
+                                 const String & methodName,
+                                 const FittingAlgorithm & fitting)
   : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution)
   , basis_(basis)
   , basisSize_(basisSize)
@@ -124,13 +124,13 @@ SparseExpansion::SparseExpansion(const Sample & inputSample,
 
 /* Constructor with active functions */
 SparseExpansion::SparseExpansion(const Sample & inputSample,
-			     const Sample & outputSample,
-			     const Distribution & distribution,
-			     const OrthogonalBasis & basis,
-			     const UnsignedInteger basisSize,
-			     const Indices & activeFunctions,
-			     const String & methodName,
-			     const FittingAlgorithm & fitting)
+                                 const Sample & outputSample,
+                                 const Distribution & distribution,
+                                 const OrthogonalBasis & basis,
+                                 const UnsignedInteger basisSize,
+                                 const Indices & activeFunctions,
+                                 const String & methodName,
+                                 const FittingAlgorithm & fitting)
   : SparseExpansion(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, distribution, basis, basisSize, activeFunctions, methodName, fitting)
 {
   // Nothing to do
@@ -138,13 +138,13 @@ SparseExpansion::SparseExpansion(const Sample & inputSample,
 
 /* Constructor */
 SparseExpansion::SparseExpansion(const Sample & inputSample,
-			     const Point & weights,
-			     const Sample & outputSample,
-			     const Distribution & distribution,
-			     const OrthogonalBasis & basis,
-			     const UnsignedInteger basisSize,
-			     const String & methodName,
-			     const FittingAlgorithm & fitting)
+                                 const Point & weights,
+                                 const Sample & outputSample,
+                                 const Distribution & distribution,
+                                 const OrthogonalBasis & basis,
+                                 const UnsignedInteger basisSize,
+                                 const String & methodName,
+                                 const FittingAlgorithm & fitting)
   : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution)
   , basis_(basis)
   , basisSize_(basisSize)

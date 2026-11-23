@@ -18,8 +18,8 @@ Refer to :ref:`optimization_algorithm`.
     OptimizationProblem
     NearestPointProblem
     LeastSquaresProblem
-    experimental.LinearProblem
-    experimental.QuadraticProblem
+    experimental.LinearProgrammingProblem
+    experimental.QuadraticProgrammingProblem
     experimental.ExceptionPenalizedProblem
     OptimizationAlgorithm
     OptimizationResult
@@ -30,7 +30,7 @@ Refer to :ref:`optimization_algorithm`.
     Cobyla
     Dlib
     experimental.EfficientGlobalOptimization
-    experimental.HiGHS
+    HiGHS
     Ipopt
     MultiStart
     NLopt

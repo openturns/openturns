@@ -2,7 +2,7 @@
 /**
  *  @brief KDTree structure to speed-up queries on large samples
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -525,9 +525,9 @@ void KDTree::computeOrdering(Indices & buffer,
   const UnsignedInteger mid = lo + count / 2;
   std::nth_element(buffer.begin() + lo, buffer.begin() + mid, buffer.begin() + hi,
                    [&](const UnsignedInteger a, const UnsignedInteger b)
-                   {
-                     return points_(a, axis) < points_(b, axis);
-                   });
+  {
+    return points_(a, axis) < points_(b, axis);
+  });
   computeOrdering(buffer, lo, mid);
   computeOrdering(buffer, mid, hi);
 }

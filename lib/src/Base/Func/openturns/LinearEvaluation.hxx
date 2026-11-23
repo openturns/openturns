@@ -5,7 +5,7 @@
  *        dim(x) point, linear a dim(y) by dim(x) matrix
  *        and constant a dim(y) point
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by

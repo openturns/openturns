@@ -2,7 +2,7 @@
 /**
  *  @brief P1 Lagrange piecewise linear function.
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -218,30 +218,6 @@ Point P1LagrangeEvaluation::operator()( const Point & inP ) const
   return result;
 }
 
-class P1LagrangeEvaluationComputeSamplePolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const P1LagrangeEvaluation & lagrange_;
-
-public:
-  P1LagrangeEvaluationComputeSamplePolicy(const Sample & input,
-                                          Sample & output,
-                                          const P1LagrangeEvaluation & lagrange)
-    : input_(input)
-    , output_(output)
-    , lagrange_(lagrange)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      output_[i] = lagrange_.evaluate(input_[i]);
-  } // operator ()
-};  // class P1LagrangeEvaluationComputeSamplePolicy
-
 /* Evaluation method */
 Point P1LagrangeEvaluation::evaluate( const Point & inP ) const
 {
@@ -277,8 +253,11 @@ Sample P1LagrangeEvaluation::operator()( const Sample & inS ) const
   if (inS == mesh_.getVertices()) result = values_;
   else
   {
-    const P1LagrangeEvaluationComputeSamplePolicy policy(inS, result, *this);
-    TBBImplementation::ParallelFor(0, size, policy, 1024);
+    TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        result[i] = evaluate(inS[i]);
+    }, 1024);
   } // The input sample is different from the mesh vertices
   callsNumber_.fetchAndAdd(size);
   return result;

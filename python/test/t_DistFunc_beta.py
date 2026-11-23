@@ -31,9 +31,7 @@ for x in x_values:
     ott.assert_almost_equal(
         ot.DistFunc.pBeta(1.0, 2.5, x), 1.0 - (1.0 - x) ** 2.5, 1e-14, 0.0
     )
-    ott.assert_almost_equal(
-        ot.DistFunc.pBeta(2.5, 1.0, x), x**2.5, 1e-14, 0.0
-    )
+    ott.assert_almost_equal(ot.DistFunc.pBeta(2.5, 1.0, x), x**2.5, 1e-14, 0.0)
 
 # qBeta: inverse of pBeta, symmetry and tail flag
 for p1 in p1_values:
@@ -41,9 +39,7 @@ for p1 in p1_values:
         for q in q_values:
             value = ot.DistFunc.qBeta(p1, p2, q)
             assert 0.0 <= value <= 1.0
-            ott.assert_almost_equal(
-                ot.DistFunc.pBeta(p1, p2, value), q, 1e-10, 0.0
-            )
+            ott.assert_almost_equal(ot.DistFunc.pBeta(p1, p2, value), q, 1e-10, 0.0)
             ott.assert_almost_equal(
                 ot.DistFunc.qBeta(p1, p2, q, True),
                 ot.DistFunc.qBeta(p1, p2, 1.0 - q),

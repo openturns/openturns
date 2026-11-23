@@ -251,7 +251,10 @@ assert exactIndices[0] == im.getNonZeroPolynomialChaosExpansionIndices(0)
 assert exactCoefficients[-1] == im.getNonZeroPolynomialChaosExpansionCoefficients(-1)
 assert exactIndices[-1] == im.getNonZeroPolynomialChaosExpansionIndices(-1)
 ott.assert_almost_equal(
-    im.getNonZeroPolynomialChaosExpansionCoefficients(0), im.expectation, 1.0e-14, 1.0e-14
+    im.getNonZeroPolynomialChaosExpansionCoefficients(0),
+    im.expectation,
+    1.0e-14,
+    1.0e-14,
 )
 assert im.getNonZeroPolynomialChaosExpansionIndices(0) == [0, 0, 0]
 
@@ -287,7 +290,9 @@ for multiIndex, exactCoeff in zip(exactIndices, exactCoefficients):
         globalIndex = enumerateFunction.inverse(ot.Indices(multiIndex))
         pos = [i for i, idx in enumerate(computedIndices) if idx == globalIndex]
         assert len(pos) == 1
-        ott.assert_almost_equal(computedCoefficients[pos[0], 0], exactCoeff, 1.0e-7, 1.0e-7)
+        ott.assert_almost_equal(
+            computedCoefficients[pos[0], 0], exactCoeff, 1.0e-7, 1.0e-7
+        )
 
 exactMultiIndicesSet = {tuple(idx) for idx in exactIndices}
 for i, idx in enumerate(computedIndices):

@@ -50,9 +50,7 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(ValueError):
     ot.FiniteDifferenceHessian(ot.ConstantStep(ot.Point(3, eps)), evaluation)
 with ott.assert_raises(TypeError):
-    ot.FiniteDifferenceHessian(
-        ot.ConstantStep(ot.Point([eps, 0.0])), evaluation
-    )
+    ot.FiniteDifferenceHessian(ot.ConstantStep(ot.Point([eps, 0.0])), evaluation)
 with ott.assert_raises(RuntimeError):
     hessian.hessian(inPoint)
 assert hessian == ot.FiniteDifferenceHessian(epsilon, evaluation)

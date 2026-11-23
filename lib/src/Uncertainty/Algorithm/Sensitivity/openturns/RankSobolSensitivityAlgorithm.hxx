@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of Rank Sobol Sensitivity Algorithm
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,6 @@ class OT_API RankSobolSensitivityAlgorithm
   : public SobolIndicesAlgorithmImplementation
 {
   CLASSNAME
-  friend struct RankSobolBootstrapPolicy;
 public:
 
   /** Default constructor */

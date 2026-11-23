@@ -18,18 +18,6 @@ ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	test_makeflags = -j$(NUMJOBS)
 endif
 
-# Disabling tbb on s390x until Debian bug #1009361 is fixed.
-ifeq ($(shell dpkg --print-architecture),s390x)
-    with_tbb := -DUSE_TBB:BOOL=OFF
-else
-    with_tbb := -DUSE_TBB:BOOL=ON
-endif
-
-# Discarding the following flaky tests on armel.
-ifeq ($(shell dpkg --print-architecture),armel)
-    test_discardflags := -E \\\"FunctionalChaos_.*|KrigingAlgorithm_std|MetaModelValidation_std\\\"
-endif
-
 BUILD_DATE = $(shell date --utc --date="@$(SOURCE_DATE_EPOCH)" "+%a, %d %b %Y %H:%M:%S %z")
 
 %:
@@ -37,7 +25,6 @@ BUILD_DATE = $(shell date --utc --date="@$(SOURCE_DATE_EPOCH)" "+%a, %d %b %Y %H
 
 override_dh_auto_configure:
 	dh_auto_configure -Bbuilddir -- \
-            $(with_tbb) \
             -Dot_configure_date:STRING='$(BUILD_DATE)' \
             -Dot_system_version:STRING='Debian $(shell uname -mo)' \
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \

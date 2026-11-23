@@ -46,9 +46,9 @@ normal = ot.Normal()
 point = [0.5, 0.5]
 # conditional moments from an independent prediction
 prediction = gprResult.getMetaModel()(point)
-conditionalVariance = ot.GaussianProcessConditionalCovariance(gprResult).getConditionalMarginalVariance(
-    point
-)
+conditionalVariance = ot.GaussianProcessConditionalCovariance(
+    gprResult
+).getConditionalMarginalVariance(point)
 mx = prediction[0]
 sk = conditionalVariance**0.5
 assert sk > 0.0
@@ -58,12 +58,22 @@ zMinus = (threshold - epsilon - mx) / sk
 zPlus = (threshold + epsilon - mx) / sk
 expected = (
     (mx - threshold)
-    * (2.0 * normal.computeCDF(z) - normal.computeCDF(zPlus) - normal.computeCDF(zMinus))
+    * (
+        2.0 * normal.computeCDF(z)
+        - normal.computeCDF(zPlus)
+        - normal.computeCDF(zMinus)
+    )
     - sk
-    * (2.0 * normal.computePDF(z) - normal.computePDF(zPlus) - normal.computePDF(zMinus))
+    * (
+        2.0 * normal.computePDF(z)
+        - normal.computePDF(zPlus)
+        - normal.computePDF(zMinus)
+    )
     + epsilon * (normal.computeCDF(zPlus) - normal.computeCDF(zMinus))
 )
-ott.assert_almost_equal(criterion([point], inputSample)[0][0], expected, 1.0e-12, 1.0e-12)
+ott.assert_almost_equal(
+    criterion([point], inputSample)[0][0], expected, 1.0e-12, 1.0e-12
+)
 
 # EFF is an expectation of a nonnegative improvement
 pool = distribution.getSample(50)
@@ -103,7 +113,5 @@ if HAVE_LIBXML2:
     study2.fillObject("criterion", loaded)
     assert loaded.getReliabilityThreshold() == threshold
     assert loaded.getLearningThreshold() == 0.01
-    ott.assert_almost_equal(
-        loaded(pool, inputSample), criterion(pool, inputSample)
-    )
+    ott.assert_almost_equal(loaded(pool, inputSample), criterion(pool, inputSample))
     os.remove(fileName)

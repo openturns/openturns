@@ -2,7 +2,7 @@
 /**
  *  @brief The RatioDistribution distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -721,7 +721,7 @@ Scalar RatioDistribution::computeInverseMoment(const UnsignedInteger n) const
   const Scalar relativeError = ResourceMap::GetAsScalar("RatioDistribution-InverseMomentRelativeError");
   if (!std::isfinite(value[0]) || !(error <= relativeError * (1.0 + std::abs(value[0]))))
     throw NotDefinedException(HERE) << "Error: unable to compute the inverse moment of order " << n
-                                     << " of the denominator, the integral is likely divergent";
+                                    << " of the denominator, the integral is likely divergent";
   return value[0];
 }
 

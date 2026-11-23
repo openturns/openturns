@@ -2,7 +2,7 @@
 /**
  *  @brief The CompoundDistribution distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -560,18 +560,18 @@ Point CompoundDistribution::computeExpectation(const Function & f,
     theta[diracMarginalsIndices_[i]] = value;
   }
   // Second, the discrete components
-    // For each combination of the discrete components
-    Sample currentThetas(0, theta);
-    for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
+  // For each combination of the discrete components
+  Sample currentThetas(0, theta);
+  for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
+  {
+    Point currentTheta(theta);
+    // Get the discrete values
+    Bool rejectNode = false;
+    for (UnsignedInteger j = 0; j < discreteDimension; ++j)
     {
-      Point currentTheta(theta);
-      // Get the discrete values
-      Bool rejectNode = false;
-      for (UnsignedInteger j = 0; j < discreteDimension; ++j)
-      {
-        const Scalar value = discreteNodes_(i, j);
-        currentTheta[discreteMarginalsIndices_[j]] = value;
-        rejectNode = (value > thetaStar[discreteMarginalsIndices_[j]] + epsilon);
+      const Scalar value = discreteNodes_(i, j);
+      currentTheta[discreteMarginalsIndices_[j]] = value;
+      rejectNode = (value > thetaStar[discreteMarginalsIndices_[j]] + epsilon);
       if (rejectNode) break;
     }
     // Skip the current integration point if the current sub-manifold is outside of the integration region

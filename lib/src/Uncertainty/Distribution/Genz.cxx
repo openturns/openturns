@@ -3,7 +3,7 @@
  *  @brief Genz algorithm to compute rectangular probabilities of multivariate
  *         Normal and Student distributions.
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,16 +36,17 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-namespace {
+namespace
+{
 
 Scalar mvn_genz(
-    const Point & a,
-    const Point & b,
-    const TriangularMatrix & L,
-    const Sample & sobol,
-    const UnsignedInteger k,
-    const UnsignedInteger offset,
-    const UnsignedInteger d)
+  const Point & a,
+  const Point & b,
+  const TriangularMatrix & L,
+  const Sample & sobol,
+  const UnsignedInteger k,
+  const UnsignedInteger offset,
+  const UnsignedInteger d)
 {
   Scalar p = 1.0;
   Point y(d, 0.0);
@@ -90,11 +91,11 @@ LowDiscrepancySequence GetGenzSequence(const UnsignedInteger dimension)
 } // anonymous namespace
 
 Scalar mvn_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const Point & mu,
-    const TriangularMatrix & L,
-    const UnsignedInteger n)
+  const Point & a,
+  const Point & b,
+  const Point & mu,
+  const TriangularMatrix & L,
+  const UnsignedInteger n)
 {
   const UnsignedInteger d = L.getDimension();
 
@@ -168,7 +169,10 @@ Scalar mvn_rectangular_probability(
       }
     }
 
-    void join(const Reduce& other) { sum_ += other.sum_; }
+    void join(const Reduce& other)
+    {
+      sum_ += other.sum_;
+    }
   };
 
   Reduce body(sobolPoints, a0, b0, L, d);
@@ -177,22 +181,22 @@ Scalar mvn_rectangular_probability(
 }
 
 Scalar mvn_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const TriangularMatrix & L,
-    const UnsignedInteger n)
+  const Point & a,
+  const Point & b,
+  const TriangularMatrix & L,
+  const UnsignedInteger n)
 {
   const UnsignedInteger d = L.getDimension();
   return mvn_rectangular_probability(a, b, Point(d, 0.0), L, n);
 }
 
 Scalar mvt_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const Point & mu,
-    const TriangularMatrix & L,
-    const Scalar nu,
-    const UnsignedInteger n)
+  const Point & a,
+  const Point & b,
+  const Point & mu,
+  const TriangularMatrix & L,
+  const Scalar nu,
+  const UnsignedInteger n)
 {
   const UnsignedInteger d = L.getDimension();
 
@@ -267,7 +271,10 @@ Scalar mvt_rectangular_probability(
       }
     }
 
-    void join(const Reduce& other) { sum_ += other.sum_; }
+    void join(const Reduce& other)
+    {
+      sum_ += other.sum_;
+    }
   };
 
   Reduce body(sobolPoints, a0, b0, L, d, nu);
@@ -276,11 +283,11 @@ Scalar mvt_rectangular_probability(
 }
 
 Scalar mvt_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const TriangularMatrix & L,
-    const Scalar nu,
-    const UnsignedInteger n)
+  const Point & a,
+  const Point & b,
+  const TriangularMatrix & L,
+  const Scalar nu,
+  const UnsignedInteger n)
 {
   const UnsignedInteger d = L.getDimension();
   return mvt_rectangular_probability(a, b, Point(d, 0.0), L, nu, n);

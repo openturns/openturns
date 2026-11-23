@@ -40,7 +40,9 @@ def fit_gpr_model(x_train, y_train, covariance_model, basis, method):
     return gpr_result
 
 
-def compute_cv_naive_residuals(x_train, y_train, fitted_covariance_model, basis, method):
+def compute_cv_naive_residuals(
+    x_train, y_train, fitted_covariance_model, basis, method
+):
     """
     Compute cross-validation residuals using the naive approach.
     At each iteration, the GPR model is trained on the training sample without the i-th point, and the residual is evaluated at the i-th point.
@@ -101,7 +103,9 @@ if __name__ == "__main__":
 
     gpr_result = fit_gpr_model(x_train, y_train, covarianceModel, basis, method)
     # Compute the naive cross-validation residuals
-    cv_naive_residuals = compute_cv_naive_residuals(x_train, y_train, gpr_result.getCovarianceModel(), basis, method)
+    cv_naive_residuals = compute_cv_naive_residuals(
+        x_train, y_train, gpr_result.getCovarianceModel(), basis, method
+    )
 
     # OT cross-validation
     cv = ote.GaussianProcessRegressionCrossValidation(

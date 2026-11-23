@@ -2,7 +2,7 @@
 /**
  *  @brief ExceptionPenalizedProblem replaces the objective by a failure-penalty function
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -41,7 +41,7 @@ ExceptionPenalizedProblem::ExceptionPenalizedProblem()
 
 /* Constructor with parameters */
 ExceptionPenalizedProblem::ExceptionPenalizedProblem(const OptimizationProblem & problem,
-                                   const Scalar penalizedValue)
+    const Scalar penalizedValue)
   : OptimizationProblemImplementation()
   , problem_(problem)
   , penalizedValue_(penalizedValue)

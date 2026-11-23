@@ -3,7 +3,7 @@
  *  @brief Genz algorithm to compute rectangular probabilities of multivariate
  *         Normal and Student distributions.
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,32 +29,32 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 OT_API Scalar mvn_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const Point & mu,
-    const TriangularMatrix & L,
-    const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+  const Point & a,
+  const Point & b,
+  const Point & mu,
+  const TriangularMatrix & L,
+  const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 
 OT_API Scalar mvn_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const TriangularMatrix & L,
-    const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+  const Point & a,
+  const Point & b,
+  const TriangularMatrix & L,
+  const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 
 OT_API Scalar mvt_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const Point & mu,
-    const TriangularMatrix & L,
-    const Scalar nu,
-    const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+  const Point & a,
+  const Point & b,
+  const Point & mu,
+  const TriangularMatrix & L,
+  const Scalar nu,
+  const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 
 OT_API Scalar mvt_rectangular_probability(
-    const Point & a,
-    const Point & b,
-    const TriangularMatrix & L,
-    const Scalar nu,
-    const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
+  const Point & a,
+  const Point & b,
+  const TriangularMatrix & L,
+  const Scalar nu,
+  const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize"));
 
 END_NAMESPACE_OPENTURNS
 

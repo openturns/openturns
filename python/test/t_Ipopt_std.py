@@ -48,8 +48,9 @@ assert isinstance(repr(defaultAlgo), str)
 assert isinstance(str(defaultAlgo), str)
 with ott.assert_raises(Exception):
     ot.Ipopt(ot.OptimizationProblem(ot.SymbolicFunction(["x"], ["x", "2*x"])))
-with ott.assert_raises(Exception):
-    ot.Ipopt(ot.LeastSquaresProblem(ot.SymbolicFunction(["x"], ["x^2"])))
+# least-squares problems are accepted through the implicit conversion
+lsAlgo = ot.Ipopt(ot.LeastSquaresProblem(ot.SymbolicFunction(["x"], ["x^2"])))
+assert lsAlgo.getProblem().getDimension() == 1
 nonContinuous = ot.OptimizationProblem(f)
 nonContinuous.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)
 with ott.assert_raises(Exception):

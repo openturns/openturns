@@ -2,7 +2,7 @@
 /**
  *  @brief Quantile confidence interval computation
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
  *
  */
 #include <cmath>
-#include <limits>
 #include "openturns/QuantileConfidence.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Binomial.hxx"
@@ -56,10 +55,10 @@ QuantileConfidence::QuantileConfidence(const Scalar alpha, const Scalar beta)
 {
   if (!(alpha >= 0.0 && alpha <= 1.0))
     throw InvalidArgumentException(HERE)
-      << "Quantile level must be in [0, 1], but alpha = " << alpha;
+        << "Quantile level must be in [0, 1], but alpha = " << alpha;
   if (!(beta >= 0.0 && beta <= 1.0))
     throw InvalidArgumentException(HERE)
-      << "Confidence level must be in [0, 1], but beta = " << beta;
+        << "Confidence level must be in [0, 1], but beta = " << beta;
 }
 
 /* Virtual constructor */
@@ -171,11 +170,11 @@ Interval QuantileConfidence::computeUnilateralConfidenceInterval(const Sample & 
 {
   if (sample.getSize() == 0)
     throw InvalidArgumentException(HERE)
-      << "Expected a non-empty sample, but size is zero";
+        << "Expected a non-empty sample, but size is zero";
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE)
-      << "Expected a sample of dimension 1, but dimension = "
-      << sample.getDimension();
+        << "Expected a sample of dimension 1, but dimension = "
+        << sample.getDimension();
   Point lowerBound(1, -SpecFunc::MaxScalar);
   Point upperBound(1, SpecFunc::MaxScalar);
   Interval::BoolCollection finiteLowerBound(1, false);
@@ -201,11 +200,11 @@ Interval QuantileConfidence::computeUnilateralConfidenceIntervalWithCoverage(con
   LOGWARN("QuantileConfidence.computeUnilateralConfidenceIntervalWithCoverage(Sample) is deprecated, use QuantileConfidence.computeUnilateralCoverage(UnsignedInteger, UnsignedInteger, Bool)");
   if (sample.getSize() == 0)
     throw InvalidArgumentException(HERE)
-      << "Expected a non-empty sample, but size is zero";
+        << "Expected a non-empty sample, but size is zero";
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE)
-      << "Expected a sample of dimension 1, but dimension = "
-      << sample.getDimension();
+        << "Expected a sample of dimension 1, but dimension = "
+        << sample.getDimension();
   // Compute the rank only once: computeUnilateralConfidenceInterval() would recompute it
   const UnsignedInteger k = computeUnilateralRank(sample.getSize(), lowerBounded);
   coverageOut = computeUnilateralCoverage(sample.getSize(), k, lowerBounded);
@@ -232,11 +231,11 @@ Interval QuantileConfidence::computeBilateralConfidenceInterval(const Sample & s
 {
   if (sample.getSize() == 0)
     throw InvalidArgumentException(HERE)
-      << "Expected a non-empty sample, but size is zero";
+        << "Expected a non-empty sample, but size is zero";
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE)
-      << "Expected a sample of dimension 1 but dimension = "
-      << sample.getDimension();
+        << "Expected a sample of dimension 1 but dimension = "
+        << sample.getDimension();
   const Indices rank(computeBilateralRank(sample.getSize()));
   const Sample sortedSample(sample.sort());
   return Interval(Point({sortedSample(rank[0], 0)}), Point({sortedSample(rank[1], 0)}));
@@ -248,11 +247,11 @@ Interval QuantileConfidence::computeBilateralConfidenceIntervalWithCoverage(cons
   LOGWARN("QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage(Sample) is deprecated, use QuantileConfidence.computeBilateralCoverage(UnsignedInteger, UnsignedInteger, UnsignedInteger)");
   if (sample.getSize() == 0)
     throw InvalidArgumentException(HERE)
-      << "Expected a non-empty sample, but size is zero";
+        << "Expected a non-empty sample, but size is zero";
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE)
-      << "Expected a sample of dimension 1 but dimension = "
-      << sample.getDimension();
+        << "Expected a sample of dimension 1 but dimension = "
+        << sample.getDimension();
   // Compute the ranks only once: computeBilateralConfidenceInterval() would recompute them
   const Indices rank(computeBilateralRank(sample.getSize()));
   coverageOut = computeBilateralCoverage(sample.getSize(), rank[0], rank[1]);
@@ -278,12 +277,12 @@ Scalar QuantileConfidence::computeBilateralCoverage(const UnsignedInteger size, 
 {
   if (rank1 > rank2)
     throw InvalidArgumentException(HERE)
-      << "The lower rank (" << rank1
-      << ") must be less than or equal to the upper rank (" << rank2 << ").";
+        << "The lower rank (" << rank1
+        << ") must be less than or equal to the upper rank (" << rank2 << ").";
   if (rank2 >= size)
     throw InvalidArgumentException(HERE)
-      << "The upper rank (" << rank2
-      << ") must be strictly less than the sample size (" << size << ").";
+        << "The upper rank (" << rank2
+        << ") must be strictly less than the sample size (" << size << ").";
 
   // Y ~ Binomial(size, alpha)
   const Binomial binomial(size, alpha_);
@@ -352,13 +351,13 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
   // The Wilks formula requires alpha in (0, 1) and beta in (0, 1).
   if (!(alpha_ > 0.0 && alpha_ < 1.0))
     throw InvalidArgumentException(HERE)
-      << "Cannot compute minimum sample size with alpha = " << alpha_ << ", expected alpha in (0, 1)";
+        << "Cannot compute minimum sample size with alpha = " << alpha_ << ", expected alpha in (0, 1)";
   if (!(beta_ > 0.0 && beta_ < 1.0))
   {
     if (beta_ == 0.0)
       return rank + 1;
     throw InvalidArgumentException(HERE)
-      << "Cannot compute minimum sample size with beta = " << beta_ << ", expected beta in (0, 1)";
+        << "Cannot compute minimum sample size with beta = " << beta_ << ", expected beta in (0, 1)";
   }
   // Easy case: rank=0, the quantile bound is given by the largest upper statistics. The equation to solve is N=\min{n|1-\alpha^n>=\beta}
   Scalar nApprox = 0.0;
@@ -387,13 +386,13 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
     // The Normal guess may fall below rank + 1 for large p and small rank: clamp it,
     // the doubling loop below then brackets the root. Cap the initial guess to
     // avoid overflow of the narrowing cast for extreme ranks.
-    const UnsignedInteger maxInit = std::numeric_limits<UnsignedInteger>::max() / 2;
+    const UnsignedInteger maxInit = SpecFunc::MaxUnsignedInteger / 2;
     const Scalar clampedGuess = std::clamp(nMaxAsDouble, static_cast<Scalar>(rank + 1), static_cast<Scalar>(maxInit));
     UnsignedInteger nMax = static_cast<UnsignedInteger>(std::ceil(clampedGuess));
     if (nMax < rank + 1) nMax = rank + 1;
     // This loop must end as wilksConstraint->1 when n->inf
     // guard against overflow of the doubling sequence
-    const UnsignedInteger maxSize = std::numeric_limits<UnsignedInteger>::max() / 2;
+    const UnsignedInteger maxSize = SpecFunc::MaxUnsignedInteger / 2;
     while (wilksConstraint(Point({0.0 + nMax}))[0] < beta_)
     {
       if (nMax > maxSize)
@@ -414,7 +413,7 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
   // Adjust with exact integer Binomial evaluations to guarantee minimality.
   if (!(nApprox >= 0.0) || !std::isfinite(nApprox))
     throw InternalException(HERE) << "Cannot compute minimum sample size: invalid root approximation";
-  const Scalar maxSizeAsDouble = static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max() - 1);
+  const Scalar maxSizeAsDouble = static_cast<Scalar>(SpecFunc::MaxUnsignedInteger - 1);
   if (nApprox > maxSizeAsDouble)
     throw InternalException(HERE) << "Cannot compute minimum sample size: required size exceeds representable range";
   UnsignedInteger candidate = std::max(rank + 1, static_cast<UnsignedInteger>(std::ceil(nApprox - 1.0e-12)));
@@ -429,7 +428,7 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
   };
   while (candidate > rank + 1 && unilateralCoverageAt(candidate - 1) >= beta_)
     --candidate;
-  const UnsignedInteger maxSize = std::numeric_limits<UnsignedInteger>::max() - 1;
+  const UnsignedInteger maxSize = SpecFunc::MaxUnsignedInteger - 1;
   while (unilateralCoverageAt(candidate) < beta_)
   {
     if (candidate >= maxSize)
@@ -444,12 +443,12 @@ UnsignedInteger QuantileConfidence::computeBilateralMinimumSampleSize() const
 {
   if (!(alpha_ > 0.0 && alpha_ < 1.0))
     throw InvalidArgumentException(HERE)
-      << "Cannot compute bilateral minimum sample size with alpha = " << alpha_ << ", expected alpha in (0, 1)";
+        << "Cannot compute bilateral minimum sample size with alpha = " << alpha_ << ", expected alpha in (0, 1)";
   if (beta_ == 0.0)
     return 1;
   if (!(beta_ > 0.0 && beta_ < 1.0))
     throw InvalidArgumentException(HERE)
-      << "Cannot compute bilateral minimum sample size with beta = " << beta_ << ", expected beta in (0, 1)";
+        << "Cannot compute bilateral minimum sample size with beta = " << beta_ << ", expected beta in (0, 1)";
   const Scalar gamma = std::max(alpha_, 1.0 - alpha_);
   const Scalar nMin = std::ceil(std::log1p(-beta_) / std::log(gamma));
   const Scalar nMax = std::ceil((std::log1p(-beta_) - std::log(2)) / std::log(gamma));
@@ -459,7 +458,7 @@ UnsignedInteger QuantileConfidence::computeBilateralMinimumSampleSize() const
   const Scalar root = solver.solve(residualParametric, 0.0, nMin - 1, nMax);
   if (!std::isfinite(root))
     throw InternalException(HERE) << "Cannot compute bilateral minimum sample size: invalid root";
-  if (root > static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max() - 1))
+  if (root > static_cast<Scalar>(SpecFunc::MaxUnsignedInteger - 1))
     throw InternalException(HERE) << "Cannot compute bilateral minimum sample size: required size exceeds representable range";
   // ceil(root) may overshoot by one unit due to solver tolerance: adjust with exact integer coverage
   UnsignedInteger candidate = static_cast<UnsignedInteger>(std::ceil(root - 1.0e-12));
@@ -475,7 +474,7 @@ UnsignedInteger QuantileConfidence::computeBilateralMinimumSampleSize() const
     --candidate;
   while (bilateralCoverageAt(candidate) < beta_)
   {
-    if (candidate >= std::numeric_limits<UnsignedInteger>::max() - 1)
+    if (candidate >= SpecFunc::MaxUnsignedInteger - 1)
       throw InternalException(HERE) << "Cannot compute bilateral minimum sample size: upper bound overflow";
     ++candidate;
   }
@@ -502,11 +501,11 @@ Interval QuantileConfidence::computeAsymptoticBilateralConfidenceInterval(const 
 {
   if (sample.getSize() == 0)
     throw InvalidArgumentException(HERE)
-      << "Expected a non-empty sample, but size is zero";
+        << "Expected a non-empty sample, but size is zero";
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE)
-      << "Expected a sample of dimension 1, but dimension = "
-      << sample.getDimension();
+        << "Expected a sample of dimension 1, but dimension = "
+        << sample.getDimension();
   const Indices rank(computeAsymptoticBilateralRank(sample.getSize()));
   const Sample sortedSample(sample.sort());
   return Interval(Point({sortedSample(rank[0], 0)}), Point({sortedSample(rank[1], 0)}));
@@ -517,7 +516,7 @@ void QuantileConfidence::setAlpha(const Scalar alpha)
 {
   if (!(alpha >= 0.0 && alpha <= 1.0))
     throw InvalidArgumentException(HERE)
-      << "Quantile level must be in [0, 1], but alpha = " << alpha;
+        << "Quantile level must be in [0, 1], but alpha = " << alpha;
   alpha_ = alpha;
 }
 
@@ -531,7 +530,7 @@ void QuantileConfidence::setBeta(const Scalar beta)
 {
   if (!(beta >= 0.0 && beta <= 1.0))
     throw InvalidArgumentException(HERE)
-      << "Confidence level must be in [0, 1], but beta = " << beta;
+        << "Confidence level must be in [0, 1], but beta = " << beta;
   beta_ = beta;
 }
 

@@ -293,13 +293,7 @@ residual = validationWeighted.getResidualSample()
 predictions = validationWeighted.getMetamodelPredictions()
 weights = validationWeighted.getWeights()
 weightSum = sum(weights)
-expectedMSE = (
-    sum(
-        w * (residual[i, 0]) ** 2
-        for i, w in enumerate(weights)
-    )
-    / weightSum
-)
+expectedMSE = sum(w * (residual[i, 0]) ** 2 for i, w in enumerate(weights)) / weightSum
 assert_almost_equal(
     validationWeighted.computeMeanSquaredError()[0], expectedMSE, 1.0e-12, 1.0e-12
 )
@@ -368,9 +362,7 @@ assert_almost_equal(
 # Brute-force weighted KFold: refit without each fold
 kWeighted = 5
 weightedSplitterKF = ot.KFoldSplitter(weightedSize, kWeighted)
-weightedValidationKF = ot.FunctionalChaosValidation(
-    weightedResult, weightedSplitterKF
-)
+weightedValidationKF = ot.FunctionalChaosValidation(weightedResult, weightedSplitterKF)
 kfoldError = 0.0
 for indicesTrain, indicesTest in weightedSplitterKF:
     algoRefit = ot.FunctionalChaosAlgorithm(
@@ -382,9 +374,7 @@ for indicesTrain, indicesTest in weightedSplitterKF:
         ot.LeastSquaresStrategy(weightedSelection),
     )
     algoRefit.run()
-    predictions = algoRefit.getResult().getMetaModel()(
-        weightedInput[indicesTest]
-    )
+    predictions = algoRefit.getResult().getMetaModel()(weightedInput[indicesTest])
     for t in range(indicesTest.getSize()):
         kfoldError += (
             designWeights[indicesTest[t]]

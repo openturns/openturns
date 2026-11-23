@@ -2,7 +2,7 @@
 /**
  *  @brief Mesh is defined as a collection of n-D vertices and simplices
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -1450,7 +1450,7 @@ Mesh Mesh::intersect(const Mesh & other) const
           const UnsignedInteger i2 = static_cast<UnsignedInteger>(content[b] & simplexMask);
           // exact overlap re-test: sharing a cell is not sufficient
           if ((upper1(i1, 0) < lower2(i2, 0)) || (upper2(i2, 0) < lower1(i1, 0))
-           || (upper1(i1, 1) < lower2(i2, 1)) || (upper2(i2, 1) < lower1(i1, 1)))
+              || (upper1(i1, 1) < lower2(i2, 1)) || (upper2(i2, 1) < lower1(i1, 1)))
             continue;
           keys.add((static_cast<Unsigned64BitsInteger>(i1) << 32) | i2);
         }
@@ -1491,7 +1491,7 @@ Mesh Mesh::intersect(const Mesh & other) const
         const UnsignedInteger i2 = pairs[cursor][1];
         // bounding-box reject: touching boxes (shared edge/vertex) are kept
         if ((upper1(i1, 0) < lower2(i2, 0)) || (upper2(i2, 0) < lower1(i1, 0))
-         || (upper1(i1, 1) < lower2(i2, 1)) || (upper2(i2, 1) < lower1(i1, 1)))
+            || (upper1(i1, 1) < lower2(i2, 1)) || (upper2(i2, 1) < lower1(i1, 1)))
           continue;
         {
           // convex triangle clip

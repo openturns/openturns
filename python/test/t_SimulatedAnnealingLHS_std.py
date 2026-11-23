@@ -159,11 +159,18 @@ normal_dist = ot.JointDistribution([ot.Normal()] * dim)
 lhs2 = ot.LHSExperiment(normal_dist, size)
 init_design = lhs2.generate()
 init_min_dist = ot.SpaceFillingMinDist().evaluate(init_design)
-sa = ot.SimulatedAnnealingLHS(init_design, normal_dist, ot.SpaceFillingMinDist(), ot.GeometricProfile(10.0, 0.95, 500))
+sa = ot.SimulatedAnnealingLHS(
+    init_design,
+    normal_dist,
+    ot.SpaceFillingMinDist(),
+    ot.GeometricProfile(10.0, 0.95, 500),
+)
 opt_design = sa.generate()
 result2 = sa.getResult()
 # Optimal design should improve (or at least not degrade) the MinDist criterion
-assert result2.getMinDist() >= init_min_dist, "SA with initial design should improve MinDist"
+assert (
+    result2.getMinDist() >= init_min_dist
+), "SA with initial design should improve MinDist"
 # Output design must have expected size and dimension
 assert opt_design.getSize() == size
 assert opt_design.getDimension() == dim

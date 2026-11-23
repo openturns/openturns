@@ -3,7 +3,7 @@
  *  @brief This class implements the multivariate distribution based on a
  *         bipartite graph and a collection of distributions
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -396,7 +396,7 @@ Scalar CumulativeDistributionNetwork::computeFactorLogCDF(const Distribution & d
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       const Scalar cdf = cached ? univariateMarginals[j].computeCDF(localPoint[j])
-                        : distribution.getMarginal(j).computeCDF(localPoint[j]);
+                         : distribution.getMarginal(j).computeCDF(localPoint[j]);
       if (!(cdf > 0.0)) return -SpecFunc::Infinity;
       logCDF += std::log(cdf);
     }
@@ -473,14 +473,14 @@ Scalar CumulativeDistributionNetwork::computeFactorPartialLog(const UnsignedInte
       if (derivativeFlags[j])
       {
         const Scalar logPDF = cached ? marginals[j].computeLogPDF(localPoint[j])
-                             : distribution.getMarginal(j).computeLogPDF(localPoint[j]);
+                              : distribution.getMarginal(j).computeLogPDF(localPoint[j]);
         if (logPDF == -SpecFunc::Infinity) return -SpecFunc::Infinity;
         logValue += logPDF;
       }
       else
       {
         const Scalar cdf = cached ? marginals[j].computeCDF(localPoint[j])
-                          : distribution.getMarginal(j).computeCDF(localPoint[j]);
+                           : distribution.getMarginal(j).computeCDF(localPoint[j]);
         if (!(cdf > 0.0)) return -SpecFunc::Infinity;
         logValue += std::log(cdf);
       }
@@ -766,7 +766,7 @@ Scalar CumulativeDistributionNetwork::computeDiscretePartialLog(const Point & po
   while (remaining > 0)
   {
     UnsignedInteger variable = dimension;
-    UnsignedInteger bestDegree = std::numeric_limits<UnsignedInteger>::max();
+    UnsignedInteger bestDegree = SpecFunc::MaxUnsignedInteger;
     for (UnsignedInteger k = 0; k < derivativeSize; ++k)
     {
       const UnsignedInteger candidate = derivativeList[k];

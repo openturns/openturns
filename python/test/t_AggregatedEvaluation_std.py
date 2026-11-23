@@ -37,11 +37,30 @@ _ = evaluation.getParameter()
 _ = evaluation.getParameterDescription()
 _ = evaluation.parameterGradient(point)
 _ = evaluation.getFunctionsCollection()
-ott.assert_almost_equal(evaluation(point), [function1(point)[0], function2(point)[0], function2(point)[1]], 1e-12, 1e-12)
-ott.assert_almost_equal(evaluation(ot.Sample([point, point]))[0], evaluation(point), 1e-12, 1e-12)
-ott.assert_almost_equal(evaluation.getMarginal(0)(point), [evaluation(point)[0]], 1e-12, 1e-12)
-ott.assert_almost_equal(evaluation.getMarginal([0, 2])(point), [evaluation(point)[0], evaluation(point)[2]], 1e-12, 1e-12)
-ott.assert_almost_equal(evaluation.getMarginal([2, 0])(point), [evaluation(point)[2], evaluation(point)[0]], 1e-12, 1e-12)
+ott.assert_almost_equal(
+    evaluation(point),
+    [function1(point)[0], function2(point)[0], function2(point)[1]],
+    1e-12,
+    1e-12,
+)
+ott.assert_almost_equal(
+    evaluation(ot.Sample([point, point]))[0], evaluation(point), 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    evaluation.getMarginal(0)(point), [evaluation(point)[0]], 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    evaluation.getMarginal([0, 2])(point),
+    [evaluation(point)[0], evaluation(point)[2]],
+    1e-12,
+    1e-12,
+)
+ott.assert_almost_equal(
+    evaluation.getMarginal([2, 0])(point),
+    [evaluation(point)[2], evaluation(point)[0]],
+    1e-12,
+    1e-12,
+)
 _ = evaluation.getMarginal([])
 evaluation.setParameter(evaluation.getParameter())
 with ott.assert_raises(Exception):

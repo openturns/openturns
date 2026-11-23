@@ -311,8 +311,20 @@ assert composed.getDescription() == ["a", "b", "X0", "X1", "X2"], "wrong descrip
 # check setParameter preserves custom description
 composed.setDescription(["y0", "y1", "y2", "y3", "y4"])
 composed.setParameter(composed.getParameter())
-assert composed.getDescription() == ["y0", "y1", "y2", "y3", "y4"], "description lost by setParameter"
-assert list(composed.getCore().getDescription()) == ["y0", "y1", "y2", "y3", "y4"], "core description lost by setParameter"
+assert composed.getDescription() == [
+    "y0",
+    "y1",
+    "y2",
+    "y3",
+    "y4",
+], "description lost by setParameter"
+assert list(composed.getCore().getDescription()) == [
+    "y0",
+    "y1",
+    "y2",
+    "y3",
+    "y4",
+], "core description lost by setParameter"
 
 # Create and print a composed distribution with different
 # complexities and print them
@@ -421,3 +433,12 @@ ott.assert_almost_equal([transInv.getParameter()[0]], [1.5])
 assert len(transInv.getParameterDescription()) == len(transInv.getParameter())
 transInv.setParameter(transInv.getParameter())
 ott.assert_almost_equal(list(transInv.getParameter())[1:], marginalParams)
+
+# surplus entries are rejected rather than silently ignored
+jd2 = ot.JointDistribution([ot.Normal(), ot.Normal()], ot.NormalCopula())
+with ott.assert_raises(TypeError):
+    jd2.setParametersCollection(
+        ot.PointCollection([[0.0, 1.0], [0.0, 1.0], [0.0], [0.0]])
+    )
+with ott.assert_raises(TypeError):
+    jd2.setParametersCollection(ot.PointCollection([[0.0, 1.0], [0.0, 1.0]]))

@@ -30,7 +30,9 @@ class PythonU(otexp.PythonActiveLearningReliabilityFunction):
         super().__init__(0.0, 2.0)
 
     def computeAsScalar(self, x):
-        cov = ot.GaussianProcessConditionalCovariance(self.getGaussianProcessRegression())
+        cov = ot.GaussianProcessConditionalCovariance(
+            self.getGaussianProcessRegression()
+        )
         mx = cov.getConditionalMean(x)[0]
         s2 = cov.getConditionalMarginalVariance(x)
         if not s2 > 0.0:

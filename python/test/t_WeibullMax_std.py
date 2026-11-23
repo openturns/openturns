@@ -105,7 +105,10 @@ ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [1.50276]), 1e-5, 0.0
 parameters = distribution.getParametersCollection()
 assert len(parameters) == 1
 ott.assert_almost_equal(parameters[0], [2.0, 1.5, -0.5], 0.0, 0.0)
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "WeibullMax"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "WeibullMax"
+)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
@@ -128,7 +131,9 @@ ott.assert_almost_equal(edge.computeLogPDF(-0.5), -math.log(2.0), 1e-12, 0.0)
 # Roughness: analytic value alpha / (2 * beta) * exp(lgamma(2 - 1/alpha) + (1/alpha - 1) * log(2))
 ott.assert_almost_equal(
     ot.WeibullMax(1.0, 1.5).getRoughness(),
-    1.5 / 2.0 * math.exp(math.lgamma(2.0 - 1.0 / 1.5) + (1.0 / 1.5 - 1.0) * math.log(2.0)),
+    1.5
+    / 2.0
+    * math.exp(math.lgamma(2.0 - 1.0 / 1.5) + (1.0 / 1.5 - 1.0) * math.log(2.0)),
 )
 # The L2 norm of the PDF diverges for alpha <= 0.5
 with ott.assert_raises(Exception):

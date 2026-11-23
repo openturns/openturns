@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Optim
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,7 @@
 #include "openturns/NearestPointProblem.hxx"
 #include "openturns/ExceptionPenalizedProblem.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
-#include "openturns/LinearProblem.hxx"
+#include "openturns/LinearProgrammingProblem.hxx"
 #include "openturns/OptimizationProblemImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"

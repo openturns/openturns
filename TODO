@@ -1,12 +1,10 @@
 Remove deprecated Graph showAxes, legendPosition, legendFontSize, logScale arguments
 Remove deprecated KrigingAlgorithm, KrigingRandomVector, GeneralLinearModelAlgorithm classes (+results) in some future version
-Remove deprecated SoizeGhanemFactory in some future version
 Remove deprecated StandardDistributionPolynomialFactory in some future version
 Remove deprecated Collection/Sample find method (%ignore)
 Remove deprecated ProbabilitySimulationResult::getConfidenceLength in some future version
 Remove UserDefined alias in some future version
 Remove UserDefinedFactory alias in some future version
-Remove MixedHistogramUserDefined alias in some future version
 Remove RandomMixture alias in some future version
 Remove deprecated CombinatorialGenerator.generate()
 Remove deprecated LinearModelResult from formula and coefficientsNames
@@ -14,11 +12,13 @@ Remove deprecated LinearModelResult.getFormula()
 Remove deprecated LinearModelResult.getCoefficientsNames()
 Remove deprecated LinearModelResult.buildMethod()
 Remove GaussianProcessConditionalCovariance.operator() in some future version
-Remove ProcessSample.setField(Field, int)
 Remove Field.getInputDimension/getOutputDimension
 Remove BoxCoxFactory.buildWithGLM
 Remove deprecated KernelSmoothing.setBoundaryCorrection/getBoundaryCorrection in some future version
 Remove coupling_tools.execute
 Remove QuantileConfidence.computeUnilateralConfidenceIntervalWithCoverage
 Remove QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage
-Remove deprecated viewer.PlotDesign in some future version
+Remove deprecated LHSExperiment alwaysShuffle/randomShift arguments
+Remove deprecated KernelSmoothing boundaryCorrection argument
+Remove LinearProblem alias in some future version
+Remove QuadraticProblem alias in some future version

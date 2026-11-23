@@ -50,9 +50,7 @@ for distribution in collection:
 
 # Test UniVariateDistributionPolynomialFactory with distribution constructor
 for distribution in collection:
-    polynomialFactory = ot.UniVariateDistributionPolynomialFactory(
-        distribution
-    )
+    polynomialFactory = ot.UniVariateDistributionPolynomialFactory(distribution)
     M = ot.SymmetricMatrix(iMax)
     for i in range(iMax):
         pI = polynomialFactory.build(i)
@@ -75,41 +73,19 @@ for distribution in collection:
 # Verify specific families are detected for common distributions
 norm = ot.UniVariateDistributionPolynomialFactory(ot.Normal(2.0, 3.0))
 assert norm.getHasSpecificFamily(), "Normal(2,3) should have specific family"
-assert (
-    norm.getSpecificFamily().getImplementation().getClassName()
-    == "HermiteFactory"
-)
+assert norm.getSpecificFamily().getImplementation().getClassName() == "HermiteFactory"
 
-uni = ot.UniVariateDistributionPolynomialFactory(
-    ot.Uniform(-5.0, 10.0)
-)
+uni = ot.UniVariateDistributionPolynomialFactory(ot.Uniform(-5.0, 10.0))
 assert uni.getHasSpecificFamily(), "Uniform(-5,10) should have specific family"
-assert (
-    uni.getSpecificFamily().getImplementation().getClassName()
-    == "LegendreFactory"
-)
+assert uni.getSpecificFamily().getImplementation().getClassName() == "LegendreFactory"
 
-beta = ot.UniVariateDistributionPolynomialFactory(
-    ot.Beta(3.0, 4.0, -2.0, 5.0)
-)
-assert (
-    beta.getHasSpecificFamily()
-), "Beta(3,4,-2,5) should have specific family"
-assert (
-    beta.getSpecificFamily().getImplementation().getClassName()
-    == "JacobiFactory"
-)
+beta = ot.UniVariateDistributionPolynomialFactory(ot.Beta(3.0, 4.0, -2.0, 5.0))
+assert beta.getHasSpecificFamily(), "Beta(3,4,-2,5) should have specific family"
+assert beta.getSpecificFamily().getImplementation().getClassName() == "JacobiFactory"
 
-gamma = ot.UniVariateDistributionPolynomialFactory(
-    ot.Gamma(2.5, 1.5, 0.5)
-)
-assert (
-    gamma.getHasSpecificFamily()
-), "Gamma(2.5,1.5,0.5) should have specific family"
-assert (
-    gamma.getSpecificFamily().getImplementation().getClassName()
-    == "LaguerreFactory"
-)
+gamma = ot.UniVariateDistributionPolynomialFactory(ot.Gamma(2.5, 1.5, 0.5))
+assert gamma.getHasSpecificFamily(), "Gamma(2.5,1.5,0.5) should have specific family"
+assert gamma.getSpecificFamily().getImplementation().getClassName() == "LaguerreFactory"
 # lambda=1.5 (not 1.0) so lam vs 1/lam confusion is visible;
 # build() must be consistent with getRoots/getNodesAndWeights delegation
 ott.assert_almost_equal(gamma.getA(), 1.5)
@@ -123,7 +99,4 @@ for n in range(4):
 
 arc = ot.UniVariateDistributionPolynomialFactory(ot.Arcsine(-2.0, 3.0))
 assert arc.getHasSpecificFamily(), "Arcsine(-2,3) should have specific family"
-assert (
-    arc.getSpecificFamily().getImplementation().getClassName()
-    == "ChebychevFactory"
-)
+assert arc.getSpecificFamily().getImplementation().getClassName() == "ChebychevFactory"

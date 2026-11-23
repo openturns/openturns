@@ -2,7 +2,7 @@
 /**
  *  @brief HiGHS linear solver
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,10 +28,13 @@
 
 #ifdef OPENTURNS_HAVE_HIGHS
 #include <Highs.h>
+#include <HConfig.h>
+#define HIGHS_VERSION_NR (HIGHS_VERSION_MAJOR * 100000 + HIGHS_VERSION_MINOR * 100 + HIGHS_VERSION_PATCH)
 #endif
 
 #include <algorithm>
 #include <chrono>
+#include <limits>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -167,9 +170,10 @@ void HiGHS::checkProblem(const OptimizationProblem & problem) const
 
   // Only the linear constraints set through setLinearConstraint are mapped to
   // the HiGHS model: arbitrary constraint functions would be silently ignored.
-  // QuadraticProblem derives its equality and inequality constraint functions
-  // from these coefficients, so they are redundant here.
-  if (!problem.isQuadratic() && (problem.hasEqualityConstraint() || problem.hasInequalityConstraint()))
+  // LinearProgrammingProblem and QuadraticProgrammingProblem derive their equality and inequality
+  // constraint functions from these coefficients, so they are redundant here.
+  if (!problem.isLinear() && !problem.isQuadratic()
+      && (problem.hasEqualityConstraint() || problem.hasInequalityConstraint()))
     throw InvalidArgumentException(HERE) << "HiGHS does not support equality or inequality constraint functions";
 
   if (!problem.isLinear() && !problem.isQuadratic())
@@ -215,12 +219,22 @@ void HiGHS::run()
   const UnsignedInteger initialCallsNumber = getProblem().getObjective().getEvaluationCallsNumber();
 
   HighsModel model;
-  model.lp_.num_col_ = problemDimension;
-  model.lp_.num_row_ = getProblem().getLinearConstraintCoefficients().getNbRows();
+  // HiGHS stores its dimensions and indices as HighsInt: reject the dimensions
+  // which do not fit before narrowing them
+  const Unsigned64BitsInteger maxHighsDimension = static_cast<Unsigned64BitsInteger>(std::numeric_limits<HighsInt>::max());
+  if (static_cast<Unsigned64BitsInteger>(problemDimension) > maxHighsDimension)
+    throw InvalidDimensionException(HERE) << "The problem dimension " << problemDimension << " exceeds the HiGHS capacity " << maxHighsDimension;
+  model.lp_.num_col_ = static_cast<HighsInt>(problemDimension);
+  // linear constraints, stored sparse column-wise (exact zeros skipped)
+  const SparseMatrix sparseCoefficients(getProblem().getSparseLinearConstraintCoefficients());
+  const UnsignedInteger constraintDimension = sparseCoefficients.getNbRows();
+  if (static_cast<Unsigned64BitsInteger>(constraintDimension) > maxHighsDimension)
+    throw InvalidDimensionException(HERE) << "The constraint dimension " << constraintDimension << " exceeds the HiGHS capacity " << maxHighsDimension;
+  model.lp_.num_row_ = static_cast<HighsInt>(constraintDimension);
 
   // objective function
   model.lp_.sense_ = getProblem().isMinimization() ? ObjSense::kMinimize : ObjSense::kMaximize;
-  model.lp_.offset_ = getProblem().isQuadratic() ? getProblem().getConstant() : 0.0;
+  model.lp_.offset_ = getProblem().getConstant();
   model.lp_.col_cost_.resize(model.lp_.num_col_);
   for (UnsignedInteger i = 0; i < problemDimension; ++ i)
     model.lp_.col_cost_[i] = getProblem().getLinearCost()[i];
@@ -277,25 +291,36 @@ void HiGHS::run()
       }
     }
 
-  // linear constraints, stored sparse column-wise (exact zeros skipped)
+  // linear constraints: copy the compressed sparse column arrays into the
+  // HiGHS model instead of scanning a dense matrix
   if (model.lp_.num_row_ > 0)
   {
-    const Matrix constraintCoefficients(getProblem().getLinearConstraintCoefficients());
-    const UnsignedInteger nbRows = static_cast<UnsignedInteger>(model.lp_.num_row_);
+    const UnsignedInteger nbRows = sparseCoefficients.getNbRows();
+    if (sparseCoefficients.getNbColumns() != problemDimension)
+      throw InvalidDimensionException(HERE) << "The constraint matrix has " << sparseCoefficients.getNbColumns() << " columns, expected " << problemDimension;
+    const Indices columnPointer(sparseCoefficients.getColumnPointer());
+    const Indices rowIndices(sparseCoefficients.getRowIndices());
+    const Point values(sparseCoefficients.getValues());
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
     model.lp_.a_matrix_.start_.resize(model.lp_.num_col_ + 1);
     model.lp_.a_matrix_.start_[0] = 0;
     for (UnsignedInteger col = 0; col < problemDimension; ++ col)
     {
-      for (UnsignedInteger row = 0; row < nbRows; ++ row)
+      for (UnsignedInteger k = columnPointer[col]; k < columnPointer[col + 1]; ++ k)
       {
-        const Scalar coefficient = constraintCoefficients(row, col);
+        const Scalar coefficient = values[k];
         if (coefficient != 0.0)
         {
-          model.lp_.a_matrix_.index_.push_back(static_cast<HighsInt>(row));
+          if (!(rowIndices[k] < nbRows))
+            throw InvalidArgumentException(HERE) << "The row index " << rowIndices[k] << " exceeds the constraint dimension " << nbRows;
+          if (static_cast<Unsigned64BitsInteger>(rowIndices[k]) > maxHighsDimension)
+            throw InvalidArgumentException(HERE) << "The row index " << rowIndices[k] << " exceeds the HiGHS index capacity " << maxHighsDimension;
+          model.lp_.a_matrix_.index_.push_back(static_cast<HighsInt>(rowIndices[k]));
           model.lp_.a_matrix_.value_.push_back(coefficient);
         }
       }
+      if (static_cast<Unsigned64BitsInteger>(model.lp_.a_matrix_.index_.size()) > maxHighsDimension)
+        throw InvalidArgumentException(HERE) << "The number of non-zero constraint coefficients exceeds the HiGHS index capacity " << maxHighsDimension;
       model.lp_.a_matrix_.start_[col + 1] = static_cast<HighsInt>(model.lp_.a_matrix_.index_.size());
     }
     model.lp_.row_lower_.resize(model.lp_.num_row_);
@@ -348,6 +373,62 @@ void HiGHS::run()
   HighsStatus return_status = highs.passModel(model);
   if (return_status == HighsStatus::kError)
     throw InvalidArgumentException(HERE) << "Cannot initialize highs model: " << highsStatusToString(return_status) ;
+
+  // User callbacks: forward progress/stop requests through HiGHS interrupt callbacks.
+  // HiGHS>=1.13 names the callback data structs so they can be forward-declared
+  // in a public header (ERGO-Code/HiGHS#2625); here the callback lives in the
+  // .cxx so no header change is needed and it works with older HiGHS too.
+  // The running maximum is read by the callback during highs.run(): it must
+  // outlive the registration block below, hence the enclosing scope.
+  Scalar lastProgress = 0.0;
+  if (progressCallback_.first || stopCallback_.first)
+  {
+    // counters in data_out are per-phase snapshots (eg IPM counts reset
+    // when crossover starts), so clamp to a running maximum to keep
+    // progress monotonic
+    HighsCallbackFunctionType highsCallback = [this, &lastProgress](int, const std::string &,
+        const HighsCallbackOutput * data_out, HighsCallbackInput * data_in, void *)
+    {
+      if (data_out && progressCallback_.first)
+      {
+        Scalar progress = 0.0;
+        const Scalar maxTime = getMaximumTimeDuration();
+        const UnsignedInteger maximumIterationNumber = getMaximumIterationNumber();
+        if (maxTime > 0.0)
+          progress = 100.0 * data_out->running_time / maxTime;
+        else if (maximumIterationNumber > 0)
+        {
+          const UnsignedInteger iterationNumber =
+            static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->simplex_iteration_count, 0))
+            + static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->ipm_iteration_count, 0))
+            + static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->pdlp_iteration_count, 0))
+// QP iteration counter only exists since HiGHS 1.16
+#if HIGHS_VERSION_NR >= 101600
+            + static_cast<UnsignedInteger>(std::max<HighsInt>(data_out->qpasm_iteration_count, 0))
+#endif
+            ;
+          progress = (100.0 * iterationNumber) / maximumIterationNumber;
+        }
+        if (progress > 100.0) progress = 100.0;
+        if (progress < lastProgress) progress = lastProgress;
+        else lastProgress = progress;
+        progressCallback_.first(progress, progressCallback_.second);
+      }
+      if (data_in && stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      {
+        LOGINFO(OSS() << "HiGHS was stopped by user");
+        data_in->user_interrupt = true;
+      }
+    };
+    highs.setCallback(highsCallback);
+    highs.startCallback(kCallbackSimplexInterrupt);
+    highs.startCallback(kCallbackIpmInterrupt);
+    highs.startCallback(kCallbackMipInterrupt);
+// QP interrupt callback only exists since HiGHS 1.16
+#if HIGHS_VERSION_NR >= 101600
+    highs.startCallback(kCallbackQpInterrupt);
+#endif
+  }
 
   // Solve the model
   return_status = highs.run();
@@ -412,7 +493,9 @@ void HiGHS::run()
   qpIterationNumber_ = static_cast<UnsignedInteger>(std::max<HighsInt>(info.qp_iteration_count, 0));
   result_.setIterationNumber(simplexIterationNumber_ + ipmIterationNumber_ + crossoverIterationNumber_ + pdlpIterationNumber_ + qpIterationNumber_);
 
-  if (result_.getStatus() != OptimizationResult::SUCCESS)
+  // a user-requested stop is reported as INTERRUPTION without throwing,
+  // like Dlib/CMinpack: checkStatus only guards actual failures and timeouts
+  if ((result_.getStatus() != OptimizationResult::SUCCESS) && (result_.getStatus() != OptimizationResult::INTERRUPTION))
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "HiGHS failed (" << modelStatus << ")";

@@ -8,7 +8,7 @@
  *  with tables for certain special cases",
  *  Biometrika 41, pp. 153-169.
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -223,9 +223,9 @@ Scalar Student2DRectangularProbability(const Scalar nu,
   if (a1 >= b1 || a2 >= b2) return 0.0;
   // Inclusion-exclusion using the bivariate CDF.
   const Scalar prob = SpecFunc::Clip01((Student2DCDF(nu, b1, b2, rho, false)
-                                  - Student2DCDF(nu, a1, b2, rho, false))
-                                 - (Student2DCDF(nu, b1, a2, rho, false)
-                                    - Student2DCDF(nu, a1, a2, rho, false)));
+                                        - Student2DCDF(nu, a1, b2, rho, false))
+                                       - (Student2DCDF(nu, b1, a2, rho, false)
+                                          - Student2DCDF(nu, a1, a2, rho, false)));
   if (prob > 0.0) return prob;
   // Fallback to multivariate integration when prob == 0.0
   CorrelationMatrix R(2);

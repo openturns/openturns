@@ -8,10 +8,11 @@ ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
 # Test cases: (base distribution, truncation interval)
-coll = [(ot.Exponential(), ot.Interval(-1.0, 1.0)),
-        (ot.Normal(), ot.Interval(-1.0, 1.0)),
-        (ot.Triangular(-2.0, -0.5, 3.0), ot.Interval(-1.0, 1.0)),
-        ]
+coll = [
+    (ot.Exponential(), ot.Interval(-1.0, 1.0)),
+    (ot.Normal(), ot.Interval(-1.0, 1.0)),
+    (ot.Triangular(-2.0, -0.5, 3.0), ot.Interval(-1.0, 1.0)),
+]
 size = 10000
 for estimateParameters in [False, True]:
     # estimateParameters=True triggers one MLE fit per truncation candidate
@@ -28,6 +29,16 @@ for estimateParameters in [False, True]:
         assert "TruncatedDistribution" in str(dist_est)
         for i in range(distribution.getDimension()):
             if dist_est.getBounds().getFiniteLowerBound()[i]:
-                ott.assert_almost_equal(dist_est.getBounds().getLowerBound()[i], interval.getLowerBound()[i], 0.0, 1e-3)
+                ott.assert_almost_equal(
+                    dist_est.getBounds().getLowerBound()[i],
+                    interval.getLowerBound()[i],
+                    0.0,
+                    1e-3,
+                )
             if dist_est.getBounds().getFiniteUpperBound()[i]:
-                ott.assert_almost_equal(dist_est.getBounds().getUpperBound()[i], interval.getUpperBound()[i], 0.0, 1e-3)
+                ott.assert_almost_equal(
+                    dist_est.getBounds().getUpperBound()[i],
+                    interval.getUpperBound()[i],
+                    0.0,
+                    1e-3,
+                )

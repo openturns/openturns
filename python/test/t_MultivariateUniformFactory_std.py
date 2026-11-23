@@ -23,7 +23,9 @@ assert estimatedDistribution.getDimension() == 1
 # build from parameters
 estimatedDistribution = factory.build(distribution.getParameter())
 print("Distribution from parameters=", estimatedDistribution)
-ott.assert_almost_equal(estimatedDistribution.getParameter(), distribution.getParameter())
+ott.assert_almost_equal(
+    estimatedDistribution.getParameter(), distribution.getParameter()
+)
 # buildAsMultivariateUniform
 estimatedUniform = factory.buildAsMultivariateUniform(sample)
 print("MultivariateUniform          =", distribution)

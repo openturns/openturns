@@ -2,7 +2,7 @@
 /**
  *  @brief CSV parser
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,8 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-namespace {
+namespace
+{
 // Trim leading/trailing spaces (isspace) from a view
 inline std::string_view TrimView(std::string_view sv)
 {
@@ -256,7 +257,7 @@ inline std::string_view FirstRawField(std::string_view line,
 // Split content into line views, newline character excluded.
 // The last line needs no trailing newline. Views point into content.
 inline std::vector<std::string_view> SplitLines(std::string_view content,
-                                                std::string::size_type offset)
+    std::string::size_type offset)
 {
   std::vector<std::string_view> lines;
   if (content.size() > offset)

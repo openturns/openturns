@@ -2,7 +2,7 @@
 /**
  *  @brief This is a 1D polynomial
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,8 +53,8 @@ OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const Sample & re
 
 /* Constructor from recurrence coefficients */
 OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const Sample & recurrenceCoefficients,
-                                                               const Scalar a,
-                                                               const Scalar b)
+    const Scalar a,
+    const Scalar b)
   : UniVariatePolynomialImplementation()
   , recurrenceCoefficients_(recurrenceCoefficients.getImplementation()->getData())
   , a_(a)
@@ -220,7 +220,7 @@ void OrthogonalUniVariatePolynomial::setA(const Scalar a)
     coefficients_ = buildCoefficients();
   }
 }
-  
+
 Scalar OrthogonalUniVariatePolynomial::getB() const
 {
   return b_;

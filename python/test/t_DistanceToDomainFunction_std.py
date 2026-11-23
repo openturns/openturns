@@ -64,11 +64,8 @@ assert distance != distance_to_small_union
 assert len(repr(distance)) > 0
 assert len(str(distance)) > 0
 assert len(repr(default)) > 0
-# gradient/hessian are not implemented
-with ott.assert_raises(Exception):
-    distance.gradient(point1)
-with ott.assert_raises(Exception):
-    distance.hessian(point1)
+# gradient/hessian fall back to finite differences
+ott.assert_almost_equal(distance.gradient(point1), ot.Matrix([[0.0], [0.0]]))
 # save/load
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("distance_to_domain.xml"))

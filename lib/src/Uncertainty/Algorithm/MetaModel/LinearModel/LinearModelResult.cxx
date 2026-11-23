@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a linear model estimation
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -93,20 +93,20 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Point & cookDistances,
                                      const Scalar residualsVariance)
   : LinearModelResult(
-    inputSample, 
-    basis, 
-    design, 
-    outputSample, 
-    metaModel, 
-    coefficients,
-    basis.__str__(),
-    BuildDefaultCoefficientsNames(basis),
-    sampleResiduals, 
-    standardizedResiduals, 
-    diagonalGramInverse, 
-    leverages, 
-    cookDistances, 
-    residualsVariance)
+      inputSample,
+      basis,
+      design,
+      outputSample,
+      metaModel,
+      coefficients,
+      basis.__str__(),
+      BuildDefaultCoefficientsNames(basis),
+      sampleResiduals,
+      standardizedResiduals,
+      diagonalGramInverse,
+      leverages,
+      cookDistances,
+      residualsVariance)
 {
   // Nothing to do
 }

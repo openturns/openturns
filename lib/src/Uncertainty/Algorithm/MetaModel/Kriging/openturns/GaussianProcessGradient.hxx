@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression gradient
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -65,7 +65,7 @@ public:
   String __str__(const String & offset = "") const override;
 
   /** Operator () */
-    using GradientImplementation::gradient;
+  using GradientImplementation::gradient;
   Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */

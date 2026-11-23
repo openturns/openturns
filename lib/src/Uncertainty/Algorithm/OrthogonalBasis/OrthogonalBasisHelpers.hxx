@@ -91,8 +91,8 @@ inline Bool PowerWithinBudget(const UnsignedInteger base,
    order-2 tensor rule exceeds the budget: the caller then falls back to
    another rule instead of materializing an unattainable tensor product. */
 inline UnsignedInteger ComputeMarginalSize(const UnsignedInteger requestedSize,
-                                           const UnsignedInteger dimension,
-                                           const UnsignedInteger maximumNodes)
+    const UnsignedInteger dimension,
+    const UnsignedInteger maximumNodes)
 {
   if (maximumNodes == 0) throw InvalidArgumentException(HERE) << "Error: the maximum number of tensor nodes must be > 0";
   const UnsignedInteger requested = std::max<UnsignedInteger>(2, requestedSize);

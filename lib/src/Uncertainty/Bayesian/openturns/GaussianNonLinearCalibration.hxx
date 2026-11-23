@@ -2,7 +2,7 @@
 /**
  *  @brief GaussianNonLinearCalibration algorithm
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -81,10 +81,6 @@ public:
   /** Flag for the full error covariance accessor */
   Bool getGlobalErrorCovariance() const;
 
-  /** Bounds accessor */
-  Interval getBounds() const;
-  void setBounds(const Interval & bounds);
-
   /** Bootstrap size accessor */
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
@@ -104,9 +100,6 @@ private:
 
   /* The optimization algorithm */
   OptimizationAlgorithm algorithm_;
-
-  /* Parameter bounds */
-  Interval bounds_;
 
   /* Number of bootstrap replica */
   UnsignedInteger bootstrapSize_;

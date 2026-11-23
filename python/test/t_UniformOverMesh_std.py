@@ -80,9 +80,7 @@ print(
     "proba(empty)=%.5g"
     % distribution.computeProbability(ot.Interval([10.0] * 2, [11.0] * 2))
 )
-print(
-    "proba(range)=%.5g" % distribution.computeProbability(distribution.getRange())
-)
+print("proba(range)=%.5g" % distribution.computeProbability(distribution.getRange()))
 with ott.assert_raises(TypeError):
     distribution.computeProbability(ot.Interval([0.0], [1.0]))
 
@@ -100,7 +98,9 @@ with ott.assert_raises(TypeError):
 mesher = ot.LevelSetMesher([9] * 2)
 fn2 = ot.SymbolicFunction(["x0", "x1"], ["x0^2+x1^2-1"])
 mesh2 = mesher.build(
-    ot.LevelSet(fn2, ot.LessOrEqual(), 0.0), ot.Interval([-1.0, -1.0], [1.0, 1.0]), False
+    ot.LevelSet(fn2, ot.LessOrEqual(), 0.0),
+    ot.Interval([-1.0, -1.0], [1.0, 1.0]),
+    False,
 )
 uom = ot.UniformOverMesh(mesh2)
 uom.setDescription(["a", "b"])

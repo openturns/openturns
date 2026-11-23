@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -286,12 +286,12 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
   if (dimension == 1)
   {
     const KrigingEvaluationSampleFunctor1D functor( inS, result, *this);
-    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor, 1024);
   }
   else
   {
     const KrigingEvaluationSampleFunctor functor( inS, result, *this );
-    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor, 1024);
   }
 
   // Evaluate the basis part sequentially

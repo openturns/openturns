@@ -3,7 +3,7 @@
  *  @brief This class acts like a (possibly truncated) KernelMixture factory, implementing density estimation
  *         using the kernel smoothing method. It uses Silverman's rule for product kernel.
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ public:
   explicit KernelSmoothing(const Distribution & kernel,
                            const Bool binned = true,
                            const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("KernelSmoothing-BinNumber"),
-                           const Bool boundaryCorrection = false);
+                           const Bool boundaryCorrection = false); // deprecated boundaryCorrection argument
 
   /** Virtual constructor */
   KernelSmoothing * clone() const override;

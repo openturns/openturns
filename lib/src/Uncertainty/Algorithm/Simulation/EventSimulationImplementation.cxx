@@ -3,7 +3,7 @@
  *  @brief EventSimulationImplementation is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ EventSimulationImplementation::EventSimulationImplementation(const HistoryStrate
 
 /* Constructor with parameters */
 EventSimulationImplementation::EventSimulationImplementation(const RandomVector & event,
-                                 const HistoryStrategy & convergenceStrategy)
+    const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
   , event_(event)
   , result_()
@@ -196,11 +196,11 @@ Sample EventSimulationImplementation::computeBlockSample()
 }
 
 /** Setter keep sample */
-void EventSimulationImplementation::setKeepSample(const Bool) 
+void EventSimulationImplementation::setKeepSample(const Bool)
 {
   throw NotYetImplementedException(HERE) << "In EventSimulationImplementation::setKeepSample(Bool)";
-} 
-  
+}
+
 /* Draw the probability convergence at the given level */
 Graph EventSimulationImplementation::drawProbabilityConvergence(const Scalar level) const
 {

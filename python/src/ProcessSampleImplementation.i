@@ -34,7 +34,7 @@ void __setitem__(SignedInteger index,
   if (index < 0) {
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
-  self->setField(field, index);
+  self->setField(index, field);
 }
 
 UnsignedInteger __len__() const

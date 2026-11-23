@@ -48,54 +48,54 @@ public:
 
   /** Constructor */
   SparseExpansion(const Sample & inputSample,
-		const Point & weights,
-		const Sample & outputSample,
-		const Distribution & distribution);
+                  const Point & weights,
+                  const Sample & outputSample,
+                  const Distribution & distribution);
 
   /** Constructor */
   SparseExpansion(const Sample & inputSample,
-		const Point & weights,
-		const Sample & outputSample,
-		const Distribution & distribution,
-		const OrthogonalBasis & basis,
-		const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize"),
-		const String & methodName = ResourceMap::GetAsString("SparseExpansion-DecompositionMethod"),
-		const FittingAlgorithm & fitting = CorrectedLeaveOneOut());
+                  const Point & weights,
+                  const Sample & outputSample,
+                  const Distribution & distribution,
+                  const OrthogonalBasis & basis,
+                  const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize"),
+                  const String & methodName = ResourceMap::GetAsString("SparseExpansion-DecompositionMethod"),
+                  const FittingAlgorithm & fitting = CorrectedLeaveOneOut());
 
   /** Constructor */
   SparseExpansion(const Sample & inputSample,
-		const Sample & outputSample,
-		const Distribution & distribution);
+                  const Sample & outputSample,
+                  const Distribution & distribution);
 
   /** Constructor */
   SparseExpansion(const Sample & inputSample,
-		const Sample & outputSample,
-		const Distribution & distribution,
-		const OrthogonalBasis & basis,
-		const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize"),
-		const String & methodName = ResourceMap::GetAsString("SparseExpansion-DecompositionMethod"),
-		const FittingAlgorithm & fitting = CorrectedLeaveOneOut());
+                  const Sample & outputSample,
+                  const Distribution & distribution,
+                  const OrthogonalBasis & basis,
+                  const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize"),
+                  const String & methodName = ResourceMap::GetAsString("SparseExpansion-DecompositionMethod"),
+                  const FittingAlgorithm & fitting = CorrectedLeaveOneOut());
 
   /** Constructor with active functions */
   SparseExpansion(const Sample & inputSample,
-		const Point & weights,
-		const Sample & outputSample,
-		const Distribution & distribution,
-		const OrthogonalBasis & basis,
-		const UnsignedInteger basisSize,
-		const Indices & activeFunctions,
-		const String & methodName = ResourceMap::GetAsString("SparseExpansion-DecompositionMethod"),
-		const FittingAlgorithm & fitting = CorrectedLeaveOneOut());
+                  const Point & weights,
+                  const Sample & outputSample,
+                  const Distribution & distribution,
+                  const OrthogonalBasis & basis,
+                  const UnsignedInteger basisSize,
+                  const Indices & activeFunctions,
+                  const String & methodName = ResourceMap::GetAsString("SparseExpansion-DecompositionMethod"),
+                  const FittingAlgorithm & fitting = CorrectedLeaveOneOut());
 
   /** Constructor with active functions */
   SparseExpansion(const Sample & inputSample,
-		const Sample & outputSample,
-		const Distribution & distribution,
-		const OrthogonalBasis & basis,
-		const UnsignedInteger basisSize,
-		const Indices & activeFunctions,
-		const String & methodName = ResourceMap::GetAsString("SparseExpansion-DecompositionMethod"),
-		const FittingAlgorithm & fitting = CorrectedLeaveOneOut());
+                  const Sample & outputSample,
+                  const Distribution & distribution,
+                  const OrthogonalBasis & basis,
+                  const UnsignedInteger basisSize,
+                  const Indices & activeFunctions,
+                  const String & methodName = ResourceMap::GetAsString("SparseExpansion-DecompositionMethod"),
+                  const FittingAlgorithm & fitting = CorrectedLeaveOneOut());
 
   /** Virtual constructor */
   SparseExpansion * clone() const override;

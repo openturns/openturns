@@ -2,7 +2,6 @@
 
 import openturns as ot
 import openturns.testing as ott
-import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
@@ -30,13 +29,15 @@ f5 = ot.SymbolicFunction(
     ],
 )
 initialBasis = [f0, f1, f2, f3, f4, f5]
-factory = otexp.FiniteOrthogonalFunctionFactory(initialBasis, distribution)
+factory = ot.FiniteOrthogonalFunctionFactory(initialBasis, distribution)
 x = [0.5] * 2
 
 # Value-based equality compares the reference measure and the functions
-assert factory == otexp.FiniteOrthogonalFunctionFactory(initialBasis, distribution)
-assert factory != otexp.FiniteOrthogonalFunctionFactory(initialBasis, ot.Normal(mean, std))
-assert factory != otexp.FiniteOrthogonalFunctionFactory(initialBasis[:2], distribution)
+assert factory == ot.FiniteOrthogonalFunctionFactory(initialBasis, distribution)
+assert factory != ot.FiniteOrthogonalFunctionFactory(
+    initialBasis, ot.Normal(mean, std)
+)
+assert factory != ot.FiniteOrthogonalFunctionFactory(initialBasis[:2], distribution)
 kMax = len(initialBasis)
 distribution = factory.getMeasure()
 initialBasis = factory.getFunctionsCollection()

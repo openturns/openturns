@@ -2,7 +2,7 @@
 /**
  *  @brief SlicedInverseRegressionResult
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class SlicedInverseRegressionResult
  *
- * Result from SIR algorithm 
+ * Result from SIR algorithm
  */
 class OT_API SlicedInverseRegressionResult
   : public PersistentObject
@@ -50,7 +50,7 @@ public:
 
   Matrix getDirections() const;
   Point getEigenvalues() const;
-  
+
   Function getTransformation() const;
 
   /** String converter */

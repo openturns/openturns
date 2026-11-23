@@ -21,9 +21,7 @@ print("collection = ", collection)
 transformedCollection = ot.ComplexCollection(myFFT.transform(collection))
 print("FFT result = ", transformedCollection)
 
-inverseCollection = ot.ComplexCollection(
-    myFFT.inverseTransform(transformedCollection)
-)
+inverseCollection = ot.ComplexCollection(myFFT.inverseTransform(transformedCollection))
 print("FFT back=", inverseCollection)
 
 # Verify 1D roundtrip
@@ -56,8 +54,12 @@ for i in range(rows * cols):
 ot.RandomGenerator.SetSeed(0)
 elements = [ot.RandomGenerator.Generate() for i in range(N * N * N)]
 tensorFlat = ot.ComplexCollection(
-    [complex(elements[i + j * N + k * N * N], 0.0)
-     for k in range(N) for j in range(N) for i in range(N)]
+    [
+        complex(elements[i + j * N + k * N * N], 0.0)
+        for k in range(N)
+        for j in range(N)
+        for i in range(N)
+    ]
 )
 
 transformedTensor = myFFT.transform(tensorFlat, [N, N, N])

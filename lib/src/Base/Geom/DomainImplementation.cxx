@@ -2,7 +2,7 @@
 /**
  *  @brief DomainImplementation is defined as a domain of \mathbb{R}^d
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -85,37 +85,16 @@ Bool DomainImplementation::contains(const Point & ) const
   throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }
 
-class DomainImplementationContainsSamplePolicy
-{
-  const Sample & input_;
-  DomainImplementation::BoolCollection & output_;
-  const DomainImplementation & domain_;
-
-public:
-  DomainImplementationContainsSamplePolicy(const Sample & input,
-      DomainImplementation::BoolCollection & output,
-      const DomainImplementation & domain)
-    : input_(input)
-    , output_(output)
-    , domain_(domain)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      output_[i] = domain_.contains(input_[i]);
-  } // operator ()
-};  // class DomainImplementationContainsSamplePolicy
-
 /* Check if the given points are inside of the domain */
 DomainImplementation::BoolCollection DomainImplementation::contains(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   BoolCollection result(size, 0);
-  const DomainImplementationContainsSamplePolicy policy( sample, result, *this );
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      result[i] = contains(sample[i]);
+  }, 1024);
   return result;
 }
 

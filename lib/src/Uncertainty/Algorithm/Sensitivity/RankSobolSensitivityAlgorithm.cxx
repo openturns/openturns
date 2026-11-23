@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for Rank Sobol Sensitivity Algorithm
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -133,45 +133,6 @@ Sample RankSobolSensitivityAlgorithm::computeIndices() const
 {
   return computeIndicesFromSample(inputDesign_, outputDesign_);
 }
-
-
-// Definition of bootstrap policy without replacement to compute confidence intervals
-// Parallelization is performed with TBB
-struct RankSobolBootstrapPolicy
-{
-  const RankSobolSensitivityAlgorithm & sai_;
-  const Sample & randomIndices_;
-  Sample & bsFO_;
-
-  RankSobolBootstrapPolicy( const RankSobolSensitivityAlgorithm & sai,
-                            const Sample & randomIndices,
-                            Sample & bsFO)
-    : sai_(sai)
-    , randomIndices_(randomIndices)
-    , bsFO_(bsFO)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
-    {
-      Indices index(randomIndices_.getDimension());
-      for (UnsignedInteger l = 0; l < randomIndices_.getDimension(); l++)
-      {
-        index[l] = static_cast <OT::UnsignedInteger>(randomIndices_(k, l));
-      }
-
-      const Sample selectedOutput = sai_.outputDesign_.select(index);
-
-      const Point variance(selectedOutput.computeVariance());
-      // Compute indices using this collection
-      const Sample Vi(sai_.computeIndicesFromSample(sai_.inputDesign_.select(index), selectedOutput));
-      // Compute aggregated indices
-      bsFO_[k] = sai_.computeAggregatedIndices(Vi, variance);
-    }
-
-  }
-}; /* end struct BootstrapPolicy */
 
 
 // Draw of First indices only
@@ -314,8 +275,25 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
 
       const Sample randomIndices(kPermutation.getSample(effectiveBlockSize));
 
-      const RankSobolBootstrapPolicy policy(*this, randomIndices, bsFOpartial);
-      TBBImplementation::ParallelFor(0, effectiveBlockSize, policy);
+      TBBImplementation::ParallelFor(0, effectiveBlockSize, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+      {
+        for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
+        {
+          Indices index(randomIndices.getDimension());
+          for (UnsignedInteger l = 0; l < randomIndices.getDimension(); l++)
+          {
+            index[l] = static_cast <OT::UnsignedInteger>(randomIndices(k, l));
+          }
+
+          const Sample selectedOutput = outputDesign_.select(index);
+
+          const Point variance(selectedOutput.computeVariance());
+          // Compute indices using this collection
+          const Sample Vi(computeIndicesFromSample(inputDesign_.select(index), selectedOutput));
+          // Compute aggregated indices
+          bsFOpartial[k] = computeAggregatedIndices(Vi, variance);
+        }
+      }, 1024);
       bsFO.add(bsFOpartial);
     }
 

@@ -50,8 +50,7 @@ assert evaluation.isActualImplementation()
 assert evaluation == evaluation
 assert not (evaluation == "dummy")
 assert evaluation != "dummy"
-with ott.assert_raises(Exception):
-    evaluation == ot.LinearEvaluation()
+assert not (evaluation == ot.LinearEvaluation())
 assert not evaluation.isLinear()
 assert not evaluation.isLinearlyDependent(0)
 ott.assert_almost_equal(evaluation(x), constant)

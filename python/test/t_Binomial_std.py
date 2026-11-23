@@ -208,3 +208,7 @@ with ott.assert_raises(Exception):
     ot.Binomial().setParameter([-1.0, 0.5])
 ott.assert_almost_equal(ot.Binomial(5, 0.0).computeQuantile(0.3), [0.0], 0.0, 0.0)
 ott.assert_almost_equal(ot.Binomial(5, 1.0).computeQuantile(0.3), [5.0], 0.0, 0.0)
+# n=0 is Dirac(0): single atom at every level
+ott.assert_almost_equal(ot.Binomial(0, 0.5).computeQuantile(0.0), [0.0], 0.0, 0.0)
+ott.assert_almost_equal(ot.Binomial(0, 0.5).computeQuantile(0.3), [0.0], 0.0, 0.0)
+ott.assert_almost_equal(ot.Binomial(0, 0.5).computeQuantile(1.0), [0.0], 0.0, 0.0)

@@ -3,7 +3,7 @@
  *  @brief ActiveLearningReliabilityFunctionImplementation implements parent class for
  *  active learning criterion used in reliability analysis
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,10 +46,10 @@ ActiveLearningReliabilityFunctionImplementation::ActiveLearningReliabilityFuncti
 
 /* Constructor with parameters */
 ActiveLearningReliabilityFunctionImplementation::ActiveLearningReliabilityFunctionImplementation(const Scalar reliabilityThreshold,
-                                                                     const Scalar learningThreshold)
-    : EvaluationImplementation()
-    , reliabilityThreshold_(reliabilityThreshold)
-    , learningThreshold_(learningThreshold)
+    const Scalar learningThreshold)
+  : EvaluationImplementation()
+  , reliabilityThreshold_(reliabilityThreshold)
+  , learningThreshold_(learningThreshold)
 {
   if (!std::isfinite(reliabilityThreshold)) throw InvalidArgumentException(HERE) << "Reliability threshold must be finite, here threshold=" << reliabilityThreshold;
   if (!(learningThreshold >= 0.0) || !std::isfinite(learningThreshold)) throw InvalidArgumentException(HERE) << "Learning threshold must be finite and nonnegative, here threshold=" << learningThreshold;
@@ -110,7 +110,7 @@ Bool ActiveLearningReliabilityFunctionImplementation::isMaximization() const
 
 /* Return sample corresponding to  criterion*/
 Sample ActiveLearningReliabilityFunctionImplementation::getInfillSample(const Sample &,
-                                                          const Sample &) const
+    const Sample &) const
 {
   throw NotYetImplementedException(HERE) << "In ActiveLearningReliabilityFunctionImplementation::getInfillSample(const Sample & , const Sample & criterionValues) ";
 }

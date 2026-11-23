@@ -94,22 +94,53 @@ smallAdaptive = ot.FixedStrategy(productBasis, smallBasisSize)
 smallExperiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 40)
 smallX = smallExperiment.generate()
 smallY = model(smallX)
-selectionFactory = ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut())
-algoRef = ot.FunctionalChaosAlgorithm(smallX, smallY, distribution, smallAdaptive, ot.LeastSquaresStrategy(selectionFactory))
+selectionFactory = ot.LeastSquaresMetaModelSelectionFactory(
+    ot.LARS(), ot.CorrectedLeaveOneOut()
+)
+algoRef = ot.FunctionalChaosAlgorithm(
+    smallX,
+    smallY,
+    distribution,
+    smallAdaptive,
+    ot.LeastSquaresStrategy(selectionFactory),
+)
 algoRef.run()
 refIndices = algoRef.getResult().getIndices()
 assert refIndices.getSize() > 0
 wUniform = ot.Point(40, 0.5)
-algoUniform = ot.FunctionalChaosAlgorithm(smallX, wUniform, smallY, distribution, smallAdaptive, ot.LeastSquaresStrategy(selectionFactory))
+algoUniform = ot.FunctionalChaosAlgorithm(
+    smallX,
+    wUniform,
+    smallY,
+    distribution,
+    smallAdaptive,
+    ot.LeastSquaresStrategy(selectionFactory),
+)
 algoUniform.run()
 assert algoUniform.getResult().getIndices() == refIndices
 wQuad = ot.Point([0.5 + 0.1 * (i % 5) for i in range(40)])
 # CorrectedLeaveOneOut has no weighted extension: model selection on a
 # weighted design with it is rejected, use LeaveOneOut instead
-algoQuad = ot.FunctionalChaosAlgorithm(smallX, wQuad, smallY, distribution, smallAdaptive, ot.LeastSquaresStrategy(selectionFactory))
+algoQuad = ot.FunctionalChaosAlgorithm(
+    smallX,
+    wQuad,
+    smallY,
+    distribution,
+    smallAdaptive,
+    ot.LeastSquaresStrategy(selectionFactory),
+)
 with ott.assert_raises(TypeError):
     algoQuad.run()
-selectionFactoryW = ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.LeaveOneOut())
-algoQuadW = ot.FunctionalChaosAlgorithm(smallX, wQuad, smallY, distribution, smallAdaptive, ot.LeastSquaresStrategy(selectionFactoryW))
+selectionFactoryW = ot.LeastSquaresMetaModelSelectionFactory(
+    ot.LARS(), ot.LeaveOneOut()
+)
+algoQuadW = ot.FunctionalChaosAlgorithm(
+    smallX,
+    wQuad,
+    smallY,
+    distribution,
+    smallAdaptive,
+    ot.LeastSquaresStrategy(selectionFactoryW),
+)
 algoQuadW.run()
 assert algoQuadW.getResult().getIndices().getSize() > 0

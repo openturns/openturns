@@ -127,14 +127,23 @@ graphPDF = dist_2d_discrete.drawPDF()
 # Function accessors beyond PDF/CDF, see issue #2763
 funcDist = ot.Normal()
 point = [0.5]
-ott.assert_almost_equal(funcDist.getComplementaryCDF()(point), [funcDist.computeComplementaryCDF(point)])
+ott.assert_almost_equal(
+    funcDist.getComplementaryCDF()(point), [funcDist.computeComplementaryCDF(point)]
+)
 ott.assert_almost_equal(funcDist.getQuantile()([0.9]), funcDist.computeQuantile(0.9))
-ott.assert_almost_equal(funcDist.getSurvivalFunction()(point), [funcDist.computeSurvivalFunction(point)])
-ott.assert_almost_equal(funcDist.getInverseSurvivalFunction()([0.1]), funcDist.computeInverseSurvivalFunction(0.1))
+ott.assert_almost_equal(
+    funcDist.getSurvivalFunction()(point), [funcDist.computeSurvivalFunction(point)]
+)
+ott.assert_almost_equal(
+    funcDist.getInverseSurvivalFunction()([0.1]),
+    funcDist.computeInverseSurvivalFunction(0.1),
+)
 ott.assert_almost_equal(funcDist.getDDF()(point), funcDist.computeDDF(point))
 assert funcDist.getQuantile().getInputDimension() == 1
 assert list(funcDist.getQuantile().getInputDescription()) == ["p"]
-assert list(funcDist.getQuantile().getOutputDescription()) == list(funcDist.getDescription())
+assert list(funcDist.getQuantile().getOutputDescription()) == list(
+    funcDist.getDescription()
+)
 quantileGraph = funcDist.getQuantile().draw(0.01, 0.99)
 if ot.PlatformInfo.HasFeature("libxml2"):
     funcStudy = ot.Study()

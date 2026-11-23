@@ -61,10 +61,14 @@ assert marginal1.getDimension() == 1
 # A huge finite bound must be clamped, not wrapped on UnsignedInteger cast
 ott.assert_almost_equal(distribution.computeCDF([1e300, 1e300, 1e300]), 1.0)
 ott.assert_almost_equal(
-    distribution.computeProbability(ot.Interval([1e300, 1e300, 1e300], [1e301, 1e301, 1e301])),
+    distribution.computeProbability(
+        ot.Interval([1e300, 1e300, 1e300], [1e301, 1e301, 1e301])
+    ),
     0.0,
 )
-ott.assert_almost_equal(distribution.computeSurvivalFunction([1e300, 1e300, 1e300]), 0.0)
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction([1e300, 1e300, 1e300]), 0.0
+)
 
 # Exhaustive coverage against brute force
 
@@ -76,7 +80,10 @@ def log_pochhammer(x, m, c):
 def pdf_formula(n, alpha, c, x):
     q = sum(alpha)
     log_pdf = math.lgamma(n + 1)
-    log_pdf += sum(log_pochhammer(alpha[i], x[i], c) - math.lgamma(x[i] + 1) for i in range(len(alpha)))
+    log_pdf += sum(
+        log_pochhammer(alpha[i], x[i], c) - math.lgamma(x[i] + 1)
+        for i in range(len(alpha))
+    )
     log_pdf -= log_pochhammer(q, n, c)
     return math.exp(log_pdf)
 
@@ -107,17 +114,26 @@ def check_distribution(n, alpha, c):
         rec = sum(m for y, m in mass if all(y[i] <= x[i] for i in range(dim)))
         ott.assert_almost_equal(dist.computeCDF(x), rec, 1e-9, 1e-9)
     for x, ref in mass:
-        ott.assert_almost_equal(dist.computeProbability(ot.Interval(x, x)), ref, 1e-9, 1e-9)
         ott.assert_almost_equal(
-            dist.computeProbability(ot.Interval(dim * [0.0], x)), dist.computeCDF(x), 1e-9, 1e-9
+            dist.computeProbability(ot.Interval(x, x)), ref, 1e-9, 1e-9
+        )
+        ott.assert_almost_equal(
+            dist.computeProbability(ot.Interval(dim * [0.0], x)),
+            dist.computeCDF(x),
+            1e-9,
+            1e-9,
         )
     for x, _ in mass:
         rec_ccdf = sum(m for y, m in mass if not all(y[i] <= x[i] for i in range(dim)))
         ott.assert_almost_equal(dist.computeComplementaryCDF(x), rec_ccdf, 1e-9, 1e-9)
         rec_surv = sum(m for y, m in mass if all(y[i] > x[i] for i in range(dim)))
         ott.assert_almost_equal(dist.computeSurvivalFunction(x), rec_surv, 1e-9, 1e-9)
-        rec_surv0 = sum(m for y, m in mass if all(y[i] > x[i] - 0.5 for i in range(dim)))
-        ott.assert_almost_equal(dist.computeSurvivalFunction([v - 0.5 for v in x]), rec_surv0, 1e-9, 1e-9)
+        rec_surv0 = sum(
+            m for y, m in mass if all(y[i] > x[i] - 0.5 for i in range(dim))
+        )
+        ott.assert_almost_equal(
+            dist.computeSurvivalFunction([v - 0.5 for v in x]), rec_surv0, 1e-9, 1e-9
+        )
     for a, _ in mass:
         for b, _ in mass:
             if all(a[i] <= b[i] for i in range(dim)):
@@ -157,21 +173,31 @@ for x0, x1 in [(0, 2), (1, 1), (2, 2), (3, 0)]:
 dist_perm = otexp.MultivariatePolya(5, [1.0, 2.0, 3.0], 1.0)
 mean_perm = dist_perm.getMean()
 m120 = dist_perm.getMarginal([1, 2, 0])
-ott.assert_almost_equal(m120.getMean(), [mean_perm[1], mean_perm[2], mean_perm[0]], 1e-12)
+ott.assert_almost_equal(
+    m120.getMean(), [mean_perm[1], mean_perm[2], mean_perm[0]], 1e-12
+)
 m210 = dist_perm.getMarginal([2, 1, 0])
-ott.assert_almost_equal(m210.getMean(), [mean_perm[2], mean_perm[1], mean_perm[0]], 1e-12)
+ott.assert_almost_equal(
+    m210.getMean(), [mean_perm[2], mean_perm[1], mean_perm[0]], 1e-12
+)
 # The identity full marginal is unchanged
 ott.assert_almost_equal(dist_perm.getMarginal([0, 1, 2]).getMean(), mean_perm, 1e-12)
 # The degenerate c = 0 limit reorders alpha too
 polya0perm = otexp.MultivariatePolya(5, [1.0, 2.0, 3.0], 0.0)
 mean0 = polya0perm.getMean()
-ott.assert_almost_equal(polya0perm.getMarginal([1, 2, 0]).getMean(), [mean0[1], mean0[2], mean0[0]], 1e-12)
+ott.assert_almost_equal(
+    polya0perm.getMarginal([1, 2, 0]).getMean(), [mean0[1], mean0[2], mean0[0]], 1e-12
+)
 
 q = 10.0
 theta = q / 2.0
 over = (5 + theta) / (1 + theta)
-ott.assert_almost_equal(dist3.getCovariance()[0, 0], 5 * (3 / q) * (1 - 3 / q) * over, 1e-12, 1e-12)
-ott.assert_almost_equal(dist3.getCovariance()[0, 1], -5 * (3 / q) * (3 / q) * over, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    dist3.getCovariance()[0, 0], 5 * (3 / q) * (1 - 3 / q) * over, 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    dist3.getCovariance()[0, 1], -5 * (3 / q) * (3 / q) * over, 1e-12, 1e-12
+)
 
 # Degenerate multinomial limit c = 0
 multi = ot.Multinomial(5, [0.25, 0.5, 0.25])
@@ -179,7 +205,12 @@ polya0 = otexp.MultivariatePolya(5, [1, 2, 1], 0)
 for x in [(0, 5, 0), (1, 2, 2), (2, 3, 0), (4, 1, 0)]:
     ott.assert_almost_equal(polya0.computePDF(x), multi.computePDF(x), 1e-12, 1e-12)
     ott.assert_almost_equal(polya0.computeCDF(x), multi.computeCDF(x), 1e-12, 1e-12)
-ott.assert_almost_equal(polya0.getMarginal(0).computePDF(2), multi.getMarginal(0).computePDF(2), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    polya0.getMarginal(0).computePDF(2),
+    multi.getMarginal(0).computePDF(2),
+    1e-12,
+    1e-12,
+)
 assert polya0.getSupport().getSize() == multi.getSupport().getSize()
 
 # Deterministic 1D limit
@@ -226,17 +257,13 @@ for x, ref in [(a, pdf_formula(3, [3, 3], 1, a)) for a in iter_atoms(3, 2)]:
 # category has very different dispersion (alpha/c << 1).
 dist_reg = otexp.MultivariatePolya(300, [0.3, 0.3, 0.4], 2.0)
 ott.assert_almost_equal(
-    dist_reg.computeProbability(
-        ot.Interval([170.0, 0.0, 0.0], [190.0, 300.0, 300.0])
-    ),
+    dist_reg.computeProbability(ot.Interval([170.0, 0.0, 0.0], [190.0, 300.0, 300.0])),
     0.02195,
     1e-4,
     1e-4,
 )
 ott.assert_almost_equal(
-    dist_reg.computeProbability(
-        ot.Interval([21.0, 0.0, 0.0], [60.0, 300.0, 300.0])
-    ),
+    dist_reg.computeProbability(ot.Interval([21.0, 0.0, 0.0], [60.0, 300.0, 300.0])),
     0.09581,
     1e-4,
     1e-4,
@@ -245,18 +272,24 @@ ott.assert_almost_equal(
 # ---------------- defective case: 1D reduces to beta-binomial, mimicking Multinomial/Binomial ----------------
 # 1D defective support is 0..n and sums to one
 dist_def1 = otexp.MultivariatePolya(5, [3], 2, 10)
-ott.assert_almost_equal(sum(dist_def1.computePDF([x]) for x in range(6)), 1.0, 1e-12, 1e-12)
+ott.assert_almost_equal(
+    sum(dist_def1.computePDF([x]) for x in range(6)), 1.0, 1e-12, 1e-12
+)
 assert dist_def1.getSupport().getSize() == 6
 # Defective 2D PDF sums to one
 dist_def2 = otexp.MultivariatePolya(4, [2, 3], 1.0, 10.0)
-ott.assert_almost_equal(sum(dist_def2.computePDF(p) for p in dist_def2.getSupport()), 1.0, 1e-10, 1e-10)
+ott.assert_almost_equal(
+    sum(dist_def2.computePDF(p) for p in dist_def2.getSupport()), 1.0, 1e-10, 1e-10
+)
 # The marginal of a defective distribution keeps the same total (mimicking Multinomial)
 ott.assert_almost_equal(dist_def2.getMarginal(0).getParameter()[2], 10.0)
 ott.assert_almost_equal(dist_def2.getMarginal([0, 1]).getParameter()[2], 10.0)
 # Degenerate c=0 defective reduces to defective Multinomial
 p0def = otexp.MultivariatePolya(5, [1, 2], 0.0, 6.0)
 m0def = ot.Multinomial(5, [1.0 / 6.0, 2.0 / 6.0])
-ott.assert_almost_equal(p0def.computePDF([1, 2]), m0def.computePDF([1, 2]), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    p0def.computePDF([1, 2]), m0def.computePDF([1, 2]), 1e-12, 1e-12
+)
 
 # DistributionValidation
 ot.Log.Show(ot.Log.TRACE)

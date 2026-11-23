@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all distributions
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -161,10 +161,10 @@ Bool DistributionImplementation::equals(const DistributionImplementation & ) con
 Bool DistributionImplementation::hasEqualBase(const DistributionImplementation & other) const
 {
   return (dimension_ == other.dimension_)
-      && (description_ == other.description_)
-      && (range_ == other.range_)
-      && (isParallel_ == other.isParallel_)
-      && (isCopula_ == other.isCopula_);
+         && (description_ == other.description_)
+         && (range_ == other.range_)
+         && (isParallel_ == other.isParallel_)
+         && (isCopula_ == other.isCopula_);
 }
 
 /* Comparison operator */
@@ -729,13 +729,13 @@ Point DistributionImplementation::getRealizationByInversion() const
 }
 
 
-struct DistributionSequentialConditionalQuantilePolicy
+struct DistributionSequentialConditionalQuantileBody
 {
   const DistributionImplementation & distribution_;
   const Sample input_;
   Sample & output_;
 
-  DistributionSequentialConditionalQuantilePolicy(const DistributionImplementation & distribution,
+  DistributionSequentialConditionalQuantileBody(const DistributionImplementation & distribution,
       const Sample & input,
       Sample & output)
     : distribution_(distribution)
@@ -768,8 +768,8 @@ Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger si
   Sample u(size, dimension_);
   u.getImplementation()->setData(RandomGenerator::Generate(dimension_ * size));
   Sample result(size, dimension_);
-  const DistributionSequentialConditionalQuantilePolicy policy(*this, u, result);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  const DistributionSequentialConditionalQuantileBody body(*this, u, result);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, body, 1024);
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
@@ -780,8 +780,8 @@ Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) co
   const SobolSequence sequence(dimension_);
   const Sample u(sequence.generate(size));
   Sample result(size, dimension_);
-  const DistributionSequentialConditionalQuantilePolicy policy(*this, u, result);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  const DistributionSequentialConditionalQuantileBody body(*this, u, result);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, body, 1024);
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
@@ -1134,36 +1134,17 @@ Sample DistributionImplementation::computeCDFSequential(const Sample & inSample)
   return outSample;
 }
 
-struct ComputeCDFPolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const DistributionImplementation & distribution_;
-
-  ComputeCDFPolicy( const Sample & input,
-                    Sample & output,
-                    const DistributionImplementation & distribution)
-    : input_(input)
-    , output_(output)
-    , distribution_(distribution)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_(i, 0) = distribution_.computeCDF(input_[i]);
-  }
-
-}; /* end struct ComputeCDFPolicy */
-
 Sample DistributionImplementation::computeCDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeCDFPolicy policy(inSample, result, *this);
   // This calls GaussKronrodRule::InitializeRules before entering parallel region to prevent concurrent access
   GaussKronrod::GetRules();
-  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) result(i, 0) = computeCDF(inSample[i]);
+  }, 1024);
   return result;
 }
 
@@ -1182,34 +1163,15 @@ Sample DistributionImplementation::computeComplementaryCDFSequential(const Sampl
   return outSample;
 }
 
-struct ComputeComplementaryCDFPolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const DistributionImplementation & distribution_;
-
-  ComputeComplementaryCDFPolicy( const Sample & input,
-                                 Sample & output,
-                                 const DistributionImplementation & distribution)
-    : input_(input)
-    , output_(output)
-    , distribution_(distribution)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_(i, 0) = distribution_.computeComplementaryCDF(input_[i]);
-  }
-
-}; /* end struct ComputeComplementaryCDFPolicy */
-
 Sample DistributionImplementation::computeComplementaryCDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeComplementaryCDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) result(i, 0) = computeComplementaryCDF(inSample[i]);
+  }, 1024);
   return result;
 }
 
@@ -1228,34 +1190,15 @@ Sample DistributionImplementation::computeSurvivalFunctionSequential(const Sampl
   return outSample;
 }
 
-struct ComputeSurvivalFunctionPolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const DistributionImplementation & distribution_;
-
-  ComputeSurvivalFunctionPolicy( const Sample & input,
-                                 Sample & output,
-                                 const DistributionImplementation & distribution)
-    : input_(input)
-    , output_(output)
-    , distribution_(distribution)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeSurvivalFunction(input_[i]);
-  }
-
-}; /* end struct ComputeSurvivalFunctionPolicy */
-
 Sample DistributionImplementation::computeSurvivalFunctionParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeSurvivalFunctionPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) result(i, 0) = computeSurvivalFunction(inSample[i]);
+  }, 1024);
   return result;
 }
 
@@ -1745,40 +1688,22 @@ Sample DistributionImplementation::computeDDFSequential(const Sample & inSample)
 }
 
 /* Get the DDF of the distribution */
-struct ComputeDDFPolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const DistributionImplementation & distribution_;
-
-  ComputeDDFPolicy( const Sample & input,
-                    Sample & output,
-                    const DistributionImplementation & distribution)
-    : input_(input)
-    , output_(output)
-    , distribution_(distribution)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    const UnsignedInteger dimension = input_.getDimension();
-    UnsignedInteger shift = dimension * r.begin();
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const Point point(distribution_.computeDDF(input_[i]));
-      std::copy(point.begin(), point.end(), output_.getImplementation()->data_begin() + shift);
-      shift += dimension;
-    }
-  }
-}; /* end struct ComputeDDFPolicy */
-
 Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, dimension_);
-  const ComputeDDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    const UnsignedInteger dimension = inSample.getDimension();
+    UnsignedInteger shift = dimension * r.begin();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const Point point(computeDDF(inSample[i]));
+      std::copy(point.begin(), point.end(), result.getImplementation()->data_begin() + shift);
+      shift += dimension;
+    }
+  }, 1024);
   return result;
 }
 
@@ -1799,34 +1724,15 @@ Sample DistributionImplementation::computePDFSequential(const Sample & inSample)
 }
 
 /* Get the PDF of the distribution */
-struct ComputePDFPolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const DistributionImplementation & distribution_;
-
-  ComputePDFPolicy( const Sample & input,
-                    Sample & output,
-                    const DistributionImplementation & distribution)
-    : input_(input)
-    , output_(output)
-    , distribution_(distribution)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computePDF(input_[i]);
-  }
-
-}; /* end struct ComputePDFPolicy */
-
 Sample DistributionImplementation::computePDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputePDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) result(i, 0) = computePDF(inSample[i]);
+  }, 1024);
   return result;
 }
 
@@ -1847,34 +1753,15 @@ Sample DistributionImplementation::computeLogPDFSequential(const Sample & inSamp
 }
 
 /* Get the LogPDF of the distribution */
-struct ComputeLogPDFPolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const DistributionImplementation & distribution_;
-
-  ComputeLogPDFPolicy( const Sample & input,
-                       Sample & output,
-                       const DistributionImplementation & distribution)
-    : input_(input)
-    , output_(output)
-    , distribution_(distribution)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeLogPDF(input_[i]);
-  }
-
-}; /* end struct ComputeLogPDFPolicy */
-
 Sample DistributionImplementation::computeLogPDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeLogPDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) result(i, 0) = computeLogPDF(inSample[i]);
+  }, 1024);
   return result;
 }
 
@@ -2082,44 +1969,22 @@ Sample DistributionImplementation::computeQuantileSequential(const Point & prob,
   return result;
 }
 
-struct ComputeQuantilePolicy
-{
-  const Point & prob_;
-  Sample & output_;
-  Bool tail_;
-  const DistributionImplementation & distribution_;
-
-  ComputeQuantilePolicy( const Point & prob,
-                         Sample & output,
-                         const Bool tail,
-                         const DistributionImplementation & distribution)
-    : prob_(prob)
-    , output_(output)
-    , tail_(tail)
-    , distribution_(distribution)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    const UnsignedInteger dimension = distribution_.getDimension();
-    UnsignedInteger shift = dimension * r.begin();
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const Point point(distribution_.computeQuantile(prob_[i], tail_));
-      std::copy(point.begin(), point.end(), output_.getImplementation()->data_begin() + shift);
-      shift += dimension;
-    }
-  }
-
-}; /* end struct ComputeQuantilePolicy */
-
 Sample DistributionImplementation::computeQuantileParallel(const Point & prob,
     const Bool tail) const
 {
   const UnsignedInteger size = prob.getSize();
   Sample result(size, dimension_);
-  const ComputeQuantilePolicy policy(prob, result, tail, *this);
-  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    const UnsignedInteger dimension = getDimension();
+    UnsignedInteger shift = dimension * r.begin();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const Point point(computeQuantile(prob[i], tail));
+      std::copy(point.begin(), point.end(), result.getImplementation()->data_begin() + shift);
+      shift += dimension;
+    }
+  }, 1024);
   return result;
 }
 
@@ -2225,32 +2090,6 @@ Point DistributionImplementation::computeLogPDFGradient(const Point & point) con
     return Point(getParameterDimension(), 0.0);
 }
 
-/* Get the LogPDFGradient of the distributionImplementation */
-struct ComputeLogPDFGradientPolicy
-{
-  const Sample & input_;
-  Sample & output_;
-  const DistributionImplementation & distribution_;
-
-  ComputeLogPDFGradientPolicy( const Sample & input,
-                               Sample & output,
-                               const DistributionImplementation & distribution)
-    : input_(input)
-    , output_(output)
-    , distribution_(distribution)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const Point out = distribution_.computeLogPDFGradient(input_[i]);
-      for (UnsignedInteger j = 0; j < output_.getDimension(); ++j)
-        output_(i, j) = out[j];
-    }
-  }
-}; /* end struct ComputeLogPDFGradientPolicy */
-
 /* Get the logPDF gradient of the distribution (sequential implementation) */
 Sample DistributionImplementation::computeLogPDFGradientSequential(const Sample & sample) const
 {
@@ -2271,8 +2110,15 @@ Sample DistributionImplementation::computeLogPDFGradientParallel(const Sample & 
 {
   const UnsignedInteger size = sample.getSize();
   Sample outSample(size, getParameterDimension());
-  const ComputeLogPDFGradientPolicy policy(sample, outSample, *this);
-  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const Point out = computeLogPDFGradient(sample[i]);
+      for (UnsignedInteger j = 0; j < outSample.getDimension(); ++j)
+        outSample(i, j) = out[j];
+    }
+  }, 1024);
   return outSample;
 }
 
@@ -3316,7 +3162,8 @@ Collection<LevelSet> DistributionImplementation::computeMinimumVolumeLevelSetCol
 
 LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const Scalar prob,
     Scalar & threshold) const
-{  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+{
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // As we are in 1D and as the function defining the composite distribution can have complex variations,
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
@@ -5848,24 +5695,41 @@ DistributionImplementation::PointWithDescriptionCollection DistributionImplement
 
 void DistributionImplementation::setParametersCollection(const PointWithDescriptionCollection & parametersCollection)
 {
+  // Get the actual collection of parameters to check the size
+  const PointWithDescriptionCollection actualParameters(getParametersCollection());
+  const UnsignedInteger size = actualParameters.getSize();
+  if (parametersCollection.getSize() != size)
+  {
+    // The size differs: the distribution may still support a dimension change
+    // (e.g. EllipticalDistribution, Dirac). Strip descriptions and delegate
+    // to the PointCollection overload, which performs its own validation.
+    // Check entry sizes up-front: overrides index entries directly with
+    // unchecked Collection::operator[], so empty entries would be UB
+    // instead of an exception. Short non-empty entries are rejected by the
+    // override itself (EllipticalDistribution, Student, Dirac validate each
+    // entry dimension before indexing).
+    for (UnsignedInteger i = 0; i < parametersCollection.getSize(); ++ i)
+      if (parametersCollection[i].getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: the given parameters collection has an empty entry at index " << i;
+    PointCollection parameters(0);
+    for (UnsignedInteger i = 0; i < parametersCollection.getSize(); ++ i) parameters.add(parametersCollection[i]);
+    setParametersCollection(parameters);
+    return;
+  }
   if (getDimension() == 1)
   {
-    if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Expected collection of size 1, got " << parametersCollection.getSize();
     setParameter(parametersCollection[0]);
+    return;
   }
 
   // Get the actual collection of parameters to check the description and the size
-  const PointWithDescriptionCollection actualParameters(getParametersCollection());
-  const UnsignedInteger size = actualParameters.getSize();
-  if (parametersCollection.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the given parameters collection has an invalid size (" << parametersCollection.getSize() << "), it should be " << size;
-  PointCollection coll(0);
+  PointCollection parameters(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger dimension = actualParameters[i].getDimension();
     if (parametersCollection[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given parameters collection has an invalid dimension at index " << i;
-    coll.add(parametersCollection[i]);
+    parameters.add(parametersCollection[i]);
   }
-  setParametersCollection(coll);
+  setParametersCollection(parameters);
 }
 
 void DistributionImplementation::setParametersCollection(const PointCollection & parametersCollection)

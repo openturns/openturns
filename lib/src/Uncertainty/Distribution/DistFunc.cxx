@@ -2,7 +2,7 @@
 /**
  *  @brief OpenTURNS wrapper to a library of special functions
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -2474,31 +2474,31 @@ Scalar DistFunc::pStudentOrthantND(const Point & a, const Point & b,
 }
 
 Scalar DistFunc::pNormalND(const Point & a, const Point & b,
-                            const TriangularMatrix & L,
-                            const UnsignedInteger n)
+                           const TriangularMatrix & L,
+                           const UnsignedInteger n)
 {
   return mvn_rectangular_probability(a, b, L, n);
 }
 
 Scalar DistFunc::pNormalND(const Point & a, const Point & b,
-                            const Point & mu, const TriangularMatrix & L,
-                            const UnsignedInteger n)
+                           const Point & mu, const TriangularMatrix & L,
+                           const UnsignedInteger n)
 {
   return mvn_rectangular_probability(a, b, mu, L, n);
 }
 
 Scalar DistFunc::pStudentND(const Point & a, const Point & b,
-                             const TriangularMatrix & L,
-                             const Scalar nu,
-                             const UnsignedInteger n)
+                            const TriangularMatrix & L,
+                            const Scalar nu,
+                            const UnsignedInteger n)
 {
   return mvt_rectangular_probability(a, b, L, nu, n);
 }
 
 Scalar DistFunc::pStudentND(const Point & a, const Point & b,
-                             const Point & mu, const TriangularMatrix & L,
-                             const Scalar nu,
-                             const UnsignedInteger n)
+                            const Point & mu, const TriangularMatrix & L,
+                            const Scalar nu,
+                            const UnsignedInteger n)
 {
   return mvt_rectangular_probability(a, b, mu, L, nu, n);
 }

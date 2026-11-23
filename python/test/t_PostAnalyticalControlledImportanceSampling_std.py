@@ -85,4 +85,6 @@ for i, comp in enumerate([ot.Less(), ot.Greater()]):
             ref = threshold
         else:
             ref = 1.0 - threshold
-        ott.assert_almost_equal(algo.getResult().getProbabilityEstimate(), ref, 1e-2, 1e-2)
+        ott.assert_almost_equal(
+            algo.getResult().getProbabilityEstimate(), ref, 1e-2, 1e-2
+        )

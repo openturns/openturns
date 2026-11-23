@@ -2,7 +2,7 @@
 /**
  *  @brief The Normal distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -878,11 +878,22 @@ void Normal::setR(const CorrelationMatrix & R)
   checkIndependentCopula();
 }
 
+/* Parameters accessors */
+void Normal::setParametersCollection(const PointCollection & parametersCollection)
+{
+  EllipticalDistribution::setParametersCollection(parametersCollection);
+  // The upper class updates the shape but not the Normal-specific state,
+  // which depends on the dimension and the correlation structure
+  logNormalizationFactor_ = (-1.0 * getDimension()) * SpecFunc::LOGSQRT2PI;
+  checkIndependentCopula();
+}
+
 /* Parameters accessor */
 void Normal::setParameter(const Point & parameter)
 {
   EllipticalDistribution::setParameter(parameter);
-  // The upper class updates the shape but not the independence status
+  // The upper class updates the shape but not the Normal-specific state
+  logNormalizationFactor_ = (-1.0 * getDimension()) * SpecFunc::LOGSQRT2PI;
   checkIndependentCopula();
 }
 

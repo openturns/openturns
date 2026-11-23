@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblem allows one to describe an optimization problem
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,6 +25,7 @@
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/OptimizationProblemImplementation.hxx"
+#include "openturns/SparseMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -100,6 +101,9 @@ public:
   /** Linear function accessor */
   Point getLinearCost() const;
   Matrix getLinearConstraintCoefficients() const;
+#ifndef SWIG
+  SparseMatrix getSparseLinearConstraintCoefficients() const;
+#endif
   Interval getLinearConstraintBounds() const;
   Bool isLinear() const;
 

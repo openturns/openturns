@@ -100,9 +100,15 @@ ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [0.720205]), 1e-5, 0.
 parameters = distribution.getParametersCollection()
 assert len(parameters) == 1
 ott.assert_almost_equal(
-    parameters[0], [-1.5, 1.0, 0.0625, 0.7, 0.1875, 1.2, 0.4375, 0.9, 0.3125], 1e-12, 0.0
+    parameters[0],
+    [-1.5, 1.0, 0.0625, 0.7, 0.1875, 1.2, 0.4375, 0.9, 0.3125],
+    1e-12,
+    0.0,
 )
-assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Histogram"
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "Histogram"
+)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)

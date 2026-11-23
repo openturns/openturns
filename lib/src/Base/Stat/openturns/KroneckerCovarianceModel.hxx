@@ -3,7 +3,7 @@
  *  @brief This class is enables to build an kronecker covariance
  *  model
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -119,7 +119,7 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-  friend struct KroneckerModelDiscretizePolicy;
+  friend struct KroneckerModelDiscretizeBody;
   void setCorrelationModel(const CovarianceModel & rho);
   Scalar computeRhoOverSample(const Collection<Scalar>::const_iterator &s_begin,
                               const Collection<Scalar>::const_iterator &t_begin) const;

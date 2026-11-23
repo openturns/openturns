@@ -24,13 +24,15 @@ def compute_norm_error(
     trans_hmat: str,
     trans_dense: str,
     alpha: float,
-    hmat : ot.HMatrix,
+    hmat: ot.HMatrix,
     chol_dense: ot.TriangularMatrix,
     random_sample_mat,
 ) -> float:
     """Computes the norm error between the GEMM product from HMatrix and a reference matrix product."""
     # 1. Compute result using HMatrix method
-    epsilon_hmat = hmat.gemm_dense(trans_hmat, trans_dense, side, alpha, random_sample_mat)
+    epsilon_hmat = hmat.gemm_dense(
+        trans_hmat, trans_dense, side, alpha, random_sample_mat
+    )
 
     # 2. Determine transpose flags based on side
     transpose_result = False
@@ -45,7 +47,11 @@ def compute_norm_error(
 
     # 3. Handle transpose for operand matrices
     left = ot.Matrix(chol_dense.transpose()) if trans_b_flag else ot.Matrix(chol_dense)
-    right = ot.Matrix(random_sample_mat.transpose()) if trans_a_flag else ot.Matrix(random_sample_mat)
+    right = (
+        ot.Matrix(random_sample_mat.transpose())
+        if trans_a_flag
+        else ot.Matrix(random_sample_mat)
+    )
 
     # 4. Matrix multiplication for reference product
     epsilon_mat = left * right
@@ -96,7 +102,7 @@ for j in range(fullDense.getNbColumns()):
 # Reference cholsesky
 cholDense = fullDense.computeCholesky()
 
-side_transHMat_transDense = itertools.product(['L', 'R'], ['N', 'T'], ['N', 'T'])
+side_transHMat_transDense = itertools.product(["L", "R"], ["N", "T"], ["N", "T"])
 
 # First check with identity
 randomSampleMat = ot.IdentityMatrix(hmat.getNbRows())
@@ -104,8 +110,10 @@ randomSampleMat = ot.IdentityMatrix(hmat.getNbRows())
 # For identity matrix, hmat * eye,  eye * hmat, hmat.T * eye, eye * hmat.T provide has the same norm
 norms = []
 for side, transHMat, transDense in side_transHMat_transDense:
-    norm_diff = compute_norm_error(side, transHMat, transDense, 1.0, hmat, cholDense, randomSampleMat)
-    ott.assert_almost_equal(norm_diff, 2.e-5, 1e-3, 1e-3)
+    norm_diff = compute_norm_error(
+        side, transHMat, transDense, 1.0, hmat, cholDense, randomSampleMat
+    )
+    ott.assert_almost_equal(norm_diff, 2.0e-5, 1e-3, 1e-3)
 
     norms.append(norm_diff)
 
@@ -120,13 +128,13 @@ randomSampleMat = ot.Matrix(hmat.getNbColumns(), nSamples, randomSample)
 
 # Case a : side = 'L', transA = 'N', transB = 'N'
 norms = []
-norm_diff = compute_norm_error('L', 'N', 'N', 1.0, hmat, cholDense, randomSampleMat)
+norm_diff = compute_norm_error("L", "N", "N", 1.0, hmat, cholDense, randomSampleMat)
 norms.append(norm_diff)
 ott.assert_almost_equal(norm_diff, 0.0, 1e-3, 1e-3)
 
 
 # Case b : side = 'R', transA = 'T', transB = 'T' (same result as case a expected)
-norm_diff = compute_norm_error('R', 'T', 'T', 1.0, hmat, cholDense, randomSampleMat)
+norm_diff = compute_norm_error("R", "T", "T", 1.0, hmat, cholDense, randomSampleMat)
 norms.append(norm_diff)
 ott.assert_almost_equal(norm_diff, 0.0, 1e-3, 1e-3)
 
@@ -136,12 +144,12 @@ ott.assert_almost_equal(sigma, 0, 1e-12, 1e-12)
 
 norms = []
 # Case c : side = 'L', transA = 'N', transB = 'T'
-norm_diff = compute_norm_error('L', 'T', 'N', 1.0, hmat, cholDense, randomSampleMat)
+norm_diff = compute_norm_error("L", "T", "N", 1.0, hmat, cholDense, randomSampleMat)
 ott.assert_almost_equal(norm_diff, 0.0, 1e-3, 1e-3)
 norms.append(norm_diff)
 
 # Case d : side = 'R', transA = 'T', transB = 'N' (same result as case c expected)
-norm_diff = compute_norm_error('R', 'N', 'T', 1.0, hmat, cholDense, randomSampleMat)
+norm_diff = compute_norm_error("R", "N", "T", 1.0, hmat, cholDense, randomSampleMat)
 ott.assert_almost_equal(norm_diff, 0.0, 1e-3, 1e-3)
 norms.append(norm_diff)
 # check the results are the same

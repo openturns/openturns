@@ -3,7 +3,7 @@
 /**
  *  @brief The Multinomial distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,7 @@
  */
 #include <cmath>
 #include <algorithm>
+#include <limits>
 #include "openturns/Collection.hxx"
 #include "openturns/Multinomial.hxx"
 #include "openturns/Binomial.hxx"
@@ -357,8 +358,11 @@ Scalar Multinomial::computeCDF(const Point & point) const
     return Multinomial(n_, pReduced).computeCDF(xReduced);
   }
   // Evaluation of P(W=n) using Poisson's formula
-  return PoissonFormula::computeCDF([&](const Complex & z) { return computeGlobalPhi(z, kPoint); },
-                                    n_, r_, normalizationCDF_, getClassName());
+  return PoissonFormula::computeCDF([&](const Complex & z)
+  {
+    return computeGlobalPhi(z, kPoint);
+  },
+  n_, r_, normalizationCDF_, getClassName());
 }
 
 /* Compute the probability content of an interval */
@@ -437,8 +441,11 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   }
   // Diametral term
   const Scalar poisLogPDF = DistFunc::logdPoisson(n_, n_);
-  return PoissonFormula::computeProbability([&](const Complex & z) { return computeGlobalPhi(z, a, b); },
-                                            nA, r, logCoefNorm, poisLogPDF);
+  return PoissonFormula::computeProbability([&](const Complex & z)
+  {
+    return computeGlobalPhi(z, a, b);
+  },
+  nA, r, logCoefNorm, poisLogPDF);
 }
 
 /* Get the survival function of the distribution */
@@ -722,11 +729,17 @@ void Multinomial::setParameter(const Point & parameter)
   const UnsignedInteger dimension = getDimension();
   if (parameter.getDimension() != (dimension + 1))
     throw InvalidArgumentException(HERE) << "Multinomial expected " << (dimension + 1) << " parameters, got " << parameter.getDimension();
-  if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n must be an integer, got " << parameter[0];
-  setN(parameter[0]);
+  const Scalar nScalar = parameter[0];
+  if (!(nScalar >= 0.0) || (nScalar != std::round(nScalar))) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n must be an integer, got " << parameter[0];
+  if (!(nScalar < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits))) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n is too large, got " << parameter[0];
   Point p(dimension);
   std::copy(parameter.begin() + 1, parameter.end(), p.begin());
-  setP(p);
+  // No partial update on error: stage on a copy to preserve description and numerical settings, then commit at once
+  Multinomial stagedDistribution(*this);
+  stagedDistribution.setN(static_cast<UnsignedInteger>(nScalar));
+  stagedDistribution.setP(p);
+  stagedDistribution.computeRange();
+  *this = stagedDistribution;
 }
 
 /* Check if the distribution is elliptical */

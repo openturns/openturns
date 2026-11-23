@@ -2,7 +2,7 @@
 /**
  *  @brief Subset simulation method
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -78,8 +78,8 @@ void SubsetSampling::setEvent(const RandomVector & event)
   const UnsignedInteger outputDimension = composedEvent.getFunction().getOutputDimension();
   if (outputDimension > 1)
     throw InvalidArgumentException(HERE)
-      << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension="
-      << outputDimension;
+        << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension="
+        << outputDimension;
 
   EventSimulationImplementation::setEvent(composedEvent);
   setInitialExperiment(initialExperiment_);
@@ -575,7 +575,7 @@ Sample SubsetSampling::getInputSample() const
   if (!keepSample_)
     throw InvalidArgumentException(HERE) << "SubsetSampling keepSample was not set";
 
-  return getInputSample(getStepsNumber()-1, BOTH);
+  return getInputSample(getStepsNumber() - 1, BOTH);
 }
 
 Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool status) const

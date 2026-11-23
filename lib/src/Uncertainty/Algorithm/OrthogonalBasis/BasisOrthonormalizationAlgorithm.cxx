@@ -2,7 +2,7 @@
 /**
  *  @brief Basis orthonormalization algorithm
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -96,7 +96,7 @@ public:
   String __repr__() const override
   {
     return OSS() << "class=FixedMeasureExperiment"
-                 << " size=" << getSize();
+           << " size=" << getSize();
   }
 
   void save(Advocate & adv) const override

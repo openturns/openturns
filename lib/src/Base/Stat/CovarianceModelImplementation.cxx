@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -759,40 +759,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
   return discretize(timeGrid.getVertices());
 }
 
-struct CovarianceModelDiscretizePolicy
-{
-  const SampleImplementation & input_;
-  CovarianceMatrix & output_;
-  const CovarianceModelImplementation & model_;
-  const UnsignedInteger outputDimension_;
-
-  CovarianceModelDiscretizePolicy(const Sample & input,
-                                  CovarianceMatrix & output,
-                                  const CovarianceModelImplementation & model)
-    : input_(*input.getImplementation())
-    , output_(output)
-    , model_(model)
-    , outputDimension_(model.getOutputDimension())
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const UnsignedInteger jLocal = static_cast< UnsignedInteger >(sqrt(2.0 * i + 0.25) - 0.5);
-      const UnsignedInteger jBase = jLocal * outputDimension_;
-      const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
-      const UnsignedInteger iBase = iLocal * outputDimension_;
-      const SquareMatrix localCovariance(model_(input_[iLocal], input_[jLocal]));
-      for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
-        for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
-          output_(iBase + ii, jBase + jj) = localCovariance(ii, jj);
-    }
-  }
-
-}; /* end struct CovarianceModelDiscretizePolicy */
-
-struct CovarianceModelDiscretizeScalarPolicy
+struct CovarianceModelDiscretizeScalarBody
 {
   const SampleImplementation & input_;
   // output_ is a CovarianceMatrix, but since we fill only its half part,
@@ -802,7 +769,7 @@ struct CovarianceModelDiscretizeScalarPolicy
   const CovarianceModelImplementation & model_;
   const UnsignedInteger inputDimension_;
 
-  CovarianceModelDiscretizeScalarPolicy(const Sample & input,
+  CovarianceModelDiscretizeScalarBody(const Sample & input,
                                         CovarianceMatrix & output,
                                         const CovarianceModelImplementation & model)
     : input_(*input.getImplementation())
@@ -821,9 +788,9 @@ struct CovarianceModelDiscretizeScalarPolicy
       output_(jLocal, iLocal) = model_.computeAsScalar(input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
     }
   }
-}; /* end struct CovarianceModelDiscretizeScalarPolicy */
+}; /* end struct CovarianceModelDiscretizeScalarBody */
 
-struct CovarianceModelDiscretizeDiagonalPolicy
+struct CovarianceModelDiscretizeDiagonalBody
 {
   const SampleImplementation & input_;
   // output_ is a CovarianceMatrix, but since we fill only its half part,
@@ -834,7 +801,7 @@ struct CovarianceModelDiscretizeDiagonalPolicy
   const UnsignedInteger outputDimension_;
   const UnsignedInteger inputDimension_;
 
-  CovarianceModelDiscretizeDiagonalPolicy(const Sample & input,
+  CovarianceModelDiscretizeDiagonalBody(const Sample & input,
                                           CovarianceMatrix & output,
                                           const CovarianceModelImplementation & model)
     : input_(*input.getImplementation())
@@ -865,11 +832,11 @@ struct CovarianceModelDiscretizeDiagonalPolicy
       // lower-triangle slot used as canonical storage by SymmetricMatrix
       for (UnsignedInteger k = 0; k < outputDimension_; ++k)
         output_(jBase + k, iBase + k) = marginals_[k].getImplementation()->computeAsScalar(
-          input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
+                                          input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
     }
   }
 
-}; /* end struct CovarianceModelDiscretizeDiagonalPolicy */
+}; /* end struct CovarianceModelDiscretizeDiagonalBody */
 
 CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertices) const
 {
@@ -878,9 +845,9 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
   if (getOutputDimension() == 1)
   {
     CovarianceMatrix covarianceMatrix(size);
-    const CovarianceModelDiscretizeScalarPolicy policy(vertices, covarianceMatrix, *this);
+    const CovarianceModelDiscretizeScalarBody body(vertices, covarianceMatrix, *this);
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
     return covarianceMatrix;
   }
   else if (isDiagonal())
@@ -890,146 +857,34 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     // SquareMatrix allocation and the full block copies
     const UnsignedInteger fullSize = size * outputDimension_;
     CovarianceMatrix covarianceMatrix(fullSize);
-    const CovarianceModelDiscretizeDiagonalPolicy policy( vertices, covarianceMatrix, *this );
+    const CovarianceModelDiscretizeDiagonalBody body( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
     return covarianceMatrix;
   }
   else
   {
     const UnsignedInteger fullSize = size * outputDimension_;
     CovarianceMatrix covarianceMatrix(fullSize);
-    const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
+    const SampleImplementation & verticesImpl = *vertices.getImplementation();
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      {
+        const UnsignedInteger jLocal = static_cast< UnsignedInteger >(sqrt(2.0 * i + 0.25) - 0.5);
+        const UnsignedInteger jBase = jLocal * outputDimension_;
+        const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
+        const UnsignedInteger iBase = iLocal * outputDimension_;
+        const SquareMatrix localCovariance((*this)(verticesImpl[iLocal], verticesImpl[jLocal]));
+        for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
+          for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
+            covarianceMatrix(iBase + ii, jBase + jj) = localCovariance(ii, jj);
+      }
+    }, 1024);
     return covarianceMatrix;
   }
 }
-
-struct CrossCovarianceFunctor1D
-{
-  const SampleImplementation &firstSample_;
-  const SampleImplementation &secondSample_;
-  MatrixImplementation &output_;
-  const CovarianceModelImplementation &model_;
-
-  CrossCovarianceFunctor1D(const Sample &firstSample,
-                           const Sample &secondSample,
-                           Matrix &output,
-                           const CovarianceModelImplementation &model)
-    : firstSample_(*firstSample.getImplementation())
-    , secondSample_(*secondSample.getImplementation())
-    , output_(*output.getImplementation())
-    , model_(model)
-  {
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
-  {
-
-    const UnsignedInteger inputDimension = firstSample_.getDimension();
-    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
-    {
-      // Fill by column
-      // Fill Matrix is firstSampleSize x secondSampleSize
-      // As we might have strong differences between sizes, the loop rely on final blocksize
-      const UnsignedInteger columnIndex = index / firstSample_.getSize();
-      const UnsignedInteger rowIndex = index - columnIndex * firstSample_.getSize();
-      output_(rowIndex, columnIndex) = model_.computeAsScalar(firstSample_.data_begin() + (rowIndex * inputDimension),
-                                       secondSample_.data_begin() + (columnIndex * inputDimension));
-    }
-  } // operator()
-};
-/* end struct CrossCovarianceFunctor1D */
-
-struct CrossCovarianceFunctor
-{
-  const SampleImplementation &firstSample_;
-  const SampleImplementation &secondSample_;
-  MatrixImplementation &output_;
-  const CovarianceModelImplementation &model_;
-  const UnsignedInteger dimension_;
-
-  CrossCovarianceFunctor(const Sample &firstSample,
-                         const Sample &secondSample,
-                         Matrix &output,
-                         const CovarianceModelImplementation &model)
-    : firstSample_(*firstSample.getImplementation())
-    , secondSample_(*secondSample.getImplementation())
-    , output_(*output.getImplementation())
-    , model_(model)
-    , dimension_(model.getOutputDimension())
-  {
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      // Fill by column
-      // jLocal ==> which column to fill
-      // jBase : use of block size to determine first element of matrix
-      // iLocal : for a fixed jLocal row, which iLocal-th element to fill
-      // iBase : same as jBase but for rows
-      const UnsignedInteger jLocal = i / firstSample_.getSize();
-      const UnsignedInteger jBase = jLocal * dimension_;
-      const UnsignedInteger iLocal = i - jLocal * firstSample_.getSize();
-      const UnsignedInteger iBase = iLocal * dimension_;
-      // Local covariance matrix
-      const SquareMatrix localCovariance(model_(firstSample_[iLocal], secondSample_[jLocal]));
-      for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
-      {
-        for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
-        {
-          output_(iBase + ii, jBase + jj) = localCovariance(ii, jj);
-        }
-      }
-    }
-  }
-};
-/* end struct CrossCovarianceFunctor */
-
-struct CrossCovarianceDiagonalFunctor
-{
-  const SampleImplementation &firstSample_;
-  const SampleImplementation &secondSample_;
-  MatrixImplementation &output_;
-  const Collection<CovarianceModel> marginals_;
-  const UnsignedInteger dimension_;
-  const UnsignedInteger firstInputDimension_;
-  const UnsignedInteger secondInputDimension_;
-
-  CrossCovarianceDiagonalFunctor(const Sample &firstSample,
-                                 const Sample &secondSample,
-                                 Matrix &output,
-                                 const CovarianceModelImplementation &model)
-    : firstSample_(*firstSample.getImplementation())
-    , secondSample_(*secondSample.getImplementation())
-    , output_(*output.getImplementation())
-    , marginals_(CovarianceModelDiscretizeDiagonalPolicy::buildMarginals(model))
-    , dimension_(model.getOutputDimension())
-    , firstInputDimension_(firstSample_.getDimension())
-    , secondInputDimension_(secondSample_.getDimension())
-  {
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
-  {
-    const UnsignedInteger firstSampleSize = firstSample_.getSize();
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      // Fill by column
-      const UnsignedInteger jLocal = i / firstSampleSize;
-      const UnsignedInteger jBase = jLocal * dimension_;
-      const UnsignedInteger iLocal = i - jLocal * firstSampleSize;
-      const UnsignedInteger iBase = iLocal * dimension_;
-      for (UnsignedInteger k = 0; k < dimension_; ++k)
-        output_(iBase + k, jBase + k) = marginals_[k].getImplementation()->computeAsScalar(
-          firstSample_.data_begin() + iLocal * firstInputDimension_, secondSample_.data_begin() + jLocal * secondInputDimension_);
-    }
-  }
-};
-/* end struct CrossCovarianceDiagonalFunctor */
 
 Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &firstSample,
     const Sample &secondSample) const
@@ -1046,9 +901,24 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
     const UnsignedInteger firstSampleSize = firstSample.getSize();
     const UnsignedInteger secondSampleSize = secondSample.getSize();
     Matrix result(firstSampleSize, secondSampleSize);
-    const CrossCovarianceFunctor1D policy(firstSample, secondSample, result, *this);
+    const SampleImplementation & firstSampleImpl = *firstSample.getImplementation();
+    const SampleImplementation & secondSampleImpl = *secondSample.getImplementation();
+    MatrixImplementation & resultImpl = *result.getImplementation();
     // The loop is over X & Y samples
-    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      const UnsignedInteger inputDimension = firstSampleImpl.getDimension();
+      for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
+      {
+        // Fill by column
+        // Fill Matrix is firstSampleSize x secondSampleSize
+        // As we might have strong differences between sizes, the loop rely on final blocksize
+        const UnsignedInteger columnIndex = index / firstSampleImpl.getSize();
+        const UnsignedInteger rowIndex = index - columnIndex * firstSampleImpl.getSize();
+        resultImpl(rowIndex, columnIndex) = computeAsScalar(firstSampleImpl.data_begin() + (rowIndex * inputDimension),
+            secondSampleImpl.data_begin() + (columnIndex * inputDimension));
+      }
+    }, 1024);
     return result;
   }
   const UnsignedInteger firstSampleSize = firstSample.getSize();
@@ -1061,79 +931,59 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
     // The output blocks are diagonal, so the marginal scalar models can be
     // evaluated directly into the diagonal entries, avoiding the per-pair
     // SquareMatrix allocation and the full block copies
-    const CrossCovarianceDiagonalFunctor policy(firstSample, secondSample, result, *this);
+    const Collection<CovarianceModel> marginals(CovarianceModelDiscretizeDiagonalBody::buildMarginals(*this));
+    const SampleImplementation & firstSampleImpl = *firstSample.getImplementation();
+    const SampleImplementation & secondSampleImpl = *secondSample.getImplementation();
+    MatrixImplementation & resultImpl = *result.getImplementation();
+    const UnsignedInteger firstInputDimension = firstSampleImpl.getDimension();
+    const UnsignedInteger secondInputDimension = secondSampleImpl.getDimension();
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      {
+        // Fill by column
+        const UnsignedInteger jLocal = i / firstSampleSize;
+        const UnsignedInteger jBase = jLocal * dimension;
+        const UnsignedInteger iLocal = i - jLocal * firstSampleSize;
+        const UnsignedInteger iBase = iLocal * dimension;
+        for (UnsignedInteger k = 0; k < dimension; ++k)
+          resultImpl(iBase + k, jBase + k) = marginals[k].getImplementation()->computeAsScalar(
+              firstSampleImpl.data_begin() + iLocal * firstInputDimension, secondSampleImpl.data_begin() + jLocal * secondInputDimension);
+      }
+    }, 1024);
     return result;
   }
-  const CrossCovarianceFunctor policy(firstSample, secondSample, result, *this);
+  const SampleImplementation & firstSampleImpl = *firstSample.getImplementation();
+  const SampleImplementation & secondSampleImpl = *secondSample.getImplementation();
+  MatrixImplementation & resultImpl = *result.getImplementation();
   // The loop is over the lower block-triangular part
-  TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      // Fill by column
+      // jLocal ==> which column to fill
+      // jBase : use of block size to determine first element of matrix
+      // iLocal : for a fixed jLocal row, which iLocal-th element to fill
+      // iBase : same as jBase but for rows
+      const UnsignedInteger jLocal = i / firstSampleImpl.getSize();
+      const UnsignedInteger jBase = jLocal * dimension;
+      const UnsignedInteger iLocal = i - jLocal * firstSampleImpl.getSize();
+      const UnsignedInteger iBase = iLocal * dimension;
+      // Local covariance matrix
+      const SquareMatrix localCovariance((*this)(firstSampleImpl[iLocal], secondSampleImpl[jLocal]));
+      for (UnsignedInteger jj = 0; jj < dimension; ++jj)
+      {
+        for (UnsignedInteger ii = 0; ii < dimension; ++ii)
+        {
+          resultImpl(iBase + ii, jBase + jj) = localCovariance(ii, jj);
+        }
+      }
+    }
+  }, 1024);
   return result;
 }
-
-struct CrossCovariancePointFunctor1D
-{
-  const SampleImplementation &sample_;
-  const Point &point_;
-  MatrixImplementation &output_;
-  const CovarianceModelImplementation &model_;
-
-  CrossCovariancePointFunctor1D(const Sample &sample,
-                                const Point &point,
-                                Matrix &output,
-                                const CovarianceModelImplementation &model)
-    : sample_(*sample.getImplementation())
-    , point_(point)
-    , output_(*output.getImplementation())
-    , model_(model)
-  {
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
-  {
-
-    const UnsignedInteger inputDimension = point_.getDimension();
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      output_(i, 0) = model_.computeAsScalar(sample_.data_begin() + (i * inputDimension),
-                                             point_.begin());
-    }
-  } // operator()
-};
-/* end struct CrossCovariancePointFunctor1D */
-
-struct CrossCovariancePointFunctor
-{
-  const SampleImplementation &sample_;
-  const Point &point_;
-  MatrixImplementation &output_;
-  const CovarianceModelImplementation &model_;
-
-  CrossCovariancePointFunctor(const Sample &sample,
-                              const Point &point,
-                              Matrix &output,
-                              const CovarianceModelImplementation &model)
-    : sample_(*sample.getImplementation())
-    , point_(point)
-    , output_(*output.getImplementation())
-    , model_(model)
-  {
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
-  {
-    const UnsignedInteger dimension = model_.getOutputDimension();
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      SquareMatrix localCovariance(model_(sample_[i], point_));
-      for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++columnIndex)
-        for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
-          output_(i * dimension + rowIndex, columnIndex) = localCovariance(rowIndex, columnIndex);
-    }
-  } // operator()
-};
-/* end struct CrossCovariancePointFunctor */
 
 Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sample,
     const Point &point) const
@@ -1143,15 +993,34 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sampl
   if (outputDimension == 1)
   {
     Matrix result(size, 1);
-    const CrossCovariancePointFunctor1D policy(sample, point, result, *this);
+    const SampleImplementation & sampleImpl = *sample.getImplementation();
+    MatrixImplementation & resultImpl = *result.getImplementation();
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      const UnsignedInteger inputDimension = point.getDimension();
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      {
+        resultImpl(i, 0) = computeAsScalar(sampleImpl.data_begin() + (i * inputDimension),
+            point.begin());
+      }
+    }, 1024);
     return result;
   }
   const UnsignedInteger fullSize = size * outputDimension;
   Matrix result(fullSize, outputDimension);
-  const CrossCovariancePointFunctor policy(sample, point, result, *this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  const SampleImplementation & sampleImpl = *sample.getImplementation();
+  MatrixImplementation & resultImpl = *result.getImplementation();
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const SquareMatrix localCovariance((*this)(sampleImpl[i], point));
+      for (UnsignedInteger columnIndex = 0; columnIndex < outputDimension; ++columnIndex)
+        for (UnsignedInteger rowIndex = 0; rowIndex < outputDimension; ++rowIndex)
+          resultImpl(i * outputDimension + rowIndex, columnIndex) = localCovariance(rowIndex, columnIndex);
+    }
+  }, 1024);
   return result;
 }
 
@@ -1184,9 +1053,9 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
   {
     const UnsignedInteger size = vertices.getSize();
     CovarianceMatrix covarianceMatrix(size);
-    const CovarianceModelDiscretizeScalarPolicy policy( vertices, covarianceMatrix, *this );
+    const CovarianceModelDiscretizeScalarBody body( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, body, 1024);
     // Compute the Cholesky
     return covarianceMatrix.computeCholeskyInPlace();
   }
@@ -1199,64 +1068,6 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
 }
 
 
-struct CovarianceModelScalarDiscretizeRowPolicy
-{
-  const SampleImplementation & input_;
-  const Point p_;
-  SampleImplementation & output_;
-  const CovarianceModelImplementation & model_;
-
-  CovarianceModelScalarDiscretizeRowPolicy(const Sample & input,
-      const UnsignedInteger index,
-      Sample & output,
-      const CovarianceModelImplementation & model)
-    : input_(*input.getImplementation())
-    , p_(input[index])
-    , output_(*output.getImplementation())
-    , model_(model)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      output_(i, 0) = model_.computeAsScalar(p_.begin(), input_.data_begin() + (i * model_.getInputDimension()));
-  }
-
-}; /* end struct CovarianceModelScalarDiscretizeRowPolicy */
-
-struct CovarianceModelDiscretizeRowPolicy
-{
-  const Sample & input_;
-  const Point p_;
-  Sample & output_;
-  const CovarianceModelImplementation & model_;
-  const UnsignedInteger outputDimension_;
-
-  CovarianceModelDiscretizeRowPolicy(const Sample & input,
-                                     const UnsignedInteger p,
-                                     Sample & output,
-                                     const CovarianceModelImplementation & model)
-    : input_(input)
-    , p_(input[p])
-    , output_(output)
-    , model_(model)
-    , outputDimension_(model.getOutputDimension())
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const MatrixImplementation localCovariance(*(model_(p_, input_[i]).getImplementation()));
-      const UnsignedInteger base = i * outputDimension_;
-      for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
-        for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
-          output_(base + ii, jj) = localCovariance(ii, jj);
-    }
-  }
-
-}; /* end struct CovarianceModelDiscretizeRowPolicy */
-
 Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
     const UnsignedInteger p) const
 {
@@ -1265,13 +1076,29 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
   Sample result(size * outputDimension_, outputDimension_);
   if (outputDimension_ == 1)
   {
-    const CovarianceModelScalarDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+    const SampleImplementation & verticesImpl = *vertices.getImplementation();
+    SampleImplementation & resultImpl = *result.getImplementation();
+    const Point point(vertices[p]);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        resultImpl(i, 0) = computeAsScalar(point.begin(), verticesImpl.data_begin() + (i * getInputDimension()));
+    }, 1024);
   }
   else
   {
-    const CovarianceModelDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+    const Point point(vertices[p]);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      {
+        const MatrixImplementation localCovariance(*((*this)(point, vertices[i]).getImplementation()));
+        const UnsignedInteger base = i * outputDimension_;
+        for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
+          for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
+            result(base + ii, jj) = localCovariance(ii, jj);
+      }
+    }, 1024);
   }
   return result;
 }

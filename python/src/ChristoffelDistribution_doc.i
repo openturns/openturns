@@ -44,7 +44,7 @@ uncentered map :math:`\mat{L}^{-1} \vect{x}` applies only when
 :math:`\vect{a} = \vect{0}`; the correlation matrix may replace the covariance
 in :math:`\mat{L}` when the marginals are standardized. This construction is
 needed because
-:class:`~openturns.experimental.FiniteOrthogonalFunctionFactory` stores
+:class:`~openturns.FiniteOrthogonalFunctionFactory` stores
 the given functions as given and only checks their dimensions. When the
 input is a raw dictionary, a quasi-orthogonalization pre-step is therefore
 recommended before constructing the distribution: orthogonalize the

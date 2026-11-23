@@ -2,7 +2,7 @@
 /**
  *  @brief OpenTURNS wrapper to a library of special functions
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,6 +63,8 @@ const Scalar MaxScalar = std::numeric_limits<Scalar>::max();
 const Scalar LogMaxScalar  = std::log(MaxScalar);
 const Scalar LowestScalar  = -Infinity;
 const Scalar ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
+// UnsignedInteger limits
+const UnsignedInteger MaxUnsignedInteger = std::numeric_limits<UnsignedInteger>::max();
 // Maximum number of iterations for the algorithms
 const UnsignedInteger MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const Scalar Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");

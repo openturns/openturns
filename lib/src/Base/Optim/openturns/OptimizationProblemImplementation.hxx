@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblemImplementation allows one to describe an optimization problem
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,6 +26,7 @@
 #include "openturns/Function.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/SymmetricMatrix.hxx"
+#include "openturns/SparseMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -105,6 +106,12 @@ public:
   /** Linear function accessor */
   virtual Point getLinearCost() const;
   virtual Matrix getLinearConstraintCoefficients() const;
+#ifndef SWIG
+  /** Sparse linear constraint coefficients accessor.
+      The default implementation converts the dense coefficients returned by
+      getLinearConstraintCoefficients(). */
+  virtual SparseMatrix getSparseLinearConstraintCoefficients() const;
+#endif
   virtual Interval getLinearConstraintBounds() const;
   virtual Bool isLinear() const;
 
@@ -135,6 +142,41 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  /** Helpers for problems whose constraints are stored as L <= A.x <= U.
+      They derive the equality and inequality constraint functions from the
+      coefficients and bounds, and replace one kind while preserving the
+      other. */
+  static Bool HasLinearEqualityConstraint(const Interval & constraintBounds);
+  static Bool HasLinearInequalityConstraint(const Interval & constraintBounds);
+  static Function GetLinearEqualityConstraint(const Matrix & constraintCoefficients,
+      const Interval & constraintBounds,
+      const UnsignedInteger dimension);
+  static Function GetLinearInequalityConstraint(const Matrix & constraintCoefficients,
+      const Interval & constraintBounds,
+      const UnsignedInteger dimension);
+  static void SetLinearEqualityConstraint(Matrix & constraintCoefficients,
+                                          Interval & constraintBounds,
+                                          const Function & equalityConstraint,
+                                          const UnsignedInteger dimension);
+  static void SetLinearInequalityConstraint(Matrix & constraintCoefficients,
+      Interval & constraintBounds,
+      const Function & inequalityConstraint,
+      const UnsignedInteger dimension);
+  static Function GetLinearEqualityConstraint(const SparseMatrix & constraintCoefficients,
+      const Interval & constraintBounds,
+      const UnsignedInteger dimension);
+  static Function GetLinearInequalityConstraint(const SparseMatrix & constraintCoefficients,
+      const Interval & constraintBounds,
+      const UnsignedInteger dimension);
+  static void SetLinearEqualityConstraint(SparseMatrix & constraintCoefficients,
+                                          Interval & constraintBounds,
+                                          const Function & equalityConstraint,
+                                          const UnsignedInteger dimension);
+  static void SetLinearInequalityConstraint(SparseMatrix & constraintCoefficients,
+      Interval & constraintBounds,
+      const Function & inequalityConstraint,
+      const UnsignedInteger dimension);
+
   // The objective function
   Function objective_;
 

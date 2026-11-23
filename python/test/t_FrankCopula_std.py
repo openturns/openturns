@@ -13,7 +13,15 @@ assert copula.getClassName() == "FrankCopula"
 ott.assert_almost_equal(copula.getMean(), [0.5, 0.5], 0.0, 0.0)
 ott.assert_almost_equal(
     copula.getCovariance(),
-    ot.CovarianceMatrix(2, [0.08333333333333333, 0.032135160021189636, 0.032135160021189636, 0.08333333333333333]),
+    ot.CovarianceMatrix(
+        2,
+        [
+            0.08333333333333333,
+            0.032135160021189636,
+            0.032135160021189636,
+            0.08333333333333333,
+        ],
+    ),
     1e-12,
     0.0,
 )
@@ -127,11 +135,9 @@ ot.RandomGenerator.SetSeed(10)
 sizeMC = 200000
 sampleMC = frankNeg.getSample(sizeMC)
 logPDFMC = frankNeg.computeLogPDF(sampleMC).asPoint()
-ott.assert_almost_equal(
-    frankNeg.computeEntropy(), -sum(logPDFMC) / sizeMC, 1e-2, 1e-3
-)
+ott.assert_almost_equal(frankNeg.computeEntropy(), -sum(logPDFMC) / sizeMC, 1e-2, 1e-3)
 assert frankNeg.getCovariance()[0, 1] < 0.0
 # covariance matches its Monte Carlo estimate
 meanMC = sampleMC.computeMean()
-covMC = ((sampleMC - meanMC).computeCovariance()[0, 1])
+covMC = (sampleMC - meanMC).computeCovariance()[0, 1]
 ott.assert_almost_equal(frankNeg.getCovariance()[0, 1], covMC, 1e-2, 1e-3)

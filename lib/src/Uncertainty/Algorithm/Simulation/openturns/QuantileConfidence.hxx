@@ -2,7 +2,7 @@
 /**
  *  @brief Quantile confidence interval computation
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,7 +64,7 @@ public:
   Scalar computeUnilateralCoverage(const UnsignedInteger size, const UnsignedInteger rank, const Bool lowerBounded = false) const;
   /** Compute probability of coverage for a bilateral interval given size and ranks */
   Scalar computeBilateralCoverage(const UnsignedInteger size, const UnsignedInteger rank1, const UnsignedInteger rank2) const;
-  
+
   /** Compute minimum sample size */
   UnsignedInteger computeUnilateralMinimumSampleSize(const UnsignedInteger rank = 0, const Bool lowerBounded = false) const;
   UnsignedInteger computeBilateralMinimumSampleSize() const;

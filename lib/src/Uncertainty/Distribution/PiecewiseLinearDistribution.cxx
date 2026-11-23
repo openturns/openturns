@@ -2,7 +2,7 @@
 /**
  *  @brief The PiecewiseLinearDistribution distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,9 +51,9 @@ struct KahanSum
 PiecewiseLinearDistribution::PiecewiseLinearDistribution()
   : DistributionImplementation()
   , x_({-1.0, 1.0})
-  , y_({0.5, 0.5})
-  , yNorm_({0.5, 0.5})
-  , probabilities_(1)
+, y_({0.5, 0.5})
+, yNorm_({0.5, 0.5})
+, probabilities_(1)
 {
   setName("PiecewiseLinearDistribution");
   setDimension(1);
@@ -406,7 +406,7 @@ void PiecewiseLinearDistribution::computeCovariance() const
     const Scalar y0 = yNorm_[i];
     const Scalar y1 = yNorm_[i + 1];
     m2Sum.add(dx * (y0 * (3.0 * x0_2 + 2.0 * x0 * x1 + x1_2)
-                     + y1 * (x0_2 + 2.0 * x0 * x1 + 3.0 * x1_2)) / 12.0);
+                    + y1 * (x0_2 + 2.0 * x0 * x1 + 3.0 * x1_2)) / 12.0);
   }
   covariance_ = CovarianceMatrix(1);
   const Scalar mu = getMean()[0];

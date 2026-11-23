@@ -110,7 +110,9 @@ view = otv.View(graph)
 
 
 # %%
-def fitKernelSmoothingGivenBandwidth(distribution, sample, factory, bandwidth, label=None):
+def fitKernelSmoothingGivenBandwidth(
+    distribution, sample, factory, bandwidth, label=None
+):
     # Fit the kernel smoothing and draw the PDF
     fit = factory.build(sample, [bandwidth])
     graph = fit.drawPDF()
@@ -183,7 +185,9 @@ legends = ["Silverman", "Plugin", "Mixed"]
 nLen = len(hArray)
 grid = ot.GridLayout(1, nLen)
 for i in range(nLen):
-    graph = fitKernelSmoothingGivenBandwidth(distribution, sample, factory, hArray[i], legends[i])
+    graph = fitKernelSmoothingGivenBandwidth(
+        distribution, sample, factory, hArray[i], legends[i]
+    )
     if i > 0:
         graph.setYTitle("")
     boundingBox = graph.getBoundingBox()

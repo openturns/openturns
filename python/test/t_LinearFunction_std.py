@@ -62,9 +62,7 @@ ott.assert_almost_equal(
     myFunction.hessian(inPoint), ot.SymmetricTensor(inputDimension, outputDimension)
 )
 ott.assert_almost_equal(myFunction.getEvaluation()(inPoint), outPoint)
-ott.assert_almost_equal(
-    myFunction.getGradient().gradient(inPoint), linear.transpose()
-)
+ott.assert_almost_equal(myFunction.getGradient().gradient(inPoint), linear.transpose())
 ott.assert_almost_equal(
     myFunction.getHessian().hessian(inPoint),
     ot.SymmetricTensor(inputDimension, outputDimension),
@@ -79,8 +77,7 @@ _ = repr(myFunction)
 assert myFunction == myFunction
 assert not (myFunction == "dummy")
 assert myFunction != "dummy"
-with ott.assert_raises(Exception):
-    myFunction == ot.ConstantFunction(3, [1.0, 2.0])
+assert not (myFunction == ot.ConstantFunction(3, [1.0, 2.0]))
 assert myFunction.getCallsNumber() >= 1
 assert myFunction.getParameter().getDimension() == 0
 marginal1 = myFunction.getMarginal(1)

@@ -108,3 +108,20 @@ algo_2 = ot.FORM(solver, event)
 algo_2.run()
 result_2 = algo_2.getResult()
 assert result.getEventProbability() == result_2.getEventProbability(), "wrong pf"
+
+# FORM with MultiStart must return the best design point over restarts,
+# not the last one: G vanishes at (1, 0) with beta=1 and at (2, 0) with beta=2
+G = ot.SymbolicFunction(["x0", "x1"], ["(x0 - 1.0) * (x0 - 2.0)"])
+vect_ms = ot.RandomVector(ot.Normal(2))
+output_ms = ot.CompositeRandomVector(G, vect_ms)
+event_ms = ot.ThresholdEvent(output_ms, ot.LessOrEqual(), 0.0)
+# the best design point (1, 0) is found first, the worse one (2, 0) last
+startingSample = ot.Sample([[0.0, 0.0], [3.0, 0.0]])
+# the dummy problem is replaced by FORM, it only checks the solver class
+inner = ot.AbdoRackwitz(ot.NearestPointProblem(G, 0.0))
+multistart = ot.MultiStart(inner, startingSample)
+algo_ms = ot.FORM(multistart, event_ms)
+algo_ms.run()
+result_ms = algo_ms.getResult()
+assert_almost_equal(result_ms.getHasoferReliabilityIndex(), 1.0, 1e-4, 0.0)
+assert_almost_equal(result_ms.getStandardSpaceDesignPoint(), [1.0, 0.0], 1e-4, 0.0)

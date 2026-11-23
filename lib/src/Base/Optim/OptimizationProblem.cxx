@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblem implements an algorithm for finding the
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -189,6 +189,12 @@ Point OptimizationProblem::getLinearCost() const
 Matrix OptimizationProblem::getLinearConstraintCoefficients() const
 {
   return getImplementation()->getLinearConstraintCoefficients();
+}
+
+
+SparseMatrix OptimizationProblem::getSparseLinearConstraintCoefficients() const
+{
+  return getImplementation()->getSparseLinearConstraintCoefficients();
 }
 
 

@@ -5,7 +5,7 @@
  *        dim(x) point, linear a dim(y) by dim(x) matrix
  *        and constant a dim(y) point
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -120,8 +120,8 @@ Matrix LinearEvaluation::getLinear() const
 void LinearEvaluation::setCenter(const Point & center)
 {
   if (center.getDimension() != linear_.getNbColumns()) throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term. "
-      << "The dimension of the center is: " << center.getDimension()
-      << " but the number of columns of the linear matrix is: " << linear_.getNbColumns();
+        << "The dimension of the center is: " << center.getDimension()
+        << " but the number of columns of the linear matrix is: " << linear_.getNbColumns();
   center_ = center;
 }
 
@@ -129,8 +129,8 @@ void LinearEvaluation::setCenter(const Point & center)
 void LinearEvaluation::setConstant(const Point & constant)
 {
   if (constant.getDimension() != linear_.getNbRows()) throw InvalidDimensionException(HERE) << "Constant term dimension is incompatible with the linear term. "
-      << "The constant has dimension: " << constant.getDimension()
-      << " but the number of rows in the linear matrix is: " << linear_.getNbRows();
+        << "The constant has dimension: " << constant.getDimension()
+        << " but the number of rows in the linear matrix is: " << linear_.getNbRows();
   constant_ = constant;
 }
 
@@ -138,11 +138,11 @@ void LinearEvaluation::setConstant(const Point & constant)
 void LinearEvaluation::setLinear(const Matrix & linear)
 {
   if (linear.getNbRows() != constant_.getDimension()) throw InvalidDimensionException(HERE) << "Linear term dimension is incompatible with the constant term. "
-      << "The number of rows in the linear matrix is: " << linear.getNbRows()
-      << " but the constant has dimension: " << constant_.getDimension();
+        << "The number of rows in the linear matrix is: " << linear.getNbRows()
+        << " but the constant has dimension: " << constant_.getDimension();
   if (linear.getNbColumns() != center_.getDimension()) throw InvalidDimensionException(HERE) << "Linear term dimension is incompatible with the center term. "
-      << "The number of columns of the linear matrix is: " << linear.getNbColumns()
-      << " but the dimension of the center is: " << center_.getDimension();
+        << "The number of columns of the linear matrix is: " << linear.getNbColumns()
+        << " but the dimension of the center is: " << center_.getDimension();
   linear_ = linear;
 }
 

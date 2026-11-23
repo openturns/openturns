@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -220,9 +220,9 @@ class BoxCoxGPFOptimization : public EvaluationImplementation
 
 public:
   BoxCoxGPFOptimization(const Sample &inputSample,
-                         const Sample &shiftedOutputSample,
-                         const CovarianceModel &covarianceModel,
-                         const Basis &basis)
+                        const Sample &shiftedOutputSample,
+                        const CovarianceModel &covarianceModel,
+                        const Basis &basis)
     : inputSample_(inputSample)
     , shiftedOutputSample_(shiftedOutputSample)
     , covarianceModel_(covarianceModel)
@@ -233,10 +233,10 @@ public:
   }
 
   BoxCoxGPFOptimization(const Sample &inputSample,
-                         const Sample &shiftedOutputSample,
-                         const CovarianceModel &covarianceModel,
-                         const Basis &basis,
-                         const Scalar sumLog)
+                        const Sample &shiftedOutputSample,
+                        const CovarianceModel &covarianceModel,
+                        const Basis &basis,
+                        const Scalar sumLog)
     : inputSample_(inputSample)
     , shiftedOutputSample_(shiftedOutputSample)
     , covarianceModel_(covarianceModel)

@@ -2,7 +2,7 @@
 /**
  *  @brief The VonMisesFisher distribution
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ VonMisesFisher::VonMisesFisher()
 
 /* Parameters constructor */
 VonMisesFisher::VonMisesFisher(const Point & mu,
-                 const Scalar kappa)
+                               const Scalar kappa)
   : DistributionImplementation()
 {
   setName("VonMisesFisher");
@@ -103,22 +103,22 @@ Point VonMisesFisher::getCosSample(const UnsignedInteger size) const
   const Scalar alpha = 0.5 * dM1;
   UnsignedInteger found = 0;
   while (found < size)
+  {
+    // Heuristic size to generate based on the acceptance ratio
+    UnsignedInteger m = std::max(size, static_cast<UnsignedInteger>(1.5 * (size - found)));
+    for (UnsignedInteger i = 0; i < m; ++i)
     {
-      // Heuristic size to generate based on the acceptance ratio
-      UnsignedInteger m = std::max(size, static_cast<UnsignedInteger>(1.5 * (size - found)));
-      for (UnsignedInteger i = 0; i < m; ++i)
-        {
-          const Scalar z = DistFunc::rBeta(alpha, alpha);
-          const Scalar t = (1.0 - (1.0 + b_) * z) / (1.0 - (1.0 - b_) * z);
-          const Scalar test = kappa_ * t + dM1 * std::log1p(-t * x0_) - c_;
-          if (test > std::log(RandomGenerator::Generate()))
-            {
-              cosRNG[found] = t;
-              ++found;
-              if (found == size) break;
-            } // if test
-        } // for i
-    } // while found
+      const Scalar z = DistFunc::rBeta(alpha, alpha);
+      const Scalar t = (1.0 - (1.0 + b_) * z) / (1.0 - (1.0 - b_) * z);
+      const Scalar test = kappa_ * t + dM1 * std::log1p(-t * x0_) - c_;
+      if (test > std::log(RandomGenerator::Generate()))
+      {
+        cosRNG[found] = t;
+        ++found;
+        if (found == size) break;
+      } // if test
+    } // for i
+  } // while found
   return cosRNG;
 }
 
@@ -134,53 +134,53 @@ Sample VonMisesFisher::getSample(const UnsignedInteger size) const
   Sample result(size, dimension_);
   // Generate samples orthogonal to mu
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Scalar zNorm = 0.0;
+    // Standard normal samples
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      Scalar zNorm = 0.0;
-      // Standard normal samples
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        {
-          const Scalar rNorm = DistFunc::rNormal();
-          result(i, j) = rNorm;
-          zNorm += rNorm * rNorm;
-        }
-      zNorm = std::sqrt(zNorm);
-
-      // Projection on the mu orthogonal space
-      Scalar dotProduct = 0.0;
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        {
-          result(i, j) /= zNorm;
-          dotProduct += result(i, j) * mu_[j];
-        }
-
-      // Skip the last step if uniform
-      if (kappa_ == 0.0) continue;
-
-      Scalar newZNorm = 0.0;
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        {
-          const Scalar newZ = result(i, j) - dotProduct * mu_[j];
-          result(i, j) = newZ;
-          newZNorm += newZ * newZ;
-        }
-      newZNorm = std::sqrt(newZNorm);
-      
-      // Final normalization
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        result(i, j) /= newZNorm;
-    } // Generate samples orthogonal to mu
-  if (kappa_ > 0.0)
-    {
-      const Point cosRNG(getCosSample(size));
-      // Combine angles with direction
-      for (UnsignedInteger i = 0; i < size; ++i)
-        {
-          const Scalar cosI = cosRNG[i];
-          const Scalar sinI = std::sqrt(1.0 - cosI * cosI);
-          for (UnsignedInteger j = 0; j < dimension_; ++j)
-            result(i, j) = result(i, j) * sinI + mu_[j] * cosI;
-        } // Combine angles with direction
+      const Scalar rNorm = DistFunc::rNormal();
+      result(i, j) = rNorm;
+      zNorm += rNorm * rNorm;
     }
+    zNorm = std::sqrt(zNorm);
+
+    // Projection on the mu orthogonal space
+    Scalar dotProduct = 0.0;
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      result(i, j) /= zNorm;
+      dotProduct += result(i, j) * mu_[j];
+    }
+
+    // Skip the last step if uniform
+    if (kappa_ == 0.0) continue;
+
+    Scalar newZNorm = 0.0;
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      const Scalar newZ = result(i, j) - dotProduct * mu_[j];
+      result(i, j) = newZ;
+      newZNorm += newZ * newZ;
+    }
+    newZNorm = std::sqrt(newZNorm);
+
+    // Final normalization
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+      result(i, j) /= newZNorm;
+  } // Generate samples orthogonal to mu
+  if (kappa_ > 0.0)
+  {
+    const Point cosRNG(getCosSample(size));
+    // Combine angles with direction
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Scalar cosI = cosRNG[i];
+      const Scalar sinI = std::sqrt(1.0 - cosI * cosI);
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
+        result(i, j) = result(i, j) * sinI + mu_[j] * cosI;
+    } // Combine angles with direction
+  }
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
@@ -283,16 +283,16 @@ Description VonMisesFisher::getParameterDescription() const
 void VonMisesFisher::setMu(const Point & mu)
 {
   if (mu != mu_)
-    {
-      if (mu.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of mu=" << mu.getDimension() << " must be equal to the distribution dimension=" << dimension_;
-      const Scalar normMu = mu.norm();
-      if (normMu == 0.0) throw InvalidArgumentException(HERE) << "Error: mu is null, it should be a unit vector";
-      if (std::abs(normMu - 1.0) > SpecFunc::Precision) LOGWARN(OSS() << "Mu has a norm=" << normMu << " not equal to 1, it will be normalized");
-      mu_ = mu / normMu;
-      isAlreadyComputedMean_ = false;
-      isAlreadyComputedCovariance_ = false;
-      update();
-    }
+  {
+    if (mu.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of mu=" << mu.getDimension() << " must be equal to the distribution dimension=" << dimension_;
+    const Scalar normMu = mu.norm();
+    if (normMu == 0.0) throw InvalidArgumentException(HERE) << "Error: mu is null, it should be a unit vector";
+    if (std::abs(normMu - 1.0) > SpecFunc::Precision) LOGWARN(OSS() << "Mu has a norm=" << normMu << " not equal to 1, it will be normalized");
+    mu_ = mu / normMu;
+    isAlreadyComputedMean_ = false;
+    isAlreadyComputedCovariance_ = false;
+    update();
+  }
 }
 
 Point VonMisesFisher::getMu() const
@@ -342,11 +342,11 @@ void VonMisesFisher::update()
   if (kappa_ == 0.0)
     logNormalizationFactor_ = SpecFunc::LogGamma(0.5 * p) - std::log(2.0) - 0.5 * p * std::log(M_PI);
   else
-    {
-      const Scalar logKappa = std::log(kappa_);
-      // logNormalizationFactor_ = \log(\kappa^{p/2-1}/((2\pi)^{p/2}I_{p/2-1}(\kappa)))
-      logNormalizationFactor_ = 0.5 * p * (logKappa - std::log(SpecFunc::TWOPI)) - logKappa - SpecFunc::LogBesselInu(kappa_, 0.5 * p - 1.0);
-    }
+  {
+    const Scalar logKappa = std::log(kappa_);
+    // logNormalizationFactor_ = \log(\kappa^{p/2-1}/((2\pi)^{p/2}I_{p/2-1}(\kappa)))
+    logNormalizationFactor_ = 0.5 * p * (logKappa - std::log(SpecFunc::TWOPI)) - logKappa - SpecFunc::LogBesselInu(kappa_, 0.5 * p - 1.0);
+  }
   // Constants for the sampling algorithm
   // See Carlos Pinzón, Kangsoo Jung. Fast Python sampler for the von Mises Fisher distribution. 2023. ⟨hal-04004568v2⟩
   b_ = (p - 1.0) / (2.0 * kappa_ + std::sqrt(4.0 * kappa_ * kappa_ + (p - 1.0) * (p - 1.0)));

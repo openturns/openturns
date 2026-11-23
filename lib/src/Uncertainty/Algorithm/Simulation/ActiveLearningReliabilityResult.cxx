@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of ActiveLearningReliabilityResult
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,13 +37,13 @@ ActiveLearningReliabilityResult::ActiveLearningReliabilityResult()
 
 /* Standard constructor: probability estimate stored in the base result */
 ActiveLearningReliabilityResult::ActiveLearningReliabilityResult(const Scalar probabilityEstimate,
-                                                                 const Scalar reliabilityIndex,
-                                                                 const GaussianProcessRegressionResult & gprResult,
-                                                                 const Point & probabilityHistory,
-                                                                 const Point & reliabilityIndexHistory,
-                                                                 const UnsignedInteger functionCallNumber,
-                                                                 const Interval probabilityCI,
-                                                                 const Interval reliabilityIndexCI)
+    const Scalar reliabilityIndex,
+    const GaussianProcessRegressionResult & gprResult,
+    const Point & probabilityHistory,
+    const Point & reliabilityIndexHistory,
+    const UnsignedInteger functionCallNumber,
+    const Interval probabilityCI,
+    const Interval reliabilityIndexCI)
   : ProbabilitySimulationResultImplementation()
   , reliabilityIndex_(reliabilityIndex)
   , gprResult_(gprResult)
@@ -63,17 +63,17 @@ ActiveLearningReliabilityResult::ActiveLearningReliabilityResult(const Scalar pr
 
 /* Full constructor with event and simulation metadata for the base result */
 ActiveLearningReliabilityResult::ActiveLearningReliabilityResult(const RandomVector & event,
-                                                                 const Scalar probabilityEstimate,
-                                                                 const Scalar varianceEstimate,
-                                                                 const UnsignedInteger outerSampling,
-                                                                 const UnsignedInteger blockSize,
-                                                                 const Scalar reliabilityIndex,
-                                                                 const GaussianProcessRegressionResult & gprResult,
-                                                                 const Point & probabilityHistory,
-                                                                 const Point & reliabilityIndexHistory,
-                                                                 const UnsignedInteger functionCallNumber,
-                                                                 const Interval probabilityCI,
-                                                                 const Interval reliabilityIndexCI)
+    const Scalar probabilityEstimate,
+    const Scalar varianceEstimate,
+    const UnsignedInteger outerSampling,
+    const UnsignedInteger blockSize,
+    const Scalar reliabilityIndex,
+    const GaussianProcessRegressionResult & gprResult,
+    const Point & probabilityHistory,
+    const Point & reliabilityIndexHistory,
+    const UnsignedInteger functionCallNumber,
+    const Interval probabilityCI,
+    const Interval reliabilityIndexCI)
   : ProbabilitySimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize)
   , reliabilityIndex_(reliabilityIndex)
   , gprResult_(gprResult)

@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+
 try:
     import numpy as np
 except ModuleNotFoundError:
@@ -308,7 +309,9 @@ for mixture in [posSum, negSum]:
 # estimated outside mass drops below BetaAdaptationEpsilon
 print("adaptive confidence band")
 ot.ResourceMap.SetAsBool("LinearCombinationDistribution-SimplifyAtoms", False)
-heavy = ot.LinearCombinationDistribution([ot.LogNormal(0.0, 1.0), ot.Normal()], [1.0, 0.1])
+heavy = ot.LinearCombinationDistribution(
+    [ot.LogNormal(0.0, 1.0), ot.Normal()], [1.0, 0.1]
+)
 upperBound = heavy.getRange().getUpperBound()[0]
 ott.assert_almost_equal(upperBound, 75.2081, 1e-3, 0.0, "adapted upper bound")
 if np is not None:
@@ -323,7 +326,9 @@ ott.assert_almost_equal(
 
 # Gaussian mixture: the union bound is conservative, so the band may widen;
 # whatever the width, extreme quantiles must not be clipped
-gaussian = ot.LinearCombinationDistribution([ot.Normal(), ot.Normal(1.0, 2.0), ot.Normal(-2.0, 2.0)])
+gaussian = ot.LinearCombinationDistribution(
+    [ot.Normal(), ot.Normal(1.0, 2.0), ot.Normal(-2.0, 2.0)]
+)
 quantile = gaussian.computeQuantile(0.999)[0]
 assert quantile < gaussian.getRange().getUpperBound()[0], "quantile clipped"
 ott.assert_almost_equal(

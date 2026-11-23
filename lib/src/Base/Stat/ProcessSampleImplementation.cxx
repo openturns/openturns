@@ -2,7 +2,7 @@
 /**
  *  @brief ProcessSampleImplementation Class
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -140,18 +140,11 @@ Field ProcessSampleImplementation::getField(const UnsignedInteger index) const
 }
 
 void ProcessSampleImplementation::setField(const UnsignedInteger index,
-                                           const Field & field)
+    const Field & field)
 {
   if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   if (field.getOutputDimension() != data_[0].getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << data_[0].getDimension() << ", got a field of dimension=" << field.getOutputDimension();
   data_[index] = field.getValues();
-}
-
-void ProcessSampleImplementation::setField(const Field & field,
-    const UnsignedInteger index)
-{
-  LOGWARN("ProcessSample.setField(Field, int) is deprecated, use ProcessSample.setField(int, Field)");
-  setField(index, field);
 }
 
 Sample & ProcessSampleImplementation::operator[] (const UnsignedInteger index)
@@ -364,7 +357,7 @@ Field ProcessSampleImplementation::computeStandardDeviation() const
 }
 
 
-struct ComputeQuantilePerComponentPolicy
+struct ComputeQuantilePerComponentBody
 {
   Point & contiguous_;
   SampleImplementation & output_;
@@ -373,7 +366,7 @@ struct ComputeQuantilePerComponentPolicy
   const Scalar alpha_;
   const Scalar beta_;
 
-  ComputeQuantilePerComponentPolicy( Point & contiguous,
+  ComputeQuantilePerComponentBody( Point & contiguous,
                                      SampleImplementation & output,
                                      UnsignedInteger size,
                                      UnsignedInteger index,
@@ -423,7 +416,7 @@ struct ComputeQuantilePerComponentPolicy
       }
     }
   }
-}; /* end struct ComputeQuantilePerComponentPolicy */
+}; /* end struct ComputeQuantilePerComponentBody */
 
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
@@ -463,8 +456,8 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
   }
 
   SampleImplementation result(length, dimension);
-  const ComputeQuantilePerComponentPolicy policy( contiguous, result, size, index, beta);
-  TBBImplementation::ParallelFor( 0, sampleSize, policy );
+  const ComputeQuantilePerComponentBody body( contiguous, result, size, index, beta);
+  TBBImplementation::ParallelFor( 0, sampleSize, body, 1024);
   return Field(mesh_, result);
 }
 
@@ -513,8 +506,8 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
       // Ensure that index does not overflow
       index = 0;
     }
-    const ComputeQuantilePerComponentPolicy policy( contiguous, output, size, index, beta);
-    TBBImplementation::ParallelFor( 0, sampleSize, policy );
+    const ComputeQuantilePerComponentBody body( contiguous, output, size, index, beta);
+    TBBImplementation::ParallelFor( 0, sampleSize, body, 1024);
     result.add(output);
   }
   return result;

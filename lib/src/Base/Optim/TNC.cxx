@@ -2,7 +2,7 @@
 /**
  *  @brief TNC is an actual implementation for OptimizationAlgorithmImplementation using the TNC library
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -214,9 +214,16 @@ void TNC::run()
   const int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumCallsNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = nullptr;
 
+  // The stop callback flags INTERRUPTION on result_ while the solver runs;
+  // the rebuild below would wipe it: latch it first. The TNC_USERABORT
+  // return code cannot be used instead: it is also returned on evaluation
+  // budget exhaustion from the callback.
+  const Bool userInterrupted = (result_.getStatus() == OptimizationResult::INTERRUPTION);
   result_ = OptimizationResult(getProblem());
   result_.setStatusMessage(tnc_rc_string[returnCode - TNC_MINRC]);
-  if (returnCode == TNC_MAXFUN)
+  if (userInterrupted)
+    result_.setStatus(OptimizationResult::INTERRUPTION);
+  else if (returnCode == TNC_MAXFUN)
     result_.setStatus(OptimizationResult::MAXIMUMCALLS);
   else if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
     result_.setStatus(OptimizationResult::FAILURE);
@@ -235,7 +242,10 @@ void TNC::run()
     result_.setStatusMessage(OSS() << "TNC optimization timeout after " << timeDuration << "s");
   }
 
-  if (result_.getStatus() != OptimizationResult::SUCCESS)
+  // a user-requested stop is reported as INTERRUPTION without throwing,
+  // like Cobyla/Dlib/CMinpack/HiGHS: checkStatus only guards actual
+  // failures and timeouts
+  if ((result_.getStatus() != OptimizationResult::SUCCESS) && (result_.getStatus() != OptimizationResult::INTERRUPTION))
   {
     if (getCheckStatus())
       throw InternalException(HERE) << "Solving problem by TNC method failed (" << result_.getStatusMessage() << ")";

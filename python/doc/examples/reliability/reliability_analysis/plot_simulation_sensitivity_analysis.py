@@ -108,8 +108,13 @@ weights = [
 sensitivity_is = ot.SimulationSensitivityAnalysis(
     event_is, input_sample, output_sample, weights
 )
-print("Importance sampling sensitivity =", sensitivity_is.computeEventProbabilitySensitivity())
-print("Importance sampling mean point =", sensitivity_is.computeMeanPointInEventDomain())
+print(
+    "Importance sampling sensitivity =",
+    sensitivity_is.computeEventProbabilitySensitivity(),
+)
+print(
+    "Importance sampling mean point =", sensitivity_is.computeMeanPointInEventDomain()
+)
 
 # %%
 # Importance sampling in the standard space

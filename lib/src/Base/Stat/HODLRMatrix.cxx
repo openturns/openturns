@@ -3,7 +3,7 @@
  *  @file  HODLRMatrix.cxx
  *  @brief HODLR compressed matrix (TypedInterfaceObject wrapper)
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,8 +61,8 @@ void HODLRMatrix::assemble(const HODLRRealAssemblyFunction& f, char symmetry)
 }
 
 void HODLRMatrix::assemble(const HODLRRealAssemblyFunction &f,
-                            const HODLRMatrixParameters & parameters,
-                            char symmetry)
+                           const HODLRMatrixParameters & parameters,
+                           char symmetry)
 {
   copyOnWrite();
   getImplementation()->assemble(f, parameters, symmetry);

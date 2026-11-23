@@ -2,7 +2,7 @@
 /**
  *  @brief Hypergeometric functions and related functions
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -286,7 +286,8 @@ Scalar SpecFunc::HyperGeom_2_2(const Scalar p1,
 #endif
 }
 
-namespace {
+namespace
+{
 
 /* Normalize a vector by its largest component and update a log-scale. */
 Bool Normalize(Point & values,
@@ -465,7 +466,8 @@ Scalar SpecFunc::LauricellaF_A(const Scalar a,
   return sign * std::exp(logValue);
 }
 
-namespace {
+namespace
+{
 
 // Optimally-truncated asymptotic expansion sum_{k>=0} c_k with c_0 = 1 and
 // c_k = c_{k-1} (rising1 + k - 1) (rising2 + k - 1) / (k t). The loop stops

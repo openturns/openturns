@@ -1,13 +1,9 @@
 %feature("docstring") OT::P1LagrangeEvaluation
 R"RAW(Evaluation of a P1 Lagrange interpolation over a field.
 
-Available constructors:
-
-    P1LagrangeEvaluation(*field*)
-
 Parameters
 ----------
-field : :class:`~openturns.Field`
+field : :class:`~openturns.Field`, or `~openturns.ProcessSample`
     Field :math:`\cF` defining the parameters of a P1 Lagrange interpolation function.
 
 See also

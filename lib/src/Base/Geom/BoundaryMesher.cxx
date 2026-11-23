@@ -2,7 +2,7 @@
 /**
  *  @brief Boundary extraction algorithm for meshes
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -94,7 +94,7 @@ struct FaceCompare
   }
 }; // FaceCompare
 
-struct ComputeNormalPolicy
+struct ComputeNormalBody
 {
   const Sample & vertices_;
   const Collection< Indices > & boundaryFaces_;
@@ -104,7 +104,7 @@ struct ComputeNormalPolicy
   Sample & boundaryVertices_;
   IndicesCollection & boundarySimplices_;
 
-  ComputeNormalPolicy(const Sample & vertices,
+  ComputeNormalBody(const Sample & vertices,
                       const Collection< Indices > & boundaryFaces,
                       const UnsignedInteger baseVertexIndex,
                       const Scalar offset,
@@ -193,7 +193,7 @@ struct ComputeNormalPolicy
       }
     } // i
   } // operator ()
-};  // struct ComputeNormalPolicy
+};  // struct ComputeNormalBody
 
 } // Anonymous namespace
 
@@ -315,8 +315,8 @@ Mesh BoundaryMesher::build(const Mesh & mesh,
   //      domain.
   if (offset != 0.0)
   {
-    const ComputeNormalPolicy policy(vertices, boundaryFaces, boundaryVertices.getSize() - boundaryVerticesReserve, offset, boundaryVertices, boundarySimplices);
-    TBBImplementation::ParallelFor(0, boundaryFaces.getSize(), policy);
+    const ComputeNormalBody body(vertices, boundaryFaces, boundaryVertices.getSize() - boundaryVerticesReserve, offset, boundaryVertices, boundarySimplices);
+    TBBImplementation::ParallelFor(0, boundaryFaces.getSize(), body, 1024);
   } // offset != 0
   // Return the boundary mesh
   Mesh boundary(boundaryVertices, boundarySimplices, false);

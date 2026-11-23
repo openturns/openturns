@@ -24,10 +24,3 @@
 %copyctor OT::MixedHistogramFiniteDiscreteDistribution;
 
 %include openturns/MixedHistogramFiniteDiscreteDistribution.hxx
-
-%pythoncode %{
-def MixedHistogramUserDefined(*args):
-    """Deprecated"""
-    openturns.common.Log.Warn('class MixedHistogramUserDefined is deprecated in favor of MixedHistogramFiniteDiscreteDistribution')
-    return openturns.dist_bundle2.MixedHistogramFiniteDiscreteDistribution(*args)
-%}

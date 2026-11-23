@@ -36,12 +36,8 @@ for tail in [False, True]:
         ott.assert_almost_equal(
             ot.DistFunc.qNormal([p], tail), [ot.DistFunc.qNormal(p, tail)]
         )
-ott.assert_almost_equal(
-    ot.DistFunc.pNormal(ot.DistFunc.qNormal(0.0)), 0.0, 0.0, 1e-300
-)
-ott.assert_almost_equal(
-    ot.DistFunc.pNormal(ot.DistFunc.qNormal(1.0)), 1.0, 0.0, 1e-15
-)
+ott.assert_almost_equal(ot.DistFunc.pNormal(ot.DistFunc.qNormal(0.0)), 0.0, 0.0, 1e-300)
+ott.assert_almost_equal(ot.DistFunc.pNormal(ot.DistFunc.qNormal(1.0)), 1.0, 0.0, 1e-15)
 # rNormal
 nR = 10
 for iR in range(nR):

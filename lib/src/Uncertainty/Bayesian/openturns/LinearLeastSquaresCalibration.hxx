@@ -2,7 +2,7 @@
 /**
  *  @brief LinearLeastSquaresCalibration algorithm
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -80,10 +80,6 @@ public:
   /** StartingPoint accessor */
   Point getStartingPoint() const;
 
-  /** Bounds accessor */
-  Interval getBounds() const;
-  void setBounds(const Interval & bounds);
-
   /** Least squares method name accessor */
   String getMethodName() const;
 
@@ -113,9 +109,6 @@ private:
 
   /* The model gradient wrt the parameter */
   Matrix gradientObservations_;
-
-  /* The parameter bounds */
-  Interval bounds_;
 
   /* The least squares method name */
   String methodName_;

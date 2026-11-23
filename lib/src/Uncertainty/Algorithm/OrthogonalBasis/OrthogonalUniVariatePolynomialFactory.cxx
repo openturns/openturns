@@ -2,7 +2,7 @@
 /**
  *  @brief This an abstract class for 1D polynomial factories
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -234,7 +234,7 @@ void OrthogonalUniVariatePolynomialFactory::save(Advocate & adv) const
 
   adv.saveAttribute("recurrenceCoefficientsCache_", recurrenceCoefficientsCache_);
   adv.saveAttribute( "a_", a_ );
-  adv.saveAttribute( "b_", b_ );  
+  adv.saveAttribute( "b_", b_ );
 }
 
 

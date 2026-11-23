@@ -3,7 +3,7 @@
  *  @brief  This class provides fast point location.
  *  This is an abstract class.
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -133,36 +133,16 @@ UnsignedInteger EnclosingSimplexAlgorithmImplementation::query(const Point & ) c
   throw NotYetImplementedException(HERE) << "In EnclosingSimplexAlgorithmImplementation::query(const Point & x) const";
 }
 
-/* TBBImplementation policy to speed-up query over a sample */
-struct EnclosingSimplexAlgorithmImplementationQueryPolicy
-{
-  const Sample & points_;
-  Indices & indices_;
-  const EnclosingSimplexAlgorithmImplementation & algorithm_;
-
-  EnclosingSimplexAlgorithmImplementationQueryPolicy(const Sample & points,
-      Indices & indices,
-      const EnclosingSimplexAlgorithmImplementation & algorithm)
-    : points_(points)
-    , indices_(indices)
-    , algorithm_(algorithm)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) indices_[i] = algorithm_.query(points_[i]);
-  }
-
-}; /* end struct EnclosingSimplexAlgorithmImplementationQueryPolicy */
-
 /* Get the index of the enclosing simplex of the given points */
 Indices EnclosingSimplexAlgorithmImplementation::query(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   Indices result(size);
   if (size == 0) return result;
-  const EnclosingSimplexAlgorithmImplementationQueryPolicy policy( sample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor(0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) result[i] = query(sample[i]);
+  }, 1024);
   return result;
 }
 

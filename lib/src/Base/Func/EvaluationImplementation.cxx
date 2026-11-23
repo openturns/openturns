@@ -2,7 +2,7 @@
 /**
  * @brief Abstract top-level class for all evaluation implementations
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -73,10 +73,10 @@ Bool EvaluationImplementation::equals(const EvaluationImplementation & ) const
 Bool EvaluationImplementation::hasEqualBase(const EvaluationImplementation & other) const
 {
   return (parameter_ == other.parameter_)
-      && (inputDescription_ == other.inputDescription_)
-      && (outputDescription_ == other.outputDescription_)
-      && (parameterDescription_ == other.parameterDescription_)
-      && (checkOutput_ == other.checkOutput_);
+         && (inputDescription_ == other.inputDescription_)
+         && (outputDescription_ == other.outputDescription_)
+         && (parameterDescription_ == other.parameterDescription_)
+         && (checkOutput_ == other.checkOutput_);
 }
 
 Bool EvaluationImplementation::operator !=(const EvaluationImplementation & other) const

@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -105,14 +105,14 @@ FFT::ComplexCollection FFT::transform(const ComplexCollection & collection,
 
 /* FFT ND transformation on real data */
 FFT::ComplexCollection FFT::transform(const Point & data,
-    const Indices & dimensions) const
+                                      const Indices & dimensions) const
 {
   return getImplementation()->transform(data, dimensions);
 }
 
 /* FFT ND transformation on complex data */
 FFT::ComplexCollection FFT::transform(const ComplexCollection & data,
-    const Indices & dimensions) const
+                                      const Indices & dimensions) const
 {
   return getImplementation()->transform(data, dimensions);
 }

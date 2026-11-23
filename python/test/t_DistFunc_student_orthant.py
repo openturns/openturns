@@ -37,7 +37,9 @@ sigma[0, 0] = 1.0
 sigma[1, 0] = 0.3
 sigma[1, 1] = 1.0
 L = sigma.computeCholesky()
-p = ot.DistFunc.pStudentOrthantND([-1.0, -1.0], [1.0, 1.0], [0.5, -0.5], L, 10.0, 100, 0.5, 500)
+p = ot.DistFunc.pStudentOrthantND(
+    [-1.0, -1.0], [1.0, 1.0], [0.5, -0.5], L, 10.0, 100, 0.5, 500
+)
 ott.assert_almost_equal(p, 0.3808, 2e-1)
 
 print("Error: dimension mismatch")

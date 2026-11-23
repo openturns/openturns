@@ -107,16 +107,25 @@ ott.assert_almost_equal(
 
 # confidence intervals are ordered and bracket the estimate
 probabilityCI = result.getProbabilityConfidenceInterval()
-assert probabilityCI.getLowerBound()[0] <= probability <= probabilityCI.getUpperBound()[0]
+assert (
+    probabilityCI.getLowerBound()[0] <= probability <= probabilityCI.getUpperBound()[0]
+)
 indexCI = result.getReliabilityIndexConfidenceInterval()
-assert indexCI.getLowerBound()[0] <= result.getReliabilityIndex() <= indexCI.getUpperBound()[0]
+assert (
+    indexCI.getLowerBound()[0]
+    <= result.getReliabilityIndex()
+    <= indexCI.getUpperBound()[0]
+)
 
 # the criterion and surrogate specification are exposed
 assert algo.getCriterion().getReliabilityThreshold() == threshold
 assert algo.getCovarianceModel().getInputDimension() == 2
 
 # the wrapped simulator keeps its dynamic type through the handle
-assert algo.getSimulationAlgorithm().getImplementation().getClassName() == "ProbabilitySimulationAlgorithm"
+assert (
+    algo.getSimulationAlgorithm().getImplementation().getClassName()
+    == "ProbabilitySimulationAlgorithm"
+)
 
 # a second run restarts from the initial design and reproduces the first one
 algo.run()
@@ -137,7 +146,10 @@ if HAVE_LIBXML2:
     study2.fillObject("algo", loaded)
     assert loaded.getFunctionCallNumber() == calls
     assert loaded.getInputDoE().getSize() == initialSize + calls
-    assert loaded.getSimulationAlgorithm().getImplementation().getClassName() == "ProbabilitySimulationAlgorithm"
+    assert (
+        loaded.getSimulationAlgorithm().getImplementation().getClassName()
+        == "ProbabilitySimulationAlgorithm"
+    )
     ott.assert_almost_equal(loaded.getResult().getProbabilityEstimate(), probability)
     os.remove(fileName)
 
@@ -165,7 +177,10 @@ assert finalGPR.getInputSample().getSize() == initialSize + calls
 # per-iteration history: generic level, one entry per loop iteration
 history = result.getSimulationResults()
 assert len(history) == calls + 1
-assert history[0].getImplementation().getClassName() == "ProbabilitySimulationResultImplementation"
+assert (
+    history[0].getImplementation().getClassName()
+    == "ProbabilitySimulationResultImplementation"
+)
 for i in range(len(history)):
     ott.assert_almost_equal(
         history[i].getProbabilityEstimate(), result.getProbabilityHistory()[i]
@@ -206,23 +221,32 @@ for mode, modeThreshold in [
     callsMode = algoMode.getFunctionCallNumber()
     probabilityMode = algoMode.getResult().getProbabilityEstimate()
     print(
-        "mode=", mode,
-        "calls=", callsMode,
-        "probability=", probabilityMode,
-        "converged=", algoMode.getHasConverged(),
+        "mode=",
+        mode,
+        "calls=",
+        callsMode,
+        "probability=",
+        probabilityMode,
+        "converged=",
+        algoMode.getHasConverged(),
     )
     assert 0 <= callsMode <= budget
     assert 0.0 < probabilityMode < 0.3
     assert len(algoMode.getResult().getProbabilityHistory()) == callsMode + 1
     ott.assert_almost_equal(probabilityMode, reference, 0.05, 0.002)
     # a stable criterion must really satisfy its own convergence test
-    if mode in (algo.PROBABILITY_STABILITY, algo.RELIABILITY_INDEX_STABILITY) and algoMode.getHasConverged():
+    if (
+        mode in (algo.PROBABILITY_STABILITY, algo.RELIABILITY_INDEX_STABILITY)
+        and algoMode.getHasConverged()
+    ):
         modeHistory = (
             algoMode.getResult().getProbabilityHistory()
             if mode == algo.PROBABILITY_STABILITY
             else algoMode.getResult().getReliabilityIndexHistory()
         )
-        relativeVariation = abs(modeHistory[-1] - modeHistory[-2]) / abs(modeHistory[-1])
+        relativeVariation = abs(modeHistory[-1] - modeHistory[-2]) / abs(
+            modeHistory[-1]
+        )
         assert relativeVariation <= modeThreshold + 1.0e-12
 
 # setEvent propagates to the wrapped simulator and to the run itself
@@ -238,13 +262,23 @@ assert algoEvent.getSimulationAlgorithm().getEvent().getThreshold() == newThresh
 # the criterion follows the new limit state, so enrichment is selected against it
 assert algoEvent.getCriterion().getReliabilityThreshold() == newThreshold
 algoEvent.run()
-print("new event probability=", algoEvent.getResult().getProbabilityEstimate(), "reference=", newReference)
-ott.assert_almost_equal(algoEvent.getResult().getProbabilityEstimate(), newReference, 0.05, 0.002)
+print(
+    "new event probability=",
+    algoEvent.getResult().getProbabilityEstimate(),
+    "reference=",
+    newReference,
+)
+ott.assert_almost_equal(
+    algoEvent.getResult().getProbabilityEstimate(), newReference, 0.05, 0.002
+)
 
 # a default-constructed algorithm is persistable and its criterion is usable
 defaultAlgo = otexp.ActiveLearningReliabilityAlgorithm()
 assert defaultAlgo.getMaximumIterations() >= 1
-assert defaultAlgo.getCriterion().getImplementation().getClassName() == "ActiveLearningReliabilityFunctionImplementation"
+assert (
+    defaultAlgo.getCriterion().getImplementation().getClassName()
+    == "ActiveLearningReliabilityFunctionImplementation"
+)
 if HAVE_LIBXML2:
     fileNameDefault = "t_ActiveLearningReliabilityAlgorithm_default.xml"
     studyDefault = ot.Study(fileNameDefault)
@@ -255,7 +289,10 @@ if HAVE_LIBXML2:
     loadedDefault = otexp.ActiveLearningReliabilityAlgorithm()
     studyDefault2.fillObject("algo", loadedDefault)
     assert loadedDefault.getMaximumIterations() == defaultAlgo.getMaximumIterations()
-    assert loadedDefault.getCriterion().getImplementation().getClassName() == "ActiveLearningReliabilityFunctionImplementation"
+    assert (
+        loadedDefault.getCriterion().getImplementation().getClassName()
+        == "ActiveLearningReliabilityFunctionImplementation"
+    )
     os.remove(fileNameDefault)
 
 # full detail on a NAIS run: weights through the downcast, before and after save
@@ -286,7 +323,9 @@ if HAVE_LIBXML2:
     studyN2.load()
     loadedNAIS = otexp.ActiveLearningReliabilityAlgorithm()
     studyN2.fillObject("algo", loadedNAIS)
-    loadedNaisImpl = loadedNAIS.getResult().getSimulationResults()[0].getImplementation()
+    loadedNaisImpl = (
+        loadedNAIS.getResult().getSimulationResults()[0].getImplementation()
+    )
     assert loadedNaisImpl.getClassName() == "NAISResult"
     assert len(loadedNaisImpl.getWeights()) > 0
     ott.assert_almost_equal(

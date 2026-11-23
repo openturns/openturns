@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComposedDistributions
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,7 +58,10 @@ static Description BuildConsistentMarginalParameterDescription(const Distributio
 {
   const UnsignedInteger dimension = marginal.getParameter().getDimension();
   Description description;
-  try { description = marginal.getParameterDescription(); }
+  try
+  {
+    description = marginal.getParameterDescription();
+  }
   catch (const NotYetImplementedException &) { /* fall through to the default below */ }
   if (description.getSize() != dimension)
   {
@@ -406,31 +409,6 @@ Point JointDistribution::getRealization() const
   return result;
 }
 
-struct ComposedDistributionComputeSamplePolicy
-{
-  const Sample input_;
-  Sample & output_;
-  const Collection<Distribution> distributionCollection_;
-  UnsignedInteger dimension_;
-
-  ComposedDistributionComputeSamplePolicy(const Sample & input,
-                                          Sample & output,
-                                          const Collection<Distribution> & distributionCollection)
-    : input_(input)
-    , output_(output)
-    , distributionCollection_(distributionCollection)
-    , dimension_(distributionCollection.getSize())
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        output_(i, j) = distributionCollection_[j].computeScalarQuantile(input_(i, j));
-  }
-
-}; /* end struct ComposedDistributionComputeSamplePolicy */
-
 /* Get a sample of the distribution */
 Sample JointDistribution::getSample(const UnsignedInteger size) const
 {
@@ -441,8 +419,13 @@ Sample JointDistribution::getSample(const UnsignedInteger size) const
     // of possible parallelism of the getSample() method of the core
     const Sample coreSample(core_.getSample(size));
     Sample result(size, dimension);
-    const ComposedDistributionComputeSamplePolicy policy(coreSample, result, distributionCollection_);
-    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy, 1024);
+    const UnsignedInteger collectionSize = distributionCollection_.getSize();
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        for (UnsignedInteger j = 0; j < collectionSize; ++j)
+          result(i, j) = distributionCollection_[j].computeScalarQuantile(coreSample(i, j));
+    }, 1024);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;
@@ -1373,12 +1356,27 @@ void JointDistribution::setParametersCollection(const PointCollection& parameter
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger parametersSize = dimension + (dimension > 1 ? 1 : 0);
-  if (parametersCollection.getSize() < parametersSize) throw InvalidArgumentException(HERE) << "The collection is too small(" << parametersCollection.getSize() << "). Expected (" << parametersSize << ")";
+  if (parametersCollection.getSize() != parametersSize) throw InvalidArgumentException(HERE) << "The collection has an invalid size(" << parametersCollection.getSize() << "). Expected (" << parametersSize << ")";
 
-  // set marginal parameters
-  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex) distributionCollection_[marginalIndex].setParameter(parametersCollection[marginalIndex]);
+  // No partial update on error: work on copies before committing
+  DistributionCollection newMarginals(dimension);
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
+  {
+    Distribution marginal(distributionCollection_[marginalIndex]);
+    marginal.setParameter(parametersCollection[marginalIndex]);
+    newMarginals[marginalIndex] = marginal;
+  }
+  Distribution newCore(core_);
   // set core parameters
-  if (dimension > 1) core_.setParameter(parametersCollection[dimension]);
+  if (dimension > 1) newCore.setParameter(parametersCollection[dimension]);
+  // All slices accepted: stage the commit on a copy so a throw in setCore
+  // leaves *this unchanged (e.g. core with support outside the unit cube)
+  const Description description(getDescription());
+  JointDistribution stagedDistribution(*this);
+  stagedDistribution.setDistributionCollection(newMarginals);
+  stagedDistribution.setDescription(description);
+  if (dimension > 1) stagedDistribution.setCore(newCore);
+  *this = stagedDistribution;
 }
 
 
@@ -1424,13 +1422,16 @@ void JointDistribution::setParameter(const Point & parameter)
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
     newCore.setParameter(newParameters);
   }
-  // All slices accepted: commit the staged updates
+  // All slices accepted: stage the commit on a copy so a throw in setCore
+  // leaves *this unchanged (e.g. core with support outside the unit cube)
   // setDistributionCollection rebuilds the description from the marginals: save/restore it,
   // before setCore so the core receives the original description
   const Description description(getDescription());
-  setDistributionCollection(newMarginals);
-  setDescription(description);
-  if (dimension > 1) setCore(newCore);
+  JointDistribution stagedDistribution(*this);
+  stagedDistribution.setDistributionCollection(newMarginals);
+  stagedDistribution.setDescription(description);
+  if (dimension > 1) stagedDistribution.setCore(newCore);
+  *this = stagedDistribution;
 }
 
 Description JointDistribution::getParameterDescription() const

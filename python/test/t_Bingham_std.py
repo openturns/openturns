@@ -32,9 +32,7 @@ logpdf = distribution.computeLogPDF(point)
 ott.assert_almost_equal(logpdf, math.log(pdf), 1e-12, 0.0)
 
 # PDF at a point off the sphere is zero
-ott.assert_almost_equal(
-    distribution.computePDF([1.0, 1.0, 0.0]), 0.0, 1e-12, 0.0
-)
+ott.assert_almost_equal(distribution.computePDF([1.0, 1.0, 0.0]), 0.0, 1e-12, 0.0)
 
 # Uniform distribution on the sphere S^2: PDF = 1 / (4 * pi)
 uniform = otexp.Bingham([0.0, 0.0, 0.0], gamma)
@@ -49,12 +47,8 @@ ott.assert_almost_equal(
 )
 
 # Uniform distribution on the circle S^1: PDF = 1 / (2 * pi)
-circle = otexp.Bingham(
-    [0.0, 0.0], ot.SquareMatrix([[1.0, 0.0], [0.0, 1.0]])
-)
-ott.assert_almost_equal(
-    circle.computePDF([1.0, 0.0]), 1.0 / (2.0 * math.pi), 1e-6, 0.0
-)
+circle = otexp.Bingham([0.0, 0.0], ot.SquareMatrix([[1.0, 0.0], [0.0, 1.0]]))
+ott.assert_almost_equal(circle.computePDF([1.0, 0.0]), 1.0 / (2.0 * math.pi), 1e-6, 0.0)
 
 # PDF ratio along the axes: f(e_i) / f(e_j) = exp(zeta_i - zeta_j)
 pdf_x = distribution.computePDF([1.0, 0.0, 0.0])
@@ -81,9 +75,7 @@ for i in range(3):
         ott.assert_almost_equal(cov_uniform[i, j], 0.0, 1e-6, 0.0)
 
 # Entropy: uniform on S^{n-1} has entropy log(area(S^{n-1}))
-ott.assert_almost_equal(
-    uniform.computeEntropy(), math.log(4.0 * math.pi), 1e-6, 0.0
-)
+ott.assert_almost_equal(uniform.computeEntropy(), math.log(4.0 * math.pi), 1e-6, 0.0)
 
 # Get parameters: zeta then gamma flattened row-major
 param = distribution.getParameter()
@@ -132,17 +124,17 @@ with ott.assert_raises(TypeError):
 # setGamma / getGamma round-trip
 theta = 0.5
 rotated = ot.SquareMatrix(
-    [[math.cos(theta), -math.sin(theta), 0.0],
-     [math.sin(theta), math.cos(theta), 0.0],
-     [0.0, 0.0, 1.0]]
+    [
+        [math.cos(theta), -math.sin(theta), 0.0],
+        [math.sin(theta), math.cos(theta), 0.0],
+        [0.0, 0.0, 1.0],
+    ]
 )
 dist_setter.setGamma(rotated)
 sdim = dist_setter.getDimension()
 for i in range(sdim):
     for j in range(sdim):
-        ott.assert_almost_equal(
-            dist_setter.getGamma()[i, j], rotated[i, j], 1e-12, 0.0
-        )
+        ott.assert_almost_equal(dist_setter.getGamma()[i, j], rotated[i, j], 1e-12, 0.0)
 
 # Invalid gamma: non-orthogonal or wrong dimension
 with ott.assert_raises(TypeError):
@@ -193,8 +185,7 @@ mean = sample.computeMean()
 ott.assert_almost_equal(mean, [0.0, 0.0, 0.0], 0.0, 5e-2)
 # The density is peaked around the equator orthogonal to the first axis
 var_sample = sample.computeCovariance()
-ott.assert_almost_equal(var_sample[0, 0], concentrated.getCovariance()[0, 0],
-                        0.1, 0.0)
+ott.assert_almost_equal(var_sample[0, 0], concentrated.getCovariance()[0, 0], 0.1, 0.0)
 
 # Normalization: E[1/pdf(X)] is the area of S^2 for a mild concentration
 ot.RandomGenerator.SetSeed(0)

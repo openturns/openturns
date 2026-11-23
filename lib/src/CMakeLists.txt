@@ -118,8 +118,8 @@ if (HDF5_FOUND AND DEFINED HDF5_CXX_DEFINITIONS)
 endif ()
 
 # soversion
-set_target_properties (OT PROPERTIES SOVERSION 0.29)
-set (LIB_VERSION 0.29.0)
+set_target_properties (OT PROPERTIES SOVERSION 0.30)
+set (LIB_VERSION 0.30.0)
 set_target_properties (OT PROPERTIES VERSION ${LIB_VERSION})
 
 target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})

@@ -2,7 +2,7 @@
 /**
  *  @brief Estimation by method of moments
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,7 +29,6 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
-#include <limits>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -372,7 +371,7 @@ void MethodOfMomentsFactory::setMomentOrders(const Indices & momentsOrders)
   for (UnsignedInteger i = 0; i < momentsOrders.getSize(); ++ i)
     if (!(momentsOrders[i] > 0))
       throw InvalidArgumentException(HERE) << "Moments orders must be positive";
-  if (!momentsOrders.check(std::numeric_limits<UnsignedInteger>::max()))
+  if (!momentsOrders.check(SpecFunc::MaxUnsignedInteger))
     throw InvalidArgumentException(HERE) << "Moments orders must be unique";
   momentOrders_ = momentsOrders;
 }

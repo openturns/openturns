@@ -2,7 +2,7 @@
 /**
  *  @brief MultiStart optimization algorithm
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,6 +30,35 @@ CLASSNAMEINIT(MultiStart)
 
 static const Factory<MultiStart> Factory_MultiStart;
 static const Factory<PersistentCollection<OptimizationResult> > Factory_PersistentCollection_OptimizationResult;
+
+namespace
+{
+// Data forwarded to the scaled progress callback: the inner solver reports
+// progress on its local budget, we re-express it on the global budget from
+// the shared evaluation counter so progress stays monotonic across restarts.
+struct MultiStartProgressData
+{
+  OptimizationAlgorithmImplementation::ProgressCallback callback = nullptr;
+  void * state = nullptr;
+  const MultiStart * algo = nullptr;
+  UnsignedInteger initialCallsNumber = 0;
+};
+
+void MultiStartScaledProgressCallback(Scalar, void * data)
+{
+  const MultiStartProgressData * progressData = static_cast<const MultiStartProgressData *>(data);
+  if (!progressData || !progressData->callback || !progressData->algo) return;
+  const UnsignedInteger globalMax = progressData->algo->getMaximumCallsNumber();
+  Scalar progress = 100.0;
+  if (globalMax > 0)
+  {
+    const UnsignedInteger globalCalls = progressData->algo->getProblem().getObjective().getEvaluationCallsNumber() - progressData->initialCallsNumber;
+    progress = (100.0 * globalCalls) / globalMax;
+    if (progress > 100.0) progress = 100.0;
+  }
+  progressData->callback(progress, progressData->state);
+}
+}
 
 /* Constructor with no parameters */
 MultiStart::MultiStart()
@@ -104,8 +133,23 @@ void MultiStart::run()
   result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = startingSample_.getSize();
   const UnsignedInteger initialCallsNumber = getProblem().getObjective().getEvaluationCallsNumber();
+  // forward user callbacks to the inner solver so local searches report
+  // progress and can be interrupted without waiting for the current restart;
+  // inner progress is rescaled to the global budget, stop is forwarded as is;
+  // if both inner and outer callbacks are set the outer ones take precedence
+  MultiStartProgressData progressData;
+  if (progressCallback_.first)
+  {
+    progressData.callback = progressCallback_.first;
+    progressData.state = progressCallback_.second;
+    progressData.algo = this;
+    progressData.initialCallsNumber = initialCallsNumber;
+    solver.setProgressCallback(MultiStartScaledProgressCallback, &progressData);
+  }
+  if (stopCallback_.first) solver.setStopCallback(stopCallback_.first, stopCallback_.second);
   UnsignedInteger callsNumber = 0;
   UnsignedInteger successNumber = 0;
+  Bool localInterruption = false;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     LOGDEBUG(OSS() << "Running local search " << (i + 1) << "/" << size << " x0=" << Point(startingSample_[i]).__str__() << " calls=" << callsNumber << "/" << getMaximumCallsNumber());
@@ -125,6 +169,9 @@ void MultiStart::run()
       const OptimizationResult localResult(solver.getResult());
       ++ successNumber;
       LOGDEBUG(OSS() << "Local search succeeded with " << localResult.getStatusMessage());
+      // A one-time stop request surfaces as a local INTERRUPTION without
+      // throwing: latch it so the outer poll below does not lose it
+      localInterruption = (localResult.getStatus() == OptimizationResult::INTERRUPTION);
 
       if (keepResults_) resultCollection_.add(localResult);
 
@@ -143,11 +190,13 @@ void MultiStart::run()
       }
       result_.setStatusMessage(localResult.getStatusMessage());
 
-      // update optimal point
+      // update optimal point; an interrupted local search may retain no
+      // optimum, in which case there is nothing to compare (reading y[0]
+      // below would be out of bounds)
       const Point x(localResult.getOptimalPoint());
       const Point y(localResult.getOptimalValue());
-      const Bool objectiveImproved = (!result_.getOptimalValue().getDimension())
-                                    || ((getProblem().isMinimization() && y[0] < result_.getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > result_.getOptimalValue()[0]));
+      const Bool objectiveImproved = (y.getDimension() > 0) && ((!result_.getOptimalValue().getDimension())
+                                     || ((getProblem().isMinimization() && y[0] < result_.getOptimalValue()[0]) || (!getProblem().isMinimization() && y[0] > result_.getOptimalValue()[0])));
 
       if (objectiveImproved)
       {
@@ -193,16 +242,18 @@ void MultiStart::run()
     }
     if (stopCallback_.first)
     {
-      Bool stop = stopCallback_.first(stopCallback_.second);
+      Bool stop = localInterruption || stopCallback_.first(stopCallback_.second);
       if (stop)
       {
         LOGINFO(OSS() << "MultiStart was stopped by user");
+        result_.setStatus(OptimizationResult::INTERRUPTION);
+        result_.setStatusMessage(OSS() << "MultiStart was stopped by user");
         break;
       }
     }
   }
 
-  if (!(successNumber > 0))
+  if (!(successNumber > 0) && (result_.getStatus() != OptimizationResult::INTERRUPTION))
   {
     result_.setStatus(OptimizationResult::FAILURE);
     if (getCheckStatus())

@@ -56,3 +56,95 @@ algo.run()
 n_local_results_nokeep = algo.getResultCollection().getSize()
 assert n_local_results_nokeep == 0, "n_local_results_nokeep is wrong"
 assert result.getCallsNumber() < 400, "wrong calls number"
+
+# inner progress is rescaled to the global budget and stays monotonic
+progress_calls = []
+
+
+def progress(p):
+    progress_calls.append(p)
+
+
+def no_stop():
+    return False
+
+
+def stop_now():
+    return True
+
+
+ot.RandomGenerator.SetSeed(0)
+small_distribution = ot.JointDistribution([ot.Uniform(-3.0, 3.0)] * dim)
+small_sample = small_distribution.getSample(5)
+cb_algo = ot.MultiStart(ot.TNC(problem), small_sample)
+cb_algo.setMaximumCallsNumber(2000)
+cb_algo.setProgressCallback(progress)
+cb_algo.setStopCallback(no_stop)
+cb_algo.run()
+assert cb_algo.getResult().getStatus() == ot.OptimizationResult.SUCCESS
+assert len(progress_calls) > 0, "progress callback was not invoked"
+assert all(0.0 <= p <= 100.0 for p in progress_calls), "progress out of range"
+assert all(
+    b >= a for a, b in zip(progress_calls, progress_calls[1:])
+), "progress not monotonic"
+
+# user stop interrupts the current local search, not just between restarts
+inner = ot.TNC(problem)
+inner.setCheckStatus(False)
+stop_algo = ot.MultiStart(inner, small_sample)
+stop_algo.setMaximumCallsNumber(2000)
+stop_algo.setCheckStatus(False)
+stop_algo.setKeepResults(True)
+stop_algo.setStopCallback(stop_now)
+stop_algo.run()
+assert stop_algo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+assert stop_algo.getResultCollection().getSize() == 1, "wrong restarts number"
+assert stop_algo.getResult().getCallsNumber() < 2000, "stop was not honored"
+
+# a one-time stop request is not lost between restarts: the local
+# INTERRUPTION is latched and stops the outer loop as well.
+# Dlib reports a user stop as INTERRUPTION without throwing.
+if ot.PlatformInfo.HasFeature("dlib"):
+    stop_calls = []
+
+    def stop_once():
+        stop_calls.append(1)
+        return len(stop_calls) == 1
+
+    once_inner = ot.Dlib(problem, "bfgs")
+    once_inner.setCheckStatus(False)
+    once_algo = ot.MultiStart(once_inner, small_sample)
+    once_algo.setMaximumCallsNumber(2000)
+    once_algo.setCheckStatus(False)
+    once_algo.setKeepResults(True)
+    once_algo.setStopCallback(stop_once)
+    once_algo.run()
+    assert once_algo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+    assert once_algo.getResultCollection().getSize() == 1, "stop request was lost"
+
+# stop before any feasible point is retained: the empty local optimum must
+# not break the best-point update, and the stop is still latched
+infeasibleProblem = ot.OptimizationProblem(
+    ot.SymbolicFunction(["x", "y"], ["x + y"]),
+    ot.Function(),
+    ot.SymbolicFunction(["x", "y"], ["-x - y - 10.0"]),
+    bounds,
+)
+empty_calls = []
+
+
+def stop_once_empty():
+    empty_calls.append(1)
+    return len(empty_calls) == 1
+
+
+empty_inner = ot.Cobyla(infeasibleProblem)
+empty_inner.setCheckStatus(False)
+empty_algo = ot.MultiStart(empty_inner, small_sample)
+empty_algo.setMaximumCallsNumber(2000)
+empty_algo.setCheckStatus(False)
+empty_algo.setKeepResults(True)
+empty_algo.setStopCallback(stop_once_empty)
+empty_algo.run()
+assert empty_algo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+assert empty_algo.getResultCollection().getSize() == 1, "stop request was lost"

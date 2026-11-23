@@ -21,7 +21,9 @@ n = 100
 discretization = [n - 1]
 
 # Create process
-process = otexp.CirculantEmbeddingGaussianProcess(covarianceModel, interval, discretization)
+process = otexp.CirculantEmbeddingGaussianProcess(
+    covarianceModel, interval, discretization
+)
 print("process = ", process)
 print("is stationary? ", process.isStationary())
 print("is normal? ", process.isNormal())
@@ -72,7 +74,9 @@ print("marginal = ", marginal)
 print("\nTest with different discretization")
 interval2 = ot.Interval(0.0, 5.0)
 discretization2 = [50]
-process3 = otexp.CirculantEmbeddingGaussianProcess(covarianceModel, interval2, discretization2)
+process3 = otexp.CirculantEmbeddingGaussianProcess(
+    covarianceModel, interval2, discretization2
+)
 realization4 = process3.getRealization()
 
 # Test that getRealization returns consistent mesh
@@ -117,7 +121,12 @@ print("output dimension = ", processVec.getOutputDimension())
 # Generate realization
 realizationVec = processVec.getRealization()
 print("realization output dimension = ", realizationVec.getOutputDimension())
-print("realization values shape = ", realizationVec.getValues().getSize(), "x", realizationVec.getValues().getDimension())
+print(
+    "realization values shape = ",
+    realizationVec.getValues().getSize(),
+    "x",
+    realizationVec.getValues().getDimension(),
+)
 
 # Check statistics
 sampleVec = processVec.getSample(200)
@@ -162,7 +171,9 @@ ott.assert_almost_equal(mean2D[0, 0], 0.0, 0.0, 0.3)
 
 empiricalVar2D = sample2D.computeVariance()
 theoreticalVar2D = cov2D(ot.Point(2, 0.0))[0, 0]
-print("2D empirical variance = ", empiricalVar2D[0, 0], "theoretical = ", theoreticalVar2D)
+print(
+    "2D empirical variance = ", empiricalVar2D[0, 0], "theoretical = ", theoreticalVar2D
+)
 ott.assert_almost_equal(empiricalVar2D[0, 0], theoreticalVar2D, 0.0, 0.3)
 
 # Test 3D
@@ -184,7 +195,9 @@ print("circular size = ", process3D.getCircularSize())
 realization3D = process3D.getRealization()
 print("3D realization output dimension = ", realization3D.getOutputDimension())
 print("3D realization vertices = ", realization3D.getMesh().getVerticesNumber())
-ott.assert_almost_equal(realization3D.getMesh().getVerticesNumber(), 7 * 7 * 7, 0.0, 0.0)
+ott.assert_almost_equal(
+    realization3D.getMesh().getVerticesNumber(), 7 * 7 * 7, 0.0, 0.0
+)
 
 # Compute statistics
 sample3D = process3D.getSample(50)
@@ -194,7 +207,9 @@ ott.assert_almost_equal(mean3D[0, 0], 0.0, 0.0, 0.4)
 
 empiricalVar3D = sample3D.computeVariance()
 theoreticalVar3D = cov3D(ot.Point(3, 0.0))[0, 0]
-print("3D empirical variance = ", empiricalVar3D[0, 0], "theoretical = ", theoreticalVar3D)
+print(
+    "3D empirical variance = ", empiricalVar3D[0, 0], "theoretical = ", theoreticalVar3D
+)
 ott.assert_almost_equal(empiricalVar3D[0, 0], theoreticalVar3D, 0.0, 0.4)
 
 # Test 4D
@@ -214,10 +229,12 @@ print("circular size = ", process4D.getCircularSize())
 
 # Generate a 4D realization
 realization4D = process4D.getRealization()
-nVertices4D = 5 ** 4
+nVertices4D = 5**4
 print("4D realization output dimension = ", realization4D.getOutputDimension())
 print("4D realization vertices = ", realization4D.getMesh().getVerticesNumber())
-ott.assert_almost_equal(realization4D.getMesh().getVerticesNumber(), nVertices4D, 0.0, 0.0)
+ott.assert_almost_equal(
+    realization4D.getMesh().getVerticesNumber(), nVertices4D, 0.0, 0.0
+)
 
 # Compute statistics
 sample4D = process4D.getSample(30)
@@ -227,7 +244,9 @@ ott.assert_almost_equal(mean4D[0, 0], 0.0, 0.0, 0.5)
 
 empiricalVar4D = sample4D.computeVariance()
 theoreticalVar4D = cov4D(ot.Point(4, 0.0))[0, 0]
-print("4D empirical variance = ", empiricalVar4D[0, 0], "theoretical = ", theoreticalVar4D)
+print(
+    "4D empirical variance = ", empiricalVar4D[0, 0], "theoretical = ", theoreticalVar4D
+)
 ott.assert_almost_equal(empiricalVar4D[0, 0], theoreticalVar4D, 0.0, 0.5)
 
 # Test 2D with vector-valued output
@@ -267,14 +286,18 @@ print("=" * 60)
 ot.RandomGenerator.SetSeed(0)
 cov3DVec = ot.ExponentialModel([1.0] * 3, [1.0, 0.5])
 interval3DVec = ot.Interval([0.0] * 3, [2.0] * 3)
-process3DVec = otexp.CirculantEmbeddingGaussianProcess(cov3DVec, interval3DVec, [5, 5, 5])
+process3DVec = otexp.CirculantEmbeddingGaussianProcess(
+    cov3DVec, interval3DVec, [5, 5, 5]
+)
 print("process 3D vec = ", process3DVec)
 print("output dimension = ", process3DVec.getOutputDimension())
 
 realization3DVec = process3DVec.getRealization()
 print("3D vec output dimension = ", realization3DVec.getOutputDimension())
 print("3D vec vertices = ", realization3DVec.getMesh().getVerticesNumber())
-ott.assert_almost_equal(realization3DVec.getMesh().getVerticesNumber(), 6 * 6 * 6, 0.0, 0.0)
+ott.assert_almost_equal(
+    realization3DVec.getMesh().getVerticesNumber(), 6 * 6 * 6, 0.0, 0.0
+)
 
 sample3DVec = process3DVec.getSample(30)
 mean3DVec = sample3DVec.computeMean()
@@ -294,7 +317,9 @@ print("\n" + "=" * 60)
 print("Test automatic circular size recomputation on mesh change")
 print("=" * 60)
 covAuto = ot.ExponentialModel([1.0], [1.0])
-processAuto = otexp.CirculantEmbeddingGaussianProcess(covAuto, ot.Interval(0.0, 10.0), [50])
+processAuto = otexp.CirculantEmbeddingGaussianProcess(
+    covAuto, ot.Interval(0.0, 10.0), [50]
+)
 processAuto.getRealization()
 ott.assert_almost_equal(processAuto.getCircularSize()[0], 128, 0.0, 0.0)
 
@@ -305,7 +330,9 @@ processAuto.getRealization()
 ott.assert_almost_equal(processAuto.getCircularSize()[0], 512, 0.0, 0.0)
 
 # A user-defined circular size survives realizations
-processUser = otexp.CirculantEmbeddingGaussianProcess(covAuto, ot.Interval(0.0, 10.0), [50])
+processUser = otexp.CirculantEmbeddingGaussianProcess(
+    covAuto, ot.Interval(0.0, 10.0), [50]
+)
 processUser.setCircularSize([256])
 ott.assert_almost_equal(processUser.getCircularSize()[0], 256, 0.0, 0.0)
 processUser.getRealization()
@@ -335,8 +362,14 @@ with ott.assert_raises(TypeError):
 print("\n" + "=" * 60)
 print("Test non-uniform mesh rejection")
 print("=" * 60)
-nonUniform = ot.Mesh(ot.Sample([[0.0], [0.3], [1.0], [1.1], [1.2], [1.3], [1.4], [1.5], [1.6], [1.7], [1.8]]))
-processNonUniform = otexp.CirculantEmbeddingGaussianProcess(covarianceModel, ot.Interval(0.0, 1.8), [10])
+nonUniform = ot.Mesh(
+    ot.Sample(
+        [[0.0], [0.3], [1.0], [1.1], [1.2], [1.3], [1.4], [1.5], [1.6], [1.7], [1.8]]
+    )
+)
+processNonUniform = otexp.CirculantEmbeddingGaussianProcess(
+    covarianceModel, ot.Interval(0.0, 1.8), [10]
+)
 with ott.assert_raises(TypeError):
     processNonUniform.setMesh(nonUniform)
 
@@ -347,10 +380,24 @@ with ott.assert_raises(TypeError):
 ot.ResourceMap.SetAsScalar("Mesh-VertexEpsilon", 1.0e-6)
 
 # Test the CirculantEmbeddingGaussianProcess-MaximumIteration key
-assert ot.ResourceMap.GetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration") == 20
-ot.ResourceMap.SetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration", 5)
-assert ot.ResourceMap.GetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration") == 5
-ot.ResourceMap.SetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration", 20)
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger(
+        "CirculantEmbeddingGaussianProcess-MaximumIteration"
+    )
+    == 20
+)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "CirculantEmbeddingGaussianProcess-MaximumIteration", 5
+)
+assert (
+    ot.ResourceMap.GetAsUnsignedInteger(
+        "CirculantEmbeddingGaussianProcess-MaximumIteration"
+    )
+    == 5
+)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "CirculantEmbeddingGaussianProcess-MaximumIteration", 20
+)
 
 print("mesh validation OK")
 

@@ -3,6 +3,7 @@
 import openturns as ot
 
 import openturns.testing as ott
+
 ot.TESTPREAMBLE()
 
 distribution = ot.Skellam(10.0, 5.0)

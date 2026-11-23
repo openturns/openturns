@@ -18,12 +18,8 @@ problem.setMinimization(True)
 penalizedProblem = otexp.ExceptionPenalizedProblem(problem, penalty)
 
 # penalized objective returns penalty on failure (minimization)
-assert_almost_equal(
-    penalizedProblem.getObjective()([4.0]), [2.0], 1e-12, 0.0
-)
-assert_almost_equal(
-    penalizedProblem.getObjective()([-1.0]), [penalty], 0.0, 0.0
-)
+assert_almost_equal(penalizedProblem.getObjective()([4.0]), [2.0], 1e-12, 0.0)
+assert_almost_equal(penalizedProblem.getObjective()([-1.0]), [penalty], 0.0, 0.0)
 
 # maximization flips the sign
 problemMax = ot.OptimizationProblem(f)
@@ -48,9 +44,7 @@ penalizedMulti = otexp.ExceptionPenalizedProblem(multiProblem, penalty)
 assert_almost_equal(
     penalizedMulti.getObjective()([-1.0]), [penalty, -penalty], 0.0, 0.0
 )
-assert_almost_equal(
-    penalizedMulti.getObjective()([4.0]), [2.0, 2.0], 1e-12, 0.0
-)
+assert_almost_equal(penalizedMulti.getObjective()([4.0]), [2.0, 2.0], 1e-12, 0.0)
 
 # accessors
 assert_almost_equal(penalizedProblem.getPenalizedValue(), penalty, 1e-12, 0.0)
@@ -63,9 +57,7 @@ bounds = ot.Interval([-5.0], [5.0])
 problem.setBounds(bounds)
 penalizedBounds = otexp.ExceptionPenalizedProblem(problem, penalty)
 assert penalizedBounds.hasBounds()
-assert_almost_equal(
-    penalizedBounds.getBounds().getLowerBound(), [-5.0], 1e-12, 0.0
-)
+assert_almost_equal(penalizedBounds.getBounds().getLowerBound(), [-5.0], 1e-12, 0.0)
 
 # penalized functions use finite-difference gradient/hessian evaluated
 # on the penalized evaluation, which never throws
@@ -94,9 +86,7 @@ assert (
     analyticObjective.getHessian().getImplementation().getClassName()
     == "CenteredFiniteDifferenceHessian"
 )
-assert_almost_equal(
-    analyticObjective.gradient([4.0])[0, 0], 0.25, 1e-4, 0.0
-)
+assert_almost_equal(analyticObjective.gradient([4.0])[0, 0], 0.25, 1e-4, 0.0)
 # no throw on failure, gradient vanishes on the penalized plateau
 assert_almost_equal(
     analyticObjective.gradient([-1.0]),
@@ -214,9 +204,7 @@ assert (
 assert_almost_equal(penalizedIneq([4.0]), [3.0], 1e-12, 0.0)
 assert_almost_equal(penalizedIneq([-1.0]), [-penalty], 0.0, 0.0)
 assert_almost_equal(penalizedIneq.gradient([4.0])[0, 0], 1.0, 1e-4, 0.0)
-assert_almost_equal(
-    penalizedIneq.gradient([-1.0]), ot.Matrix(1, 1), 0.0, 0.0
-)
+assert_almost_equal(penalizedIneq.gradient([-1.0]), ot.Matrix(1, 1), 0.0, 0.0)
 
 # can be used by an optimizer
 algo = ot.Cobyla(ot.OptimizationProblem(penalizedProblem))

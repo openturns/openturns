@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class LHSExperiment for standard methods
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2027 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,13 +40,19 @@ int main(int, char *[])
     fullprint << "sample  = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
     fullprint << "sample2 = " << experiment.generate() << std::endl;
-    experiment = LHSExperiment(distribution, size, true, true);
+    experiment = LHSExperiment(distribution, size);
+    experiment.setAlwaysShuffle(true);
+    experiment.setRandomShift(true);
     fullprint << "sample  = " << experiment.generate() << std::endl;
     fullprint << "sample2 = " << experiment.generate() << std::endl;
-    experiment = LHSExperiment(distribution, size, false, false);
+    experiment = LHSExperiment(distribution, size);
+    experiment.setAlwaysShuffle(false);
+    experiment.setRandomShift(false);
     fullprint << "sample  = " << experiment.generate() << std::endl;
     fullprint << "sample2 = " << experiment.generate() << std::endl;
-    experiment = LHSExperiment(distribution, size, true, false);
+    experiment = LHSExperiment(distribution, size);
+    experiment.setAlwaysShuffle(true);
+    experiment.setRandomShift(false);
     fullprint << "sample  = " << experiment.generate() << std::endl;
     fullprint << "sample2 = " << experiment.generate() << std::endl;
   }

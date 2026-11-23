@@ -1,10 +1,6 @@
 %feature("docstring") OT::DualLinearCombinationEvaluation
 R"RAW(Dual linear combination evaluation implementation.
 
-Available constructors:
-
-    DualLinearCombinationEvaluation(*scalarFctColl, vectCoefColl*)
-    
 Parameters
 ----------
 scalarFctColl : sequence of :class:`~openturns.Function`

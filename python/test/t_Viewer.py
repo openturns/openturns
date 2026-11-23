@@ -343,9 +343,7 @@ titleGraph = ot.Normal(2).drawPDF()
 titleView = View(titleGraph, title_kw={"fontsize": 20})
 ott.assert_almost_equal(titleView._fig._suptitle.get_fontsize(), 20)
 # The GridLayout branch is the one carrying the suptitle, see issue #3001
-gridTitleView = View(
-    ot.Normal(2).drawMarginalPDFs(), title_kw={"fontsize": 18}
-)
+gridTitleView = View(ot.Normal(2).drawMarginalPDFs(), title_kw={"fontsize": 18})
 ott.assert_almost_equal(gridTitleView._fig._suptitle.get_fontsize(), 18)
 
 # Cloud transparency survives Graph.add and reaches the viewer, see issue #2831
@@ -366,9 +364,7 @@ opaqueFacecolor = opaqueView._ax[0].collections[0].get_facecolor()[0]
 ott.assert_almost_equal(opaqueFacecolor[3], 0.3, 1e-2, 0.0)
 
 # The same forward applies to the other drawable kinds with an alpha channel
-alphaPolygon = ot.Polygon(
-    ot.Sample([[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]])
-)
+alphaPolygon = ot.Polygon(ot.Sample([[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]]))
 alphaPolygon.setAlpha(0.3)
 alphaGraph = ot.Graph()
 alphaGraph.add(alphaPolygon)
@@ -380,17 +376,13 @@ alphaArray.setAlpha(0.3)
 alphaGraph = ot.Graph()
 alphaGraph.add(alphaArray)
 alphaView = View(alphaGraph, polygoncollection_kw={"facecolors": ["#1f77b4"]})
-ott.assert_almost_equal(
-    alphaView._ax[0].collections[0].get_alpha(), 0.3, 1e-2, 0.0
-)
+ott.assert_almost_equal(alphaView._ax[0].collections[0].get_alpha(), 0.3, 1e-2, 0.0)
 
 alphaPie = ot.Pie([1.0, 2.0, 3.0])
 alphaPie.setAlpha(0.3)
 alphaGraph = ot.Graph()
 alphaGraph.add(alphaPie)
-alphaView = View(
-    alphaGraph, pie_kw={"colors": ["#1f77b4", "#ff7f0e", "#2ca02c"]}
-)
+alphaView = View(alphaGraph, pie_kw={"colors": ["#1f77b4", "#ff7f0e", "#2ca02c"]})
 ott.assert_almost_equal(alphaView._ax[0].patches[0].get_alpha(), 0.3, 1e-2, 0.0)
 
 alphaText = ot.Text([[0.0, 0.0]], ["a"])
