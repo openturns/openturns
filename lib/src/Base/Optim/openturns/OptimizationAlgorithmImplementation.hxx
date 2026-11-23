@@ -134,6 +134,12 @@ protected:
   void setResultFromEvaluationHistory(const Sample & inputHistory, const Sample & outputHistory,
                                       const Sample & inequalityHistory = Sample(), const Sample & equalityHistory = Sample());
 
+  // set the result from evaluation history, using an explicit problem for the
+  // constraint definitions (e.g. a problem normalized by the solver adapter)
+  void setResultFromEvaluationHistory(const Sample & inputHistory, const Sample & outputHistory,
+                                      const Sample & inequalityHistory, const Sample & equalityHistory,
+                                      const OptimizationProblem & problem);
+
 private:
   Point startingPoint_;
   OptimizationProblem problem_;

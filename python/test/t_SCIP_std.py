@@ -23,7 +23,7 @@ bounds = ot.Interval([0.0, 1.0], [4.0, ot.SpecFunc.MaxScalar])
 cost = [1.1, 1.0]
 A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
 cb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
-problem = otexp.LinearProblem(cost, bounds, A, cb)
+problem = otexp.LinearProgrammingProblem(cost, bounds, A, cb)
 print(problem)
 sol = {
     Continuous: [0.5, 2.25],

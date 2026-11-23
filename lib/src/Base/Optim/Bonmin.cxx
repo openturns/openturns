@@ -186,8 +186,9 @@ void Bonmin::run()
     exc->printError(oss);
     result_.setStatusMessage(oss.str());
     setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
-                                   getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
-                                   getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
+                                   tminlp->hasInequalityConstraint() ? tminlp->getInequalityConstraint()(inputHistory) : Sample(),
+                                   tminlp->hasEqualityConstraint() ? tminlp->getEqualityConstraint()(inputHistory) : Sample(),
+                                   tminlp->getNormalizedProblem());
     result_.setGradientCallsNumber(tminlp->getGradientCallsNumber());
     result_.setHessianCallsNumber(tminlp->getHessianCallsNumber());
     result_.setCallsNumber(getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber);
@@ -232,8 +233,9 @@ void Bonmin::run()
     result_.setStatus(OptimizationResult::TIMEOUT);
 
   setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
-                                 getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
-                                 getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
+                                 tminlp->hasInequalityConstraint() ? tminlp->getInequalityConstraint()(inputHistory) : Sample(),
+                                 tminlp->hasEqualityConstraint() ? tminlp->getEqualityConstraint()(inputHistory) : Sample(),
+                                 tminlp->getNormalizedProblem());
   result_.setGradientCallsNumber(tminlp->getGradientCallsNumber());
   result_.setHessianCallsNumber(tminlp->getHessianCallsNumber());
   result_.setCallsNumber(getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber);
