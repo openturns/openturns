@@ -96,3 +96,57 @@ ott.assert_almost_equal(pf_sysform, 0.00234983, 1e-4, 1e-4)
 
 for form_result in result.getFORMResultCollection():
     print(" beta=", form_result.getGeneralisedReliabilityIndex())
+
+# gh #3444: system event reusing the same limit state twice, with a
+# generalised reliability index < 0 (origin in the failure domain)
+X3444 = ot.RandomVector(ot.Normal(3))
+
+
+def event3444(formula, operator, threshold):
+    function = ot.SymbolicFunction(["u1", "u2", "u3"], [formula])
+    return ot.ThresholdEvent(
+        ot.CompositeRandomVector(function, X3444), operator, threshold
+    )
+
+
+h_gt = event3444("u1+u2", ot.Greater(), 0.5)
+h_lt = event3444("u1+u2", ot.Less(), 0.5)
+g1 = event3444("u1-u2+u3", ot.Greater(), 0.4)
+g2 = event3444("u2+u3", ot.Greater(), 0.3)
+solver3444 = ot.Cobyla()
+solver3444.setStartingPoint([0.0] * 3)
+for name, system_event, exact in [
+    (
+        "opposite sides",
+        ot.UnionEvent(
+            [ot.IntersectionEvent([h_gt, g1]), ot.IntersectionEvent([h_lt, g2])]
+        ),
+        0.335774,
+    ),
+    (
+        "same side",
+        ot.UnionEvent(
+            [ot.IntersectionEvent([h_lt, g1]), ot.IntersectionEvent([h_lt, g2])]
+        ),
+        0.371910,
+    ),
+]:
+    algo3444 = ot.SystemFORM(solver3444, system_event)
+    algo3444.run()
+    pf3444 = algo3444.getResult().getEventProbability()
+    print(name, "pf_sysform = %.6g" % pf3444)
+    ott.assert_almost_equal(pf3444, exact, 1e-4, 1e-4)
+
+# zero thresholds exercise the gradient fallback (beta == 0 at the origin)
+z1_lt = event3444("u1", ot.Less(), 0.0)
+z1_gt = event3444("u1", ot.Greater(), 0.0)
+z2_lt = event3444("u1+u2", ot.Less(), 0.0)
+for name, system_event, exact in [
+    ("zero thresholds 3/8", ot.IntersectionEvent([z1_lt, z2_lt]), 0.375),
+    ("zero thresholds 1/8", ot.IntersectionEvent([z1_gt, z2_lt]), 0.125),
+]:
+    algo3444 = ot.SystemFORM(solver3444, system_event)
+    algo3444.run()
+    pf3444 = algo3444.getResult().getEventProbability()
+    print(name, "pf_sysform = %.6g" % pf3444)
+    ott.assert_almost_equal(pf3444, exact, 1e-4, 1e-4)

@@ -134,17 +134,19 @@ static void
 Buffer_dealloc(PyObject *obj)
 {
   Buffer* self = (Buffer*)obj;
+  PyTypeObject *tp = Py_TYPE(obj);
   if (self->bufferview.own)
     free(self->bufferview.data);
   {
     /* Fetch tp_free through the stable ABI without function/object pointer casts */
     union { void * p; freefunc f; } tp_free_u;
-    tp_free_u.p = PyType_GetSlot(Py_TYPE(obj), Py_tp_free);
+    tp_free_u.p = PyType_GetSlot(tp, Py_tp_free);
     if (tp_free_u.f)
       tp_free_u.f(obj);
     else
       PyObject_Free((void *)obj);
   }
+  Py_DECREF(tp);
 }
 
 static char*
