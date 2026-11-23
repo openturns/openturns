@@ -23,6 +23,7 @@
 #include <Python.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define OT_BUFFER_MAX_DIMS 10
 
@@ -45,9 +46,12 @@ typedef struct
 
 #if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
 
+static PyObject * BufferTypeObj = NULL;
+
 static int
-Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
+Buffer_init(PyObject *obj, PyObject *args, PyObject *kwds)
 {
+  Buffer *self = (Buffer *)obj;
   PyObject * addrObj = NULL;
   PyObject * shapeObj = NULL;
   PyObject * ownObj = NULL;
@@ -102,7 +106,10 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
 
   for(i = 0; i < shapeLength; ++i)
   {
-    self->bufferview.shape[i] = PyLong_AsLong(PyTuple_GET_ITEM(shapeObj, i));
+    PyObject * item = PyTuple_GetItem(shapeObj, i);
+    if (item == NULL)
+      return -1;
+    self->bufferview.shape[i] = PyLong_AsLong(item);
   }
 
   self->bufferview.strides[shapeLength - 1] = self->bufferview.itemsize;
@@ -124,11 +131,20 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
 }
 
 static void
-Buffer_dealloc(Buffer* self)
+Buffer_dealloc(PyObject *obj)
 {
+  Buffer* self = (Buffer*)obj;
   if (self->bufferview.own)
     free(self->bufferview.data);
-  Py_TYPE(self)->tp_free((PyObject*)self);
+  {
+    /* Fetch tp_free through the stable ABI without function/object pointer casts */
+    union { void * p; freefunc f; } tp_free_u;
+    tp_free_u.p = PyType_GetSlot(Py_TYPE(obj), Py_tp_free);
+    if (tp_free_u.f)
+      tp_free_u.f(obj);
+    else
+      PyObject_Free((void *)obj);
+  }
 }
 
 static char*
@@ -149,8 +165,9 @@ dim_repr(Py_ssize_t* dims, int size)
 }
 
 static PyObject *
-Buffer_repr(Buffer * self)
+Buffer_repr(PyObject *obj)
 {
+  Buffer * self = (Buffer *)obj;
   char * r = dim_repr(self->bufferview.shape, self->bufferview.ndim);
   char * s = r ? malloc(100 + strlen(r)) : NULL;
   PyObject * result = NULL;
@@ -189,7 +206,7 @@ Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
     return -1;
   }
 
-  view->obj = (PyObject*)self;
+  view->obj = obj;
   view->buf = (void*)self->bufferview.data;
   view->len = self->bufferview.length * self->bufferview.itemsize;
   view->readonly = 1;
@@ -201,14 +218,9 @@ Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
   view->suboffsets = NULL;
   view->internal = NULL;
 
-  Py_INCREF(self);
+  Py_INCREF(obj);
   return 0;
 }
-
-static PyBufferProcs Buffer_as_buffer = {
-  (getbufferproc)     Buffer_getbuffer,
-  (releasebufferproc) 0
-};
 
 /* Forward declaration.
    This method is defined after Buffer_item because it does the opposite job. */
@@ -238,7 +250,15 @@ Buffer_reduce(PyObject *obj, PyObject *args)
     return NULL;
   }
   for(i = 0; i < self->bufferview.ndim; ++i)
-    PyTuple_SET_ITEM(shapeTuple, i, PyLong_FromSsize_t(self->bufferview.shape[i]));
+  {
+    PyObject * item = PyLong_FromSsize_t(self->bufferview.shape[i]);
+    if (item == NULL || PyTuple_SetItem(shapeTuple, i, item) < 0)
+    {
+      Py_XDECREF(item);
+      Py_DECREF(shapeTuple);
+      return NULL;
+    }
+  }
 
   strideTuple = PyTuple_New(self->bufferview.ndim);
   if (strideTuple == NULL)
@@ -247,13 +267,22 @@ Buffer_reduce(PyObject *obj, PyObject *args)
     return NULL;
   }
   for(i = 0; i < self->bufferview.ndim; ++i)
-    PyTuple_SET_ITEM(strideTuple, i, PyLong_FromSsize_t(self->bufferview.strides[i]));
+  {
+    PyObject * item = PyLong_FromSsize_t(self->bufferview.strides[i]);
+    if (item == NULL || PyTuple_SetItem(strideTuple, i, item) < 0)
+    {
+      Py_XDECREF(item);
+      Py_DECREF(shapeTuple);
+      Py_DECREF(strideTuple);
+      return NULL;
+    }
+  }
 
   rawObj = PyBytes_FromStringAndSize((const char*)self->bufferview.data, self->bufferview.itemsize * self->bufferview.length);
 
   return Py_BuildValue("O(n)(NNN)",
              /* We use Buffer type to build its own instance */
-             (PyObject*) Py_TYPE(self),
+             (PyObject*) Py_TYPE(obj),
              /* Arguments passed to object above, converted into a tuple */
              self->bufferview.length * self->bufferview.itemsize,
              /* Tuple arguments passed to Buffer_setstate */
@@ -294,8 +323,12 @@ Buffer_setstate(PyObject *obj, PyObject *args)
   self->bufferview.ndim = (int)shapeLength;
   for(i = 0; i < shapeLength; ++i)
   {
-    self->bufferview.shape[i] = PyLong_AsLong(PyTuple_GET_ITEM(shapeObj, i));
-    self->bufferview.strides[i] = PyLong_AsLong(PyTuple_GET_ITEM(strideObj, i));
+    PyObject * shapeItem = PyTuple_GetItem(shapeObj, i);
+    PyObject * strideItem = PyTuple_GetItem(strideObj, i);
+    if (shapeItem == NULL || strideItem == NULL)
+      return NULL;
+    self->bufferview.shape[i] = PyLong_AsLong(shapeItem);
+    self->bufferview.strides[i] = PyLong_AsLong(strideItem);
   }
   memcpy(self->bufferview.data, rawData, length);
   Py_RETURN_NONE;
@@ -309,30 +342,11 @@ static struct PyMethodDef Buffer_methods[] = {
     {NULL, NULL, 0, NULL}
 };
 
-/* Forward declaration */
-static PySequenceMethods Buffer_as_sequence;
-
 static const char Buffer_doc[] =                                          \
 "openturns.memoryview.Buffer class.\n\n"                                  \
 "This class allows wrapping container objects (Point, Sample, etc.)\n" \
 "into Python objects without copy.  A Buffer object can be indexed,\n"    \
 "or converted into a Sample or a numpy array.";
-
-static PyTypeObject BufferType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "openturns.memoryview.Buffer",
-    .tp_basicsize = sizeof(Buffer),
-    .tp_dealloc = (destructor)Buffer_dealloc,
-    .tp_repr = (reprfunc) Buffer_repr,
-    .tp_as_sequence = &Buffer_as_sequence,
-    .tp_str = (reprfunc) Buffer_repr,
-    .tp_as_buffer = &Buffer_as_buffer,
-    .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_doc = Buffer_doc,
-    .tp_iter = (getiterfunc) Buffer_iter,
-    .tp_methods = Buffer_methods,
-    .tp_init = (initproc)Buffer_init,
-};
 
 static Py_ssize_t
 Buffer_length(PyObject *obj)
@@ -368,7 +382,9 @@ Buffer_item(PyObject *obj, Py_ssize_t index)
        + ndim is decremented
        + shape is shifted: shape[i] = shape[i+1]
        + strides is shifted: strides[i] = strides[i+1]   */
-  newView = PyType_GenericAlloc(&BufferType, 1);
+  newView = PyType_GenericAlloc((PyTypeObject *)BufferTypeObj, 1);
+  if (newView == NULL)
+    return NULL;
   newSelf = (Buffer*)newView;
   memcpy(&newSelf->bufferview, &self->bufferview, sizeof(BufferView));
   newSelf->bufferview.data += index * newSelf->bufferview.strides[0] / newSelf->bufferview.itemsize;
@@ -408,7 +424,9 @@ Buffer_augment(PyObject *obj, PyObject *args)
        + ndim is incremented
        + shape is shifted: shape[i+1] = shape[i]
        + strides is shifted: strides[i+1] = strides[i]   */
-  newView = PyType_GenericAlloc(&BufferType, 1);
+  newView = PyType_GenericAlloc((PyTypeObject *)BufferTypeObj, 1);
+  if (newView == NULL)
+    return NULL;
   newSelf = (Buffer*)newView;
   memcpy(&newSelf->bufferview, &self->bufferview, sizeof(BufferView));
 
@@ -423,15 +441,34 @@ Buffer_augment(PyObject *obj, PyObject *args)
   return newView;
 }
 
-static PySequenceMethods Buffer_as_sequence = {
-    .sq_length = (lenfunc)Buffer_length,
-    .sq_concat = (binaryfunc)NULL,
-    .sq_repeat = (ssizeargfunc)NULL,
-    .sq_item = (ssizeargfunc)Buffer_item,
-    .sq_ass_item = (ssizeobjargproc)NULL,
-    .sq_contains = (objobjproc)NULL,
-    .sq_inplace_concat = (binaryfunc) NULL,
-    .sq_inplace_repeat = (ssizeargfunc)NULL,
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#endif
+static PyType_Slot Buffer_slots[] = {
+  {Py_tp_init, (void *)Buffer_init},
+  {Py_tp_dealloc, (void *)Buffer_dealloc},
+  {Py_tp_repr, (void *)Buffer_repr},
+  {Py_tp_str, (void *)Buffer_repr},
+  {Py_tp_iter, (void *)Buffer_iter},
+  {Py_tp_methods, (void *)Buffer_methods},
+  {Py_tp_new, (void *)PyType_GenericNew},
+  {Py_sq_length, (void *)Buffer_length},
+  {Py_sq_item, (void *)Buffer_item},
+  {Py_bf_getbuffer, (void *)Buffer_getbuffer},
+  {Py_tp_doc, (void *)Buffer_doc},
+  {0, NULL}
+};
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+
+static PyType_Spec Buffer_spec = {
+  .name = "openturns.memoryview.Buffer",
+  .basicsize = sizeof(Buffer),
+  .itemsize = 0,
+  .flags = Py_TPFLAGS_DEFAULT,
+  .slots = Buffer_slots
 };
 
 /*
@@ -443,12 +480,16 @@ static PyMethodDef memoryview_methods[] = {
 };
 
 static int openturns_memoryview_exec(PyObject *module) {
-    BufferType.tp_new = PyType_GenericNew;
-    if (PyType_Ready(&BufferType) < 0)
+    BufferTypeObj = PyType_FromSpec(&Buffer_spec);
+    if (BufferTypeObj == NULL)
       return -1;
-    Py_INCREF(&BufferType);
 
-    PyModule_AddObject(module, "Buffer", (PyObject *)&BufferType);
+    if (PyModule_AddObject(module, "Buffer", BufferTypeObj) < 0)
+    {
+      Py_DECREF(BufferTypeObj);
+      BufferTypeObj = NULL;
+      return -1;
+    }
     return 0;
 }
 
@@ -490,4 +531,3 @@ PyInit_memoryview(void)
 }
 
 #endif
-
