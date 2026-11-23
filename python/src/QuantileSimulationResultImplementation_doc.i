@@ -43,7 +43,7 @@ beta : float
 
 See also
 --------
-QuantileSimulationResult, MonteCarloQuantileSimulation, BlockQuantileSimulation, ExactTailQuantileSimulation
+QuantileSimulationResult, MonteCarloQuantileSimulation, BatchQuantileSimulation, ExactCoverageQuantileSimulation
 
 Notes
 -----

@@ -11,7 +11,7 @@ coverage conventions, and the run diagnostics.
 
 See also
 --------
-QuantileSimulationResultImplementation, MonteCarloQuantileSimulation, BlockQuantileSimulation, ExactTailQuantileSimulation
+QuantileSimulationResultImplementation, MonteCarloQuantileSimulation, BatchQuantileSimulation, ExactCoverageQuantileSimulation
 
 Notes
 -----

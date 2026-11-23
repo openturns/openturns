@@ -61,15 +61,15 @@ Quantile simulation (experimental)
     experimental.QuantileSimulation
     experimental.QuantileSimulationImplementation
     experimental.MonteCarloQuantileSimulation
-    experimental.BlockQuantileSimulation
-    experimental.ExactTailQuantileSimulation
+    experimental.BatchQuantileSimulation
+    experimental.ExactCoverageQuantileSimulation
     experimental.SubsetSamplingQuantile
     experimental.LastParticleQuantile
     experimental.CrossEntropyQuantile
     experimental.DirectionalSamplingQuantile
     experimental.LineSamplingQuantile
     experimental.PostAnalyticalQuantile
-    experimental.ProbabilityInversionQuantile
+    experimental.InverseProbabilityQuantile
     experimental.QuantileSimulationResult
     experimental.QuantileSimulationResultImplementation
 

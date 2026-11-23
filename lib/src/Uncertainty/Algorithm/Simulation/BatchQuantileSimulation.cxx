@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Block quantile simulation
+ *  @brief Batch quantile simulation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -22,7 +22,7 @@
 #include <algorithm>
 #include <limits>
 
-#include "openturns/BlockQuantileSimulation.hxx"
+#include "openturns/BatchQuantileSimulation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
 #include "openturns/Distribution.hxx"
@@ -32,12 +32,12 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BlockQuantileSimulation)
+CLASSNAMEINIT(BatchQuantileSimulation)
 
-static const Factory<BlockQuantileSimulation> Factory_BlockQuantileSimulation;
+static const Factory<BatchQuantileSimulation> Factory_BatchQuantileSimulation;
 
 /*
- * The block estimator is a batch-means estimator in the spirit of the
+ * The batch estimator is a batch-means estimator in the spirit of the
  * batching and sectioning constructions of:
  *
  * H. Dong and M. K. Nakayama.
@@ -132,14 +132,14 @@ String computeCombinationDescription(const QuantileSimulationResultImplementatio
 } // anonymous namespace
 
 /* Default constructor */
-BlockQuantileSimulation::BlockQuantileSimulation()
+BatchQuantileSimulation::BatchQuantileSimulation()
   : QuantileSimulationImplementation()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-BlockQuantileSimulation::BlockQuantileSimulation(const RandomVector & output,
+BatchQuantileSimulation::BatchQuantileSimulation(const RandomVector & output,
                                                  const Scalar alpha,
                                                  const Scalar beta)
   : QuantileSimulationImplementation(output, alpha, beta)
@@ -148,7 +148,7 @@ BlockQuantileSimulation::BlockQuantileSimulation(const RandomVector & output,
 }
 
 /* Constructor with parameters and experiment */
-BlockQuantileSimulation::BlockQuantileSimulation(const RandomVector & output,
+BatchQuantileSimulation::BatchQuantileSimulation(const RandomVector & output,
                                                  const WeightedExperiment & experiment,
                                                  const Scalar alpha,
                                                  const Scalar beta)
@@ -158,15 +158,15 @@ BlockQuantileSimulation::BlockQuantileSimulation(const RandomVector & output,
 }
 
 /* Virtual constructor */
-BlockQuantileSimulation * BlockQuantileSimulation::clone() const
+BatchQuantileSimulation * BatchQuantileSimulation::clone() const
 {
-  return new BlockQuantileSimulation(*this);
+  return new BatchQuantileSimulation(*this);
 }
 
 /* Default block-length policy from the ResourceMap */
-BlockQuantileSimulation::BlockLengthPolicy BlockQuantileSimulation::getDefaultBlockLengthPolicy()
+BatchQuantileSimulation::BlockLengthPolicy BatchQuantileSimulation::getDefaultBlockLengthPolicy()
 {
-  const String policy = ResourceMap::GetAsString("BlockQuantileSimulation-DefaultBlockLengthPolicy");
+  const String policy = ResourceMap::GetAsString("BatchQuantileSimulation-DefaultBlockLengthPolicy");
   if (policy == "FIXED")
     return FIXED;
   if (policy == "SQRT_N")
@@ -181,11 +181,11 @@ BlockQuantileSimulation::BlockLengthPolicy BlockQuantileSimulation::getDefaultBl
     return ADAPTIVE;
   throw InvalidArgumentException(HERE)
       << "Unknown block-length policy " << policy
-      << " in the ResourceMap key BlockQuantileSimulation-DefaultBlockLengthPolicy";
+      << " in the ResourceMap key BatchQuantileSimulation-DefaultBlockLengthPolicy";
 }
 
 /* Check the input parameters */
-void BlockQuantileSimulation::checkInputs() const
+void BatchQuantileSimulation::checkInputs() const
 {
   QuantileSimulationImplementation::checkInputs();
   if (!(trimmingFraction_ >= 0.0 && trimmingFraction_ < 0.5))
@@ -213,33 +213,33 @@ void BlockQuantileSimulation::checkInputs() const
   if (!(biasTolerance_ > 0.0) || !std::isfinite(biasTolerance_))
     throw InvalidArgumentException(HERE)
         << "The bias tolerance must be finite and positive, but tolerance = " << biasTolerance_
-        << " (ResourceMap key BlockQuantileSimulation-DefaultBiasTolerance)";
+        << " (ResourceMap key BatchQuantileSimulation-DefaultBiasTolerance)";
   if ((bootstrapSize_ > 0) && (bootstrapSize_ < 2))
     throw InvalidArgumentException(HERE)
         << "The bootstrap size must be 0 (disabled) or at least 2, but bootstrapSize = " << bootstrapSize_
-        << " (ResourceMap key BlockQuantileSimulation-DefaultBootstrapSize)";
+        << " (ResourceMap key BatchQuantileSimulation-DefaultBootstrapSize)";
 }
 
 /* Experiment accessor */
-void BlockQuantileSimulation::setExperiment(const WeightedExperiment & experiment)
+void BatchQuantileSimulation::setExperiment(const WeightedExperiment & experiment)
 {
   experiment_ = experiment;
   isExperimentProvided_ = true;
   sampleSize_ = experiment_.getSize();
 }
 
-WeightedExperiment BlockQuantileSimulation::getExperiment() const
+WeightedExperiment BatchQuantileSimulation::getExperiment() const
 {
   return experiment_;
 }
 
-Bool BlockQuantileSimulation::hasExperiment() const
+Bool BatchQuantileSimulation::hasExperiment() const
 {
   return isExperimentProvided_;
 }
 
 /* Sample size accessor */
-void BlockQuantileSimulation::setSampleSize(const UnsignedInteger sampleSize)
+void BatchQuantileSimulation::setSampleSize(const UnsignedInteger sampleSize)
 {
   QuantileSimulationImplementation::setSampleSize(sampleSize);
   if (isExperimentProvided_)
@@ -247,7 +247,7 @@ void BlockQuantileSimulation::setSampleSize(const UnsignedInteger sampleSize)
 }
 
 /* Statistical block length accessor */
-void BlockQuantileSimulation::setBlockLength(const UnsignedInteger blockLength)
+void BatchQuantileSimulation::setBlockLength(const UnsignedInteger blockLength)
 {
   if (blockLength == 0)
     throw InvalidArgumentException(HERE) << "The block length must be positive";
@@ -256,13 +256,13 @@ void BlockQuantileSimulation::setBlockLength(const UnsignedInteger blockLength)
   blockLengthPolicy_ = FIXED;
 }
 
-UnsignedInteger BlockQuantileSimulation::getBlockLength() const
+UnsignedInteger BatchQuantileSimulation::getBlockLength() const
 {
   return blockLength_;
 }
 
 /* Block-length policy accessor */
-void BlockQuantileSimulation::setBlockLengthPolicy(const BlockLengthPolicy policy)
+void BatchQuantileSimulation::setBlockLengthPolicy(const BlockLengthPolicy policy)
 {
   if ((policy != FIXED) && (policy != SQRT_N) && (policy != ASYMPTOTIC)
       && (policy != BIAS_TARGET) && (policy != MEMORY_BOUND) && (policy != ADAPTIVE))
@@ -270,13 +270,13 @@ void BlockQuantileSimulation::setBlockLengthPolicy(const BlockLengthPolicy polic
   blockLengthPolicy_ = policy;
 }
 
-BlockQuantileSimulation::BlockLengthPolicy BlockQuantileSimulation::getBlockLengthPolicy() const
+BatchQuantileSimulation::BlockLengthPolicy BatchQuantileSimulation::getBlockLengthPolicy() const
 {
   return blockLengthPolicy_;
 }
 
 /* Combination rule accessor */
-void BlockQuantileSimulation::setCombinationType(const QuantileSimulationResultImplementation::CombinationType type)
+void BatchQuantileSimulation::setCombinationType(const QuantileSimulationResultImplementation::CombinationType type)
 {
   if ((type != QuantileSimulationResultImplementation::MEAN)
       && (type != QuantileSimulationResultImplementation::MEDIAN)
@@ -285,13 +285,13 @@ void BlockQuantileSimulation::setCombinationType(const QuantileSimulationResultI
   combinationType_ = type;
 }
 
-QuantileSimulationResultImplementation::CombinationType BlockQuantileSimulation::getCombinationType() const
+QuantileSimulationResultImplementation::CombinationType BatchQuantileSimulation::getCombinationType() const
 {
   return combinationType_;
 }
 
 /* Trimming fraction accessor */
-void BlockQuantileSimulation::setTrimmingFraction(const Scalar gamma)
+void BatchQuantileSimulation::setTrimmingFraction(const Scalar gamma)
 {
   if (!(gamma >= 0.0 && gamma < 0.5))
     throw InvalidArgumentException(HERE)
@@ -299,13 +299,13 @@ void BlockQuantileSimulation::setTrimmingFraction(const Scalar gamma)
   trimmingFraction_ = gamma;
 }
 
-Scalar BlockQuantileSimulation::getTrimmingFraction() const
+Scalar BatchQuantileSimulation::getTrimmingFraction() const
 {
   return trimmingFraction_;
 }
 
 /* Minimum block count accessor */
-void BlockQuantileSimulation::setMinimumBlockCount(const UnsignedInteger minimumBlockCount)
+void BatchQuantileSimulation::setMinimumBlockCount(const UnsignedInteger minimumBlockCount)
 {
   if (minimumBlockCount < 2)
     throw InvalidArgumentException(HERE)
@@ -313,26 +313,26 @@ void BlockQuantileSimulation::setMinimumBlockCount(const UnsignedInteger minimum
   minimumBlockCount_ = minimumBlockCount;
 }
 
-UnsignedInteger BlockQuantileSimulation::getMinimumBlockCount() const
+UnsignedInteger BatchQuantileSimulation::getMinimumBlockCount() const
 {
   return minimumBlockCount_;
 }
 
 /* Memory budget accessor */
-void BlockQuantileSimulation::setMemoryBudget(const UnsignedInteger memoryBudget)
+void BatchQuantileSimulation::setMemoryBudget(const UnsignedInteger memoryBudget)
 {
   if (memoryBudget == 0)
     throw InvalidArgumentException(HERE) << "The memory budget must be positive";
   memoryBudget_ = memoryBudget;
 }
 
-UnsignedInteger BlockQuantileSimulation::getMemoryBudget() const
+UnsignedInteger BatchQuantileSimulation::getMemoryBudget() const
 {
   return memoryBudget_;
 }
 
 /* Bias tolerance accessor */
-void BlockQuantileSimulation::setBiasTolerance(const Scalar tolerance)
+void BatchQuantileSimulation::setBiasTolerance(const Scalar tolerance)
 {
   if (!(tolerance > 0.0) || !std::isfinite(tolerance))
     throw InvalidArgumentException(HERE)
@@ -340,13 +340,13 @@ void BlockQuantileSimulation::setBiasTolerance(const Scalar tolerance)
   biasTolerance_ = tolerance;
 }
 
-Scalar BlockQuantileSimulation::getBiasTolerance() const
+Scalar BatchQuantileSimulation::getBiasTolerance() const
 {
   return biasTolerance_;
 }
 
 /* Bootstrap size accessor */
-void BlockQuantileSimulation::setBootstrapSize(const UnsignedInteger bootstrapSize)
+void BatchQuantileSimulation::setBootstrapSize(const UnsignedInteger bootstrapSize)
 {
   if ((bootstrapSize > 0) && (bootstrapSize < 2))
     throw InvalidArgumentException(HERE)
@@ -354,13 +354,13 @@ void BlockQuantileSimulation::setBootstrapSize(const UnsignedInteger bootstrapSi
   bootstrapSize_ = bootstrapSize;
 }
 
-UnsignedInteger BlockQuantileSimulation::getBootstrapSize() const
+UnsignedInteger BatchQuantileSimulation::getBootstrapSize() const
 {
   return bootstrapSize_;
 }
 
 /* Resolve the experiment, building a Monte Carlo experiment when needed */
-WeightedExperiment BlockQuantileSimulation::resolveExperiment() const
+WeightedExperiment BatchQuantileSimulation::resolveExperiment() const
 {
   if (isExperimentProvided_)
     return experiment_;
@@ -383,7 +383,7 @@ WeightedExperiment BlockQuantileSimulation::resolveExperiment() const
 }
 
 /* Draw a block from the experiment */
-Sample BlockQuantileSimulation::drawBlock(WeightedExperiment & experiment,
+Sample BatchQuantileSimulation::drawBlock(WeightedExperiment & experiment,
                                           const UnsignedInteger blockLength) const
 {
   experiment.setSize(blockLength);
@@ -406,7 +406,7 @@ Sample BlockQuantileSimulation::drawBlock(WeightedExperiment & experiment,
 }
 
 /* Block quantile from one block */
-Scalar BlockQuantileSimulation::blockQuantile(const Sample & block) const
+Scalar BatchQuantileSimulation::blockQuantile(const Sample & block) const
 {
   const UnsignedInteger size = block.getSize();
   if (size == 0)
@@ -441,7 +441,7 @@ Scalar BlockQuantileSimulation::blockQuantile(const Sample & block) const
 }
 
 /* Combine block quantiles */
-Scalar BlockQuantileSimulation::combine(const Point & blockQuantiles) const
+Scalar BatchQuantileSimulation::combine(const Point & blockQuantiles) const
 {
   const UnsignedInteger size = blockQuantiles.getSize();
   if (size == 0)
@@ -473,7 +473,7 @@ Scalar BlockQuantileSimulation::combine(const Point & blockQuantiles) const
 }
 
 /* Estimate the bias constant from a pilot sample */
-Scalar BlockQuantileSimulation::estimateBiasConstant(const UnsignedInteger sampleSize,
+Scalar BatchQuantileSimulation::estimateBiasConstant(const UnsignedInteger sampleSize,
                                                      WeightedExperiment & experiment,
                                                      UnsignedInteger & pilotBlockLength,
                                                      Scalar & pilotDeviation,
@@ -487,20 +487,20 @@ Scalar BlockQuantileSimulation::estimateBiasConstant(const UnsignedInteger sampl
   // A small pilot run is enough to estimate the O(1/b) bias constant.
   // It is capped so that very large sample sizes do not pay a large
   // pilot overhead.
-  const UnsignedInteger minimumPilotSize = ResourceMap::GetAsUnsignedInteger("BlockQuantileSimulation-PilotMinimumSize");
-  const UnsignedInteger maximumPilotSize = ResourceMap::GetAsUnsignedInteger("BlockQuantileSimulation-PilotMaximumSize");
-  const Scalar pilotSizeFraction = ResourceMap::GetAsScalar("BlockQuantileSimulation-PilotSizeFraction");
+  const UnsignedInteger minimumPilotSize = ResourceMap::GetAsUnsignedInteger("BatchQuantileSimulation-PilotMinimumSize");
+  const UnsignedInteger maximumPilotSize = ResourceMap::GetAsUnsignedInteger("BatchQuantileSimulation-PilotMaximumSize");
+  const Scalar pilotSizeFraction = ResourceMap::GetAsScalar("BatchQuantileSimulation-PilotSizeFraction");
   if (minimumPilotSize == 0)
     throw InvalidArgumentException(HERE)
-        << "The ResourceMap key BlockQuantileSimulation-PilotMinimumSize must be positive";
+        << "The ResourceMap key BatchQuantileSimulation-PilotMinimumSize must be positive";
   if (maximumPilotSize < minimumPilotSize)
     throw InvalidArgumentException(HERE)
-        << "The ResourceMap key BlockQuantileSimulation-PilotMaximumSize ("
-        << maximumPilotSize << ") must not be smaller than BlockQuantileSimulation-PilotMinimumSize ("
+        << "The ResourceMap key BatchQuantileSimulation-PilotMaximumSize ("
+        << maximumPilotSize << ") must not be smaller than BatchQuantileSimulation-PilotMinimumSize ("
         << minimumPilotSize << ")";
   if (!(pilotSizeFraction >= 0.0) || !std::isfinite(pilotSizeFraction) || (pilotSizeFraction > 1.0))
     throw InvalidArgumentException(HERE)
-        << "The ResourceMap key BlockQuantileSimulation-PilotSizeFraction must be in [0, 1], but its value is "
+        << "The ResourceMap key BatchQuantileSimulation-PilotSizeFraction must be in [0, 1], but its value is "
         << pilotSizeFraction;
   const UnsignedInteger scaledPilotSize = static_cast<UnsignedInteger>(std::floor(pilotSizeFraction * (1.0 * sampleSize)));
   const UnsignedInteger pilotSize = std::min<UnsignedInteger>(sampleSize,
@@ -556,7 +556,7 @@ Scalar BlockQuantileSimulation::estimateBiasConstant(const UnsignedInteger sampl
 }
 
 /* Compute the block length for a given policy */
-UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedInteger sampleSize,
+UnsignedInteger BatchQuantileSimulation::computeBlockLength(const UnsignedInteger sampleSize,
                                                             const UnsignedInteger inputDimension,
                                                             WeightedExperiment & experiment,
                                                             Scalar & biasEstimate,
@@ -624,7 +624,7 @@ UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedIntege
     {
       const Scalar tolerance = (blockLengthPolicy_ == BIAS_TARGET)
                                ? biasTolerance_
-                               : ResourceMap::GetAsScalar("BlockQuantileSimulation-DefaultAdaptiveTolerance");
+                               : ResourceMap::GetAsScalar("BatchQuantileSimulation-DefaultAdaptiveTolerance");
       if (!(tolerance > 0.0) || !std::isfinite(tolerance))
         throw InvalidArgumentException(HERE)
             << "The bias tolerance must be finite and positive, but tolerance = " << tolerance;
@@ -678,7 +678,7 @@ UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedIntege
 }
 
 /* Description of the block-length policy */
-String BlockQuantileSimulation::getBlockLengthPolicyDescription() const
+String BatchQuantileSimulation::getBlockLengthPolicyDescription() const
 {
   switch (blockLengthPolicy_)
   {
@@ -696,7 +696,7 @@ String BlockQuantileSimulation::getBlockLengthPolicyDescription() const
                    << ", budget=" << memoryBudget_ << ")";
     case ADAPTIVE:
       return OSS() << "Adaptive (blockLength=" << lastBlockLength_
-                   << ", tolerance=" << ResourceMap::GetAsScalar("BlockQuantileSimulation-DefaultAdaptiveTolerance") << ")";
+                   << ", tolerance=" << ResourceMap::GetAsScalar("BatchQuantileSimulation-DefaultAdaptiveTolerance") << ")";
     default:
       break;
   }
@@ -704,7 +704,7 @@ String BlockQuantileSimulation::getBlockLengthPolicyDescription() const
 }
 
 /* Bootstrap percentile interval */
-Interval BlockQuantileSimulation::bootstrapInterval(const Point & blockQuantiles,
+Interval BatchQuantileSimulation::bootstrapInterval(const Point & blockQuantiles,
                                                     Scalar & estimate,
                                                     Scalar & standardError) const
 {
@@ -739,7 +739,7 @@ Interval BlockQuantileSimulation::bootstrapInterval(const Point & blockQuantiles
 }
 
 /* Run a fixed-sample experiment */
-QuantileSimulationResult BlockQuantileSimulation::runFixedSample()
+QuantileSimulationResult BatchQuantileSimulation::runFixedSample()
 {
   if (sampleSize_ == 0)
     throw InvalidArgumentException(HERE) << "The sample size must be set before running the algorithm";
@@ -887,10 +887,10 @@ QuantileSimulationResult BlockQuantileSimulation::runFixedSample()
 }
 
 /* String converter */
-String BlockQuantileSimulation::__repr__() const
+String BatchQuantileSimulation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << BlockQuantileSimulation::GetClassName()
+  oss << "class=" << BatchQuantileSimulation::GetClassName()
       << " output=" << output_
       << " alpha=" << alpha_
       << " beta=" << beta_
@@ -910,7 +910,7 @@ String BlockQuantileSimulation::__repr__() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void BlockQuantileSimulation::save(Advocate & adv) const
+void BatchQuantileSimulation::save(Advocate & adv) const
 {
   QuantileSimulationImplementation::save(adv);
   adv.saveAttribute("experiment_", experiment_);
@@ -927,7 +927,7 @@ void BlockQuantileSimulation::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object through the StorageManager */
-void BlockQuantileSimulation::load(Advocate & adv)
+void BatchQuantileSimulation::load(Advocate & adv)
 {
   QuantileSimulationImplementation::load(adv);
   adv.loadAttribute("experiment_", experiment_);

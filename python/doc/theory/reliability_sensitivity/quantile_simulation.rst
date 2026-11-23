@@ -54,12 +54,12 @@ each family of algorithms.
     post-analytical, probability-inversion, subset, last-particle and
     cross-entropy estimators
     (:class:`~openturns.experimental.MonteCarloQuantileSimulation`,
-    :class:`~openturns.experimental.BlockQuantileSimulation`,
-    :class:`~openturns.experimental.ExactTailQuantileSimulation`,
+    :class:`~openturns.experimental.BatchQuantileSimulation`,
+    :class:`~openturns.experimental.ExactCoverageQuantileSimulation`,
     :class:`~openturns.experimental.DirectionalSamplingQuantile`,
     :class:`~openturns.experimental.LineSamplingQuantile`,
     :class:`~openturns.experimental.PostAnalyticalQuantile`,
-    :class:`~openturns.experimental.ProbabilityInversionQuantile`,
+    :class:`~openturns.experimental.InverseProbabilityQuantile`,
     :class:`~openturns.experimental.SubsetSamplingQuantile`,
     :class:`~openturns.experimental.LastParticleQuantile` and
     :class:`~openturns.experimental.CrossEntropyQuantile`) are available
@@ -425,7 +425,7 @@ strategies reduce the memory without giving up the quantile estimate.
 Block estimator
 ~~~~~~~~~~~~~~~
 
-:class:`~openturns.experimental.BlockQuantileSimulation` splits the
+:class:`~openturns.experimental.BatchQuantileSimulation` splits the
 stream of :math:`N` independent outputs into :math:`B` blocks of length
 :math:`b`, with :math:`N=Bb`.  Let :math:`\widehat{q}_i` be the
 empirical quantile of block :math:`i`.  The block quantiles are i.i.d.
@@ -519,7 +519,7 @@ call, and the evaluation block size is only reported in the result.
 Exact-tail estimator
 ~~~~~~~~~~~~~~~~~~~~
 
-:class:`~openturns.experimental.ExactTailQuantileSimulation` computes
+:class:`~openturns.experimental.ExactCoverageQuantileSimulation` computes
 the exact binomial interval of a tail quantile without storing the
 full sample.  With :math:`B\sim\Bin(N,\alpha)` and zero-based
 ranks :math:`0\le r_1<r_2<N` returned by
@@ -879,7 +879,7 @@ negligible relative to the standard error.
 Probability inversion
 ~~~~~~~~~~~~~~~~~~~~~
 
-:class:`~openturns.experimental.ProbabilityInversionQuantile` is a
+:class:`~openturns.experimental.InverseProbabilityQuantile` is a
 generic adapter for probability engines that expose only a scalar
 probability for a threshold event.  Let :math:`p=1-\alpha` for an
 upper-tail quantile and

@@ -17,12 +17,12 @@ COVERAGE_EXACT = otexp.QuantileSimulationResultImplementation.COVERAGE_EXACT
 COVERAGE_ANYTIME_VALID = otexp.QuantileSimulationResultImplementation.COVERAGE_ANYTIME_VALID
 COVERAGE_NONE = otexp.QuantileSimulationResultImplementation.COVERAGE_NONE
 
-FIXED = otexp.BlockQuantileSimulation.FIXED
-SQRT_N = otexp.BlockQuantileSimulation.SQRT_N
-ASYMPTOTIC = otexp.BlockQuantileSimulation.ASYMPTOTIC
-BIAS_TARGET = otexp.BlockQuantileSimulation.BIAS_TARGET
-MEMORY_BOUND = otexp.BlockQuantileSimulation.MEMORY_BOUND
-ADAPTIVE = otexp.BlockQuantileSimulation.ADAPTIVE
+FIXED = otexp.BatchQuantileSimulation.FIXED
+SQRT_N = otexp.BatchQuantileSimulation.SQRT_N
+ASYMPTOTIC = otexp.BatchQuantileSimulation.ASYMPTOTIC
+BIAS_TARGET = otexp.BatchQuantileSimulation.BIAS_TARGET
+MEMORY_BOUND = otexp.BatchQuantileSimulation.MEMORY_BOUND
+ADAPTIVE = otexp.BatchQuantileSimulation.ADAPTIVE
 
 distribution = ot.Normal()
 output = ot.RandomVector(distribution)
@@ -42,7 +42,7 @@ def block_values(result):
 # 1. Default asymptotic policy
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260101)
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(10000)
 assert algo.getSampleSize() == 10000
 assert not algo.hasExperiment()
@@ -82,14 +82,14 @@ interval = result.getConfidenceInterval()
 ott.assert_almost_equal(interval.getLowerBound()[0], estimate - t * standard_error, 1.0e-12, 1.0e-12)
 ott.assert_almost_equal(interval.getUpperBound()[0], estimate + t * standard_error, 1.0e-12, 1.0e-12)
 assert abs(estimate - ot.Normal().computeQuantile(0.95)[0]) < 0.15
-assert "BlockQuantileSimulation" in repr(algo)
+assert "BatchQuantileSimulation" in repr(algo)
 assert "blockLength" in repr(result)
 
 # ---------------------------------------------------------------------
 # 2. Minimum-memory policy has no coverage guarantee
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260102)
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(10000)
 algo.setBlockLengthPolicy(SQRT_N)
 algo.run()
@@ -104,7 +104,7 @@ assert result.getQuantileEstimate() <= result.getConfidenceInterval().getUpperBo
 # A non-fixed policy must not overwrite the fixed length that a later
 # FIXED run has to reuse.
 ot.RandomGenerator.SetSeed(20260105)
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(10000)
 algo.setBlockLength(200)
 algo.setBlockLengthPolicy(SQRT_N)
@@ -116,7 +116,7 @@ algo.run()
 assert algo.getResult().getBlockLength() == 200
 
 # A computed length is not a substitute for an explicit fixed length.
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(1000)
 algo.setBlockLengthPolicy(SQRT_N)
 algo.run()
@@ -128,7 +128,7 @@ with ott.assert_raises(TypeError):
 # 3. Fixed length, combinations and their standard errors
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260103)
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(6000)
 algo.setBlockLength(200)
 assert algo.getBlockLength() == 200
@@ -183,7 +183,7 @@ assert result.getCombinationDescription().startswith("Trimmed mean")
 # 4. Memory-bound policy
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260104)
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(100000)
 algo.setMemoryBudget(5000)
 algo.setBlockLengthPolicy(MEMORY_BOUND)
@@ -199,7 +199,7 @@ assert result.getCoverageType() == COVERAGE_ASYMPTOTIC
 assert result.getBlockLengthPolicyDescription().startswith("Memory bound")
 
 # A budget below 2*sqrt((d + 1)*N) cannot host a block estimator.
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(100000)
 algo.setMemoryBudget(100)
 algo.setBlockLengthPolicy(MEMORY_BOUND)
@@ -208,7 +208,7 @@ with ott.assert_raises(TypeError):
 
 # A budget that cannot host the requested minimum number of blocks is rejected
 # instead of silently exceeding the budget after the block-length clamp.
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(10000)
 algo.setMemoryBudget(500)
 algo.setMinimumBlockCount(1000)
@@ -231,7 +231,7 @@ counted_output = ot.CompositeRandomVector(
 )
 for policy in [MEMORY_BOUND, BIAS_TARGET, ADAPTIVE]:
     evaluation_count[0] = 0
-    algo = otexp.BlockQuantileSimulation(counted_output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(counted_output, 0.95, 0.95)
     algo.setSampleSize(10)
     algo.setMinimumBlockCount(30)
     algo.setMemoryBudget(1000)
@@ -245,7 +245,7 @@ for policy in [MEMORY_BOUND, BIAS_TARGET, ADAPTIVE]:
 # ---------------------------------------------------------------------
 for policy, tolerance in [(BIAS_TARGET, 0.5), (ADAPTIVE, 0.2)]:
     ot.RandomGenerator.SetSeed(1000 + policy)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(10000)
     algo.setBlockLengthPolicy(policy)
     algo.setBiasTolerance(tolerance)
@@ -267,7 +267,7 @@ for policy, tolerance in [(BIAS_TARGET, 0.5), (ADAPTIVE, 0.2)]:
 # 6. Bootstrap interval
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260106)
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(6000)
 algo.setBlockLength(200)
 algo.setBootstrapSize(200)
@@ -284,13 +284,13 @@ assert result.getQuantileEstimate() <= interval.getUpperBound()[0]
 # 7. Reproducibility
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260107)
-algo1 = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo1 = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo1.setSampleSize(4000)
 algo1.setBlockLength(100)
 algo1.run()
 first = algo1.getResult()
 ot.RandomGenerator.SetSeed(20260107)
-algo2 = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo2 = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo2.setSampleSize(4000)
 algo2.setBlockLength(100)
 algo2.run()
@@ -303,7 +303,7 @@ assert first.getConfidenceInterval() == second.getConfidenceInterval()
 # 8. Experiment accessors and default experiment resolution
 # ---------------------------------------------------------------------
 mce = ot.MonteCarloExperiment(distribution, 5000)
-algo = otexp.BlockQuantileSimulation(output, mce, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, mce, 0.95, 0.95)
 assert algo.hasExperiment()
 assert algo.getSampleSize() == 5000
 assert algo.getExperiment().getSize() == 5000
@@ -313,7 +313,7 @@ assert algo.getExperiment().getSize() == 4000
 
 composite = ot.CompositeRandomVector(
     ot.SymbolicFunction(["x"], ["x^2"]), output)
-algo = otexp.BlockQuantileSimulation(composite, 0.5, 0.5)
+algo = otexp.BatchQuantileSimulation(composite, 0.5, 0.5)
 algo.setSampleSize(2000)
 algo.setBlockLengthPolicy(SQRT_N)
 algo.run()
@@ -321,7 +321,7 @@ assert algo.getResult().getQuantileEstimate() >= 0.0
 
 # A constant output exercises the degenerate variance branch.
 constant_output = ot.RandomVector(ot.Dirac(1.0))
-algo = otexp.BlockQuantileSimulation(constant_output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(constant_output, 0.95, 0.95)
 algo.setSampleSize(500)
 algo.setBlockLength(10)
 algo.run()
@@ -333,7 +333,7 @@ assert result.getConfidenceInterval() == ot.Interval(1.0, 1.0)
 # ---------------------------------------------------------------------
 # 9. Negative limit tests
 # ---------------------------------------------------------------------
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 with ott.assert_raises(TypeError):
     algo.setBlockLength(0)
 with ott.assert_raises(TypeError):
@@ -360,19 +360,19 @@ with ott.assert_raises(TypeError):
     algo.run()
 
 # A block length that leaves a single block is rejected.
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(1000)
 algo.setBlockLength(600)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # The FIXED policy requires an explicit length and MEMORY_BOUND a budget.
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(1000)
 algo.setBlockLengthPolicy(FIXED)
 with ott.assert_raises(TypeError):
     algo.run()
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(1000)
 algo.setBlockLengthPolicy(MEMORY_BOUND)
 with ott.assert_raises(TypeError):
@@ -380,19 +380,19 @@ with ott.assert_raises(TypeError):
 
 # The block estimator requires an independent experiment.
 lhs = ot.LHSExperiment(distribution, 1000, True, True)
-algo = otexp.BlockQuantileSimulation(output, lhs, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, lhs, 0.95, 0.95)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # The block estimator requires uniform weights.
 importance = ot.ImportanceSamplingExperiment(
     distribution, ot.Normal(1.0, 1.0), 1000)
-algo = otexp.BlockQuantileSimulation(output, importance, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, importance, 0.95, 0.95)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # A design with the wrong dimension is rejected.
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(1000)
 algo.setExperiment(ot.MonteCarloExperiment(ot.Normal(2), 1000))
 with ott.assert_raises(TypeError):
@@ -400,7 +400,7 @@ with ott.assert_raises(TypeError):
 
 # Exact and anytime-valid coverage cannot be claimed by the block estimator.
 for required in [COVERAGE_EXACT, COVERAGE_ANYTIME_VALID]:
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(6000)
     algo.setBlockLength(200)
     algo.setRequiredCoverage(required)
@@ -409,13 +409,13 @@ for required in [COVERAGE_EXACT, COVERAGE_ANYTIME_VALID]:
 
 # A multivariate output is rejected at construction time.
 with ott.assert_raises(TypeError):
-    otexp.BlockQuantileSimulation(ot.RandomVector(ot.Normal(2)), 0.95, 0.95)
+    otexp.BatchQuantileSimulation(ot.RandomVector(ot.Normal(2)), 0.95, 0.95)
 
 # ---------------------------------------------------------------------
 # 10. Persistence and handle
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260110)
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(6000)
 algo.setBlockLength(200)
 algo.setCombinationType(TRIMMED_MEAN)
@@ -437,7 +437,7 @@ study.save()
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager(path))
 study.load()
-loaded_algo = otexp.BlockQuantileSimulation()
+loaded_algo = otexp.BatchQuantileSimulation()
 study.fillObject("algo", loaded_algo)
 loaded_result = otexp.QuantileSimulationResult()
 study.fillObject("result", loaded_result)
@@ -503,7 +503,7 @@ nan_output = ot.CompositeRandomVector(
     ot.PythonFunction(1, 1, lambda x: [float("nan")]),
     ot.RandomVector(ot.Normal()),
 )
-algo = otexp.BlockQuantileSimulation(nan_output, 0.95, 0.95)
+algo = otexp.BatchQuantileSimulation(nan_output, 0.95, 0.95)
 algo.setSampleSize(1000)
 with ott.assert_raises(TypeError):
     algo.run()
@@ -511,22 +511,22 @@ with ott.assert_raises(TypeError):
 # ---------------------------------------------------------------------
 # 12. ResourceMap defaults and validation
 # ---------------------------------------------------------------------
-policy_key = "BlockQuantileSimulation-DefaultBlockLengthPolicy"
-bias_key = "BlockQuantileSimulation-DefaultBiasTolerance"
-adaptive_key = "BlockQuantileSimulation-DefaultAdaptiveTolerance"
-bootstrap_key = "BlockQuantileSimulation-DefaultBootstrapSize"
-minimum_pilot_key = "BlockQuantileSimulation-PilotMinimumSize"
-maximum_pilot_key = "BlockQuantileSimulation-PilotMaximumSize"
-pilot_fraction_key = "BlockQuantileSimulation-PilotSizeFraction"
+policy_key = "BatchQuantileSimulation-DefaultBlockLengthPolicy"
+bias_key = "BatchQuantileSimulation-DefaultBiasTolerance"
+adaptive_key = "BatchQuantileSimulation-DefaultAdaptiveTolerance"
+bootstrap_key = "BatchQuantileSimulation-DefaultBootstrapSize"
+minimum_pilot_key = "BatchQuantileSimulation-PilotMinimumSize"
+maximum_pilot_key = "BatchQuantileSimulation-PilotMaximumSize"
+pilot_fraction_key = "BatchQuantileSimulation-PilotSizeFraction"
 block_count_key = "QuantileSimulation-MinimumBlockCount"
 
 saved_policy = ot.ResourceMap.GetAsString(policy_key)
 try:
     ot.ResourceMap.SetAsString(policy_key, "SQRT_N")
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     assert algo.getBlockLengthPolicy() == SQRT_N
     ot.ResourceMap.SetAsString(policy_key, "ADAPTIVE")
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     assert algo.getBlockLengthPolicy() == ADAPTIVE
 finally:
     ot.ResourceMap.SetAsString(policy_key, saved_policy)
@@ -538,13 +538,13 @@ assert ot.ResourceMap.GetAsString(policy_key) == saved_policy
 saved_bias = ot.ResourceMap.GetAsScalar(bias_key)
 try:
     ot.ResourceMap.SetAsScalar(bias_key, 0.25)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     assert algo.getBiasTolerance() == 0.25
 finally:
     ot.ResourceMap.SetAsScalar(bias_key, saved_bias)
 try:
     ot.ResourceMap.SetAsScalar(bias_key, 0.0)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(1000)
     algo.setBlockLength(10)
     with ott.assert_raises(TypeError):
@@ -556,7 +556,7 @@ saved_adaptive = ot.ResourceMap.GetAsScalar(adaptive_key)
 try:
     ot.ResourceMap.SetAsScalar(adaptive_key, 0.05)
     ot.RandomGenerator.SetSeed(20260112)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(4000)
     algo.setBlockLengthPolicy(ADAPTIVE)
     algo.run()
@@ -567,7 +567,7 @@ finally:
     ot.ResourceMap.SetAsScalar(adaptive_key, saved_adaptive)
 try:
     ot.ResourceMap.SetAsScalar(adaptive_key, 0.0)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(4000)
     algo.setBlockLengthPolicy(ADAPTIVE)
     with ott.assert_raises(TypeError):
@@ -579,7 +579,7 @@ saved_bootstrap = ot.ResourceMap.GetAsUnsignedInteger(bootstrap_key)
 try:
     ot.ResourceMap.SetAsUnsignedInteger(bootstrap_key, 20)
     ot.RandomGenerator.SetSeed(20260113)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(4000)
     algo.setBlockLength(100)
     assert algo.getBootstrapSize() == 20
@@ -589,7 +589,7 @@ finally:
     ot.ResourceMap.SetAsUnsignedInteger(bootstrap_key, saved_bootstrap)
 try:
     ot.ResourceMap.SetAsUnsignedInteger(bootstrap_key, 1)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(1000)
     algo.setBlockLength(10)
     with ott.assert_raises(TypeError):
@@ -604,7 +604,7 @@ saved_pilot_fraction = ot.ResourceMap.GetAsScalar(pilot_fraction_key)
 
 def run_bias_target():
     ot.RandomGenerator.SetSeed(20260114)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(5000)
     algo.setBlockLengthPolicy(BIAS_TARGET)
     algo.setBiasTolerance(0.25)
@@ -654,7 +654,7 @@ finally:
 saved_block_count = ot.ResourceMap.GetAsUnsignedInteger(block_count_key)
 try:
     ot.ResourceMap.SetAsUnsignedInteger(block_count_key, 5)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     assert algo.getMinimumBlockCount() == 5
     algo.setSampleSize(6000)
     algo.setBlockLength(200)
@@ -664,7 +664,7 @@ finally:
     ot.ResourceMap.SetAsUnsignedInteger(block_count_key, saved_block_count)
 try:
     ot.ResourceMap.SetAsUnsignedInteger(block_count_key, 1)
-    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.BatchQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(1000)
     algo.setBlockLength(10)
     with ott.assert_raises(TypeError):
@@ -677,7 +677,7 @@ finally:
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260120)
 discrete_output = ot.RandomVector(ot.Bernoulli(0.5))
-algo = otexp.BlockQuantileSimulation(discrete_output, 0.5, 0.9)
+algo = otexp.BatchQuantileSimulation(discrete_output, 0.5, 0.9)
 algo.setSampleSize(3000)
 algo.setBlockLengthPolicy(ASYMPTOTIC)
 algo.run()

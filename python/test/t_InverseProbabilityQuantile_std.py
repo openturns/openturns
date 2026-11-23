@@ -37,7 +37,7 @@ def bracket_width(result):
 # ---------------------------------------------------------------------
 # 1. Defaults and accessors
 # ---------------------------------------------------------------------
-algo = otexp.ProbabilityInversionQuantile()
+algo = otexp.InverseProbabilityQuantile()
 assert algo.getAlpha() == 0.95
 assert algo.getConfidenceLevel() == 0.95
 assert algo.getEstimatorType() == EMPIRICAL_INVERSE
@@ -48,7 +48,7 @@ assert algo.getMaximumRootIteration() == 100
 assert algo.getPilotSampleSize() == 1000
 assert algo.getReplicateCount() == 1
 
-algo = otexp.ProbabilityInversionQuantile(ot.ProbabilitySimulationAlgorithm(event))
+algo = otexp.InverseProbabilityQuantile(ot.ProbabilitySimulationAlgorithm(event))
 assert algo.hasAlgorithm()
 assert algo.getAlgorithm().getImplementation().getClassName() == "ProbabilitySimulationAlgorithm"
 
@@ -68,7 +68,7 @@ assert algo.getReplicateCount() == 3
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260417)
 engine = ot.ProbabilitySimulationAlgorithm(event)
-algo = otexp.ProbabilityInversionQuantile(engine, 0.95, 0.95)
+algo = otexp.InverseProbabilityQuantile(engine, 0.95, 0.95)
 algo.setSampleSize(20000)
 algo.setPilotSampleSize(1000)
 algo.run()
@@ -95,7 +95,7 @@ expected_upper = sorted_values[int(math.ceil(0.95 * 201)) - 1]
 expected_lower = sorted_values[int(math.ceil(0.05 * 201)) - 1]
 
 engine = ot.ProbabilitySimulationAlgorithm(event, ot.FixedExperiment(sample))
-algo = otexp.ProbabilityInversionQuantile(engine, 0.95, 0.95)
+algo = otexp.InverseProbabilityQuantile(engine, 0.95, 0.95)
 algo.setPilotSampleSize(1000)
 algo.setRootTolerance(1.0e-10)
 algo.run()
@@ -115,7 +115,7 @@ lower_event = ot.ThresholdEvent(
     0.0,
 )
 engine = ot.ProbabilitySimulationAlgorithm(lower_event, ot.FixedExperiment(sample))
-algo = otexp.ProbabilityInversionQuantile(engine, 0.05, 0.95)
+algo = otexp.InverseProbabilityQuantile(engine, 0.05, 0.95)
 algo.setPilotSampleSize(1000)
 algo.setRootTolerance(1.0e-10)
 algo.run()
@@ -129,7 +129,7 @@ assert result.getCoverageType() == COVERAGE_NONE
 ot.RandomGenerator.SetSeed(20260419)
 engine = ot.DirectionalSampling(event)
 engine.setMaximumOuterSampling(200)
-algo = otexp.ProbabilityInversionQuantile(engine, 0.95, 0.95)
+algo = otexp.InverseProbabilityQuantile(engine, 0.95, 0.95)
 algo.setPilotSampleSize(1000)
 algo.setMaximumRootIteration(10)
 algo.run()
@@ -146,7 +146,7 @@ assert "DirectionalSampling" in result.getWrappedAlgorithmDescription()
 ot.RandomGenerator.SetSeed(20260420)
 engine = ot.DirectionalSampling(event)
 engine.setMaximumOuterSampling(200)
-algo = otexp.ProbabilityInversionQuantile(engine, 0.95, 0.95)
+algo = otexp.InverseProbabilityQuantile(engine, 0.95, 0.95)
 algo.setPilotSampleSize(500)
 algo.setMaximumRootIteration(5)
 algo.setReplicateCount(3)
@@ -164,7 +164,7 @@ boundary_sample = ot.Sample(50, [1.0])
 engine = ot.ProbabilitySimulationAlgorithm(
     event, ot.FixedExperiment(boundary_sample)
 )
-algo = otexp.ProbabilityInversionQuantile(engine, 0.95, 0.95)
+algo = otexp.InverseProbabilityQuantile(engine, 0.95, 0.95)
 algo.setPilotSampleSize(100)
 algo.run()
 result = algo.getResult()
@@ -175,7 +175,7 @@ nan_sample = ot.Sample(10, 1)
 for i in range(10):
     nan_sample[i, 0] = float("nan")
 engine = ot.ProbabilitySimulationAlgorithm(event, ot.FixedExperiment(nan_sample))
-algo = otexp.ProbabilityInversionQuantile(engine, 0.95, 0.95)
+algo = otexp.InverseProbabilityQuantile(engine, 0.95, 0.95)
 algo.setPilotSampleSize(100)
 with ott.assert_raises(RuntimeError):
     algo.run()
@@ -185,7 +185,7 @@ with ott.assert_raises(RuntimeError):
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260421)
 engine = ot.ProbabilitySimulationAlgorithm(event)
-algo = otexp.ProbabilityInversionQuantile(engine, 0.95, 0.95)
+algo = otexp.InverseProbabilityQuantile(engine, 0.95, 0.95)
 algo.setSampleSize(5000)
 algo.setPilotSampleSize(500)
 algo.setReplicateCount(2)
@@ -202,7 +202,7 @@ study.save()
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager(path))
 study.load()
-loaded_algo = otexp.ProbabilityInversionQuantile()
+loaded_algo = otexp.InverseProbabilityQuantile()
 study.fillObject("algo", loaded_algo)
 loaded_result = otexp.QuantileSimulationResult()
 study.fillObject("result", loaded_result)
@@ -233,7 +233,7 @@ assert (
     == result.getReplicateEstimates()
 )
 
-copied = otexp.ProbabilityInversionQuantile(algo)
+copied = otexp.InverseProbabilityQuantile(algo)
 assert copied.hasAlgorithm()
 assert copied.getSampleSize() == 5000
 assert copied.getPilotSampleSize() == 500
@@ -243,15 +243,15 @@ assert copied.getReplicateCount() == 2
 # 7. Invalid arguments
 # ---------------------------------------------------------------------
 with ott.assert_raises(TypeError):
-    otexp.ProbabilityInversionQuantile(engine, 0.0, 0.95)
+    otexp.InverseProbabilityQuantile(engine, 0.0, 0.95)
 with ott.assert_raises(TypeError):
-    otexp.ProbabilityInversionQuantile(engine, 1.0, 0.95)
+    otexp.InverseProbabilityQuantile(engine, 1.0, 0.95)
 with ott.assert_raises(TypeError):
-    otexp.ProbabilityInversionQuantile(engine, 0.95, 0.0)
+    otexp.InverseProbabilityQuantile(engine, 0.95, 0.0)
 with ott.assert_raises(TypeError):
-    otexp.ProbabilityInversionQuantile(engine, 0.95, 1.0)
+    otexp.InverseProbabilityQuantile(engine, 0.95, 1.0)
 
-algo = otexp.ProbabilityInversionQuantile()
+algo = otexp.InverseProbabilityQuantile()
 with ott.assert_raises(TypeError):
     algo.setRootTolerance(0.0)
 with ott.assert_raises(TypeError):

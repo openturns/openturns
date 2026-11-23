@@ -610,15 +610,15 @@ ot_add_python_module(experimental experimental_module.i
                      QuantileSimulationImplementation.i QuantileSimulationImplementation_doc.i
                      QuantileSimulation.i QuantileSimulation_doc.i
                      MonteCarloQuantileSimulation.i MonteCarloQuantileSimulation_doc.i
-                     BlockQuantileSimulation.i BlockQuantileSimulation_doc.i
-                     ExactTailQuantileSimulation.i ExactTailQuantileSimulation_doc.i
+                     BatchQuantileSimulation.i BatchQuantileSimulation_doc.i
+                     ExactCoverageQuantileSimulation.i ExactCoverageQuantileSimulation_doc.i
                      SubsetSamplingQuantile.i SubsetSamplingQuantile_doc.i
                      LastParticleQuantile.i LastParticleQuantile_doc.i
                      CrossEntropyQuantile.i CrossEntropyQuantile_doc.i
                      DirectionalSamplingQuantile.i DirectionalSamplingQuantile_doc.i
                      LineSamplingQuantile.i LineSamplingQuantile_doc.i
                      PostAnalyticalQuantile.i PostAnalyticalQuantile_doc.i
-                     ProbabilityInversionQuantile.i ProbabilityInversionQuantile_doc.i
+                     InverseProbabilityQuantile.i InverseProbabilityQuantile_doc.i
                      RatioDistribution.i RatioDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i

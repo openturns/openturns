@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Exact-tail quantile simulation
+ *  @brief Exact-coverage quantile simulation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_EXACTTAILQUANTILESIMULATION_HXX
-#define OPENTURNS_EXACTTAILQUANTILESIMULATION_HXX
+#ifndef OPENTURNS_EXACTCOVERAGEQUANTILESIMULATION_HXX
+#define OPENTURNS_EXACTCOVERAGEQUANTILESIMULATION_HXX
 
 #include "openturns/QuantileSimulationImplementation.hxx"
 #include "openturns/WeightedExperiment.hxx"
@@ -28,35 +28,36 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ExactTailQuantileSimulation
+ * @class ExactCoverageQuantileSimulation
  *
- * Streaming estimator of an extreme quantile.  The exact binomial
- * order-statistic ranks are computed before sampling, then only the
- * relevant tail is kept in a bounded heap.  The estimate and the
- * interval are exact order statistics of the full sample, while the
- * memory is proportional to the retained tail.
+ * Streaming estimator of an extreme quantile whose order-statistic
+ * interval has an exact binomial (Wilks) coverage.  The exact ranks are
+ * computed before sampling, then only the relevant tail is kept in a
+ * bounded heap.  The estimate and the interval are exact order
+ * statistics of the full sample, while the memory is proportional to
+ * the retained tail.
  */
-class OT_API ExactTailQuantileSimulation
+class OT_API ExactCoverageQuantileSimulation
   : public QuantileSimulationImplementation
 {
   CLASSNAME
 public:
   /** Default constructor */
-  ExactTailQuantileSimulation();
+  ExactCoverageQuantileSimulation();
 
   /** Constructor with parameters */
-  explicit ExactTailQuantileSimulation(const RandomVector & output,
+  explicit ExactCoverageQuantileSimulation(const RandomVector & output,
                                        const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
                                        const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Constructor with parameters and experiment */
-  ExactTailQuantileSimulation(const RandomVector & output,
+  ExactCoverageQuantileSimulation(const RandomVector & output,
                               const WeightedExperiment & experiment,
                               const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
                               const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Virtual constructor */
-  ExactTailQuantileSimulation * clone() const override;
+  ExactCoverageQuantileSimulation * clone() const override;
 
   /** Experiment accessor */
   void setExperiment(const WeightedExperiment & experiment);
@@ -89,8 +90,8 @@ private:
   WeightedExperiment experiment_;
   Bool isExperimentProvided_ = false;
 
-}; /* class ExactTailQuantileSimulation */
+}; /* class ExactCoverageQuantileSimulation */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_EXACTTAILQUANTILESIMULATION_HXX */
+#endif /* OPENTURNS_EXACTCOVERAGEQUANTILESIMULATION_HXX */

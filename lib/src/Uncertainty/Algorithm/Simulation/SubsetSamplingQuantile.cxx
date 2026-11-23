@@ -171,7 +171,7 @@ void SubsetSamplingQuantile::checkInputs() const
     throw InvalidArgumentException(HERE)
         << "The subset quantile estimator only supports the empirical inverse estimator, "
         << "but the interpolated estimator was requested. "
-        << "Use MonteCarloQuantileSimulation or BlockQuantileSimulation for the interpolated estimator.";
+        << "Use MonteCarloQuantileSimulation or BatchQuantileSimulation for the interpolated estimator.";
 }
 
 /* Replicate count accessor */

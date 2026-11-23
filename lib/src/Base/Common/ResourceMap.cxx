@@ -1680,17 +1680,17 @@ void ResourceMap::loadDefaultConfiguration()
   // MonteCarloQuantileSimulation parameters //
   addAsUnsignedInteger("MonteCarloQuantileSimulation-DefaultReplicateCount", 30);
 
-  // BlockQuantileSimulation parameters //
-  addAsScalar("BlockQuantileSimulation-DefaultAdaptiveTolerance", 0.1);
-  addAsScalar("BlockQuantileSimulation-DefaultBiasTolerance", 0.1);
-  addAsString("BlockQuantileSimulation-DefaultBlockLengthPolicy", "ASYMPTOTIC", {"FIXED", "SQRT_N", "ASYMPTOTIC", "BIAS_TARGET", "MEMORY_BOUND", "ADAPTIVE"});
-  addAsUnsignedInteger("BlockQuantileSimulation-DefaultBootstrapSize", 0);
-  addAsUnsignedInteger("BlockQuantileSimulation-PilotMaximumSize", 20000);
-  addAsUnsignedInteger("BlockQuantileSimulation-PilotMinimumSize", 1000);
-  addAsScalar("BlockQuantileSimulation-PilotSizeFraction", 0.05);
+  // BatchQuantileSimulation parameters //
+  addAsScalar("BatchQuantileSimulation-DefaultAdaptiveTolerance", 0.1);
+  addAsScalar("BatchQuantileSimulation-DefaultBiasTolerance", 0.1);
+  addAsString("BatchQuantileSimulation-DefaultBlockLengthPolicy", "ASYMPTOTIC", {"FIXED", "SQRT_N", "ASYMPTOTIC", "BIAS_TARGET", "MEMORY_BOUND", "ADAPTIVE"});
+  addAsUnsignedInteger("BatchQuantileSimulation-DefaultBootstrapSize", 0);
+  addAsUnsignedInteger("BatchQuantileSimulation-PilotMaximumSize", 20000);
+  addAsUnsignedInteger("BatchQuantileSimulation-PilotMinimumSize", 1000);
+  addAsScalar("BatchQuantileSimulation-PilotSizeFraction", 0.05);
 
-  // ExactTailQuantileSimulation parameters //
-  addAsUnsignedInteger("ExactTailQuantileSimulation-MinimumChunkSize", 4096);
+  // ExactCoverageQuantileSimulation parameters //
+  addAsUnsignedInteger("ExactCoverageQuantileSimulation-MinimumChunkSize", 4096);
   // QuantileRootSolver parameters //
   addAsScalar("QuantileRootSolver-DefaultTolerance", 1.0e-4);
   addAsUnsignedInteger("QuantileRootSolver-DefaultMaximumIteration", 100);

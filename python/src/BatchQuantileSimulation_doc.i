@@ -1,14 +1,14 @@
-%feature("docstring") OT::BlockQuantileSimulation
-R"RAW(Block quantile simulation.
+%feature("docstring") OT::BatchQuantileSimulation
+R"RAW(Batch quantile simulation.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
 Available constructors:
-    BlockQuantileSimulation(*output, alpha=0.95, beta=0.95*)
+    BatchQuantileSimulation(*output, alpha=0.95, beta=0.95*)
 
-    BlockQuantileSimulation(*output, experiment, alpha=0.95, beta=0.95*)
+    BatchQuantileSimulation(*output, experiment, alpha=0.95, beta=0.95*)
 
 The block estimator computes a quantile without ever materializing the
 full sample.  The stream of :math:`N` independent outputs is split into
@@ -48,7 +48,7 @@ The statistical block length :math:`b` is selected by
   :meth:`getMinimumBlockCount`; the policy throws when the budget
   cannot host that many blocks;
 - ``ADAPTIVE``: a pilot-based length with the bias-to-standard-error
-  target ``BlockQuantileSimulation-DefaultAdaptiveTolerance`` (0.1 by
+  target ``BatchQuantileSimulation-DefaultAdaptiveTolerance`` (0.1 by
   default), subject to the same lower and upper clamps as
   ``BIAS_TARGET``.
 
@@ -76,7 +76,7 @@ beta : float
 
 See also
 --------
-MonteCarloQuantileSimulation, ExactTailQuantileSimulation, QuantileSimulationResult
+MonteCarloQuantileSimulation, ExactCoverageQuantileSimulation, QuantileSimulationResult
 
 Notes
 -----
@@ -112,31 +112,31 @@ The following :class:`~openturns.ResourceMap` keys are used:
      - Type
      - Default value
      - Description
-   * - ``BlockQuantileSimulation-DefaultAdaptiveTolerance``
+   * - ``BatchQuantileSimulation-DefaultAdaptiveTolerance``
      - ``Scalar``
      - ``0.1``
      - Default bias-to-standard-error target of the ``ADAPTIVE`` policy.
-   * - ``BlockQuantileSimulation-DefaultBiasTolerance``
+   * - ``BatchQuantileSimulation-DefaultBiasTolerance``
      - ``Scalar``
      - ``0.1``
      - Default bias-to-standard-error target of the ``BIAS_TARGET`` policy.
-   * - ``BlockQuantileSimulation-DefaultBlockLengthPolicy``
+   * - ``BatchQuantileSimulation-DefaultBlockLengthPolicy``
      - ``String``
      - ``ASYMPTOTIC``
      - Default block-length policy; the possible values are ``FIXED``, ``SQRT_N``, ``ASYMPTOTIC``, ``BIAS_TARGET``, ``MEMORY_BOUND`` and ``ADAPTIVE``.
-   * - ``BlockQuantileSimulation-DefaultBootstrapSize``
+   * - ``BatchQuantileSimulation-DefaultBootstrapSize``
      - ``UnsignedInteger``
      - ``0``
      - Default number of bootstrap replicates, where ``0`` disables the bootstrap.
-   * - ``BlockQuantileSimulation-PilotMaximumSize``
+   * - ``BatchQuantileSimulation-PilotMaximumSize``
      - ``UnsignedInteger``
      - ``20000``
      - Maximum pilot sample size.
-   * - ``BlockQuantileSimulation-PilotMinimumSize``
+   * - ``BatchQuantileSimulation-PilotMinimumSize``
      - ``UnsignedInteger``
      - ``1000``
      - Minimum pilot sample size.
-   * - ``BlockQuantileSimulation-PilotSizeFraction``
+   * - ``BatchQuantileSimulation-PilotSizeFraction``
      - ``Scalar``
      - ``0.05``
      - Pilot sample size as a fraction of the requested sample size.
@@ -163,16 +163,16 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 See also
 --------
-MonteCarloQuantileSimulation, ExactTailQuantileSimulation, QuantileSimulationResult
+MonteCarloQuantileSimulation, ExactCoverageQuantileSimulation, QuantileSimulationResult
 
 Examples
 --------
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
 >>> output = ot.RandomVector(ot.Normal())
->>> algo = otexp.BlockQuantileSimulation(output, 0.99, 0.95)
+>>> algo = otexp.BatchQuantileSimulation(output, 0.99, 0.95)
 >>> algo.setSampleSize(100000)
->>> algo.setBlockLengthPolicy(otexp.BlockQuantileSimulation.ASYMPTOTIC)
+>>> algo.setBlockLengthPolicy(otexp.BatchQuantileSimulation.ASYMPTOTIC)
 >>> algo.run()
 >>> result = algo.getResult()
 >>> estimate = result.getQuantileEstimate()
@@ -182,7 +182,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getExperiment
+%feature("docstring") OT::BatchQuantileSimulation::getExperiment
 R"RAW(Accessor to the design of experiments.
 
 Returns
@@ -193,7 +193,7 @@ experiment : :class:`~openturns.WeightedExperiment`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setExperiment
+%feature("docstring") OT::BatchQuantileSimulation::setExperiment
 R"RAW(Accessor to the design of experiments.
 
 Parameters
@@ -206,7 +206,7 @@ experiment : :class:`~openturns.WeightedExperiment`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::hasExperiment
+%feature("docstring") OT::BatchQuantileSimulation::hasExperiment
 R"RAW(Accessor to the presence of a user-provided experiment.
 
 Returns
@@ -218,7 +218,7 @@ hasExperiment : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getSampleSize
+%feature("docstring") OT::BatchQuantileSimulation::getSampleSize
 R"RAW(Accessor to the sample size.
 
 Returns
@@ -229,7 +229,7 @@ sampleSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setSampleSize
+%feature("docstring") OT::BatchQuantileSimulation::setSampleSize
 R"RAW(Accessor to the sample size.
 
 Parameters
@@ -244,7 +244,7 @@ sampleSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getBlockLength
+%feature("docstring") OT::BatchQuantileSimulation::getBlockLength
 R"RAW(Accessor to the statistical block length.
 
 Returns
@@ -257,7 +257,7 @@ blockLength : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setBlockLength
+%feature("docstring") OT::BatchQuantileSimulation::setBlockLength
 R"RAW(Accessor to the statistical block length.
 
 Parameters
@@ -274,7 +274,7 @@ the class documentation.
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getBlockLengthPolicy
+%feature("docstring") OT::BatchQuantileSimulation::getBlockLengthPolicy
 R"RAW(Accessor to the block-length policy.
 
 Returns
@@ -287,7 +287,7 @@ policy : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setBlockLengthPolicy
+%feature("docstring") OT::BatchQuantileSimulation::setBlockLengthPolicy
 R"RAW(Accessor to the block-length policy.
 
 Parameters
@@ -309,7 +309,7 @@ constant.  ``MEMORY_BOUND`` uses the budget set by
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getCombinationType
+%feature("docstring") OT::BatchQuantileSimulation::getCombinationType
 R"RAW(Accessor to the combination rule.
 
 Returns
@@ -321,7 +321,7 @@ combination : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setCombinationType
+%feature("docstring") OT::BatchQuantileSimulation::setCombinationType
 R"RAW(Accessor to the combination rule.
 
 Parameters
@@ -333,7 +333,7 @@ combination : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getTrimmingFraction
+%feature("docstring") OT::BatchQuantileSimulation::getTrimmingFraction
 R"RAW(Accessor to the trimming fraction.
 
 Returns
@@ -345,7 +345,7 @@ gamma : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setTrimmingFraction
+%feature("docstring") OT::BatchQuantileSimulation::setTrimmingFraction
 R"RAW(Accessor to the trimming fraction.
 
 Parameters
@@ -357,7 +357,7 @@ gamma : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getMinimumBlockCount
+%feature("docstring") OT::BatchQuantileSimulation::getMinimumBlockCount
 R"RAW(Accessor to the minimum block count.
 
 Returns
@@ -370,7 +370,7 @@ minimumBlockCount : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setMinimumBlockCount
+%feature("docstring") OT::BatchQuantileSimulation::setMinimumBlockCount
 R"RAW(Accessor to the minimum block count.
 
 Parameters
@@ -384,7 +384,7 @@ minimumBlockCount : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getMemoryBudget
+%feature("docstring") OT::BatchQuantileSimulation::getMemoryBudget
 R"RAW(Accessor to the memory budget.
 
 Returns
@@ -400,7 +400,7 @@ memoryBudget : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setMemoryBudget
+%feature("docstring") OT::BatchQuantileSimulation::setMemoryBudget
 R"RAW(Accessor to the memory budget.
 
 Parameters
@@ -413,7 +413,7 @@ memoryBudget : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getBiasTolerance
+%feature("docstring") OT::BatchQuantileSimulation::getBiasTolerance
 R"RAW(Accessor to the bias tolerance.
 
 Returns
@@ -425,7 +425,7 @@ tolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setBiasTolerance
+%feature("docstring") OT::BatchQuantileSimulation::setBiasTolerance
 R"RAW(Accessor to the bias tolerance.
 
 Parameters
@@ -437,7 +437,7 @@ tolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::getBootstrapSize
+%feature("docstring") OT::BatchQuantileSimulation::getBootstrapSize
 R"RAW(Accessor to the bootstrap size.
 
 Returns
@@ -449,7 +449,7 @@ bootstrapSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BlockQuantileSimulation::setBootstrapSize
+%feature("docstring") OT::BatchQuantileSimulation::setBootstrapSize
 R"RAW(Accessor to the bootstrap size.
 
 Parameters

@@ -20,7 +20,7 @@ UPPER_TAIL = otexp.QuantileSimulationResultImplementation.UPPER_TAIL
 distribution = ot.Normal()
 output = ot.RandomVector(distribution)
 
-minimum_chunk_key = "ExactTailQuantileSimulation-MinimumChunkSize"
+minimum_chunk_key = "ExactCoverageQuantileSimulation-MinimumChunkSize"
 
 
 def sorted_values(sample):
@@ -48,7 +48,7 @@ values = sorted_values(sample)
 ranks, estimate_index, lower_rank, upper_rank = exact_diagnostics(size, alpha, beta)
 
 ot.RandomGenerator.SetSeed(20260201)
-algo = otexp.ExactTailQuantileSimulation(output, alpha, beta)
+algo = otexp.ExactCoverageQuantileSimulation(output, alpha, beta)
 assert algo.getAlpha() == alpha
 assert algo.getConfidenceLevel() == beta
 assert algo.getEstimatorType() == EMPIRICAL_INVERSE
@@ -85,7 +85,7 @@ assert result.getBiasToStandardErrorRatio() == 0.0
 assert result.isFixedSample()
 assert result.getConvergenceHistory().getSize() == 1
 assert result.drawQuantileConvergence().getDrawables().getSize() == 3
-assert "ExactTailQuantileSimulation" in repr(algo)
+assert "ExactCoverageQuantileSimulation" in repr(algo)
 assert "tail=" in repr(result)
 
 # The standard error is the spacing estimate of the full-sample estimator.
@@ -103,7 +103,7 @@ ott.assert_almost_equal(
 # out-of-sample upper rank 2.  The in-sample interval [X_(1), X_(2)] has
 # coverage 0.5 >= beta and must be used instead.
 ot.RandomGenerator.SetSeed(20260202)
-algo = otexp.ExactTailQuantileSimulation(output, 0.5, 0.1)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.5, 0.1)
 algo.setSampleSize(2)
 algo.run()
 result = algo.getResult()
@@ -122,7 +122,7 @@ ranks, estimate_index, lower_rank, upper_rank = exact_diagnostics(
     size, alpha, beta)
 assert lower_rank == estimate_index
 ot.RandomGenerator.SetSeed(20260205)
-algo = otexp.ExactTailQuantileSimulation(output, alpha, beta)
+algo = otexp.ExactCoverageQuantileSimulation(output, alpha, beta)
 algo.setSampleSize(size)
 algo.run()
 result = algo.getResult()
@@ -144,7 +144,7 @@ ott.assert_almost_equal(
 for level, expected_tail in [(0.01, LOWER_TAIL), (0.5, None),
                              (0.95, UPPER_TAIL), (0.99, UPPER_TAIL)]:
     ot.RandomGenerator.SetSeed(1000 + int(100 * level))
-    algo = otexp.ExactTailQuantileSimulation(output, level, 0.95)
+    algo = otexp.ExactCoverageQuantileSimulation(output, level, 0.95)
     algo.setSampleSize(1000)
     algo.run()
     result = algo.getResult()
@@ -171,7 +171,7 @@ for level, expected_tail in [(0.01, LOWER_TAIL), (0.5, None),
 
 # At an extreme upper level the retained tail is a small fraction of N.
 ot.RandomGenerator.SetSeed(20260202)
-algo = otexp.ExactTailQuantileSimulation(output, 0.999, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.999, 0.95)
 algo.setSampleSize(10000)
 algo.run()
 result = algo.getResult()
@@ -186,7 +186,7 @@ saved_chunk = ot.ResourceMap.GetAsUnsignedInteger(minimum_chunk_key)
 try:
     ot.ResourceMap.SetAsUnsignedInteger(minimum_chunk_key, 64)
     ot.RandomGenerator.SetSeed(20260204)
-    algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(1000)
     algo.run()
     chunk_result = algo.getResult()
@@ -201,7 +201,7 @@ sample = distribution.getSample(10000)
 values = sorted_values(sample)
 ranks, estimate_index, lower_rank, upper_rank = exact_diagnostics(10000, 0.999, 0.95)
 ot.RandomGenerator.SetSeed(20260203)
-algo = otexp.ExactTailQuantileSimulation(output, 0.999, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.999, 0.95)
 algo.setSampleSize(10000)
 algo.run()
 result = algo.getResult()
@@ -210,7 +210,7 @@ assert result.getConfidenceInterval() == ot.Interval(values[lower_rank], values[
 
 # A constant output exercises the degenerate spacing fallback.
 constant_output = ot.RandomVector(ot.Dirac(1.0))
-algo = otexp.ExactTailQuantileSimulation(constant_output, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(constant_output, 0.95, 0.95)
 algo.setSampleSize(500)
 algo.run()
 result = algo.getResult()
@@ -222,12 +222,12 @@ assert result.getConfidenceInterval() == ot.Interval(1.0, 1.0)
 # 3. Reproducibility
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260204)
-algo1 = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+algo1 = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
 algo1.setSampleSize(2000)
 algo1.run()
 first = algo1.getResult()
 ot.RandomGenerator.SetSeed(20260204)
-algo2 = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+algo2 = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
 algo2.setSampleSize(2000)
 algo2.run()
 second = algo2.getResult()
@@ -239,7 +239,7 @@ assert first.getRetainedCount() == second.getRetainedCount()
 # 4. Experiment accessors and default experiment resolution
 # ---------------------------------------------------------------------
 mce = ot.MonteCarloExperiment(distribution, 5000)
-algo = otexp.ExactTailQuantileSimulation(output, mce, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, mce, 0.95, 0.95)
 assert algo.hasExperiment()
 assert algo.getSampleSize() == 5000
 assert algo.getExperiment().getSize() == 5000
@@ -251,20 +251,20 @@ algo.run()
 assert algo.getResult().getSampleSize() == 4000
 
 composite = ot.CompositeRandomVector(ot.SymbolicFunction(["x"], ["x^2"]), output)
-algo = otexp.ExactTailQuantileSimulation(composite, 0.5, 0.5)
+algo = otexp.ExactCoverageQuantileSimulation(composite, 0.5, 0.5)
 algo.setSampleSize(2000)
 algo.run()
 assert algo.getResult().getQuantileEstimate() >= 0.0
 
 # The default constructor keeps the default levels.
-default_algo = otexp.ExactTailQuantileSimulation()
+default_algo = otexp.ExactCoverageQuantileSimulation()
 assert default_algo.getAlpha() == 0.95
 assert default_algo.getConfidenceLevel() == 0.95
 
 # ---------------------------------------------------------------------
 # 5. Negative limit tests
 # ---------------------------------------------------------------------
-algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
 with ott.assert_raises(TypeError):
     algo.setSampleSize(0)
 with ott.assert_raises(TypeError):
@@ -275,47 +275,47 @@ with ott.assert_raises(TypeError):
     algo.run()
 
 # The interpolated estimator has no exact order-statistic interval.
-algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(500)
 algo.setEstimatorType(INTERPOLATED)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # The exact-tail interval is fixed-sample, not anytime-valid.
-algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(500)
 algo.setRequiredCoverage(COVERAGE_ANYTIME_VALID)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # An exact interval cannot pretend to be anytime-valid.
-algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(500)
 algo.setRequiredCoverage(COVERAGE_ANYTIME_VALID)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # A sample too small for the requested exact levels is rejected.
-algo = otexp.ExactTailQuantileSimulation(output, 0.999, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.999, 0.95)
 algo.setSampleSize(10)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # The estimator requires an independent experiment.
 lhs = ot.LHSExperiment(distribution, 1000, True, True)
-algo = otexp.ExactTailQuantileSimulation(output, lhs, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, lhs, 0.95, 0.95)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # The estimator requires uniform weights.
 importance = ot.ImportanceSamplingExperiment(
     distribution, ot.Normal(1.0, 1.0), 1000)
-algo = otexp.ExactTailQuantileSimulation(output, importance, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, importance, 0.95, 0.95)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # A design with the wrong dimension is rejected.
-algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(1000)
 algo.setExperiment(ot.MonteCarloExperiment(ot.Normal(2), 1000))
 with ott.assert_raises(TypeError):
@@ -323,17 +323,17 @@ with ott.assert_raises(TypeError):
 
 # Invalid levels and multivariate outputs are rejected.
 with ott.assert_raises(TypeError):
-    otexp.ExactTailQuantileSimulation(output, 0.0, 0.95)
+    otexp.ExactCoverageQuantileSimulation(output, 0.0, 0.95)
 with ott.assert_raises(TypeError):
-    otexp.ExactTailQuantileSimulation(output, 0.95, 1.0)
+    otexp.ExactCoverageQuantileSimulation(output, 0.95, 1.0)
 with ott.assert_raises(TypeError):
-    otexp.ExactTailQuantileSimulation(ot.RandomVector(ot.Normal(2)), 0.95, 0.95)
+    otexp.ExactCoverageQuantileSimulation(ot.RandomVector(ot.Normal(2)), 0.95, 0.95)
 
 # ---------------------------------------------------------------------
 # 6. Persistence and handle
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(20260206)
-algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(4000)
 algo.run()
 result = algo.getResult()
@@ -348,7 +348,7 @@ study.save()
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager(path))
 study.load()
-loaded_algo = otexp.ExactTailQuantileSimulation()
+loaded_algo = otexp.ExactCoverageQuantileSimulation()
 study.fillObject("algo", loaded_algo)
 loaded_result = otexp.QuantileSimulationResult()
 study.fillObject("result", loaded_result)
@@ -403,7 +403,7 @@ with ott.assert_raises(TypeError):
 # ---------------------------------------------------------------------
 # 7. ResourceMap keys
 # ---------------------------------------------------------------------
-chunk_key = "ExactTailQuantileSimulation-MinimumChunkSize"
+chunk_key = "ExactCoverageQuantileSimulation-MinimumChunkSize"
 saved_chunk = ot.ResourceMap.GetAsUnsignedInteger(chunk_key)
 
 # Chunking is an implementation detail: the same random stream must
@@ -411,14 +411,14 @@ saved_chunk = ot.ResourceMap.GetAsUnsignedInteger(chunk_key)
 try:
     ot.ResourceMap.SetAsUnsignedInteger(chunk_key, 64)
     ot.RandomGenerator.SetSeed(20260207)
-    algo = otexp.ExactTailQuantileSimulation(output, 0.999, 0.95)
+    algo = otexp.ExactCoverageQuantileSimulation(output, 0.999, 0.95)
     algo.setSampleSize(10000)
     algo.run()
     small_chunk_result = algo.getResult()
 
     ot.ResourceMap.SetAsUnsignedInteger(chunk_key, 8192)
     ot.RandomGenerator.SetSeed(20260207)
-    algo = otexp.ExactTailQuantileSimulation(output, 0.999, 0.95)
+    algo = otexp.ExactCoverageQuantileSimulation(output, 0.999, 0.95)
     algo.setSampleSize(10000)
     algo.run()
     large_chunk_result = algo.getResult()
@@ -435,7 +435,7 @@ nan_output = ot.CompositeRandomVector(
     ot.PythonFunction(1, 1, lambda x: [float("nan")]),
     ot.RandomVector(ot.Normal()),
 )
-algo = otexp.ExactTailQuantileSimulation(nan_output, 0.95, 0.95)
+algo = otexp.ExactCoverageQuantileSimulation(nan_output, 0.95, 0.95)
 algo.setSampleSize(100)
 with ott.assert_raises(TypeError):
     algo.run()
@@ -443,7 +443,7 @@ with ott.assert_raises(TypeError):
 # A non-positive minimum chunk size is rejected.
 try:
     ot.ResourceMap.SetAsUnsignedInteger(chunk_key, 0)
-    algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+    algo = otexp.ExactCoverageQuantileSimulation(output, 0.95, 0.95)
     algo.setSampleSize(500)
     with ott.assert_raises(TypeError):
         algo.run()

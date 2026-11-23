@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Generic probability-inversion quantile estimator
+ *  @brief Generic inverse-probability quantile estimator
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_PROBABILITYINVERSIONQUANTILE_HXX
-#define OPENTURNS_PROBABILITYINVERSIONQUANTILE_HXX
+#ifndef OPENTURNS_INVERSEPROBABILITYQUANTILE_HXX
+#define OPENTURNS_INVERSEPROBABILITYQUANTILE_HXX
 
 #include "openturns/QuantileSimulationImplementation.hxx"
 #include "openturns/EventSimulation.hxx"
@@ -29,7 +29,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ProbabilityInversionQuantile
+ * @class InverseProbabilityQuantile
  *
  * Generic quantile estimator obtained by inverting the probability
  * estimate of an event-simulation engine.  The class is a fallback for
@@ -55,21 +55,21 @@ BEGIN_NAMESPACE_OPENTURNS
  * the implementation notes even though the current adapter always
  * uses bisection.
  */
-class OT_API ProbabilityInversionQuantile
+class OT_API InverseProbabilityQuantile
   : public QuantileSimulationImplementation
 {
   CLASSNAME
 public:
   /** Default constructor */
-  ProbabilityInversionQuantile();
+  InverseProbabilityQuantile();
 
   /** Constructor with parameters */
-  ProbabilityInversionQuantile(const EventSimulation & algorithm,
+  InverseProbabilityQuantile(const EventSimulation & algorithm,
                                const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
                                const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Virtual constructor */
-  ProbabilityInversionQuantile * clone() const override;
+  InverseProbabilityQuantile * clone() const override;
 
   /** Wrapped algorithm accessor */
   void setAlgorithm(const EventSimulation & algorithm);
@@ -165,8 +165,8 @@ private:
   UnsignedInteger pilotSampleSize_ = ResourceMap::GetAsUnsignedInteger("QuantileRootSolver-PilotSampleSize");
   UnsignedInteger replicateCount_ = 1;
 
-}; /* class ProbabilityInversionQuantile */
+}; /* class InverseProbabilityQuantile */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_PROBABILITYINVERSIONQUANTILE_HXX */
+#endif /* OPENTURNS_INVERSEPROBABILITYQUANTILE_HXX */

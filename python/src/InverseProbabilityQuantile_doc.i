@@ -1,12 +1,12 @@
-%feature("docstring") OT::ProbabilityInversionQuantile
-R"RAW(Generic probability-inversion quantile estimator.
+%feature("docstring") OT::InverseProbabilityQuantile
+R"RAW(Generic inverse-probability quantile estimator.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
 Available constructors:
-    ProbabilityInversionQuantile(*algorithm, alpha=0.95, beta=0.95*)
+    InverseProbabilityQuantile(*algorithm, alpha=0.95, beta=0.95*)
 
 The algorithm estimates the quantile of a scalar output
 :math:`Y=\model(\inputRV)` by inverting the probability estimate of an
@@ -77,7 +77,7 @@ Examples
 ...                                   ot.RandomVector(inputDistribution))
 >>> event = ot.ThresholdEvent(output, ot.Greater(), 1.0)
 >>> engine = ot.ProbabilitySimulationAlgorithm(event)
->>> algo = otexp.ProbabilityInversionQuantile(engine, 0.95, 0.95)
+>>> algo = otexp.InverseProbabilityQuantile(engine, 0.95, 0.95)
 >>> algo.setSampleSize(10000)
 >>> algo.run()
 >>> result = algo.getResult()
@@ -86,7 +86,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::getAlgorithm
+%feature("docstring") OT::InverseProbabilityQuantile::getAlgorithm
 R"RAW(Accessor to the wrapped algorithm.
 
 Returns
@@ -97,7 +97,7 @@ algorithm : :class:`~openturns.EventSimulation`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::setAlgorithm
+%feature("docstring") OT::InverseProbabilityQuantile::setAlgorithm
 R"RAW(Accessor to the wrapped algorithm.
 
 Parameters
@@ -111,7 +111,7 @@ algorithm : :class:`~openturns.EventSimulation`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::hasAlgorithm
+%feature("docstring") OT::InverseProbabilityQuantile::hasAlgorithm
 R"RAW(Test whether the wrapped algorithm is set.
 
 Returns
@@ -122,7 +122,7 @@ hasAlgorithm : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::getUseCommonRandomNumbers
+%feature("docstring") OT::InverseProbabilityQuantile::getUseCommonRandomNumbers
 R"RAW(Accessor to the common-random-number request.
 
 Returns
@@ -134,7 +134,7 @@ useCommonRandomNumbers : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::setUseCommonRandomNumbers
+%feature("docstring") OT::InverseProbabilityQuantile::setUseCommonRandomNumbers
 R"RAW(Accessor to the common-random-number request.
 
 Parameters
@@ -147,7 +147,7 @@ useCommonRandomNumbers : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::getRootTolerance
+%feature("docstring") OT::InverseProbabilityQuantile::getRootTolerance
 R"RAW(Accessor to the root-finding tolerance.
 
 Returns
@@ -158,7 +158,7 @@ tolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::setRootTolerance
+%feature("docstring") OT::InverseProbabilityQuantile::setRootTolerance
 R"RAW(Accessor to the root-finding tolerance.
 
 Parameters
@@ -170,7 +170,7 @@ tolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::getMaximumRootIteration
+%feature("docstring") OT::InverseProbabilityQuantile::getMaximumRootIteration
 R"RAW(Accessor to the maximum number of root-finding iterations.
 
 Returns
@@ -181,7 +181,7 @@ maximumIteration : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::setMaximumRootIteration
+%feature("docstring") OT::InverseProbabilityQuantile::setMaximumRootIteration
 R"RAW(Accessor to the maximum number of root-finding iterations.
 
 Parameters
@@ -193,7 +193,7 @@ maximumIteration : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::getPilotSampleSize
+%feature("docstring") OT::InverseProbabilityQuantile::getPilotSampleSize
 R"RAW(Accessor to the pilot sample size.
 
 Returns
@@ -204,7 +204,7 @@ pilotSampleSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::setPilotSampleSize
+%feature("docstring") OT::InverseProbabilityQuantile::setPilotSampleSize
 R"RAW(Accessor to the pilot sample size.
 
 Parameters
@@ -216,7 +216,7 @@ pilotSampleSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::getReplicateCount
+%feature("docstring") OT::InverseProbabilityQuantile::getReplicateCount
 R"RAW(Accessor to the replicate count.
 
 Returns
@@ -228,7 +228,7 @@ replicateCount : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ProbabilityInversionQuantile::setReplicateCount
+%feature("docstring") OT::InverseProbabilityQuantile::setReplicateCount
 R"RAW(Accessor to the replicate count.
 
 Parameters

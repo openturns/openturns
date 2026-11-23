@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Generic probability-inversion quantile estimator
+ *  @brief Generic inverse-probability quantile estimator
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -22,7 +22,7 @@
 #include <algorithm>
 #include <limits>
 
-#include "openturns/ProbabilityInversionQuantile.hxx"
+#include "openturns/InverseProbabilityQuantile.hxx"
 #include "openturns/QuantileRootSolver.hxx"
 #include "openturns/MonteCarloQuantileSimulation.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
@@ -37,9 +37,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ProbabilityInversionQuantile)
+CLASSNAMEINIT(InverseProbabilityQuantile)
 
-static const Factory<ProbabilityInversionQuantile> Factory_ProbabilityInversionQuantile;
+static const Factory<InverseProbabilityQuantile> Factory_InverseProbabilityQuantile;
 
 namespace
 {
@@ -101,14 +101,14 @@ Interval inversionReplicateInterval(const Point & estimates,
 } // anonymous namespace
 
 /* Default constructor */
-ProbabilityInversionQuantile::ProbabilityInversionQuantile()
+InverseProbabilityQuantile::InverseProbabilityQuantile()
   : QuantileSimulationImplementation()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-ProbabilityInversionQuantile::ProbabilityInversionQuantile(const EventSimulation & algorithm,
+InverseProbabilityQuantile::InverseProbabilityQuantile(const EventSimulation & algorithm,
                                                            const Scalar alpha,
                                                            const Scalar beta)
   : QuantileSimulationImplementation()
@@ -119,13 +119,13 @@ ProbabilityInversionQuantile::ProbabilityInversionQuantile(const EventSimulation
 }
 
 /* Virtual constructor */
-ProbabilityInversionQuantile * ProbabilityInversionQuantile::clone() const
+InverseProbabilityQuantile * InverseProbabilityQuantile::clone() const
 {
-  return new ProbabilityInversionQuantile(*this);
+  return new InverseProbabilityQuantile(*this);
 }
 
 /* Wrapped algorithm accessor */
-void ProbabilityInversionQuantile::setAlgorithm(const EventSimulation & algorithm)
+void InverseProbabilityQuantile::setAlgorithm(const EventSimulation & algorithm)
 {
   RandomVector event;
   try
@@ -191,29 +191,29 @@ void ProbabilityInversionQuantile::setAlgorithm(const EventSimulation & algorith
   }
 }
 
-EventSimulation ProbabilityInversionQuantile::getAlgorithm() const
+EventSimulation InverseProbabilityQuantile::getAlgorithm() const
 {
   return algorithm_;
 }
 
-Bool ProbabilityInversionQuantile::hasAlgorithm() const
+Bool InverseProbabilityQuantile::hasAlgorithm() const
 {
   return hasAlgorithm_;
 }
 
 /* Common-random-number request accessor */
-void ProbabilityInversionQuantile::setUseCommonRandomNumbers(const Bool useCommonRandomNumbers)
+void InverseProbabilityQuantile::setUseCommonRandomNumbers(const Bool useCommonRandomNumbers)
 {
   useCommonRandomNumbers_ = useCommonRandomNumbers;
 }
 
-Bool ProbabilityInversionQuantile::getUseCommonRandomNumbers() const
+Bool InverseProbabilityQuantile::getUseCommonRandomNumbers() const
 {
   return useCommonRandomNumbers_;
 }
 
 /* Root-finding tolerance accessor */
-void ProbabilityInversionQuantile::setRootTolerance(const Scalar tolerance)
+void InverseProbabilityQuantile::setRootTolerance(const Scalar tolerance)
 {
   if (!std::isfinite(tolerance) || !(tolerance > 0.0))
     throw InvalidArgumentException(HERE)
@@ -222,13 +222,13 @@ void ProbabilityInversionQuantile::setRootTolerance(const Scalar tolerance)
   rootTolerance_ = tolerance;
 }
 
-Scalar ProbabilityInversionQuantile::getRootTolerance() const
+Scalar InverseProbabilityQuantile::getRootTolerance() const
 {
   return rootTolerance_;
 }
 
 /* Maximum root-finding iteration accessor */
-void ProbabilityInversionQuantile::setMaximumRootIteration(const UnsignedInteger maximumIteration)
+void InverseProbabilityQuantile::setMaximumRootIteration(const UnsignedInteger maximumIteration)
 {
   if (maximumIteration == 0)
     throw InvalidArgumentException(HERE)
@@ -236,13 +236,13 @@ void ProbabilityInversionQuantile::setMaximumRootIteration(const UnsignedInteger
   maximumRootIteration_ = maximumIteration;
 }
 
-UnsignedInteger ProbabilityInversionQuantile::getMaximumRootIteration() const
+UnsignedInteger InverseProbabilityQuantile::getMaximumRootIteration() const
 {
   return maximumRootIteration_;
 }
 
 /* Pilot sample size accessor */
-void ProbabilityInversionQuantile::setPilotSampleSize(const UnsignedInteger pilotSampleSize)
+void InverseProbabilityQuantile::setPilotSampleSize(const UnsignedInteger pilotSampleSize)
 {
   if (pilotSampleSize == 0)
     throw InvalidArgumentException(HERE)
@@ -250,13 +250,13 @@ void ProbabilityInversionQuantile::setPilotSampleSize(const UnsignedInteger pilo
   pilotSampleSize_ = pilotSampleSize;
 }
 
-UnsignedInteger ProbabilityInversionQuantile::getPilotSampleSize() const
+UnsignedInteger InverseProbabilityQuantile::getPilotSampleSize() const
 {
   return pilotSampleSize_;
 }
 
 /* Replicate count accessor */
-void ProbabilityInversionQuantile::setReplicateCount(const UnsignedInteger replicateCount)
+void InverseProbabilityQuantile::setReplicateCount(const UnsignedInteger replicateCount)
 {
   if (replicateCount == 0)
     throw InvalidArgumentException(HERE)
@@ -264,13 +264,13 @@ void ProbabilityInversionQuantile::setReplicateCount(const UnsignedInteger repli
   replicateCount_ = replicateCount;
 }
 
-UnsignedInteger ProbabilityInversionQuantile::getReplicateCount() const
+UnsignedInteger InverseProbabilityQuantile::getReplicateCount() const
 {
   return replicateCount_;
 }
 
 /* Whether the wrapped engine is a plain Monte Carlo simulation */
-Bool ProbabilityInversionQuantile::isPlainMonteCarlo() const
+Bool InverseProbabilityQuantile::isPlainMonteCarlo() const
 {
   if (!hasAlgorithm_)
     return false;
@@ -285,7 +285,7 @@ Bool ProbabilityInversionQuantile::isPlainMonteCarlo() const
 }
 
 /* Whether the wrapped engine evaluates a fixed sample */
-Bool ProbabilityInversionQuantile::hasFixedExperiment() const
+Bool InverseProbabilityQuantile::hasFixedExperiment() const
 {
   if (!hasAlgorithm_)
     return false;
@@ -298,14 +298,14 @@ Bool ProbabilityInversionQuantile::hasFixedExperiment() const
 }
 
 /* Nominal sample size of the wrapped engine */
-UnsignedInteger ProbabilityInversionQuantile::getNominalSampleSize() const
+UnsignedInteger InverseProbabilityQuantile::getNominalSampleSize() const
 {
   return std::max<UnsignedInteger>(2, sampleSize_);
 }
 
 /* Evaluate the wrapped engine at the given threshold */
-ProbabilityInversionQuantile::Evaluation
-ProbabilityInversionQuantile::evaluate(const Scalar threshold) const
+InverseProbabilityQuantile::Evaluation
+InverseProbabilityQuantile::evaluate(const Scalar threshold) const
 {
   Evaluation evaluation;
   // Clone the implementation: the user-provided engine is never modified.
@@ -333,8 +333,8 @@ ProbabilityInversionQuantile::evaluate(const Scalar threshold) const
 
 /* Invert the probability: sign bisection for a deterministic fixed
    experiment, confidence-bound bisection otherwise */
-ProbabilityInversionQuantile::Inversion
-ProbabilityInversionQuantile::invert(const Scalar start,
+InverseProbabilityQuantile::Inversion
+InverseProbabilityQuantile::invert(const Scalar start,
                                      const Scalar step,
                                      const Bool useConfidenceBounds) const
 {
@@ -446,7 +446,7 @@ ProbabilityInversionQuantile::invert(const Scalar start,
 }
 
 /* Delegate a plain Monte Carlo engine to direct extraction */
-QuantileSimulationResult ProbabilityInversionQuantile::runDelegated()
+QuantileSimulationResult InverseProbabilityQuantile::runDelegated()
 {
   const UnsignedInteger nominalSize = getNominalSampleSize();
   const Distribution inputDistribution(output_.getAntecedent().getDistribution());
@@ -465,7 +465,7 @@ QuantileSimulationResult ProbabilityInversionQuantile::runDelegated()
 }
 
 /* Check the input parameters */
-void ProbabilityInversionQuantile::checkInputs() const
+void InverseProbabilityQuantile::checkInputs() const
 {
   if (!hasAlgorithm_)
     throw InvalidArgumentException(HERE)
@@ -477,7 +477,7 @@ void ProbabilityInversionQuantile::checkInputs() const
 }
 
 /* Run the probability-inversion experiment */
-QuantileSimulationResult ProbabilityInversionQuantile::runFixedSample()
+QuantileSimulationResult InverseProbabilityQuantile::runFixedSample()
 {
   if (isPlainMonteCarlo())
     return runDelegated();
@@ -571,10 +571,10 @@ QuantileSimulationResult ProbabilityInversionQuantile::runFixedSample()
 }
 
 /* String converter */
-String ProbabilityInversionQuantile::__repr__() const
+String InverseProbabilityQuantile::__repr__() const
 {
   OSS oss;
-  oss << "class=" << ProbabilityInversionQuantile::GetClassName()
+  oss << "class=" << InverseProbabilityQuantile::GetClassName()
       << " algorithm=" << algorithm_
       << " alpha=" << alpha_
       << " beta=" << beta_
@@ -589,7 +589,7 @@ String ProbabilityInversionQuantile::__repr__() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void ProbabilityInversionQuantile::save(Advocate & adv) const
+void InverseProbabilityQuantile::save(Advocate & adv) const
 {
   QuantileSimulationImplementation::save(adv);
   adv.saveAttribute("algorithm_", algorithm_);
@@ -604,7 +604,7 @@ void ProbabilityInversionQuantile::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void ProbabilityInversionQuantile::load(Advocate & adv)
+void InverseProbabilityQuantile::load(Advocate & adv)
 {
   QuantileSimulationImplementation::load(adv);
   adv.loadAttribute("algorithm_", algorithm_);

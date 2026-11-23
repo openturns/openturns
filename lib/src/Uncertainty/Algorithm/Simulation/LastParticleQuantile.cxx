@@ -117,7 +117,7 @@ void LastParticleQuantile::checkInputs() const
     throw InvalidArgumentException(HERE)
         << "The last-particle estimator only supports the empirical inverse estimator, "
         << "but the interpolated estimator was requested. "
-        << "Use MonteCarloQuantileSimulation or BlockQuantileSimulation for the interpolated estimator.";
+        << "Use MonteCarloQuantileSimulation or BatchQuantileSimulation for the interpolated estimator.";
 }
 
 /* Run the last-particle process */

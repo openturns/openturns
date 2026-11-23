@@ -1,14 +1,14 @@
-%feature("docstring") OT::ExactTailQuantileSimulation
-R"RAW(Exact-tail quantile simulation.
+%feature("docstring") OT::ExactCoverageQuantileSimulation
+R"RAW(Exact-coverage quantile simulation.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
 Available constructors:
-    ExactTailQuantileSimulation(*output, alpha=0.95, beta=0.95*)
+    ExactCoverageQuantileSimulation(*output, alpha=0.95, beta=0.95*)
 
-    ExactTailQuantileSimulation(*output, experiment, alpha=0.95, beta=0.95*)
+    ExactCoverageQuantileSimulation(*output, experiment, alpha=0.95, beta=0.95*)
 
 The exact-tail estimator computes an empirical quantile and its exact
 binomial interval without storing the full sample.  For a sample of
@@ -31,7 +31,7 @@ lower-tail quantile only the :math:`r_2 + 1` smallest observations are
 needed.  The estimator keeps the smaller of the two tails in a bounded
 heap and updates it chunk by chunk.  The chunk size :math:`c` is the
 maximum of the inherited block size and
-``ExactTailQuantileSimulation-MinimumChunkSize``, capped at :math:`N`.
+``ExactCoverageQuantileSimulation-MinimumChunkSize``, capped at :math:`N`.
 The peak storage is the retained tail plus :math:`(d+1)\min(N,c)`
 scalar values for an input dimension :math:`d`: one chunk of input
 vectors and one chunk of scalar outputs are live at the same time.  The
@@ -56,7 +56,7 @@ beta : float
 
 See also
 --------
-MonteCarloQuantileSimulation, BlockQuantileSimulation, QuantileSimulationResult
+MonteCarloQuantileSimulation, BatchQuantileSimulation, QuantileSimulationResult
 
 Notes
 -----
@@ -76,7 +76,7 @@ decreasing the confidence level.
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``ExactTailQuantileSimulation-MinimumChunkSize`` (``UnsignedInteger``, default: ``4096``): minimum number of observations drawn and processed per chunk, where the effective chunk size is the maximum of this value and the evaluation block size.
+- ``ExactCoverageQuantileSimulation-MinimumChunkSize`` (``UnsignedInteger``, default: ``4096``): minimum number of observations drawn and processed per chunk, where the effective chunk size is the maximum of this value and the evaluation block size.
 - ``QuantileSimulation-DefaultAlpha`` (``Scalar``, default: ``0.95``): default quantile level.
 - ``QuantileSimulation-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``): default nominal confidence level.
 - ``QuantileSimulation-DefaultSampleSize`` (``UnsignedInteger``, default: ``0``): default sample size, where ``0`` means that the sample size must be set before running.
@@ -86,7 +86,7 @@ Examples
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
 >>> output = ot.RandomVector(ot.Normal())
->>> algo = otexp.ExactTailQuantileSimulation(output, 0.999, 0.95)
+>>> algo = otexp.ExactCoverageQuantileSimulation(output, 0.999, 0.95)
 >>> algo.setSampleSize(100000)
 >>> algo.run()
 >>> result = algo.getResult()
@@ -97,7 +97,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ExactTailQuantileSimulation::getExperiment
+%feature("docstring") OT::ExactCoverageQuantileSimulation::getExperiment
 R"RAW(Accessor to the design of experiments.
 
 Returns
@@ -108,7 +108,7 @@ experiment : :class:`~openturns.WeightedExperiment`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ExactTailQuantileSimulation::setExperiment
+%feature("docstring") OT::ExactCoverageQuantileSimulation::setExperiment
 R"RAW(Accessor to the design of experiments.
 
 Parameters
@@ -121,7 +121,7 @@ experiment : :class:`~openturns.WeightedExperiment`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ExactTailQuantileSimulation::hasExperiment
+%feature("docstring") OT::ExactCoverageQuantileSimulation::hasExperiment
 R"RAW(Accessor to the presence of a user-provided experiment.
 
 Returns
@@ -133,7 +133,7 @@ hasExperiment : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ExactTailQuantileSimulation::getSampleSize
+%feature("docstring") OT::ExactCoverageQuantileSimulation::getSampleSize
 R"RAW(Accessor to the sample size.
 
 Returns
@@ -144,7 +144,7 @@ sampleSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ExactTailQuantileSimulation::setSampleSize
+%feature("docstring") OT::ExactCoverageQuantileSimulation::setSampleSize
 R"RAW(Accessor to the sample size.
 
 Parameters

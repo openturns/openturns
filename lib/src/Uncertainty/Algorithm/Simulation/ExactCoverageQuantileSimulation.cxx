@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Exact-tail quantile simulation
+ *  @brief Exact-coverage quantile simulation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -25,7 +25,7 @@
 #include <vector>
 #include <functional>
 
-#include "openturns/ExactTailQuantileSimulation.hxx"
+#include "openturns/ExactCoverageQuantileSimulation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
 #include "openturns/QuantileConfidence.hxx"
@@ -34,12 +34,12 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ExactTailQuantileSimulation)
+CLASSNAMEINIT(ExactCoverageQuantileSimulation)
 
-static const Factory<ExactTailQuantileSimulation> Factory_ExactTailQuantileSimulation;
+static const Factory<ExactCoverageQuantileSimulation> Factory_ExactCoverageQuantileSimulation;
 
 /*
- * The exact-tail estimator follows the classical distribution-free
+ * The exact-coverage estimator follows the classical distribution-free
  * order-statistic construction of:
  *
  * S. S. Wilks.
@@ -55,14 +55,14 @@ static const Factory<ExactTailQuantileSimulation> Factory_ExactTailQuantileSimul
  */
 
 /* Default constructor */
-ExactTailQuantileSimulation::ExactTailQuantileSimulation()
+ExactCoverageQuantileSimulation::ExactCoverageQuantileSimulation()
   : QuantileSimulationImplementation()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-ExactTailQuantileSimulation::ExactTailQuantileSimulation(const RandomVector & output,
+ExactCoverageQuantileSimulation::ExactCoverageQuantileSimulation(const RandomVector & output,
                                                          const Scalar alpha,
                                                          const Scalar beta)
   : QuantileSimulationImplementation(output, alpha, beta)
@@ -71,7 +71,7 @@ ExactTailQuantileSimulation::ExactTailQuantileSimulation(const RandomVector & ou
 }
 
 /* Constructor with parameters and experiment */
-ExactTailQuantileSimulation::ExactTailQuantileSimulation(const RandomVector & output,
+ExactCoverageQuantileSimulation::ExactCoverageQuantileSimulation(const RandomVector & output,
                                                          const WeightedExperiment & experiment,
                                                          const Scalar alpha,
                                                          const Scalar beta)
@@ -81,31 +81,31 @@ ExactTailQuantileSimulation::ExactTailQuantileSimulation(const RandomVector & ou
 }
 
 /* Virtual constructor */
-ExactTailQuantileSimulation * ExactTailQuantileSimulation::clone() const
+ExactCoverageQuantileSimulation * ExactCoverageQuantileSimulation::clone() const
 {
-  return new ExactTailQuantileSimulation(*this);
+  return new ExactCoverageQuantileSimulation(*this);
 }
 
 /* Experiment accessor */
-void ExactTailQuantileSimulation::setExperiment(const WeightedExperiment & experiment)
+void ExactCoverageQuantileSimulation::setExperiment(const WeightedExperiment & experiment)
 {
   experiment_ = experiment;
   isExperimentProvided_ = true;
   sampleSize_ = experiment_.getSize();
 }
 
-WeightedExperiment ExactTailQuantileSimulation::getExperiment() const
+WeightedExperiment ExactCoverageQuantileSimulation::getExperiment() const
 {
   return experiment_;
 }
 
-Bool ExactTailQuantileSimulation::hasExperiment() const
+Bool ExactCoverageQuantileSimulation::hasExperiment() const
 {
   return isExperimentProvided_;
 }
 
 /* Sample size accessor */
-void ExactTailQuantileSimulation::setSampleSize(const UnsignedInteger sampleSize)
+void ExactCoverageQuantileSimulation::setSampleSize(const UnsignedInteger sampleSize)
 {
   QuantileSimulationImplementation::setSampleSize(sampleSize);
   if (isExperimentProvided_)
@@ -113,7 +113,7 @@ void ExactTailQuantileSimulation::setSampleSize(const UnsignedInteger sampleSize
 }
 
 /* Resolve the experiment, building a Monte Carlo experiment when needed */
-WeightedExperiment ExactTailQuantileSimulation::resolveExperiment() const
+WeightedExperiment ExactCoverageQuantileSimulation::resolveExperiment() const
 {
   if (isExperimentProvided_)
     return experiment_;
@@ -136,23 +136,23 @@ WeightedExperiment ExactTailQuantileSimulation::resolveExperiment() const
 }
 
 /* Check the input parameters */
-void ExactTailQuantileSimulation::checkInputs() const
+void ExactCoverageQuantileSimulation::checkInputs() const
 {
   QuantileSimulationImplementation::checkInputs();
   if (estimatorType_ != QuantileSimulationResultImplementation::EMPIRICAL_INVERSE)
     throw InvalidArgumentException(HERE)
         << "The exact-tail estimator only supports the empirical inverse estimator. "
-        << "Use MonteCarloQuantileSimulation or BlockQuantileSimulation for the interpolated estimator.";
-  if (ResourceMap::GetAsUnsignedInteger("ExactTailQuantileSimulation-MinimumChunkSize") == 0)
+        << "Use MonteCarloQuantileSimulation or BatchQuantileSimulation for the interpolated estimator.";
+  if (ResourceMap::GetAsUnsignedInteger("ExactCoverageQuantileSimulation-MinimumChunkSize") == 0)
     throw InvalidArgumentException(HERE)
-        << "The ResourceMap key ExactTailQuantileSimulation-MinimumChunkSize must be positive";
+        << "The ResourceMap key ExactCoverageQuantileSimulation-MinimumChunkSize must be positive";
   if (requiredCoverage_ == QuantileSimulationResultImplementation::COVERAGE_ANYTIME_VALID)
     throw InvalidArgumentException(HERE)
         << "The exact-tail estimator cannot provide an anytime-valid coverage";
 }
 
 /* Run a fixed-sample experiment */
-QuantileSimulationResult ExactTailQuantileSimulation::runFixedSample()
+QuantileSimulationResult ExactCoverageQuantileSimulation::runFixedSample()
 {
   if (sampleSize_ == 0)
     throw InvalidArgumentException(HERE) << "The sample size must be set before running the algorithm";
@@ -236,7 +236,7 @@ QuantileSimulationResult ExactTailQuantileSimulation::runFixedSample()
   std::priority_queue<Scalar, std::vector<Scalar>, std::greater<Scalar> > upperHeap;
   std::priority_queue<Scalar> lowerHeap;
   const UnsignedInteger chunkSize = std::max<UnsignedInteger>(getBlockSize(),
-      ResourceMap::GetAsUnsignedInteger("ExactTailQuantileSimulation-MinimumChunkSize"));
+      ResourceMap::GetAsUnsignedInteger("ExactCoverageQuantileSimulation-MinimumChunkSize"));
   UnsignedInteger remaining = sampleSize_;
   while (remaining > 0)
   {
@@ -362,10 +362,10 @@ QuantileSimulationResult ExactTailQuantileSimulation::runFixedSample()
 }
 
 /* String converter */
-String ExactTailQuantileSimulation::__repr__() const
+String ExactCoverageQuantileSimulation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << ExactTailQuantileSimulation::GetClassName()
+  oss << "class=" << ExactCoverageQuantileSimulation::GetClassName()
       << " output=" << output_
       << " alpha=" << alpha_
       << " beta=" << beta_
@@ -379,7 +379,7 @@ String ExactTailQuantileSimulation::__repr__() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void ExactTailQuantileSimulation::save(Advocate & adv) const
+void ExactCoverageQuantileSimulation::save(Advocate & adv) const
 {
   QuantileSimulationImplementation::save(adv);
   adv.saveAttribute("experiment_", experiment_);
@@ -387,7 +387,7 @@ void ExactTailQuantileSimulation::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object through the StorageManager */
-void ExactTailQuantileSimulation::load(Advocate & adv)
+void ExactCoverageQuantileSimulation::load(Advocate & adv)
 {
   QuantileSimulationImplementation::load(adv);
   adv.loadAttribute("experiment_", experiment_);

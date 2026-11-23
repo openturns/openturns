@@ -930,7 +930,7 @@ try:
     assert base.getSampleSize() == test_size
 
     # The trimming fraction is also read by the block estimator.
-    block = otexp.BlockQuantileSimulation(output)
+    block = otexp.BatchQuantileSimulation(output)
     assert block.getTrimmingFraction() == test_trimming
 finally:
     ot.ResourceMap.SetAsScalar(alpha_key, saved_alpha)
@@ -962,7 +962,7 @@ finally:
     ot.ResourceMap.SetAsUnsignedInteger(replicate_key, saved_replicates)
 try:
     ot.ResourceMap.SetAsScalar(trimming_key, 0.5)
-    algo = otexp.BlockQuantileSimulation(output, 0.5, 0.5)
+    algo = otexp.BatchQuantileSimulation(output, 0.5, 0.5)
     algo.setSampleSize(100)
     algo.setBlockLength(10)
     with ott.assert_raises(TypeError):

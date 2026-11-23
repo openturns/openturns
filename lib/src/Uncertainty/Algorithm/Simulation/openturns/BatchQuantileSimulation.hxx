@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Block quantile simulation
+ *  @brief Batch quantile simulation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_BLOCKQUANTILESIMULATION_HXX
-#define OPENTURNS_BLOCKQUANTILESIMULATION_HXX
+#ifndef OPENTURNS_BATCHQUANTILESIMULATION_HXX
+#define OPENTURNS_BATCHQUANTILESIMULATION_HXX
 
 #include "openturns/QuantileSimulationImplementation.hxx"
 #include "openturns/WeightedExperiment.hxx"
@@ -28,14 +28,14 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class BlockQuantileSimulation
+ * @class BatchQuantileSimulation
  *
  * Memory-efficient quantile estimator.  The sample is split into
  * independent blocks, one quantile is computed per block, and the block
  * quantiles are combined with a mean, a median or a trimmed mean.  Only
  * one block and the block quantiles are kept in memory.
  */
-class OT_API BlockQuantileSimulation
+class OT_API BatchQuantileSimulation
   : public QuantileSimulationImplementation
 {
   CLASSNAME
@@ -52,21 +52,21 @@ public:
   };
 
   /** Default constructor */
-  BlockQuantileSimulation();
+  BatchQuantileSimulation();
 
   /** Constructor with parameters */
-  explicit BlockQuantileSimulation(const RandomVector & output,
+  explicit BatchQuantileSimulation(const RandomVector & output,
                                    const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
                                    const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Constructor with parameters and experiment */
-  BlockQuantileSimulation(const RandomVector & output,
+  BatchQuantileSimulation(const RandomVector & output,
                           const WeightedExperiment & experiment,
                           const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
                           const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Virtual constructor */
-  BlockQuantileSimulation * clone() const override;
+  BatchQuantileSimulation * clone() const override;
 
   /** Experiment accessor */
   void setExperiment(const WeightedExperiment & experiment);
@@ -177,11 +177,11 @@ private:
   UnsignedInteger minimumBlockCount_ = ResourceMap::GetAsUnsignedInteger("QuantileSimulation-MinimumBlockCount");
   // 0 means that no budget was set: the MEMORY_BOUND policy requires setMemoryBudget().
   UnsignedInteger memoryBudget_ = 0;
-  Scalar biasTolerance_ = ResourceMap::GetAsScalar("BlockQuantileSimulation-DefaultBiasTolerance");
-  UnsignedInteger bootstrapSize_ = ResourceMap::GetAsUnsignedInteger("BlockQuantileSimulation-DefaultBootstrapSize");
+  Scalar biasTolerance_ = ResourceMap::GetAsScalar("BatchQuantileSimulation-DefaultBiasTolerance");
+  UnsignedInteger bootstrapSize_ = ResourceMap::GetAsUnsignedInteger("BatchQuantileSimulation-DefaultBootstrapSize");
 
-}; /* class BlockQuantileSimulation */
+}; /* class BatchQuantileSimulation */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_BLOCKQUANTILESIMULATION_HXX */
+#endif /* OPENTURNS_BATCHQUANTILESIMULATION_HXX */

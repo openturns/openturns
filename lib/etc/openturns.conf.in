@@ -1031,17 +1031,17 @@
   <!-- OT::MonteCarloQuantileSimulation parameters -->
   <MonteCarloQuantileSimulation-DefaultReplicateCount value_int="30" />
 
-  <!-- OT::BlockQuantileSimulation parameters -->
-  <BlockQuantileSimulation-DefaultAdaptiveTolerance  value_float="0.1" />
-  <BlockQuantileSimulation-DefaultBiasTolerance      value_float="0.1" />
-  <BlockQuantileSimulation-DefaultBlockLengthPolicy  value_str="ASYMPTOTIC" />
-  <BlockQuantileSimulation-DefaultBootstrapSize      value_int="0" />
-  <BlockQuantileSimulation-PilotMaximumSize          value_int="20000" />
-  <BlockQuantileSimulation-PilotMinimumSize          value_int="1000" />
-  <BlockQuantileSimulation-PilotSizeFraction         value_float="0.05" />
+  <!-- OT::BatchQuantileSimulation parameters -->
+  <BatchQuantileSimulation-DefaultAdaptiveTolerance  value_float="0.1" />
+  <BatchQuantileSimulation-DefaultBiasTolerance      value_float="0.1" />
+  <BatchQuantileSimulation-DefaultBlockLengthPolicy  value_str="ASYMPTOTIC" />
+  <BatchQuantileSimulation-DefaultBootstrapSize      value_int="0" />
+  <BatchQuantileSimulation-PilotMaximumSize          value_int="20000" />
+  <BatchQuantileSimulation-PilotMinimumSize          value_int="1000" />
+  <BatchQuantileSimulation-PilotSizeFraction         value_float="0.05" />
 
-  <!-- OT::ExactTailQuantileSimulation parameters -->
-  <ExactTailQuantileSimulation-MinimumChunkSize value_int="4096" />
+  <!-- OT::ExactCoverageQuantileSimulation parameters -->
+  <ExactCoverageQuantileSimulation-MinimumChunkSize value_int="4096" />
 
   <!-- OT::SubsetSamplingQuantile parameters -->
   <SubsetSamplingQuantile-DefaultBurnIn         value_int="10" />

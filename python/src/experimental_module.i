@@ -74,15 +74,15 @@
 %include QuantileSimulationImplementation.i
 %include QuantileSimulation.i
 %include MonteCarloQuantileSimulation.i
-%include BlockQuantileSimulation.i
-%include ExactTailQuantileSimulation.i
+%include BatchQuantileSimulation.i
+%include ExactCoverageQuantileSimulation.i
 %include SubsetSamplingQuantile.i
 %include LastParticleQuantile.i
 %include CrossEntropyQuantile.i
 %include DirectionalSamplingQuantile.i
 %include LineSamplingQuantile.i
 %include PostAnalyticalQuantile.i
-%include ProbabilityInversionQuantile.i
+%include InverseProbabilityQuantile.i
 
 /* Uncertainty */
 %import metamodel_module.i
