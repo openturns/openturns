@@ -24,7 +24,8 @@
 #define OPENTURNS_BONMINPROBLEM_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/OptimizationAlgorithmImplementation.hxx"
+#include "openturns/OptimizationProblem.hxx"
+#include "openturns/MinlpProblem.hxx"
 
 #define HAVE_CSTDDEF // for 3.11 in debian
 #include <BonTMINLP.hpp>
@@ -57,6 +58,13 @@ public:
   /** Number of gradient/hessian calls performed through this wrapper */
   UnsignedInteger getGradientCallsNumber() const;
   UnsignedInteger getHessianCallsNumber() const;
+
+  /** Normalized constraint view, shared with the other MINLP adapters */
+  Bool hasEqualityConstraint() const;
+  Bool hasInequalityConstraint() const;
+  Function getEqualityConstraint() const;
+  Function getInequalityConstraint() const;
+  OptimizationProblem getNormalizedProblem() const;
 
   /** Overloading functions from Bonmin::TMINLP
    See BonTMINLP.hpp for description */
@@ -169,40 +177,25 @@ public:
 
   Bool getTimeOut() const
   {
-    return timeOut_;
+    return core_.isTimeOut();
   }
 
   virtual void setProgressCallback(OptimizationAlgorithmImplementation::ProgressCallback callBack, void * state = nullptr)
   {
-    progressCallback_ = std::pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(callBack, state);
+    core_.setProgressCallback(callBack, state);
   }
 
   virtual void setStopCallback(OptimizationAlgorithmImplementation::StopCallback callBack, void * state = nullptr)
   {
-    stopCallback_ = std::pair<OptimizationAlgorithmImplementation::StopCallback, void *>(callBack, state);
+    core_.setStopCallback(callBack, state);
   }
 
 
 private:
-  // Clip point wrt problem bounds
-  void clip(Point & xPoint) const;
+  // Solver independent part of the problem
+  MinlpProblem core_;
 
-  const OptimizationProblem optimProblem_;
-  const Point startingPoint_;
-  Sample evaluationInputHistory_;
-  Sample evaluationOutputHistory_;
-  ::Bonmin::TMINLP::SolverReturn status_;
-  // gradient/hessian calls performed through this wrapper
-  UnsignedInteger gradientCallsNumber_ = 0;
-  UnsignedInteger hessianCallsNumber_ = 0;
-  // Callbacks
-  UnsignedInteger maximumCallsNumber_ = 0;
-  UnsignedInteger initialEvaluationNumber_ = 0;
-  Scalar maximumTimeDuration_ = 0.0;
-  Bool timeOut_ = false;
-  std::chrono::steady_clock::time_point t0_;
-  std::pair< OptimizationAlgorithmImplementation::ProgressCallback, void *> progressCallback_;
-  std::pair< OptimizationAlgorithmImplementation::StopCallback, void *> stopCallback_;
+  ::Bonmin::TMINLP::SolverReturn status_ = ::Bonmin::TMINLP::SUCCESS;
 };
 
 END_NAMESPACE_OPENTURNS

@@ -45,6 +45,7 @@
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationResult.hxx"
 #include "openturns/Pagmo.hxx"
+#include "openturns/SCIP.hxx"
 #include "openturns/SQP.hxx"
 #include "openturns/TNC.hxx"
 

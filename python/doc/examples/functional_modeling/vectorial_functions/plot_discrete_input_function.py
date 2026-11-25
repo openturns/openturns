@@ -73,7 +73,7 @@ print(fun.gradient([0.499999, math.pi / 3]))
 # variable must be declared explicitly so that dedicated solvers handle it.
 # This is done with :meth:`~openturns.OptimizationProblem.setVariablesType`,
 # as illustrated in the mixed integer optimization examples using
-# :class:`~openturns.Bonmin`.
+# :class:`~openturns.Bonmin` or :class:`~openturns.experimental.SCIP`.
 
 problem = ot.OptimizationProblem(fun)
 problem.setMinimization(True)

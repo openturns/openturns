@@ -35,6 +35,7 @@ Refer to :ref:`optimization_algorithm`.
     MultiStart
     NLopt
     Pagmo
+    experimental.SCIP
     SQP
     TNC
 

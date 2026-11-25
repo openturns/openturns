@@ -289,15 +289,23 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   const Sample & inputHistory, const Sample & outputHistory,
   const Sample & inequalityHistory, const Sample & equalityHistory)
 {
+  setResultFromEvaluationHistory(inputHistory, outputHistory, inequalityHistory, equalityHistory, getProblem());
+}
+
+void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
+  const Sample & inputHistory, const Sample & outputHistory,
+  const Sample & inequalityHistory, const Sample & equalityHistory,
+  const OptimizationProblem & problem)
+{
   const UnsignedInteger size = inputHistory.getSize();
   if (outputHistory.getSize() != size)
     throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
-  if (getProblem().hasInequalityConstraint() && inequalityHistory.getSize() != size)
+  if (problem.hasInequalityConstraint() && inequalityHistory.getSize() != size)
     throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation inequality constraint history size does not match input size";
-  if (getProblem().hasEqualityConstraint() && equalityHistory.getSize() != size)
+  if (problem.hasEqualityConstraint() && equalityHistory.getSize() != size)
     throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation equality constraint history size does not match input size";
 
-  const UnsignedInteger dimension = getProblem().getDimension();
+  const UnsignedInteger dimension = problem.getDimension();
 
   Scalar absoluteError = -1.0;
   Scalar relativeError = -1.0;
@@ -310,9 +318,9 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
     const Point outP(outputHistory[i]);
 
     constraintError = 0.0;
-    if (getProblem().hasBounds())
+    if (problem.hasBounds())
     {
-      const Interval bounds(getProblem().getBounds());
+      const Interval bounds(problem.getBounds());
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
         if (bounds.getFiniteLowerBound()[j])
@@ -321,23 +329,23 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
           constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
       }
     }
-    if (getProblem().hasEqualityConstraint())
+    if (problem.hasEqualityConstraint())
     {
       const Point g(equalityHistory[i]);
       constraintError = std::max(constraintError, g.normInf());
     }
-    if (getProblem().hasInequalityConstraint())
+    if (problem.hasInequalityConstraint())
     {
       Point h(inequalityHistory[i]);
-      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
+      for (UnsignedInteger k = 0; k < problem.getInequalityConstraint().getOutputDimension(); ++ k)
       {
         h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
       }
       constraintError = std::max(constraintError, h.normInf());
     }
-    if (!getProblem().isContinuous())
+    if (!problem.isContinuous())
     {
-      const Indices variablesType(getProblem().getVariablesType());
+      const Indices variablesType(problem.getVariablesType());
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
         switch (variablesType[j])

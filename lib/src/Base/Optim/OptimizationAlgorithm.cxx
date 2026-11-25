@@ -27,6 +27,7 @@
 #include "openturns/Dlib.hxx"
 #include "openturns/HiGHS.hxx"
 #include "openturns/Ipopt.hxx"
+#include "openturns/SCIP.hxx"
 #include "openturns/SQP.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
@@ -285,6 +286,14 @@ OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName
   {
     solver = NLopt(solverName);
   }
+  else if (PlatformInfo::HasFeature("dlib") && Dlib::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Dlib(solverName);
+  }
+  else if (PlatformInfo::HasFeature("scip") && solverName == "SCIP")
+  {
+    solver = SCIP();
+  }
   else if (PlatformInfo::HasFeature("bonmin") && Bonmin::GetAlgorithmNames().contains(solverName))
   {
     solver = Bonmin(solverName);
@@ -364,6 +373,11 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
   // pagmo at end because unlike others its parametrized by a population
   if (PlatformInfo::HasFeature("pagmo"))
     names.add(Pagmo::GetAlgorithmNames());
+
+  // SCIP last: Build() selects the first algorithm accepting the problem,
+  // and SCIP accepts most single-objective problems.
+  if (PlatformInfo::HasFeature("scip"))
+    names.add("SCIP");
   return names;
 }
 

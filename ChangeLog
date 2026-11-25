@@ -6,6 +6,12 @@
 
 ==== New classes ====
 
+ * SCIP mixed-integer nonlinear solver (openturns.experimental)
+
+==== New ResourceMap keys ====
+
+ * SCIP-DefaultMaximumCallsNumber, SCIP-DefaultMaximumIterationNumber: default evaluation and branch-and-bound node budgets of the SCIP solver (defaults are 1000000 and 10000)
+
 ==== API changes ====
 
  * HiGHS moved out of experimental

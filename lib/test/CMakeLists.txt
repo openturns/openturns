@@ -175,6 +175,7 @@ ot_check_test (BasisFactory_std)
 
 # Optim
 ot_check_test (AbdoRackwitz_std)
+ot_check_test (Minlp_std IGNOREOUT)
 if (Ceres_FOUND)
 ot_check_test (Ceres_std)
 endif ()

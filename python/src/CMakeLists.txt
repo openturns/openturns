@@ -247,6 +247,7 @@ ot_add_python_module(experimental experimental_module.i
                      ActiveLearningReliabilityResult.i ActiveLearningReliabilityResult_doc.i
                      LinearProgrammingProblem.i LinearProgrammingProblem_doc.i
                      QuadraticProgrammingProblem.i QuadraticProgrammingProblem_doc.i
+                     SCIP.i SCIP_doc.i
                      SparseMatrix.i SparseMatrix_doc.i
                      BasisOrthonormalizationAlgorithm.i BasisOrthonormalizationAlgorithm_doc.i
                      GaussLPQuadrature.i GaussLPQuadrature_doc.i
@@ -1121,8 +1122,8 @@ separate_arguments (SPHINX_FLAGS)
 if (SPHINX_FOUND)
 
   # exclude examples according to available dependencies
-  if (NOT Bonmin_FOUND)
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_bonmin)")
+  if (NOT Bonmin_FOUND AND NOT SCIP_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_minlp)")
   endif ()
   if (NOT Ceres_FOUND AND NOT CMinpack_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(calibration_flooding)|(calibration_chaboche)|(calibration_deflection_tube)")

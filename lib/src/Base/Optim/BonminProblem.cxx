@@ -23,6 +23,8 @@
 #include "openturns/BonminProblem.hxx"
 #include "openturns/SpecFunc.hxx"
 
+#include <algorithm>
+
 using namespace Bonmin;
 using namespace Ipopt;
 
@@ -35,41 +37,56 @@ BonminProblem::BonminProblem( const OptimizationProblem & optimProblem,
                               const Scalar maximumTimeDuration,
                               const std::chrono::steady_clock::time_point & t0)
   : TMINLP()
-  , optimProblem_(optimProblem)
-  , startingPoint_(startingPoint)
-  , evaluationInputHistory_(0, optimProblem.getDimension())
-  , evaluationOutputHistory_(0, 1)
-  , maximumCallsNumber_(maximumCallsNumber)
-  , initialEvaluationNumber_(optimProblem.getObjective().getEvaluationCallsNumber())
-  , maximumTimeDuration_(maximumTimeDuration)
-  , t0_(t0)
-  , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(0, 0))
-  , stopCallback_(std::make_pair<OptimizationAlgorithmImplementation::StopCallback, void *>(0, 0))
+  , core_(optimProblem, startingPoint, maximumCallsNumber, maximumTimeDuration, t0)
 {
-  // initialize history
-  evaluationInputHistory_ = Sample(0, optimProblem.getDimension());
-  evaluationOutputHistory_ = Sample(0, 1);
+  // Nothing to do
 }
 
 /** Retrieving objective function input.output history */
 Sample BonminProblem::getInputHistory() const
 {
-  return evaluationInputHistory_;
+  return core_.getInputHistory();
 }
 
 Sample BonminProblem::getOutputHistory() const
 {
-  return evaluationOutputHistory_;
+  return core_.getOutputHistory();
 }
 
 UnsignedInteger BonminProblem::getGradientCallsNumber() const
 {
-  return gradientCallsNumber_;
+  return core_.getGradientCallsNumber();
 }
 
 UnsignedInteger BonminProblem::getHessianCallsNumber() const
 {
-  return hessianCallsNumber_;
+  return core_.getHessianCallsNumber();
+}
+
+/** Normalized constraint view */
+Bool BonminProblem::hasEqualityConstraint() const
+{
+  return core_.hasEqualityConstraint();
+}
+
+Bool BonminProblem::hasInequalityConstraint() const
+{
+  return core_.hasInequalityConstraint();
+}
+
+Function BonminProblem::getEqualityConstraint() const
+{
+  return core_.getEqualityConstraint();
+}
+
+Function BonminProblem::getInequalityConstraint() const
+{
+  return core_.getInequalityConstraint();
+}
+
+OptimizationProblem BonminProblem::getNormalizedProblem() const
+{
+  return core_.getNormalizedProblem();
 }
 
 /** Overloading functions from bonmin/Ipopt
@@ -84,14 +101,10 @@ bool BonminProblem::get_nlp_info(int & n,
                                  Ipopt::TNLP::IndexStyleEnum & index_style)
 {
   // Number of variables
-  n = optimProblem_.getDimension();
+  n = core_.getDimension();
 
   // Number of constraints
-  m = 0;
-  if (optimProblem_.hasEqualityConstraint())
-    m += optimProblem_.getEqualityConstraint().getOutputDimension();
-  if (optimProblem_.hasInequalityConstraint())
-    m += optimProblem_.getInequalityConstraint().getOutputDimension();
+  m = core_.getEqualityDimension() + core_.getInequalityDimension();
 
   // All components of the jacobian and lagrangian's hessian are assumed to be non-zero
   nnz_jac_g = n * m;
@@ -108,7 +121,7 @@ bool BonminProblem::get_variables_types(int n, VariableTypeTable var_types)
   // Conversion from OptimizationProblemImplementation::VariableType to TMINLP::VariableType
   for (int i = 0; i < n; ++i)
   {
-    switch (optimProblem_.getVariablesType()[i])
+    switch (core_.getProblem().getVariablesType()[i])
     {
       case OptimizationProblemImplementation::CONTINUOUS:
       {
@@ -134,7 +147,7 @@ bool BonminProblem::get_variables_types(int n, VariableTypeTable var_types)
 bool BonminProblem::get_variables_linearity( int n,
     LinearityTypeTable var_types)
 {
-  Function objective(optimProblem_.getObjective());
+  Function objective(core_.getProblem().getObjective());
 
   Indices objectiveLinearity(n, Ipopt::TNLP::NON_LINEAR);
   if (objective.getEvaluation().getImplementation()->isActualImplementation())
@@ -143,15 +156,15 @@ bool BonminProblem::get_variables_linearity( int n,
         objectiveLinearity[i] = Ipopt::TNLP::LINEAR;
 
   Indices equalityConstraintsLinearity(n, Ipopt::TNLP::LINEAR);
-  if (optimProblem_.hasEqualityConstraint())
+  if (core_.hasEqualityConstraint())
     for (UnsignedInteger i = 0; i < objective.getInputDimension(); ++i)
-      if (!optimProblem_.getEqualityConstraint().isLinearlyDependent(i))
+      if (!core_.getEqualityConstraint().isLinearlyDependent(i))
         equalityConstraintsLinearity[i] = Ipopt::TNLP::NON_LINEAR;
 
   Indices inequalityConstraintsLinearity(n, Ipopt::TNLP::LINEAR);
-  if (optimProblem_.hasInequalityConstraint())
+  if (core_.hasInequalityConstraint())
     for (UnsignedInteger i = 0; i < objective.getInputDimension(); ++i)
-      if (!optimProblem_.getInequalityConstraint().isLinearlyDependent(i))
+      if (!core_.getInequalityConstraint().isLinearlyDependent(i))
         inequalityConstraintsLinearity[i] = Ipopt::TNLP::NON_LINEAR;
 
   for (int i = 0; i < n; ++i)
@@ -168,35 +181,39 @@ bool BonminProblem::get_variables_linearity( int n,
 bool BonminProblem::get_constraints_linearity( int /*m*/,
     LinearityTypeTable const_types)
 {
-  // Retrieving number of constraints
-  const UnsignedInteger nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
-  const UnsignedInteger nbInequalityConstraints = optimProblem_.getInequalityConstraint().getOutputDimension();
-
   // Evaluation of constraints linearity to TMINLP::LinearityType
   UnsignedInteger k = 0;
 
   // "Linear" functions in Bonmin are of the form f(x) = A*x,
   // i.e. f is linear and f(0) = 0
+  const Point zero(core_.getDimension());
 
-  Point zero(optimProblem_.getDimension());
-  for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
+  if (core_.hasEqualityConstraint())
   {
-    if (optimProblem_.getEqualityConstraint().getMarginal(i).isLinear()
-        && (optimProblem_.getEqualityConstraint().getMarginal(i)(zero)[0] == 0))
-      const_types[k] = Ipopt::TNLP::LINEAR;
-    else
-      const_types[k] = Ipopt::TNLP::NON_LINEAR;
-    ++k;
+    const Function equalityConstraint(core_.getEqualityConstraint());
+    for (UnsignedInteger i = 0; i < core_.getEqualityDimension(); ++i)
+    {
+      const Function marginal(equalityConstraint.getMarginal(i));
+      if (marginal.isLinear() && (marginal(zero)[0] == 0))
+        const_types[k] = Ipopt::TNLP::LINEAR;
+      else
+        const_types[k] = Ipopt::TNLP::NON_LINEAR;
+      ++k;
+    }
   }
 
-  for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)
+  if (core_.hasInequalityConstraint())
   {
-    if (optimProblem_.getInequalityConstraint().getMarginal(i).isLinear()
-        && (optimProblem_.getInequalityConstraint().getMarginal(i)(zero)[0] == 0))
-      const_types[k] = Ipopt::TNLP::LINEAR;
-    else
-      const_types[k] = Ipopt::TNLP::NON_LINEAR;
-    ++k;
+    const Function inequalityConstraint(core_.getInequalityConstraint());
+    for (UnsignedInteger i = 0; i < core_.getInequalityDimension(); ++i)
+    {
+      const Function marginal(inequalityConstraint.getMarginal(i));
+      if (marginal.isLinear() && (marginal(zero)[0] == 0))
+        const_types[k] = Ipopt::TNLP::LINEAR;
+      else
+        const_types[k] = Ipopt::TNLP::NON_LINEAR;
+      ++k;
+    }
   }
 
   return true;
@@ -211,9 +228,9 @@ bool BonminProblem::get_bounds_info( int n,
 {
   // BOUNDS:
   // Conversion from OT::Interval to double array
-  if (optimProblem_.hasBounds())
+  if (core_.getProblem().hasBounds())
   {
-    Interval bounds(optimProblem_.getBounds());
+    const Interval bounds(core_.getProblem().getBounds());
 
     for (int i = 0; i < n; ++i)
     {
@@ -239,21 +256,21 @@ bool BonminProblem::get_bounds_info( int n,
 
   // CONSTRAINTS:
   int k = 0;
-  if (optimProblem_.hasEqualityConstraint())  // Equality constraints
-    for (UnsignedInteger i = 0; i < optimProblem_.getEqualityConstraint().getOutputDimension(); ++i)
-    {
-      g_l[k] = 0.0;   // OT constraints are expressed as g(x) = 0 and h(x) >= 0
-      g_u[k] = 0.0;
-      ++k;
-    }
+  // Equality constraints
+  for (UnsignedInteger i = 0; i < core_.getEqualityDimension(); ++i)
+  {
+    g_l[k] = 0.0;   // OT constraints are expressed as g(x) = 0 and h(x) >= 0
+    g_u[k] = 0.0;
+    ++k;
+  }
 
-  if (optimProblem_.hasInequalityConstraint()) // Inequality constraints
-    for (UnsignedInteger i = 0; i < optimProblem_.getInequalityConstraint().getOutputDimension(); ++i)
-    {
-      g_l[k] = 0.0;   // OT constraints are expressed as g(x) = 0 and h(x) >= 0
-      g_u[k] = SpecFunc::MaxScalar;
-      ++k;
-    }
+  // Inequality constraints
+  for (UnsignedInteger i = 0; i < core_.getInequalityDimension(); ++i)
+  {
+    g_l[k] = 0.0;   // OT constraints are expressed as g(x) = 0 and h(x) >= 0
+    g_u[k] = SpecFunc::MaxScalar;
+    ++k;
+  }
 
   return true;
 }
@@ -269,7 +286,8 @@ bool BonminProblem::get_starting_point(int /*n*/,
                                        double* /*lambda*/)
 {
   // Conversion starting point from OT::Point to double array
-  std::copy(startingPoint_.begin(), startingPoint_.end(), x);
+  const Point startingPoint(core_.getStartingPoint());
+  std::copy(startingPoint.begin(), startingPoint.end(), x);
 
   return true;
 }
@@ -285,51 +303,13 @@ bool BonminProblem::eval_f(int n,
   std::copy(x, x + n, xPoint.begin());
 
   // Computing objective function value
-  Point yPoint;
-  try
-  {
-    yPoint = optimProblem_.getObjective()(xPoint);
-  }
-  catch (const std::exception & exc)
-  {
-    LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+  Scalar value;
+  if (!core_.evaluateObjective(xPoint, value))
     return false;
-  }
-  if (optimProblem_.isMinimization())
-    obj_value = yPoint[0];
-  else
-    obj_value = -yPoint[0];
 
-  // track input/outputs
-  evaluationInputHistory_.add(xPoint);
-  evaluationOutputHistory_.add(yPoint);
+  obj_value = core_.getProblem().isMinimization() ? value : -value;
 
-  // enforce time limit even before bonmin.time_limit can be taken into account
-  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
-  if ((maximumTimeDuration_ > 0.0) && (timeDuration > maximumTimeDuration_))
-  {
-    timeOut_ = true;
-    return false;
-  }
-
-  // Check callbacks (evaluations include finite-difference evaluations)
-  if (progressCallback_.first)
-  {
-    const UnsignedInteger evaluationNumber = optimProblem_.getObjective().getEvaluationCallsNumber() - initialEvaluationNumber_;
-    progressCallback_.first((100.0 * evaluationNumber) / maximumCallsNumber_, progressCallback_.second);
-  }
-  if (stopCallback_.first)
-  {
-    Bool stop = stopCallback_.first(stopCallback_.second);
-    if (stop)
-      return false;
-  }
-
-  {
-    const UnsignedInteger evaluationNumber = optimProblem_.getObjective().getEvaluationCallsNumber() - initialEvaluationNumber_;
-    return (evaluationNumber <= maximumCallsNumber_);
-  }
+  return true;
 }
 
 
@@ -344,20 +324,12 @@ bool BonminProblem::eval_grad_f( int n,
 
   // Computing objective function gradient
   Matrix gradOT;
-  try
-  {
-    gradOT = optimProblem_.getObjective().gradient(xPoint);
-    ++ gradientCallsNumber_;
-  }
-  catch (const std::exception & exc)
-  {
-    LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+  if (!core_.evaluateObjectiveGradient(xPoint, gradOT))
     return false;
-  }
 
   // Conversion from OT::Matrix to double array
   for (int i = 0; i < n; ++i)
-    if (optimProblem_.isMinimization())
+    if (core_.getProblem().isMinimization())
       grad_f[i] = gradOT(i, 0);
     else
       grad_f[i] = -gradOT(i, 0);
@@ -375,44 +347,17 @@ bool BonminProblem::eval_g(int n,
   Point xPoint(n);
   std::copy(x, x + n, xPoint.begin());
 
-  // Retrieve number of constraints
-  UnsignedInteger nbEqualityConstraints = 0;
-  UnsignedInteger nbInequalityConstraints = 0;
-  UnsignedInteger k = 0;
+  // Equality constraints
+  Point values(core_.getEqualityDimension());
+  if (!core_.evaluateEqualityConstraint(xPoint, values))
+    return false;
+  std::copy(values.begin(), values.end(), g);
 
-  if (optimProblem_.hasEqualityConstraint())
-  {
-    nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
-    Point equalityConstraint;
-    try
-    {
-      equalityConstraint = (optimProblem_.getEqualityConstraint()(xPoint));
-    }
-    catch (const std::exception & exc)
-    {
-      LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
-      return false;
-    }
-    std::copy(equalityConstraint.begin(), equalityConstraint.end(), g + k);
-    k += nbEqualityConstraints;
-  }
-
-  if (optimProblem_.hasInequalityConstraint())
-  {
-    nbInequalityConstraints = optimProblem_.getInequalityConstraint().getOutputDimension();
-    Point inequalityConstraint;
-    try
-    {
-      inequalityConstraint = optimProblem_.getInequalityConstraint()(xPoint);
-    }
-    catch (const std::exception & exc)
-    {
-      LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
-      return false;
-    }
-    std::copy(inequalityConstraint.begin(), inequalityConstraint.end(), g + k);
-    k += nbInequalityConstraints;
-  }
+  // Inequality constraints
+  values = Point(core_.getInequalityDimension());
+  if (!core_.evaluateInequalityConstraint(xPoint, values))
+    return false;
+  std::copy(values.begin(), values.end(), g + core_.getEqualityDimension());
 
   return true;
 }
@@ -447,50 +392,27 @@ bool BonminProblem::eval_jac_g(int n,
 
     // Filling values array
     UnsignedInteger k = 0;
-    UnsignedInteger nbEqualityConstraints = 0;
-    UnsignedInteger nbInequalityConstraints = 0;
+    Matrix jacobian;
 
-    if (optimProblem_.hasEqualityConstraint())
-    {
-      nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
-      Matrix equalityConstraintGradient;
-      try
+    // Equality constraints
+    if (!core_.evaluateEqualityConstraintGradient(xPoint, jacobian))
+      return false;
+    for (UnsignedInteger i = 0; i < core_.getEqualityDimension(); ++i)
+      for (int j = 0; j < n; ++j)
       {
-        equalityConstraintGradient = optimProblem_.getEqualityConstraint().gradient(xPoint);
+        values[k] = jacobian(j, i);
+        ++k;
       }
-      catch (const std::exception & exc)
-      {
-        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
-        return false;
-      }
-      for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
-        for (int j = 0; j < n; ++j)
-        {
-          values[k] = equalityConstraintGradient(j, i);
-          ++k;
-        }
-    }
 
-    if (optimProblem_.hasInequalityConstraint())
-    {
-      nbInequalityConstraints = optimProblem_.getInequalityConstraint().getOutputDimension();
-      Matrix inequalityConstraintGradient;
-      try
+    // Inequality constraints
+    if (!core_.evaluateInequalityConstraintGradient(xPoint, jacobian))
+      return false;
+    for (UnsignedInteger i = 0; i < core_.getInequalityDimension(); ++i)
+      for (int j = 0; j < n; ++j)
       {
-        inequalityConstraintGradient = optimProblem_.getInequalityConstraint().gradient(xPoint);
+        values[k] = jacobian(j, i);
+        ++k;
       }
-      catch (const std::exception & exc)
-      {
-        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
-        return false;
-      }
-      for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)
-        for (int j = 0; j < n; ++j)
-        {
-          values[k] = inequalityConstraintGradient(j, i);
-          ++k;
-        }
-    }
   }
 
   return true;
@@ -509,14 +431,6 @@ bool BonminProblem::eval_h(int n,
                            int* jCol,
                            double* values)
 {
-  // Retrieve number of constraints
-  UnsignedInteger nbEqualityConstraints = 0;
-  UnsignedInteger nbInequalityConstraints = 0;
-  if (optimProblem_.hasEqualityConstraint())
-    nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
-  if (optimProblem_.hasInequalityConstraint())
-    nbInequalityConstraints = optimProblem_.getInequalityConstraint().getOutputDimension();
-
   /* Switch on first call / later calls */
   if (values == NULL) // First call: initialization of iRow/jCol
   {
@@ -540,53 +454,31 @@ bool BonminProblem::eval_h(int n,
 
     // Compute objective hessian
     SymmetricMatrix objectiveHessian;
-    try
-    {
-      objectiveHessian = obj_factor * optimProblem_.getObjective().hessian(xPoint).getSheet(0);
-      ++ hessianCallsNumber_;
-    }
-    catch (const std::exception & exc)
-    {
-      LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+    if (!core_.evaluateObjectiveHessian(xPoint, objectiveHessian))
       return false;
-    }
 
     // Compute constraints hessian
     int k = 0;
     SymmetricMatrix constraintsHessian(n, 0.0);
 
-    if (optimProblem_.hasEqualityConstraint())
+    if (core_.hasEqualityConstraint())
     {
       SymmetricTensor equalityConstraintHessian;
-      try
-      {
-        equalityConstraintHessian = optimProblem_.getEqualityConstraint().hessian(xPoint);
-      }
-      catch (const std::exception & exc)
-      {
-        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      if (!core_.evaluateEqualityConstraintHessian(xPoint, equalityConstraintHessian))
         return false;
-      }
-      for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
+      for (UnsignedInteger i = 0; i < core_.getEqualityDimension(); ++i)
       {
         constraintsHessian = constraintsHessian + lambda[k] * equalityConstraintHessian.getSheet(i);
         ++k;
       }
     }
 
-    if (optimProblem_.hasInequalityConstraint())
+    if (core_.hasInequalityConstraint())
     {
       SymmetricTensor inequalityConstraintHessian;
-      try
-      {
-        inequalityConstraintHessian = optimProblem_.getInequalityConstraint().hessian(xPoint);
-      }
-      catch (const std::exception & exc)
-      {
-        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      if (!core_.evaluateInequalityConstraintHessian(xPoint, inequalityConstraintHessian))
         return false;
-      }
-      for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)
+      for (UnsignedInteger i = 0; i < core_.getInequalityDimension(); ++i)
       {
         constraintsHessian = constraintsHessian + lambda[k] * inequalityConstraintHessian.getSheet(i);
         ++k;
@@ -594,7 +486,7 @@ bool BonminProblem::eval_h(int n,
     }
 
     // Filling 'values' array
-    SymmetricMatrix lagrangianHessian(objectiveHessian + constraintsHessian);
+    const SymmetricMatrix lagrangianHessian(obj_factor * objectiveHessian + constraintsHessian);
     k = 0;
     for (int i = 0; i < n; ++i)
       for (int j = 0; j < n; ++j)
@@ -617,24 +509,11 @@ bool BonminProblem::eval_gi(int n,
   Point xPoint(n);
   std::copy(x, x + n, xPoint.begin());
 
-  // Retrieve number of constraints
-  int nbEqualityConstraints = 0;
-  if (optimProblem_.hasEqualityConstraint())
-    nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
-
-  // Computing constraints values
-  try
-  {
-    if (i < nbEqualityConstraints)
-      gi = optimProblem_.getEqualityConstraint().getMarginal(i)(xPoint)[0];
-    else
-      gi = optimProblem_.getInequalityConstraint().getMarginal(i - nbEqualityConstraints)(xPoint)[0];
-  }
-  catch (const std::exception & exc)
-  {
-    LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+  // Computing constraint value
+  Scalar value;
+  if (!core_.evaluateConstraintMarginal(i, xPoint, value))
     return false;
-  }
+  gi = value;
   return true;
 }
 
@@ -658,39 +537,11 @@ bool BonminProblem::eval_grad_gi(int n,
       jCol[j] = j;
   else
   {
-    // Retrieve number of constraints
-    int nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
-
-    if (i < nbEqualityConstraints)
-    {
-      Matrix equalityConstraintGradient;
-      try
-      {
-        equalityConstraintGradient = optimProblem_.getEqualityConstraint().getMarginal(i).gradient(xPoint);
-      }
-      catch (const std::exception & exc)
-      {
-        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
-        return false;
-      }
-      for (int j = 0; j < n; ++j)
-        values[j] = equalityConstraintGradient(j, 0);
-    }
-    else
-    {
-      Matrix inequalityConstraintGradient;
-      try
-      {
-        inequalityConstraintGradient = optimProblem_.getInequalityConstraint().getMarginal(i - nbEqualityConstraints).gradient(xPoint);
-      }
-      catch (const std::exception & exc)
-      {
-        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
-        return false;
-      }
-      for (int j = 0; j < n; ++j)
-        values[j] = inequalityConstraintGradient(j, 0);
-    }
+    Matrix gradient;
+    if (!core_.evaluateConstraintMarginalGradient(i, xPoint, gradient))
+      return false;
+    for (int j = 0; j < n; ++j)
+      values[j] = gradient(j, 0);
   }
   return true;
 }

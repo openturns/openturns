@@ -59,6 +59,16 @@ if (highs_FOUND)
   set_source_files_properties (Base/Optim/HiGHS.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
+if (SCIP_FOUND)
+  # The SCIP C API defines a global "struct SCIP" typedef, which must not end up
+  # in a unity translation unit sharing a namespace with OT::SCIP.
+  set_source_files_properties (Base/Optim/SCIP.cxx Base/Optim/SCIPProblem.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+  # The SCIP headers are third party code compiled outside our warning policy.
+  if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    set_source_files_properties (Base/Optim/SCIP.cxx Base/Optim/SCIPProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter")
+  endif ()
+endif ()
+
 # Exclude LibXML sources
 if (LIBXML2_FOUND)
   set_source_files_properties (Base/Common/XMLStorageManager.cxx Base/Common/XMLToolbox.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
