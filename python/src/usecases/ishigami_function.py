@@ -55,6 +55,10 @@ class IshigamiModel:
     getNonZeroPolynomialChaosExpansionIndices : function
         Returns the non-zero indices of the polynomial chaos expansion for each given rank.
 
+    getFunctionalChaosResult : function
+        Returns the reference polynomial chaos expansion result built
+        from the non-zero coefficients and indices.
+
 
     S1 : float
          First order Sobol index number 1
@@ -261,3 +265,73 @@ class IshigamiModel:
                 "Index out of range for polynomial chaos expansion indices."
             )
         return multiIndices[index]
+
+    def getFunctionalChaosResult(self):
+        """
+        Create the reference polynomial chaos result of the Ishigami model.
+
+        The 46 non-zero coefficients and multi-indices come from
+        getNonZeroPolynomialChaosExpansionCoefficients() and
+        getNonZeroPolynomialChaosExpansionIndices() (truncated expansion,
+        total degree up to 25, orthonormal Legendre tensor basis).
+        The result exposes the reference surrogate via getMetaModel() and
+        reference Sobol indices via FunctionalChaosSobolIndices.
+
+        Returns
+        -------
+        result : :class:`~openturns.FunctionalChaosResult`
+            Reference chaos result (least-squares flag set to False,
+            empty training sample).
+
+        Notes
+        -----
+        The training sample stored in the result is empty: assess the
+        reference surrogate with an external validation sample, e.g.
+        ``ot.MetaModelValidation(Xtest, Ytest, result.getMetaModel())``.
+        """
+        dimension = self.dim
+        enumerateFunction = ot.LinearEnumerateFunction(dimension)
+        basis = ot.OrthogonalProductPolynomialFactory(
+            [ot.LegendreFactory()] * dimension, enumerateFunction
+        )
+        # 1. Exact data from the non-zero accessors
+        multiIndices = self.getNonZeroPolynomialChaosExpansionIndices()
+        coefficientsList = (
+            self.getNonZeroPolynomialChaosExpansionCoefficients()
+        )
+        # 2. Multi-indices -> global indices
+        # (as stored in FunctionalChaosResult.getIndices())
+        indices = ot.Indices(
+            [enumerateFunction.inverse(ot.Indices(m)) for m in multiIndices]
+        )
+        # 3. Coefficients as Sample(N, 1)
+        coefficients = ot.Sample([[c] for c in coefficientsList])
+        # 4. Reduced basis
+        functions = [basis.build(i) for i in indices]
+        # 5. Measure change physical <-> standard
+        distribution = self.distribution
+        transformation = ot.DistributionTransformation(
+            distribution, basis.getMeasure()
+        )
+        inverseTransformation = transformation.inverse()
+        # 6. No fitting database: empty samples with correct dim/description
+        inputSample = ot.Sample(0, dimension)
+        inputSample.setDescription(distribution.getDescription())
+        outputSample = ot.Sample(0, 1)
+        outputSample.setDescription(["y"])
+        # 7. Current 9-argument constructor
+        # (no residuals/relativeErrors, no booleans)
+        result = ot.FunctionalChaosResult(
+            inputSample,
+            outputSample,
+            distribution,
+            transformation,
+            inverseTransformation,
+            basis,
+            indices,
+            coefficients,
+            functions,
+        )
+        result.setIsLeastSquares(False)  # symbolic integration, not regression
+        result.setInvolvesModelSelection(False)
+        return result
