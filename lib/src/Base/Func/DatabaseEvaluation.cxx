@@ -129,6 +129,20 @@ void DatabaseEvaluation::setSample(const Sample & inputSample,
   if (inputSample.getSize() != outputSample.getSize())
     throw InvalidDimensionException(HERE) << "Input and output samples have different sizes (in=" << inputSample.getSize() << " out=" << outputSample.getSize() << ")";
 
+  // Check for duplicate input points associated to different outputs, using sorting for efficiency
+  if (size > 1)
+  {
+    const Indices sortedIndices(inputSample.argsort());
+    for (UnsignedInteger i = 1; i < size; ++ i)
+    {
+      if (inputSample[sortedIndices[i]] == inputSample[sortedIndices[i - 1]])
+      {
+        if (outputSample[sortedIndices[i]] != outputSample[sortedIndices[i - 1]])
+          throw InvalidArgumentException(HERE) << "Duplicated input point " << inputSample[sortedIndices[i]] << " with different outputs " << outputSample[sortedIndices[i - 1]] << " and " << outputSample[sortedIndices[i]];
+      }
+    }
+  }
+
   if (inputSample_ != inputSample)
   {
     inputSample_ = inputSample;

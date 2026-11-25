@@ -94,3 +94,14 @@ assert isinstance(str(database), str)
 ott.assert_almost_equal(
     ot.DatabaseFunction(inputSample, outputSample)(x), database(x), 1e-12, 1e-12
 )
+# GH #3441: duplicated inputs with different outputs must raise (detected by sorting)
+with ott.assert_raises(Exception):
+    ot.DatabaseFunction(
+        ot.Sample([[1.0, 2.0], [1.0, 2.0], [3.0, 4.0]]),
+        ot.Sample([[2.0], [3.0], [4.0]]),
+    )
+# duplicated inputs with identical outputs are allowed
+_ = ot.DatabaseFunction(
+    ot.Sample([[1.0, 2.0], [1.0, 2.0], [3.0, 4.0]]),
+    ot.Sample([[2.0], [2.0], [4.0]]),
+)
