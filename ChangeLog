@@ -14,6 +14,7 @@
  * Removed deprecated MixedHistogramUserDefined class alias
  * Removed deprecated ProcessSample.setField(Field, int) in favor of ProcessSample.setField(int, Field)
  * Removed deprecated viewer.PlotDesign
+ * Added pointwise first/total Sobol indices for scalar vector-to-field chaos surrogates
 
 === Documentation ===
 

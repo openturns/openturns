@@ -891,6 +891,7 @@ ot_pyinstallcheck_test (LinearModelValidation_std IGNOREOUT)
 ot_pyinstallcheck_test (KrigingAlgorithm_isotropic_std IGNOREOUT)
 ot_pyinstallcheck_test (FieldToPointFunctionalChaosAlgorithm_std IGNOREOUT)
 ot_pyinstallcheck_test (FieldFunctionalChaosSobolIndices_std IGNOREOUT)
+ot_pyinstallcheck_test (FieldFunctionalChaosSobolIndices_pointwise IGNOREOUT)
 ot_pyinstallcheck_test (PointToFieldFunctionalChaosAlgorithm_std IGNOREOUT)
 
 ## Sensitivity

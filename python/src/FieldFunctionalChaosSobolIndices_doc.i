@@ -160,3 +160,67 @@ Returns
 -------
 graph : :class:`~openturns.Graph`
     A graph showing the first and total order indices per input."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosSobolIndices::getPointwiseFirstOrderIndices
+R"RAW(Get pointwise first order Sobol indices of a scalar output surrogate.
+
+Returns
+-------
+indices : :class:`~openturns.Field`
+    A field on the output mesh, with one component per input variable.
+    Vertices with exactly zero surrogate variance contain zero by convention.
+
+Notes
+-----
+This method supports independent vector inputs and exactly one scalar output
+KL block. Dependent inputs, field inputs and vector-valued or multiple-block
+outputs are not supported. Interpretation in the original input coordinates
+assumes a componentwise input-to-basis transformation, as used by the standard
+chaos algorithm for independent inputs. Indices describe the fitted surrogate; their accuracy
+for the original simulator depends on KL truncation and chaos approximation.
+Small positive variances can make sensitivity ratios numerically unstable.
+Squared-coefficient sums are rescaled to protect the ratios from overflow and
+underflow. The preceding reconstruction of each coefficient must still be
+representable in floating point; nonfinite reconstructed values are rejected.
+Cancellation and underflow in this reconstruction are not corrected.
+
+For every nonconstant chaos multi-index, the method contracts its coefficients
+with the eigenvalue-scaled KL modes at each mesh vertex before squaring. This
+preserves cross-mode terms which cannot be discarded pointwise. No separate
+surrogate fit is performed at each vertex. Mesh vertices need not be equally
+spaced; the result is evaluated at the existing output vertices only.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosSobolIndices::getPointwiseTotalOrderIndices
+R"RAW(Get pointwise total order Sobol indices of a scalar output surrogate.
+
+Returns
+-------
+indices : :class:`~openturns.Field`
+    A field on the output mesh, with one component per input variable.
+    Vertices with exactly zero surrogate variance contain zero by convention.
+
+Notes
+-----
+This method supports independent vector inputs and exactly one scalar output
+KL block. Dependent inputs, field inputs and vector-valued or multiple-block
+outputs are not supported. Interpretation in the original input coordinates
+assumes a componentwise input-to-basis transformation, as used by the standard
+chaos algorithm for independent inputs. Indices describe the fitted surrogate; their accuracy
+for the original simulator depends on KL truncation and chaos approximation.
+Small positive variances can make sensitivity ratios numerically unstable.
+Squared-coefficient sums are rescaled to protect the ratios from overflow and
+underflow. The preceding reconstruction of each coefficient must still be
+representable in floating point; nonfinite reconstructed values are rejected.
+Cancellation and underflow in this reconstruction are not corrected.
+
+For every nonconstant chaos multi-index, the method contracts its coefficients
+with the eigenvalue-scaled KL modes at each mesh vertex before squaring. This
+preserves cross-mode terms which cannot be discarded pointwise. No separate
+surrogate fit is performed at each vertex. Mesh vertices need not be equally
+spaced; the result is evaluated at the existing output vertices only.
+)RAW"
