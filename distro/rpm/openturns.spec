@@ -24,6 +24,7 @@ BuildRequires:  nanoflann-devel
 %if 0%{?fedora_version}
 BuildRequires:  coin-or-Ipopt-devel
 BuildRequires:  coin-or-Bonmin-devel
+BuildRequires:  coin-or-HiGHS-devel
 BuildRequires:  zlib-devel
 BuildRequires:  flexiblas-devel
 %else
