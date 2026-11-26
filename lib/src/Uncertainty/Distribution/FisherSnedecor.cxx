@@ -119,7 +119,10 @@ void FisherSnedecor::update()
 /* Get one realization of the distribution */
 Point FisherSnedecor::getRealization() const
 {
-  return Point(1, d2_ * DistFunc::rGamma(0.5 * d1_) / (d1_ * DistFunc::rGamma(0.5 * d2_)));
+  // Sample in a fixed order to preserve seeded results across compilers.
+  const Scalar numerator = d2_ * DistFunc::rGamma(0.5 * d1_);
+  const Scalar denominator = d1_ * DistFunc::rGamma(0.5 * d2_);
+  return Point(1, numerator / denominator);
 }
 
 /* Get the PDF of the distribution */
