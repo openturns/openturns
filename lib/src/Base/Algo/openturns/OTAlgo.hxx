@@ -51,6 +51,7 @@
 #include "openturns/FFTImplementation.hxx"
 #include "openturns/FFT.hxx"
 #include "openturns/KissFFT.hxx"
+#include "openturns/PocketFFT.hxx"
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
 #include "openturns/FilonQuadrature.hxx"

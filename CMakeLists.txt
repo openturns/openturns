@@ -587,6 +587,7 @@ install (FILES COPYING
                 COPYING.fastgl
                 COPYING.kendall
                 COPYING.kissfft
+                COPYING.pocketfft
                 COPYING.cephes
                 COPYING.tnc
           DESTINATION ${OPENTURNS_DOC_PATH}
