@@ -270,6 +270,9 @@ ot_add_python_module(experimental experimental_module.i
                      ExceptionPenalizedEvaluation.i ExceptionPenalizedEvaluation_doc.i
                      ExceptionPenalizedProblem.i ExceptionPenalizedProblem_doc.i
                      MemoizePointToFieldFunction.i MemoizePointToFieldFunction_doc.i
+                     CalibrationResult.i CalibrationResult_doc.i
+                     GaussianCalibrationResult.i GaussianCalibrationResult_doc.i
+                     LeastSquaresCalibrationResult.i LeastSquaresCalibrationResult_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                      CirculantEmbeddingGaussianProcess.i CirculantEmbeddingGaussianProcess_doc.i
@@ -896,7 +899,6 @@ ot_add_python_module(bayesian bayesian_module.i
                       GaussianLinearCalibration.i GaussianLinearCalibration_doc.i
                       CalibrationAlgorithmImplementation.i CalibrationAlgorithmImplementation_doc.i
                       CalibrationAlgorithm.i CalibrationAlgorithm_doc.i
-                      CalibrationResult.i CalibrationResult_doc.i
                       LinearLeastSquaresCalibration.i LinearLeastSquaresCalibration_doc.i
                       MetropolisHastingsImplementation.i MetropolisHastingsImplementation_doc.i
                       MetropolisHastings.i MetropolisHastings_doc.i
@@ -1126,6 +1128,9 @@ if (SPHINX_FOUND)
   endif ()
   if (NOT Ceres_FOUND AND NOT CMinpack_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(calibration_flooding)|(calibration_chaboche)|(calibration_deflection_tube)")
+  endif ()
+  if (NOT Ceres_FOUND OR NOT CMinpack_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(plot_calibration_non_identifiable_model)")
   endif ()
   if (NOT dlib_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_dlib)")

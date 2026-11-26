@@ -18,7 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/OT.hxx"
+#include "openturns/LinearLeastSquaresCalibration.hxx"
+#include "openturns/ParametricFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/OTtestcode.hxx"
 
 using namespace OT;
@@ -60,6 +62,11 @@ int main(int, char *[])
     ParametricFunction model(g, params, trueParameter);
     Sample y = model(x);
     y += Normal(Point(outputDimension), Point(outputDimension, 0.05), IdentityMatrix(outputDimension)).getSample(y.getSize());
+
+    // Function needed by the calibration algorithm
+    // Since there are no observations, we can use g directly
+    Function calibrationModel(g);
+
     Point candidate(inputDimension, 1.0);
     Description methods(0);
     methods.add("SVD");
@@ -70,29 +77,30 @@ int main(int, char *[])
       fullprint << "method=" << methods[n] << std::endl;
       // 1st constructor
       fullprint << "(const. 1)" << std::endl;
-      LinearLeastSquaresCalibration algo(model, x, y, candidate, methods[n]);
+      LinearLeastSquaresCalibration algo(calibrationModel, x, y, candidate, methods[n]);
       algo.run();
-      Point parameterMAP(algo.getResult().getParameterMAP());
-      fullprint << "MAP =" << parameterMAP << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      Point parameter(algo.getResult().getParameter());
+      fullprint << "MAP =" << parameter << std::endl;
+      assert_almost_equal(parameter, trueParameter, 1e-2);
       // 2nd constructor
       fullprint << "(const. 2)" << std::endl;
       model.setParameter(candidate);
       Sample modelObservations(model(x));
-      Matrix transposedGradientObservations(model.getParameterDimension(), y.getSize() * model.getOutputDimension());
+      Matrix transposedGradientObservations(calibrationModel.getInputDimension(), y.getSize() * calibrationModel.getOutputDimension());
       UnsignedInteger shift = 0;
-      UnsignedInteger skip = model.getOutputDimension() * model.getParameterDimension();
+      UnsignedInteger skip = calibrationModel.getOutputDimension() * calibrationModel.getInputDimension();
       for (UnsignedInteger i = 0; i < y.getSize(); ++i)
       {
-        Matrix localGradient(model.parameterGradient(x[i]));
+        // No need to call calibrationModel.setParameter() here because there are no observations
+        Matrix localGradient(calibrationModel.gradient(candidate));
         std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), transposedGradientObservations.getImplementation()->begin() + shift);
         shift += skip;
       }
       algo = LinearLeastSquaresCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, methods[n]);
       algo.run();
-      parameterMAP = algo.getResult().getParameterMAP();
-      fullprint << "MAP =" << parameterMAP << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      parameter = algo.getResult().getParameter();
+      fullprint << "MAP =" << parameter << std::endl;
+      assert_almost_equal(parameter, trueParameter, 1e-2);
     } // n
   }
   catch (TestFailed & ex)

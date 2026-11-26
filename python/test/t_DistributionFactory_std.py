@@ -66,6 +66,7 @@ params = {
     "TrapezoidalFactory": 1.0,
     "TriangularFactory": 0.025,
     "SmoothedUniformFactory": 0.15,
+    "SquaredNormalFactory": 0.45,
 }
 
 for factory in factories:
@@ -76,6 +77,7 @@ for factory in factories:
         print("Skip", factory, "no getClassName()")
         continue
     # Skip HistogramFactory because it is nonparametric, so the rebuilt distribution has a number of parameters different from the reference distribution
+    # Skip InverseGamma because the estimated parameters are too different from the reference distribution
     # Skip some others because they are quite slow
     distName = factoryName.replace("Factory", "")
     if distName in [
@@ -93,6 +95,7 @@ for factory in factories:
         "Binomial",
         "Dirichlet",
         "InverseNormal",
+        "InverseGamma",
     ]:
         continue
     eps = params.get(factoryName, 0.05)

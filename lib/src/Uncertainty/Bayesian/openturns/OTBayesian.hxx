@@ -25,7 +25,8 @@
 #include "openturns/GaussianLinearCalibration.hxx"
 #include "openturns/CalibrationAlgorithm.hxx"
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
-#include "openturns/CalibrationResult.hxx"
+#include "openturns/GaussianCalibrationResult.hxx"
+#include "openturns/LeastSquaresCalibrationResult.hxx"
 #include "openturns/LinearLeastSquaresCalibration.hxx"
 #include "openturns/NonLinearLeastSquaresCalibration.hxx"
 #include "openturns/GaussianNonLinearCalibration.hxx"
@@ -35,5 +36,6 @@
 #include "openturns/IndependentMetropolisHastings.hxx"
 #include "openturns/Gibbs.hxx"
 #include "openturns/RandomVectorMetropolisHastings.hxx"
+#include "openturns/UserDefinedMetropolisHastings.hxx"
 
 #endif /* OPENTURNS_OTBAYESIAN_HXX */

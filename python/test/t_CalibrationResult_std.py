@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.testing as ott
 import math as m
 import sys
@@ -29,18 +30,26 @@ Hobs = outputH + ot.Normal(0.0, 0.1).getSample(nbobs)
 Qobs = inputSample[:, 0]
 thetaPrior = [20, 49, 51]
 model = ot.ParametricFunction(g, [1, 2, 3], thetaPrior)
+calibrationModel = ot.ParametricFunction(g, [0], [0.0])
 errorCovariance = ot.CovarianceMatrix([[0.5**2]])
 sigma = ot.CovarianceMatrix(3)
 sigma[0, 0] = 5.0**2
 sigma[1, 1] = 1.0**2
 sigma[2, 2] = 1.0**2
 algo = ot.GaussianNonLinearCalibration(
-    model, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+    calibrationModel, Qobs, Hobs, thetaPrior, sigma, errorCovariance
 )
 algo.run()
 result = algo.getResult()
 assert result.isBayesian()
-assert not result.isParameterDistributionPosterior()
+result.getMAPDistribution()  # must not raise an exception
+with ott.assert_raises(TypeError):
+    result.getParameterPosterior()
+
+# check the metamodel (same as the model because there is no linearization)
+model.setParameter(result.getParameterMAP())
+metamodel = result.getParametricMetamodel()
+ott.assert_almost_equal(model(Qobs).asPoint(), metamodel(result.getParameterMAP()))
 
 # without bootstrap the posterior label is kept
 bootstrapKey = "GaussianNonLinearCalibration-BootstrapSize"
@@ -48,11 +57,13 @@ previousBootstrapSize = ot.ResourceMap.GetAsUnsignedInteger(bootstrapKey)
 ot.ResourceMap.SetAsUnsignedInteger(bootstrapKey, 0)
 try:
     algo2 = ot.GaussianNonLinearCalibration(
-        model, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+        calibrationModel, Qobs, Hobs, thetaPrior, sigma, errorCovariance
     )
     algo2.run()
     result2 = algo2.getResult()
-    assert result2.isParameterDistributionPosterior()
+    result2.getParameterPosterior()  # must not raise an exception
+    with ott.assert_raises(TypeError):
+        result2.getMAPDistribution()
     legends2 = [
         legend
         for j in range(3)
@@ -66,12 +77,13 @@ finally:
 graph1 = result.drawParameterDistributions()
 graph2 = result.drawResiduals()
 graph3 = result.drawObservationsVsInputs()
-graph4 = result.drawObservationsVsPredictions()
-graph5 = result.drawResidualsNormalPlot()
+graph4 = result.drawObservationsVsModel(model)
+graph5 = result.drawObservationsVsPredictions()
+graph6 = result.drawResidualsNormalPlot()
 
 # the output at the posterior mean is computed on demand: the residual
 # function returns one residual per observation and output component
-posteriorMean = result.getParameterPosterior().getMean()
+posteriorMean = result.getMAPDistribution().getMean()
 outputObservations = result.getOutputObservations()
 residuals = result.getResidualFunction()(posteriorMean)
 expectedOutput = ot.Sample(
@@ -89,7 +101,7 @@ posterior = ot.Normal(2)
 error = ot.Normal(2)
 observation = ot.Sample([[1.0, 2.0]])
 zeroResidual = ot.PythonFunction(2, 2, lambda x: [0.0, 0.0])
-transposable = ot.CalibrationResult(
+transposable = otexp.GaussianCalibrationResult(
     prior,
     posterior,
     posterior.getMean(),
@@ -97,32 +109,13 @@ transposable = ot.CalibrationResult(
     observation,
     observation,
     zeroResidual,
-    True,
+    0,
 )
 transposable.setInputObservations(ot.Sample([[0.0], [1.0]]))
 transposable.setOutputObservations(ot.Sample([[1.0], [2.0]]))
 outputAtPosteriorMean = transposable.getOutputAtPosteriorMean()
 assert outputAtPosteriorMean.getSize() == 1, outputAtPosteriorMean.getSize()
 assert outputAtPosteriorMean.getDimension() == 2, outputAtPosteriorMean.getDimension()
-# changing an input of the cached output must invalidate it
-identity = ot.PythonFunction(2, 2, lambda x: [x[0] + 1.0, x[1] + 1.0])
-cacheTest = ot.CalibrationResult(
-    prior,
-    posterior,
-    posterior.getMean(),
-    error,
-    observation,
-    observation,
-    zeroResidual,
-    True,
-)
-ott.assert_almost_equal(cacheTest.getOutputAtPosteriorMean(), [[1.0, 2.0]])
-cacheTest.setResidualFunction(identity)
-ott.assert_almost_equal(cacheTest.getOutputAtPosteriorMean(), [[2.0, 3.0]])
-cacheTest.setParameterPosterior(
-    ot.Normal([10.0, 20.0], [1.0, 1.0], ot.IdentityMatrix(2))
-)
-ott.assert_almost_equal(cacheTest.getOutputAtPosteriorMean(), [[12.0, 23.0]])
 transposable.setOutputAtPriorAndPosteriorMean(
     ot.Sample([[0.0], [1.0]]), ot.Sample([[1.0], [2.0]])
 )
@@ -138,6 +131,7 @@ if len(sys.argv) > 1:
 
     View(graph1).save("param.png")
     View(graph2).save("res.png")
-    View(graph3).save("obsvspred.png")
-    View(graph4).save("obsvsin.png")
-    View(graph5).save("resqqplot.png")
+    View(graph3).save("obsvsin.png")
+    View(graph4).save("obsvsmodel.png")
+    View(graph5).save("obsvspred.png")
+    View(graph6).save("resqqplot.png")

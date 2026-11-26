@@ -27,6 +27,10 @@ trueParameter = [2.8, 1.2, 0.5]
 params = [0, 1, 2]
 model = ot.ParametricFunction(g, params, trueParameter)
 
+# Function needed by the calibration algorithm
+# Since there are no observations, we can use g directly
+calibrationModel = g
+
 x = ot.Sample(size, 0)
 y = model(x)
 outputObservationNoiseSigma = 0.05
@@ -58,11 +62,11 @@ for i in range(outputDimension * size):
 for bootstrapSize in [0, 30]:
     # 1. Constructor 1
     algo = ot.GaussianNonLinearCalibration(
-        model, x, y, candidate, priorCovariance, errorCovariance
+        calibrationModel, x, y, candidate, priorCovariance, errorCovariance
     )
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    # To avoid discrepance between the platforms with or without CMinpack
+    # To avoid discrepancy between the platforms with or without CMinpack
     # Check MAP
     calibrationResult = algo.getResult()
     parameterMAP = calibrationResult.getParameterMAP()
@@ -84,7 +88,7 @@ for bootstrapSize in [0, 30]:
         )
     )
     algo.run()
-    # To avoid discrepance between the platforms with or without CMinpack
+    # To avoid discrepancy between the platforms with or without CMinpack
     # Check MAP
     calibrationResult = algo.getResult()
     parameterMAP = calibrationResult.getParameterMAP()
@@ -94,7 +98,7 @@ for bootstrapSize in [0, 30]:
     ott.assert_almost_equal(parameterMAP, trueParameter, rtol, atol)
     # 2. With globalErrorCovariance
     algo = ot.GaussianNonLinearCalibration(
-        model, x, y, candidate, priorCovariance, globalErrorCovariance
+        calibrationModel, x, y, candidate, priorCovariance, globalErrorCovariance
     )
     algo.setBootstrapSize(bootstrapSize)
     algo.run()

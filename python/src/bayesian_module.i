@@ -30,7 +30,9 @@
 %import randomvector_module.i
 
 /* Uncertainty/Bayesian */
-%include CalibrationResult.i
+%import(package="openturns", module="experimental") "openturns/CalibrationResult.hxx"
+%import(package="openturns", module="experimental") "openturns/GaussianCalibrationResult.hxx"
+%import(package="openturns", module="experimental") "openturns/LeastSquaresCalibrationResult.hxx"
 %include CalibrationAlgorithmImplementation.i
 %include CalibrationAlgorithm.i
 %include GaussianLinearCalibration.i

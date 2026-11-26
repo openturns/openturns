@@ -56,10 +56,6 @@ public:
   /** Parameter prior accessor */
   Distribution getParameterPrior() const;
 
-  /** Result accessor */
-  void setResult(const CalibrationResult & result);
-  CalibrationResult getResult() const;
-
 }; /* class CalibrationAlgorithm */
 
 
