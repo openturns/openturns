@@ -51,6 +51,7 @@
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
+ * PocketFFT (openturns.experimental)
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
  * SparseExpansion (openturns.experimental)
  * SparseMatrix (openturns.experimental)

@@ -43,6 +43,7 @@
 /* Base/Algo */
 %include SlicedInverseRegressionResult.i
 %include SlicedInverseRegression.i
+%include PocketFFT.i
 
 /* Uncertainty/Distribution */
 %include UncertaintyModelCopulaCollection.i

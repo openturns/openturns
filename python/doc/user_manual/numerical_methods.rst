@@ -96,6 +96,7 @@ Transformations
 
     FFT
     KissFFT
+    experimental.PocketFFT
 
     :template: classWithPlot.rst_t
 
