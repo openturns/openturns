@@ -18,15 +18,15 @@ these steps.
 
 For a function :math:`f` with continuous third derivative, the centered
 finite difference :math:`D(h) = (f(x + h) - f(x - h)) / (2 h)` satisfies
-:math:`f'(x) = D(h) - h^2 f'''(\\xi) / 6` with :math:`h > 0`.
+:math:`f'(x) = D(h) - h^2 f'''(\xi) / 6` with :math:`h > 0`.
 Its total error combines the round-off error of the function evaluations
 and the truncation error of the Taylor expansion,
-:math:`e(h) = \\epsilon_f / h + h^2 |f'''(x)| / 6`,
-where :math:`\\epsilon_f > 0` is the absolute precision of :math:`f`.
-The optimal step :math:`h^\\star = (3 \\epsilon_f / |f'''(x)|)^{1/3}`
+:math:`e(h) = \epsilon_f / h + h^2 |f'''(x)| / 6`,
+where :math:`\epsilon_f > 0` is the absolute precision of :math:`f`.
+The optimal step :math:`h^\star = (3 \epsilon_f / |f'''(x)|)^{1/3}`
 minimizes this error when the third derivative is nonzero.
 Since the third derivative is generally unknown, the algorithm
-approximates :math:`h^\\star` using function values only.
+approximates :math:`h^\star` using function values only.
 
 Parameters
 ----------
