@@ -12,6 +12,8 @@ ot_add_source_file (FiniteDifferenceHessian.cxx)
 ot_add_source_file (NonCenteredFiniteDifferenceGradient.cxx)
 ot_add_source_file (CenteredFiniteDifferenceGradient.cxx)
 ot_add_source_file (CenteredFiniteDifferenceHessian.cxx)
+ot_add_source_file (SteplemanWinarskyResult.cxx)
+ot_add_source_file (SteplemanWinarsky.cxx)
 
 ot_install_header_file (FiniteDifferenceStepImplementation.hxx)
 ot_install_header_file (FiniteDifferenceStep.hxx)
@@ -23,6 +25,8 @@ ot_install_header_file (NonCenteredFiniteDifferenceGradient.hxx)
 ot_install_header_file (CenteredFiniteDifferenceGradient.hxx)
 ot_install_header_file (OTDiff.hxx)
 ot_install_header_file (CenteredFiniteDifferenceHessian.hxx)
+ot_install_header_file (SteplemanWinarskyResult.hxx)
+ot_install_header_file (SteplemanWinarsky.hxx)
 
 # Recurse in subdirectories
 add_subdirectory (Ev3)

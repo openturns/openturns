@@ -31,5 +31,7 @@
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
+#include "openturns/SteplemanWinarskyResult.hxx"
+#include "openturns/SteplemanWinarsky.hxx"
 
 #endif /* OPENTURNS_OTDIFF_HXX */

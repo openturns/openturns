@@ -61,6 +61,10 @@
   <!-- OT::BlendedStep parameters -->
   <BlendedStep-DefaultEta value_float="1.0" />
 
+  <!-- OT::SteplemanWinarsky parameters -->
+  <SteplemanWinarsky-DefaultAlpha value_float="0.25" />
+  <SteplemanWinarsky-DefaultMaximumIterationNumber value_int="100" />
+
   <!-- OT::CenteredFiniteDifferenceGradient parameters -->
   <CenteredFiniteDifferenceGradient-DefaultEpsilon value_float="1.0e-5" />
 

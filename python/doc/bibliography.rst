@@ -665,6 +665,9 @@ Bibliography
     Technometrics, 29(2), 143-151.
 .. [stein1999] Stein, M. L. (1999). *Interpolation of Spatial Data: Some Theory for Kriging.*
     Springer, New York.
+.. [stepleman1979] Stepleman, R. S. and Winarsky, N. D. (1979). *Adaptive numerical differentiation.*
+    Mathematics of Computation, 33(148), 1257-1264.
+    `pdf <https://www.ams.org/journals/mcom/1979-33-148/S0025-5718-1979-0537969-8/S0025-5718-1979-0537969-8.pdf>`__
 .. [stone1974] Stone, M. (1974). *Cross‐validatory choice and assessment of statistical predictions.*
     Journal of the royal statistical society: Series B (Methodological), 36 (2), 111-133.
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical

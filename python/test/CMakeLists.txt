@@ -403,6 +403,7 @@ if (Cuba_FOUND)
   ot_pyinstallcheck_test (CubaIntegration_std IGNOREOUT)
 endif ()
 ot_pyinstallcheck_test (SlicedInverseRegression_std IGNOREOUT)
+ot_pyinstallcheck_test (SteplemanWinarsky_std IGNOREOUT)
 
 ## Model
 ot_pyinstallcheck_test (StandardEvent_std)
