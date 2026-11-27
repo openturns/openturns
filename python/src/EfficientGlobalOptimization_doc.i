@@ -68,10 +68,20 @@ with
 
     \mathbb{E}\left[max(m_K(x_{min}) - Y_{new}, 0)\right] = (m_K(x_{min}) - m_K(x_{new})) \Phi\left( \frac{m_K(x_{min}) - m_K(x_{new})}{s_K(x_{new})} \right) + s_K(x_{new}) \phi\left( \frac{m_K(x_{min}) - m_K(x_{new})}{s_K(x_{new})} \right)
 
-By default the criteria is minimized using :class:`~openturns.MultiStart`
+By default the criteria is maximized using :class:`~openturns.MultiStart`
 with starting points uniformly sampled in the optimization problem bounds,
 see :func:`setMultiStartExperimentSize` and :func:`setMultiStartNumber`.
 This behavior can be overridden by using another solver with :func:`setOptimizationAlgorithm`.
+
+The enrichment criterion itself is a parameter of the algorithm: an
+:class:`~openturns.experimental.EfficientGlobalOptimizationCriterion`, the
+expected improvement described above by default, replaceable with
+:func:`setCriterion` or subclassable from Python. The algorithm keeps the whole
+loop: growing design, Gaussian process refit, inner solver and multi-start,
+stopping rules and result. A criterion builds the scalar function the inner
+solver maximizes, and may declare the convergence of the enrichment through its
+own convergence test; :func:`getHasConverged` reports it, and
+:func:`getCriterionValues` gives the criterion value at each iteration.
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
@@ -263,12 +273,75 @@ c : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::EfficientGlobalOptimization::getExpectedImprovement
-"Expected improvement values.
+"Value of the criterion at each iteration.
+
+.. deprecated:: 1.28
+    Kept for compatibility: with a pluggable criterion these values are no
+    longer necessarily an expected improvement. Use :func:`getCriterionValues`.
 
 Returns
 -------
-ei : :class:`~openturns.Sample`
-    The expected improvement optimal values."
+values : :class:`~openturns.Sample`
+    The optimal values of the criterion, one per iteration."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EfficientGlobalOptimization::setCriterion
+R"RAW(Enrichment criterion accessor.
+
+Parameters
+----------
+criterion : :class:`~openturns.experimental.EfficientGlobalOptimizationCriterion`
+    The criterion whose objective is maximized at each iteration.
+
+Notes
+-----
+The criterion is an :class:`~openturns.experimental.ExpectedImprovement` until
+this method is called. The noise function set with :func:`setNoiseFunction` is
+propagated to the new criterion, so a criterion replaced after the noise has
+been set still sees it.
+
+The algorithm keeps a private copy: the state it pushes into the criterion at
+each iteration does not modify the object passed here.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EfficientGlobalOptimization::getCriterion
+R"RAW(Enrichment criterion accessor.
+
+Returns
+-------
+criterion : :class:`~openturns.experimental.EfficientGlobalOptimizationCriterion`
+    The criterion whose objective is maximized at each iteration.
+
+Notes
+-----
+The returned handle shares its implementation with the algorithm: changing one
+of its parameters changes the criterion the algorithm uses. This is how
+:func:`setAEITradeoff` and :func:`setNoiseFunction` reach the default
+criterion.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EfficientGlobalOptimization::getCriterionValues
+"Value of the criterion at each iteration.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    The optimal values of the criterion, one per iteration."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EfficientGlobalOptimization::getHasConverged
+"Whether the loop ended on the convergence test of the criterion.
+
+Returns
+-------
+hasConverged : bool
+    Whether the enrichment was ended by the criterion convergence test, as
+    opposed to the call budget, the correlation length criterion or a user
+    callback."
 
 // ---------------------------------------------------------------------
 

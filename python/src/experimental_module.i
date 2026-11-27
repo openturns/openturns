@@ -131,6 +131,9 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i
+%include EfficientGlobalOptimizationCriterionImplementation.i
+%include EfficientGlobalOptimizationCriterion.i
+%include ExpectedImprovement.i
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
 %include SparseExpansion.i
