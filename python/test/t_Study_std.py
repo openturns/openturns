@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.experimental as otexp
+import openturns.testing as ott
 import os
 import inspect
 
@@ -95,3 +96,30 @@ study.fillObject("mm", mm2)
 algo2 = ot.LinearLeastSquares()
 study.fillObject("algo", algo2)
 os.remove(fileName)
+
+# Coverage for XMLToolbox error paths
+with ott.assert_raises(Exception):
+    bad_study = ot.Study()
+    bad_study.setStorageManager(ot.XMLStorageManager("nonexistent_dir/study.xml"))
+    bad_study.add("x", ot.Point([1.0]))
+    bad_study.save()
+with ott.assert_raises(Exception):
+    missing_study = ot.Study("missing_file.xml")
+    missing_study.load()
+bad_xml = "bad.xml"
+open(bad_xml, "w").write("not xml <")
+try:
+    with ott.assert_raises(Exception):
+        bad_load = ot.Study(bad_xml)
+        bad_load.load()
+finally:
+    os.remove(bad_xml)
+good_xml = "good.xml"
+good_study = ot.Study()
+good_study.setStorageManager(ot.XMLStorageManager(good_xml))
+good_study.add("x", ot.Point([1.0]))
+good_study.save()
+assert repr(ot.XMLStorageManager(good_xml)) != ""
+reload_study = ot.Study(good_xml)
+reload_study.load()
+os.remove(good_xml)

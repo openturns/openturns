@@ -906,4 +906,17 @@ except Exception as exc:
     assert "not serialized" in str(exc), f"unexpected refusal: {exc}"
 print("  solve, gemv, logDeterminant and factors all survive the round trip: PASS")
 
+# Coverage for profiling flag and rank-starved branch
+cov = ot.MaternModel([0.1], [1.0], 2.5)
+small_vertices = ot.Sample([[i * 0.05] for i in range(30)])
+ot.ResourceMap.SetAsBool("HODLRMatrix-ProfileFactorization", True)
+hodlr_prof = cov.discretizeHODLRMatrix(small_vertices, make_params(leaf=4))
+assert hodlr_prof.getNbRows() == 30
+ot.ResourceMap.SetAsBool("HODLRMatrix-ProfileFactorization", False)
+capped_params = make_params(leaf=4)
+capped_params.setMaxRank(1)
+hodlr_capped = cov.discretizeHODLRMatrix(small_vertices, capped_params)
+hodlr_capped.factorize()
+assert hodlr_capped.getNbRows() == 30
+
 print("\n=== ALL TESTS PASSED ===")

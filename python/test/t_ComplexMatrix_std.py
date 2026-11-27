@@ -275,3 +275,15 @@ with ott.assert_raises(Exception):
 with ott.assert_raises(Exception):
     ot.HermitianMatrix(2).computeCholesky()
 str(m_cov)
+# Coverage for str, in-place solve and identity/point products
+assert isinstance(str(m_cov), str)
+assert isinstance(str(ot.ComplexMatrix()), str)
+assert isinstance(str(ot.ComplexMatrix(1, 3, [1 + 0j, 2 + 0j, 3 + 0j])), str)
+A_cov2 = ot.ComplexMatrix(2, 2, [2 + 0j, 1 + 0j, 1 + 0j, 2 + 0j])
+B_cov2 = ot.ComplexMatrix(2, 2, [1 + 0j, 0 + 0j, 0 + 0j, 1 + 0j])
+X_cov2 = A_cov2.solveLinearSystemInPlace(B_cov2)
+assert X_cov2.getNbRows() == 2 and X_cov2.getNbColumns() == 2
+v_cov2 = A_cov2.solveLinearSystemInPlace(ot.ComplexCollection([1 + 0j, 2 + 0j]))
+assert len(v_cov2) == 2
+assert (m_cov * ot.IdentityMatrix(2)).getNbRows() == 2
+assert len(m_cov * ot.Point([1.0, 2.0])) == 2

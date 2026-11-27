@@ -598,3 +598,15 @@ assert surfaceCoArea.computePDF([-1.0]) == 0.0
 # too expensive to share this test under coverage instrumentation.
 # The nonlinear surface and curve densities are checked in
 # t_PushForwardDistribution_std2.py to keep each coverage test short.
+
+# Coverage for comparison and parallel accessors
+f_eq = ot.SymbolicFunction(["x"], ["2.0 * x"])
+pf_ref = otexp.PushForwardDistribution(f_eq, ot.Normal())
+pf_same = otexp.PushForwardDistribution(f_eq, ot.Normal())
+pf_other = otexp.PushForwardDistribution(f_eq, ot.Uniform())
+assert pf_ref == pf_same
+assert pf_ref != pf_other
+# The distribution is not parallel: the antecedent distribution is not parallel,
+# so the push-forward cannot be evaluated in parallel even with a parallel function
+assert not pf_ref.isParallel()
+ott.assert_almost_equal(pf_ref.computeCDF([0.0]), 0.5, 1e-3, 1e-6)
