@@ -24,6 +24,8 @@
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/GaussianProcessRegressionResult.hxx"
+#include "openturns/EfficientGlobalOptimizationCriterion.hxx"
+#include "openturns/ExpectedImprovement.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +34,14 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class EfficientGlobalOptimization
-*/
+ *
+ * Efficient global optimization driven by a pluggable enrichment criterion.
+ *
+ * The algorithm owns the loop: growing design, Gaussian process refit, inner
+ * solver and multi-start, stopping rules, callbacks and result. The enrichment
+ * rule itself is a EfficientGlobalOptimizationCriterion, the expected
+ * improvement by default, and can be replaced or subclassed from Python.
+ */
 
 class OT_API EfficientGlobalOptimization
   : public OptimizationAlgorithmImplementation
@@ -76,7 +85,16 @@ public:
   void setCorrelationLengthFactor(const Scalar b);
   Scalar getCorrelationLengthFactor() const;
 
-  /** AEI tradeoff constant accessor */
+  /** Enrichment criterion accessor */
+  void setCriterion(const EfficientGlobalOptimizationCriterion & criterion);
+  EfficientGlobalOptimizationCriterion getCriterion() const;
+
+  /**
+   * AEI tradeoff constant accessor.
+   * These two accessors apply to the expected improvement criterion only: they
+   * throw when another criterion has been set, since the tradeoff has no
+   * meaning outside the augmented expected improvement.
+   */
   void setAEITradeoff(const Scalar c);
   Scalar getAEITradeoff() const;
 
@@ -84,8 +102,18 @@ public:
   void setNoiseFunction(const Function & noiseFunction);
   Function getNoiseFunction() const;
 
-  /** Expected improvement function */
+  /** Value of the criterion at each iteration */
+  Sample getCriterionValues() const;
+
+  /**
+   * Value of the criterion at each iteration.
+   * @deprecated Kept for compatibility: with a pluggable criterion the values
+   * are no longer necessarily an expected improvement. Use getCriterionValues().
+   */
   Sample getExpectedImprovement() const;
+
+  /** Whether the loop ended on the criterion convergence test */
+  Bool getHasConverged() const;
 
   /** GPR result accessor (especially useful after run() has been called) */
   GaussianProcessRegressionResult getGaussianProcessRegressionResult() const;
@@ -120,13 +148,17 @@ private:
   // correlation length stopping criterion factor
   Scalar correlationLengthFactor_ = 0.0;
 
-  // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
-  Scalar aeiTradeoff_ = 0.0;
-
-  // noise function
+  // noise function of the objective, propagated to the criterion
   Function noiseFunction_;
 
-  Sample expectedImprovement_;
+  // enrichment criterion, expected improvement by default
+  EfficientGlobalOptimizationCriterion criterion_;
+
+  // value of the criterion at each iteration
+  Sample criterionValues_;
+
+  // whether the loop ended on the criterion convergence test
+  Bool hasConverged_ = false;
 
 } ; /* class EfficientGlobalOptimization */
 

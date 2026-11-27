@@ -70,8 +70,10 @@
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
  * ActiveLearningReliabilityAlgorithm, ActiveLearningReliabilityResult, ActiveLearningReliabilityFunction, ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningGMMFunction, PythonActiveLearningReliabilityFunction (openturns.experimental)
+ * EfficientGlobalOptimizationCriterion, EfficientGlobalOptimizationCriterionImplementation, ExpectedImprovement, LowerConfidenceBound, ProbabilityImprovement, PythonEfficientGlobalOptimizationCriterion, WatsonBarnesCriterion (openturns.experimental)
 
 ==== API changes ====
+ * EfficientGlobalOptimization: the enrichment criterion is now a parameter (setCriterion/getCriterion), the expected improvement by default; added getCriterionValues and getHasConverged, kept getExpectedImprovement and the AEI tradeoff accessors as forwarders
  * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases
  * Added LeastSquaresMethod.getPseudoInverse: the Moore-Penrose pseudo-inverse of the weighted design matrix, equal to (A^T A)^{-1} A^T for full-column-rank designs, evaluated per decomposition (QR, Cholesky, SVD)
  * Added Sample.computePairwiseDistance: the symmetric matrix of Euclidean distances between sample points

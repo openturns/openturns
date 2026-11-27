@@ -21,13 +21,11 @@
 #include "openturns/EfficientGlobalOptimization.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/DistFunc.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/MultivariateUniform.hxx"
 #include "openturns/GaussianProcessFitter.hxx"
 #include "openturns/GaussianProcessRegression.hxx"
-#include "openturns/GaussianProcessConditionalCovariance.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,8 +41,9 @@ EfficientGlobalOptimization::EfficientGlobalOptimization()
   , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
   , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
   , correlationLengthFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
-  , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
+  , criterion_(ExpectedImprovement())
 {
+  // Nothing to do
 }
 
 EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProblem & problem,
@@ -56,95 +55,11 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
   , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
   , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
   , correlationLengthFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
-  , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
+  , criterion_(ExpectedImprovement())
 {
   checkProblem(problem);
   if (gprResult_.getMetaModel().getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "GPR metamodel must be 1-d";
 }
-
-class ExpectedImprovementEvaluation : public EvaluationImplementation
-{
-public:
-  ExpectedImprovementEvaluation (const Scalar optimalValue,
-                                 const GaussianProcessRegressionResult & gprResult,
-                                 const Function & noiseFunction,
-                                 const Bool isMinimization)
-    : EvaluationImplementation()
-    , optimalValue_(optimalValue)
-    , gprResult_(gprResult)
-    , noiseFunction_(noiseFunction)
-    , gprCov_(gprResult)
-    , isMinimization_(isMinimization)
-  {
-  }
-
-  ExpectedImprovementEvaluation * clone() const override
-  {
-    return new ExpectedImprovementEvaluation(*this);
-  }
-
-  Point operator()(const Point & x) const override
-  {
-    return Point(1, computeAsScalar(x));
-  }
-
-  Scalar computeAsScalar(const Point & x) const
-  {
-    const Scalar mx = gprCov_.getConditionalMean(x)[0];
-    const Scalar fmMk = isMinimization_ ? optimalValue_ - mx : mx - optimalValue_;
-    const Scalar sk2 = gprCov_.getConditionalMarginalVariance(x);
-    if (sk2 <= 0.0) return 0.0;
-    const Scalar sk = std::sqrt(sk2);
-    if (!std::isfinite(sk))
-      return SpecFunc::LowestScalar;
-    const Scalar ratio = fmMk / sk;
-    Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::dNormal(ratio);
-    if (noiseFunction_.getOutputDimension() == 1) // if provided
-    {
-      const Scalar noiseVariance = noiseFunction_(x)[0];
-      if (!(noiseVariance >= 0.0)) throw InvalidArgumentException(HERE) << "Noise-induced variance must be nonnegative, but is " << noiseVariance << " at point " << x;
-      if (sk2 > 0.0)
-        ei *= (1.0 - std::sqrt(noiseVariance) / std::sqrt(noiseVariance + sk2));
-      else
-        ei = 0.0;
-    }
-    return ei;
-  }
-
-  Sample operator()(const Sample & theta) const override
-  {
-    const UnsignedInteger size = theta.getSize();
-    // avoid creating size points
-    Point theta_i(theta.getDimension());
-    Sample outS(size, 1);
-    for (UnsignedInteger i = 0; i < size; ++ i)
-    {
-      for (UnsignedInteger j = 0; j < theta_i.getSize(); ++ j)
-        theta_i[j] = theta(i, j);
-      outS(i, 0) = computeAsScalar(theta_i);
-    }
-    return outS;
-  }
-
-  UnsignedInteger getInputDimension() const override
-  {
-    return gprResult_.getMetaModel().getInputDimension();
-  }
-
-  UnsignedInteger getOutputDimension() const override
-  {
-    return 1;
-  }
-
-protected:
-  Scalar optimalValue_;
-  GaussianProcessRegressionResult gprResult_;
-  Function noiseFunction_;
-  GaussianProcessConditionalCovariance gprCov_;
-
-  // whether the global problem is a miminization (the improvement criterion is always maximized)
-  Bool isMinimization_ = true;
-};
 
 
 void EfficientGlobalOptimization::run()
@@ -170,6 +85,10 @@ void EfficientGlobalOptimization::run()
   }
   UnsignedInteger evaluationNumber = 0;
   Bool exitLoop = false;
+  hasConverged_ = false;
+  // The criterion history belongs to the run, like the result: a second run
+  // must not inherit the values of the first one.
+  criterionValues_ = Sample();
 
   // select the best feasible point in the initial DOE
   OptimizationResult result(getProblem());
@@ -207,28 +126,19 @@ void EfficientGlobalOptimization::run()
 
   while ((!exitLoop) && (evaluationNumber < getMaximumCallsNumber()))
   {
-    Scalar optimalValueSubstitute = optimalValue[0];
-    if (hasNoise)
-    {
-      // with noisy objective we don't have access to the real current optimal value
-      // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
-      optimalValueSubstitute = problem.isMinimization() ? SpecFunc::Infinity : SpecFunc::LowestScalar;
-      GaussianProcessConditionalCovariance gpcCov(gprResult_);
-      const Sample mx(gpcCov.getConditionalMean(inputSample));
-      for (UnsignedInteger i = 0; i < size; ++ i)
-      {
-        const Point x(inputSample[i]);
-        const Scalar sk2 = gpcCov.getConditionalMarginalVariance(x);
-        const Scalar u = mx(i, 0) + aeiTradeoff_ * std::sqrt(sk2);
-        if ((problem.isMinimization() && (u < optimalValueSubstitute))
-            || (!problem.isMinimization() && (u > optimalValueSubstitute)))
-        {
-          optimalValueSubstitute = u;
-        }
-      }
-    }
-
-    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, gprResult, noiseFunction_, problem.isMinimization()));
+    // Hand the current state over to the enrichment criterion: it must build
+    // the objective to maximize from this iteration, not from the initial one
+    criterion_.setGaussianProcessRegression(gprResult);
+    criterion_.setInputSample(inputSample);
+    criterion_.setOptimalValue(optimalValue[0]);
+    criterion_.setMinimization(problem.isMinimization());
+    criterion_.setNoiseFunction(noiseFunction_);
+    Function improvementObjective(criterion_.buildObjective());
+    if (improvementObjective.getInputDimension() != dimension)
+      throw InvalidArgumentException(HERE) << "The objective built by the criterion must have input dimension " << dimension
+                                           << ", got " << improvementObjective.getInputDimension();
+    if (improvementObjective.getOutputDimension() != 1)
+      throw InvalidArgumentException(HERE) << "The objective built by the criterion must have output dimension 1, got " << improvementObjective.getOutputDimension();
 
     // use multi-start to optimize the improvement criterion when using the default solver
     OptimizationAlgorithm solver(solver_);
@@ -280,7 +190,7 @@ void EfficientGlobalOptimization::run()
     const Point improvementValue(improvementResult.getOptimalValue());
     if (!improvementValue.getDimension())
       throw InvalidArgumentException(HERE) << "optimization in EGO did not yield feasible points";
-    expectedImprovement_.add(improvementValue);
+    criterionValues_.add(improvementValue);
 
     const Point newPoint(improvementResult.getOptimalPoint());
     const Point newValue(model(newPoint));
@@ -348,6 +258,14 @@ void EfficientGlobalOptimization::run()
       }
     }
 
+    // criterion-declared convergence, checked once the new point is measured
+    if (criterion_.checkConvergence(improvementValue[0]))
+    {
+      exitLoop = true;
+      hasConverged_ = true;
+      LOGINFO(OSS() << "Stopped algorithm over the criterion convergence test, criterion value=" << improvementValue[0]);
+    }
+
     if (evaluationNumber > 0)
     {
       GaussianProcessRegression algo;
@@ -385,7 +303,16 @@ EfficientGlobalOptimization * EfficientGlobalOptimization::clone() const
 /* String converter */
 String EfficientGlobalOptimization::__repr__() const
 {
-  return OSS();
+  OSS oss;
+  oss << "class=" << EfficientGlobalOptimization::GetClassName()
+      << " " << OptimizationAlgorithmImplementation::__repr__()
+      << " criterion=" << criterion_
+      << " multiStartExperimentSize=" << multiStartExperimentSize_
+      << " multiStartNumber=" << multiStartNumber_
+      << " parameterEstimationPeriod=" << parameterEstimationPeriod_
+      << " correlationLengthFactor=" << correlationLengthFactor_
+      << " hasConverged=" << (hasConverged_ ? "true" : "false");
+  return oss;
 }
 
 /* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
@@ -446,10 +373,37 @@ void EfficientGlobalOptimization::setParameterEstimationPeriod(const UnsignedInt
   parameterEstimationPeriod_ = parameterEstimationPeriod;
 }
 
-/* Expected improvement function */
+/* Enrichment criterion accessor */
+void EfficientGlobalOptimization::setCriterion(const EfficientGlobalOptimizationCriterion & criterion)
+{
+  // Take a private copy: the algorithm mutates the criterion at each iteration,
+  // and that must not be visible through the handle the caller kept.
+  criterion_ = EfficientGlobalOptimizationCriterion(criterion.getImplementation()->clone());
+  // Keep the noise function of the algorithm authoritative: a criterion
+  // replaced after setNoiseFunction() must still see it.
+  criterion_.setNoiseFunction(noiseFunction_);
+}
+
+EfficientGlobalOptimizationCriterion EfficientGlobalOptimization::getCriterion() const
+{
+  return criterion_;
+}
+
+/* Value of the criterion at each iteration */
+Sample EfficientGlobalOptimization::getCriterionValues() const
+{
+  return criterionValues_;
+}
+
 Sample EfficientGlobalOptimization::getExpectedImprovement() const
 {
-  return expectedImprovement_;
+  return criterionValues_;
+}
+
+/* Whether the loop ended on the criterion convergence test */
+Bool EfficientGlobalOptimization::getHasConverged() const
+{
+  return hasConverged_;
 }
 
 /* correlation length stopping criterion factor accessor */
@@ -467,12 +421,25 @@ Scalar EfficientGlobalOptimization::getCorrelationLengthFactor() const
 /* AEI tradeoff constant accessor */
 void EfficientGlobalOptimization::setAEITradeoff(const Scalar aeiTradeoff)
 {
-  aeiTradeoff_ = aeiTradeoff;
+  const ExpectedImprovement * p_expectedImprovement = dynamic_cast<const ExpectedImprovement *>(criterion_.getImplementation().get());
+  if (p_expectedImprovement == nullptr)
+    throw InvalidArgumentException(HERE) << "setAEITradeoff() applies to the expected improvement criterion only, the current criterion is "
+                                         << criterion_.getImplementation()->getClassName();
+  // Copy on write: getCriterion() hands out a handle that shares its
+  // implementation, and a change of the tradeoff must not be visible through
+  // it. clone() keeps the dynamic type, so a derived criterion is not sliced.
+  EfficientGlobalOptimizationCriterion newCriterion(criterion_.getImplementation()->clone());
+  dynamic_cast<ExpectedImprovement *>(newCriterion.getImplementation().get())->setAEITradeoff(aeiTradeoff);
+  criterion_ = newCriterion;
 }
 
 Scalar EfficientGlobalOptimization::getAEITradeoff() const
 {
-  return aeiTradeoff_;
+  const ExpectedImprovement * p_expectedImprovement = dynamic_cast<const ExpectedImprovement *>(criterion_.getImplementation().get());
+  if (p_expectedImprovement == nullptr)
+    throw InvalidArgumentException(HERE) << "getAEITradeoff() applies to the expected improvement criterion only, the current criterion is "
+                                         << criterion_.getImplementation()->getClassName();
+  return p_expectedImprovement->getAEITradeoff();
 }
 
 void EfficientGlobalOptimization::setNoiseFunction(const Function & noiseFunction)
@@ -481,6 +448,7 @@ void EfficientGlobalOptimization::setNoiseFunction(const Function & noiseFunctio
   if (noiseFunction.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Noise function must be of dimension " << dimension;
   if (noiseFunction.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Noise function must be 1-d";
   noiseFunction_ = noiseFunction;
+  criterion_.setNoiseFunction(noiseFunction);
 }
 
 Function EfficientGlobalOptimization::getNoiseFunction() const
@@ -504,8 +472,10 @@ void EfficientGlobalOptimization::save(Advocate & adv) const
   adv.saveAttribute("multiStartNumber_", multiStartNumber_);
   adv.saveAttribute("parameterEstimationPeriod_", parameterEstimationPeriod_);
   adv.saveAttribute("correlationLengthFactor_", correlationLengthFactor_);
-  adv.saveAttribute("aeiTradeoff_", aeiTradeoff_);
   adv.saveAttribute("noiseFunction_", noiseFunction_);
+  adv.saveAttribute("criterion_", criterion_);
+  adv.saveAttribute("hasConverged_", hasConverged_);
+  adv.saveAttribute("criterionValues_", criterionValues_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -518,9 +488,27 @@ void EfficientGlobalOptimization::load(Advocate & adv)
   adv.loadAttribute("multiStartNumber_", multiStartNumber_);
   adv.loadAttribute("parameterEstimationPeriod_", parameterEstimationPeriod_);
   adv.loadAttribute("correlationLengthFactor_", correlationLengthFactor_);
-  adv.loadAttribute("aeiTradeoff_", aeiTradeoff_);
   if (adv.hasAttribute("noiseFunction_"))
     adv.loadAttribute("noiseFunction_", noiseFunction_);
+  if (adv.hasAttribute("criterion_"))
+    adv.loadAttribute("criterion_", criterion_);
+  else
+    // Files written before the criterion became pluggable hold the AEI trade
+    // off on the algorithm itself: it belongs to the default criterion now.
+    criterion_ = ExpectedImprovement();
+  if (adv.hasAttribute("aeiTradeoff_"))
+  {
+    Scalar legacyAEITradeoff = 0.0;
+    adv.loadAttribute("aeiTradeoff_", legacyAEITradeoff);
+    ExpectedImprovement * p_expectedImprovement = dynamic_cast<ExpectedImprovement *>(criterion_.getImplementation().get());
+    if (p_expectedImprovement != nullptr)
+      p_expectedImprovement->setAEITradeoff(legacyAEITradeoff);
+  }
+  if (adv.hasAttribute("hasConverged_"))
+    adv.loadAttribute("hasConverged_", hasConverged_);
+  if (adv.hasAttribute("criterionValues_"))
+    adv.loadAttribute("criterionValues_", criterionValues_);
+  criterion_.setNoiseFunction(noiseFunction_);
 }
 
 END_NAMESPACE_OPENTURNS

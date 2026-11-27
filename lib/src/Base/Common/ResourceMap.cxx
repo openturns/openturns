@@ -937,6 +937,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);
   addAsString("EfficientGlobalOptimization-DefaultOptimizationAlgorithm", "Cobyla");
 
+  // LowerConfidenceBound parameters //
+  addAsScalar("LowerConfidenceBound-DefaultConservativeFactor", 1.0);
+
   // LOLAVoronoi parameters //
   addAsScalar("LOLAVoronoi-HybridScoreTradeoff", 0.5);
   addAsBool("LOLAVoronoi-UseTruncatedDistribution", false);

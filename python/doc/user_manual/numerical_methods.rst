@@ -30,13 +30,20 @@ Refer to :ref:`optimization_algorithm`.
     Cobyla
     Dlib
     experimental.EfficientGlobalOptimization
+    experimental.EfficientGlobalOptimizationCriterion
+    experimental.EfficientGlobalOptimizationCriterionImplementation
+    experimental.ExpectedImprovement
     HiGHS
     Ipopt
+    experimental.LowerConfidenceBound
     MultiStart
     NLopt
     Pagmo
+    experimental.ProbabilityImprovement
+    experimental.PythonEfficientGlobalOptimizationCriterion
     SQP
     TNC
+    experimental.WatsonBarnesCriterion
 
 Non linear solvers
 ==================
