@@ -43,6 +43,7 @@ Refer to :ref:`optimization_algorithm`.
     experimental.PythonEfficientGlobalOptimizationCriterion
     SQP
     TNC
+    experimental.WatsonBarnesCriterion
 
 Non linear solvers
 ==================
