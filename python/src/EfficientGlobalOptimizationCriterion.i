@@ -46,8 +46,8 @@ class PythonEfficientGlobalOptimizationCriterion:
     The current state is pushed into the criterion before each call to
     `buildObjective`, and is available through
     `getGaussianProcessRegression`, `getInputSample`, `getOptimalValue`,
-    `getMinimization` and `getNoiseFunction`. The Gaussian process is the one of
-    the current iteration, so the usual route is
+    `getMinimization`, `getNoiseFunction` and `hasNoiseFunction`. The Gaussian
+    process is the one of the current iteration, so the usual route is
     :class:`~openturns.GaussianProcessConditionalCovariance`.
 
     The returned objective is always maximized, whatever the direction of the
@@ -123,6 +123,22 @@ class PythonEfficientGlobalOptimizationCriterion:
     def getNoiseFunction(self):
         """Noise variance function accessor."""
         return self._noiseFunction
+
+    def hasNoiseFunction(self):
+        """Whether the algorithm provided a noise variance function.
+
+        Returns
+        -------
+        hasNoise : bool
+            Whether the objective is noisy. The algorithm pushes an empty
+            function (output dimension 0) when the objective is noiseless, so
+            the dimension is the test that works whatever the implementation
+            of the function, including a function defined in Python.
+        """
+        return (
+            self._noiseFunction is not None
+            and self._noiseFunction.getOutputDimension() == 1
+        )
 
     def buildObjective(self):
         """Build the scalar function the algorithm maximizes."""

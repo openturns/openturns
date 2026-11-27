@@ -245,6 +245,69 @@ except Exception as exc:
 else:
     raise RuntimeError("getAEITradeoff must refuse a non-EI criterion")
 
+# the Python base class must expose the same predicate the C++ criteria use to
+# refuse a noisy objective, so a Python criterion can make the same decision
+# instead of reading the output dimension of the function by hand
+
+
+class NoiseProbeCriterion(otexp.PythonEfficientGlobalOptimizationCriterion):
+    seen = []
+
+    def buildObjective(self):
+        self.seen.append(
+            (
+                self.getGaussianProcessRegression() is not None,
+                self.getInputSample().getSize(),
+                self.getMinimization(),
+                self.hasNoiseFunction(),
+            )
+        )
+        return ot.PythonFunction(1, 1, lambda x: [0.0])
+
+
+noiseProbe = otexp.EfficientGlobalOptimization(problem, gprResult)
+noiseProbe.setMaximumCallsNumber(1)
+noiseProbe.setCorrelationLengthFactor(1e6)
+noiseProbe.setCriterion(
+    otexp.EfficientGlobalOptimizationCriterion(NoiseProbeCriterion())
+)
+noiseProbe.run()
+assert NoiseProbeCriterion.seen, "the criterion must be called once per enrichment"
+hasGp, designSize, isMinimization, hasNoise = NoiseProbeCriterion.seen[-1]
+assert hasGp and designSize == inputSample.getSize() and isMinimization and not hasNoise, (
+    NoiseProbeCriterion.seen[-1]
+)
+
+# with a noise function set on the algorithm, the predicate must see it
+noiseProbe.setNoiseFunction(ot.SymbolicFunction(["x"], ["0.04"]))
+noiseProbe.run()
+assert NoiseProbeCriterion.seen[-1][3] is True, NoiseProbeCriterion.seen[-1]
+
+# the criterion refuses it the way the C++ criteria do, instead of computing
+# against a reference value the noise model does not provide
+
+
+class RefusingCriterion(otexp.PythonEfficientGlobalOptimizationCriterion):
+    def buildObjective(self):
+        if self.hasNoiseFunction():
+            raise RuntimeError("a noisy objective is refused by this criterion")
+        return ot.PythonFunction(1, 1, lambda x: [0.0])
+
+
+refusingAlgo = otexp.EfficientGlobalOptimization(problem, gprResult)
+refusingAlgo.setMaximumCallsNumber(1)
+refusingAlgo.setCorrelationLengthFactor(1e6)
+refusingAlgo.setNoiseFunction(ot.SymbolicFunction(["x"], ["0.04"]))
+refusingAlgo.setCriterion(
+    otexp.EfficientGlobalOptimizationCriterion(RefusingCriterion())
+)
+try:
+    refusingAlgo.run()
+except Exception as exc:
+    assert "noisy objective" in str(exc), exc
+else:
+    raise RuntimeError("the Python criterion must be able to refuse a noisy objective")
+
 # a criterion returning a wrong-sized objective is refused before the solver runs
 
 
