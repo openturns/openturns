@@ -93,10 +93,20 @@ RegularGrid * RegularGrid::clone() const
   return new RegularGrid( *this );
 }
 
+Bool RegularGrid::operator == (const Mesh & rhs) const
+{
+  return Mesh::operator==(rhs);
+}
+
 Bool RegularGrid::operator == (const RegularGrid & rhs) const
 {
   const RegularGrid & lhs = *this;
   return (lhs.start_ == rhs.start_) && (lhs.step_ == rhs.step_) && (lhs.n_ == rhs.n_);
+}
+
+Bool RegularGrid::operator != (const Mesh & rhs) const
+{
+  return !operator==(rhs);
 }
 
 Bool RegularGrid::operator != (const RegularGrid & rhs) const

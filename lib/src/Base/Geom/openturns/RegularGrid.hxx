@@ -60,10 +60,12 @@ public:
 
   /** Comparison operator */
   using Mesh::operator ==;
+  Bool operator == (const Mesh & rhs) const;
   Bool operator == (const RegularGrid & rhs) const;
 
   /** Comparison operator */
   using Mesh::operator !=;
+  Bool operator != (const Mesh & rhs) const;
   Bool operator != (const RegularGrid & rhs) const;
 
   /** Start accessor */
