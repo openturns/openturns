@@ -134,7 +134,9 @@ void SteplemanWinarsky::run()
     for (UnsignedInteger j = 0; j < inputDimension; ++ j)
     {
       Scalar hPrevious = std::abs(initialStep_[j]);
-      // First centered quotient D(h) with actual denominator to account for round-off in x +/- h
+      // Compute the actual finite difference step.
+      // This is approximately twice the given finite difference step,
+      // but takes into account the rounding errors in x +/- h.
       Point xPlus(x_);
       Point xMinus(x_);
       xPlus[j] += hPrevious;
@@ -150,14 +152,29 @@ void SteplemanWinarsky::run()
       Scalar bestH = hPrevious;
       Scalar bestDelta = SpecFunc::Infinity;
       Bool hasFinite = std::isfinite(dPrevious);
-      if (hCurrent >= SpecFunc::MinScalar)
+      if (hCurrent < SpecFunc::MinScalar)
+      {
+        // Step underflows to zero: keep the initial step, the estimate is stable
+        bestDelta = 0.0;
+      }
+      else
       {
         xPlus = x_;
         xMinus = x_;
         xPlus[j] += hCurrent;
         xMinus[j] -= hCurrent;
+        // Compute the actual finite difference step.
+        // This is approximately twice the given finite difference step,
+        // but takes into account the rounding errors in x +/- h.
+        // It can vanish even for hCurrent > 0, e.g. x=1.0e16 and h=1.0
+        // where x + h and x - h both round to x.
         denominator = xPlus[j] - xMinus[j];
-        if (denominator > 0.0)
+        if (!(denominator > 0.0))
+        {
+          // x + h and x - h coincide in floating point: keep the previous step
+          bestDelta = 0.0;
+        }
+        else
         {
           fPlus = marginalI(xPlus);
           fMinus = marginalI(xMinus);
@@ -171,17 +188,10 @@ void SteplemanWinarsky::run()
             dPrevious = dCurrent;
             hasFinite = true;
           }
+          // Non-finite second quotient: keep bestDelta infinite so the
+          // iteration loop below shrinks the step until a finite estimate
+          // is found, consistently with the loop handling of non-finite quotients.
         }
-        else
-        {
-          bestH = hPrevious;
-          bestDelta = 0.0;
-        }
-      }
-      else
-      {
-        bestH = hPrevious;
-        bestDelta = 0.0;
       }
       // Coincident initial quotients: the estimate is already stable
       Bool hasConverged = (bestDelta == 0.0);
@@ -231,7 +241,8 @@ void SteplemanWinarsky::run()
         hPrevious = h;
         dPrevious = dCurrent;
         hasFinite = true;
-        // Successive quotients coincide: the estimate is stable, keep the current step
+        // Successive quotients coincide: the estimate is stable, keep the current step.
+        // There is no smaller step to gain accuracy from, so stop here as in the reference implementation.
         if (bestDelta == 0.0)
         {
           hasConverged = true;

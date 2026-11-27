@@ -70,7 +70,10 @@ print("h* = %.3e" % h_star)
 # We evaluate the centered finite difference error over a logarithmic
 # grid of steps and locate its minimum.
 def fd_error(h):
-    return abs((f([x[0] + h])[0] - f([x[0] - h])[0]) / (2.0 * h) - exact)
+    xp = x[0] + h
+    xm = x[0] - h
+    h_exact = xp - xm  # actual step, accounts for rounding errors in x +/- h
+    return abs((f([xp])[0] - f([xm])[0]) / h_exact - exact)
 
 
 number_of_points = 200
@@ -122,7 +125,13 @@ print("gradient at x =", fd_function.gradient(x))
 # Its inputs span very different scales (:math:`\epsilon \sim 10^{-2}`,
 # :math:`R, C \sim 10^9`), so a single scalar finite-difference step cannot
 # fit all directions: the algorithm selects one optimal step per direction.
-# We force a finite difference gradient for the illustration purpose as the function is symbolic.
+# We force a finite difference gradient for illustration purposes.
+# Indeed, in many particular cases, including the `PythonFunction`,
+# the exact gradient may not be known so that a finite difference
+# formula is used to approximate the gradient.
+# In the particular case of the Chaboche model,
+# however, the actual implementation is based on a `SymbolicFunction`.
+# Hence the default gradient is exact in this particular case.
 # We can see the gradient has a nan value and that probably indicates the chosen arbitrary
 # finite difference step value is not adapted for all the parameters of the model.
 cm = chaboche_model.ChabocheModel()
