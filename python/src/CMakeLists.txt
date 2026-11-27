@@ -242,7 +242,9 @@ ot_add_python_module(experimental experimental_module.i
                      EfficientGlobalOptimizationCriterionImplementation.i EfficientGlobalOptimizationCriterionImplementation_doc.i
                      EfficientGlobalOptimizationCriterion.i EfficientGlobalOptimizationCriterion_doc.i
                      ExpectedImprovement.i ExpectedImprovement_doc.i
+                     LowerConfidenceBound.i LowerConfidenceBound_doc.i
                      ProbabilityImprovement.i ProbabilityImprovement_doc.i
+                     WatsonBarnesCriterion.i WatsonBarnesCriterion_doc.i
                      ActiveLearningReliabilityFunctionImplementation.i ActiveLearningReliabilityFunctionImplementation_doc.i
                      ActiveLearningReliabilityFunction.i ActiveLearningReliabilityFunction_doc.i
                      ActiveLearningUFunction.i ActiveLearningUFunction_doc.i

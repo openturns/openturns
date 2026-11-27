@@ -35,6 +35,7 @@ Refer to :ref:`optimization_algorithm`.
     experimental.ExpectedImprovement
     HiGHS
     Ipopt
+    experimental.LowerConfidenceBound
     MultiStart
     NLopt
     Pagmo

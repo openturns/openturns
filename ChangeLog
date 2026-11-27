@@ -70,7 +70,7 @@
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
  * ActiveLearningReliabilityAlgorithm, ActiveLearningReliabilityResult, ActiveLearningReliabilityFunction, ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningGMMFunction, PythonActiveLearningReliabilityFunction (openturns.experimental)
- * EfficientGlobalOptimizationCriterion, EfficientGlobalOptimizationCriterionImplementation, ExpectedImprovement, ProbabilityImprovement, PythonEfficientGlobalOptimizationCriterion (openturns.experimental)
+ * EfficientGlobalOptimizationCriterion, EfficientGlobalOptimizationCriterionImplementation, ExpectedImprovement, LowerConfidenceBound, ProbabilityImprovement, PythonEfficientGlobalOptimizationCriterion (openturns.experimental)
 
 ==== API changes ====
  * EfficientGlobalOptimization: the enrichment criterion is now a parameter (setCriterion/getCriterion), the expected improvement by default; added getCriterionValues and getHasConverged, kept getExpectedImprovement and the AEI tradeoff accessors as forwarders

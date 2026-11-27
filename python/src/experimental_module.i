@@ -134,6 +134,7 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 %include EfficientGlobalOptimizationCriterionImplementation.i
 %include EfficientGlobalOptimizationCriterion.i
 %include ExpectedImprovement.i
+%include LowerConfidenceBound.i
 %include ProbabilityImprovement.i
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i

@@ -285,6 +285,9 @@
   <EfficientGlobalOptimization-DefaultParameterEstimationPeriod value_int="1"   />
   <EfficientGlobalOptimization-DefaultOptimizationAlgorithm     value_str="Cobyla" />
 
+  <!-- OT::LowerConfidenceBound parameters -->
+  <LowerConfidenceBound-DefaultConservativeFactor value_float="1.0" />
+
   <!-- OT::LOLAVoronoi parameters -->
   <LOLAVoronoi-HybridScoreTradeoff value_float="0.5" />
   <LOLAVoronoi-UseTruncatedDistribution value_bool="false" />
