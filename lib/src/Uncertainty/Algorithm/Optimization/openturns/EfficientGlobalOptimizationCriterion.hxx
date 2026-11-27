@@ -33,9 +33,9 @@ BEGIN_NAMESPACE_OPENTURNS
  * Handle of the enrichment criterion of the EfficientGlobalOptimization
  * algorithm. The implementation hierarchy carries the enrichment logic, this
  * handle gives it value semantics so the algorithm holds it by value, without
- * pointer members, null checks or manual persistence dispatch.
- * Concrete criteria (ExpectedImprovement today) convert implicitly to this
- * handle.
+ * pointer members, null checks or manual persistence dispatch. Concrete
+ * criteria, such as ExpectedImprovement or ProbabilityImprovement, convert
+ * implicitly to this handle.
  */
 class OT_API EfficientGlobalOptimizationCriterion
   : public TypedInterfaceObject<EfficientGlobalOptimizationCriterionImplementation>

@@ -38,6 +38,7 @@ Refer to :ref:`optimization_algorithm`.
     MultiStart
     NLopt
     Pagmo
+    experimental.ProbabilityImprovement
     experimental.PythonEfficientGlobalOptimizationCriterion
     SQP
     TNC
