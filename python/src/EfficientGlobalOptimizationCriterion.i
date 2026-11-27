@@ -35,6 +35,10 @@ class PythonEfficientGlobalOptimizationCriterion:
     """
     Allow one to override EfficientGlobalOptimizationCriterion from Python.
 
+    .. warning::
+        This class is experimental and likely to be modified in future releases.
+        To use it, import the ``openturns.experimental`` submodule.
+
     Notes
     -----
     You must overload `buildObjective`, which returns the scalar
