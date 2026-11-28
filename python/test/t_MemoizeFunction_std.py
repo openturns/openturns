@@ -153,3 +153,15 @@ assert_almost_equal(memoNC.gradient([2.0])[0, 0], 4.0, 1e-4, 1e-4)
 # constructor rewires centered finite differences of a PythonFunction
 memoPy = ot.MemoizeFunction(ot.PythonFunction(1, 1, lambda t: [t[0] ** 2]))
 assert_almost_equal(memoPy.gradient([2.0])[0, 0], 4.0, 1e-4, 1e-4)
+
+# draw methods must store history/cache, see issue #2659
+drawMemo = ot.MemoizeFunction(ot.SymbolicFunction("x", "sin(x)"))
+drawMemo.draw(0.0, 10.0, 5)
+assert drawMemo.getInputHistory().getSize() == 5, "draw history"
+assert drawMemo.getOutputHistory().getSize() == 5, "draw history"
+assert drawMemo.getInputCache().getSize() == 5, "draw cache"
+drawMemo.draw(0, 0, [0.0], 0.0, 10.0, 5)
+assert drawMemo.getInputHistory().getSize() == 10, "draw history"
+drawMemo2 = ot.MemoizeFunction(ot.SymbolicFunction(["x", "y"], ["x+y"]))
+drawMemo2.draw([0.0] * 2, [1.0] * 2, [5] * 2)
+assert drawMemo2.getInputHistory().getSize() == 25, "draw history"

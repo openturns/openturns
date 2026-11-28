@@ -137,6 +137,32 @@ public:
   /** Is it safe to call in parallel? */
   Bool isParallel() const override;
 
+  /** Draw methods must use the memoized evaluation, not the wrapped one (EvaluationProxy::draw delegates to the wrapped evaluation) */
+  Graph draw(const UnsignedInteger inputMarginal,
+             const UnsignedInteger outputMarginal,
+             const Point & centralPoint,
+             const Scalar xMin,
+             const Scalar xMax,
+             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
+             const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
+  Graph draw(const UnsignedInteger firstInputMarginal,
+             const UnsignedInteger secondInputMarginal,
+             const UnsignedInteger outputMarginal,
+             const Point & centralPoint,
+             const Point & xMin,
+             const Point & xMax,
+             const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
+             const GraphImplementation::LogScale scale = GraphImplementation::NONE,
+             const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled")) const override;
+  Graph draw(const Scalar xMin,
+             const Scalar xMax,
+             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
+             const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
+  Graph draw(const Point & xMin,
+             const Point & xMax,
+             const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
+             const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

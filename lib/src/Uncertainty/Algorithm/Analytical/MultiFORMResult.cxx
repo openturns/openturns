@@ -41,7 +41,8 @@ MultiFORMResult::MultiFORMResult(const FORMResultCollection & collection)
   : PersistentObject()
   , formResultCollection_(collection)
 {
-  // Nothing to do
+  if (collection.getSize() == 1)
+    eventProbability_ = collection[0].getEventProbability();
 }
 
 /* Virtual constructor */

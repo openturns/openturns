@@ -382,6 +382,47 @@ Bool MemoizeEvaluation::isParallel() const
   return false;
 }
 
+/* Draw methods: evaluate through the memoized operator, not the wrapped evaluation */
+Graph MemoizeEvaluation::draw(const UnsignedInteger inputMarginal,
+    const UnsignedInteger outputMarginal,
+    const Point & centralPoint,
+    const Scalar xMin,
+    const Scalar xMax,
+    const UnsignedInteger pointNumber,
+    const GraphImplementation::LogScale scale) const
+{
+  return EvaluationImplementation::draw(inputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
+}
+
+Graph MemoizeEvaluation::draw(const UnsignedInteger firstInputMarginal,
+    const UnsignedInteger secondInputMarginal,
+    const UnsignedInteger outputMarginal,
+    const Point & centralPoint,
+    const Point & xMin,
+    const Point & xMax,
+    const Indices & pointNumber,
+    const GraphImplementation::LogScale scale,
+    const Bool isFilled) const
+{
+  return EvaluationImplementation::draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale, isFilled);
+}
+
+Graph MemoizeEvaluation::draw(const Scalar xMin,
+    const Scalar xMax,
+    const UnsignedInteger pointNumber,
+    const GraphImplementation::LogScale scale) const
+{
+  return EvaluationImplementation::draw(xMin, xMax, pointNumber, scale);
+}
+
+Graph MemoizeEvaluation::draw(const Point & xMin,
+    const Point & xMax,
+    const Indices & pointNumber,
+    const GraphImplementation::LogScale scale) const
+{
+  return EvaluationImplementation::draw(xMin, xMax, pointNumber, scale);
+}
+
 /* Method save() stores the object through the StorageManager */
 void MemoizeEvaluation::save(Advocate & adv) const
 {

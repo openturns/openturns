@@ -92,17 +92,17 @@ RPM-based distributions
 -----------------------
 Add the repository corresponding to your operating system::
 
+    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_45/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/Fedora_44/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_43/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/16.0/science:openturns.repo -o /etc/zypp/repos.d/science-openturns.repo
-    curl https://download.opensuse.org/repositories/science:/openturns/Mageia_9/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/Mageia_10/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_45/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_44/repodata/repomd.xml.key
-    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_43/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/16.0/repodata/repomd.xml.key
-    rpm --import https://download.opensuse.org/repositories/science:/openturns/Mageia_9/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Mageia_10/repodata/repomd.xml.key
 
 The following packages are available:
 

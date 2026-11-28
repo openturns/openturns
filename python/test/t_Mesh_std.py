@@ -3,6 +3,7 @@
 import openturns as ot
 import openturns.testing as ott
 import math as m
+import os
 
 
 ot.PlatformInfo.SetNumericalPrecision(6)
@@ -218,3 +219,25 @@ assert (
 assert m1 != m2, "different meshes"
 assert not (m1 != m1), "same mesh"
 assert not (ot.Mesh(m1) != m1), "copy vs original"
+
+# Coverage for validity, degenerate simplices and import/export
+mesh = ot.Mesh([[0.0], [1.0], [2.0]], [[0, 1], [1, 2]])
+assert mesh.isValid()
+assert not ot.Mesh([[0.0], [1.0]], [[0, 1, 2]]).isValid()
+assert not ot.Mesh([[0.0], [1.0], [2.0]], [[0, 1]]).isValid()
+m1d = ot.Mesh([[1.0], [1.0]], [[0, 1]])
+assert m1d.checkPointInSimplexWithCoordinates([1.0], 0)[0]
+mesh2d = ot.IntervalMesher([2, 2]).build(ot.Interval([-1.0] * 2, [1.0] * 2))
+vtk_file = "test_mesh.vtk"
+vtk_file2 = "test_mesh2.vtk"
+mesh2d.exportToVTKFile(vtk_file)
+mesh2d.exportToVTKFile(vtk_file2, mesh2d.getSimplices())
+assert mesh2d.streamToVTKFormat() != ""
+os.remove(vtk_file)
+os.remove(vtk_file2)
+with ott.assert_raises(Exception):
+    ot.Mesh.ImportFromMSHFile("nonexistent.msh")
+empty_msh = "empty.msh"
+open(empty_msh, "w").close()
+assert ot.Mesh.ImportFromMSHFile(empty_msh).isEmpty()
+os.remove(empty_msh)

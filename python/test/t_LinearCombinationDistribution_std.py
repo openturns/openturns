@@ -628,3 +628,21 @@ assert levelSet.contains(analytical.getMean()), "mean outside level set"
 levelSetPoint, threshold = analytical.computeMinimumVolumeLevelSetWithThreshold(0.9)
 assert levelSetPoint.contains(analytical.getMean()), "mean outside level set"
 assert threshold > 0.0, "bad threshold"
+
+print("sample-weighted constructors and grid pdf")
+coll = [ot.Normal(), ot.Uniform()]
+w = ot.Sample([[1.0], [2.0]])
+lc1 = ot.LinearCombinationDistribution(coll, w)
+assert lc1.getDimension() == 1
+lc2 = ot.LinearCombinationDistribution(coll, w, [0.5])
+assert lc2.getMean()[0] == lc1.getMean()[0] + 0.5
+with ott.assert_raises(Exception):
+    ot.LinearCombinationDistribution(coll, ot.Sample([[1.0, 2.0]]))
+with ott.assert_raises(Exception):
+    ot.LinearCombinationDistribution(coll, ot.Sample([[1.0]]))
+d1d = ot.LinearCombinationDistribution([ot.Normal(), ot.Normal()], [1.0, 1.0])
+pdf_grid = d1d.computePDF(-2.0, 2.0, 5)
+assert pdf_grid[0].getSize() == 5
+assert d1d.computePDF([0.0]) > 0.0
+with ott.assert_raises(Exception):
+    ot.LinearCombinationDistribution([ot.Normal()] * 2, [1.0]).computePDF([0.0, 0.0])

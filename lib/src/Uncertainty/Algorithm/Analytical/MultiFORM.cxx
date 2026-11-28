@@ -379,8 +379,16 @@ void MultiFORM::run()
   }
 
   multiFORMResult_ = MultiFORMResult(formResultCollection);
-  if (designPointNumber > 1)
+  if (designPointNumber == 1)
   {
+    // A single design point: the multi-point approximation is plain FORM
+    multiFORMResult_.setEventProbability(formResultCollection[0].getEventProbability());
+  }
+  else if (designPointNumber > 1)
+  {
+    // The union approximation assumes the origin of the standard space is in the safe domain
+    if (formResultCollection[0].getIsStandardPointOriginInFailureSpace())
+      throw InvalidArgumentException(HERE) << "MultiFORM does not support event domains containing the origin of the standard space";
     betaCollection = Point(designPointNumber);// only the accepted candidates
     Collection<Point> directionCosines(designPointNumber);
     for (UnsignedInteger i = 0; i < designPointNumber; ++ i)
@@ -390,13 +398,39 @@ void MultiFORM::run()
       const Scalar sign = standardEventI.getOperator()(-1.0, 1.0) ? 1.0 : -1.0;
       const Point standardSpaceDesignPoint(formResultCollection[i].getStandardSpaceDesignPoint());
       const Point currentStandardGradient(sign * (standardEventI.getImplementation()->getFunction().gradient(standardSpaceDesignPoint) * Point(1, 1.0)));
-      directionCosines[i] = 1.0 / currentStandardGradient.norm() * currentStandardGradient;
+      const Scalar gradientNorm = currentStandardGradient.norm();
+      if (gradientNorm > 0.0)
+        directionCosines[i] = 1.0 / gradientNorm * currentStandardGradient;
+      else
+      {
+        // The direction cannot be recovered from a vanishing gradient: use the normalized design point instead
+        const Scalar beta = formResultCollection[i].getHasoferReliabilityIndex();
+        if (beta > 0.0)
+          directionCosines[i] = 1.0 / beta * standardSpaceDesignPoint;
+        else
+          directionCosines[i] = Point(standardSpaceDesignPoint.getDimension(), 0.0);
+      }
       betaCollection[i] = formResultCollection[i].getHasoferReliabilityIndex();
     }
     CovarianceMatrix cov(designPointNumber);
     for (UnsignedInteger i = 0; i < designPointNumber; ++ i)
       for (UnsignedInteger j = 0; j < i; ++ j)
         cov(i, j) = directionCosines[i].dot(directionCosines[j]);
+
+    // Regularize C as in SystemFORM
+    Scalar cumulatedScaling = 0.0;
+    const Scalar startingScaling = ResourceMap::GetAsScalar("SystemFORM-StartingScaling");
+    const Scalar maximalScaling = ResourceMap::GetAsScalar("SystemFORM-MaximalScaling");
+    Scalar scaling = startingScaling;
+    while (!cov.isPositiveDefinite())
+    {
+      cumulatedScaling += scaling;
+      for (UnsignedInteger index = 0; index < designPointNumber; ++index)
+        cov(index, index) += scaling;
+      scaling *= 2.0;
+      if (cumulatedScaling >= maximalScaling)
+        throw InvalidArgumentException(HERE) << "Could not regularize, scaling up to " << cumulatedScaling << " was not enough";
+    }
 
     const Scalar eventProbability = Normal(Point(designPointNumber), cov).computeComplementaryCDF(betaCollection);
     multiFORMResult_.setEventProbability(eventProbability);

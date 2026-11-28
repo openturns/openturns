@@ -1327,6 +1327,22 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumMod
   Scalar nextEigenValue = nextEigenVector.norm();
   if (!std::isfinite(nextEigenValue))
     throw InvalidArgumentException(HERE) << "Cannot compute eigen value due to nan/inf values";
+  // The starting vector may lie in the nullspace (eg [[1, -1], [-1, 1]] with [1, 1]): try the canonical basis instead
+  for (UnsignedInteger k = 0; (k < dimension) && !(nextEigenValue > 0.0); ++k)
+  {
+    currentEigenVector = Point(dimension, 0.0);
+    currentEigenVector[k] = 1.0;
+    nextEigenVector = symVectProd(currentEigenVector);
+    nextEigenValue = nextEigenVector.norm();
+    if (!std::isfinite(nextEigenValue))
+      throw InvalidArgumentException(HERE) << "Cannot compute eigen value due to nan/inf values";
+  }
+  if (!(nextEigenValue > 0.0))
+  {
+    // Zero matrix
+    maximumModule = 0.0;
+    return true;
+  }
   maximumModule = nextEigenValue / std::sqrt(1.0 * dimension);
   Bool found = false;
   Scalar precision = 0.0;

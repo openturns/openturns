@@ -91,3 +91,44 @@ for form_result in result2.getFORMResultCollection():
     ott.assert_almost_equal(beta, 4.0, 1e-2, 1e-2)
     print("standard space design points=", form_result.getStandardSpaceDesignPoint())
     print("Hasofer reliability indexes=", beta)
+
+# gh #3451: a single design point must return the FORM probability (not -1)
+f3 = ot.SymbolicFunction(["x1", "x2"], ["x1 + x2 + 3"])
+X3 = ot.RandomVector(ot.Normal(2))
+event3 = ot.ThresholdEvent(ot.CompositeRandomVector(f3, X3), ot.LessOrEqual(), 0.0)
+solver3 = ot.Cobyla()
+solver3.setStartingPoint([0.1, 0.2])
+algo3 = ot.MultiFORM(solver3, event3)
+algo3.run()
+result3 = algo3.getResult()
+print("result3=", result3)
+pf_multi3 = result3.getEventProbability()
+n_design_pts3 = len(result3.getFORMResultCollection())
+print("n design points:", n_design_pts3)
+ott.assert_almost_equal(pf_multi3, 0.0169477, 1e-4, 1e-4)
+assert n_design_pts3 == 1, "should get 1 design point"
+
+# gh #3451: two opposite design points with the origin in the safe domain
+f4 = ot.SymbolicFunction(["x1", "x2"], ["x1^2 - 6.25"])
+X4 = ot.RandomVector(ot.Normal(2))
+event4 = ot.ThresholdEvent(ot.CompositeRandomVector(f4, X4), ot.GreaterOrEqual(), 0.0)
+solver4 = ot.Cobyla()
+solver4.setStartingPoint([0.1, 0.2])
+algo4 = ot.MultiFORM(solver4, event4)
+algo4.setMaximumDesignPointsNumber(4)
+algo4.run()
+result4 = algo4.getResult()
+print("result4=", result4)
+pf_multi4 = result4.getEventProbability()
+n_design_pts4 = len(result4.getFORMResultCollection())
+print("n design points:", n_design_pts4)
+ott.assert_almost_equal(pf_multi4, 0.0124193, 1e-4, 1e-4)
+assert n_design_pts4 == 2, "should get 2 design points"
+
+# gh #3451: origin in the failure domain with several design points is rejected explicitly
+event5 = ot.ThresholdEvent(ot.CompositeRandomVector(f4, X4), ot.LessOrEqual(), 0.0)
+solver5 = ot.Cobyla()
+solver5.setStartingPoint([0.1, 0.2])
+algo5 = ot.MultiFORM(solver5, event5)
+with ott.assert_raises(TypeError):
+    algo5.run()

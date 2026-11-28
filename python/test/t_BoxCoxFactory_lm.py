@@ -48,3 +48,20 @@ rtol = 1e-2
 atol = 5e-3
 ott.assert_almost_equal(myBoxCox.getLambda(), lamb, rtol, atol)
 ott.assert_almost_equal(result.getCoefficients(), beta, rtol, atol)
+
+# Coverage for factory accessors and error paths
+assert str(factory) != ""
+assert factory.getOptimizationAlgorithm().getClassName() != ""
+factory.setOptimizationAlgorithm(ot.Cobyla())
+assert factory.getOptimizationStartingPoint().getDimension() == 1
+factory.setOptimizationStartingPoint([0.5])
+with ott.assert_raises(Exception):
+    factory.setOptimizationStartingPoint([0.5, 0.5])
+with ott.assert_raises(Exception):
+    factory.build(ot.Sample())
+with ott.assert_raises(Exception):
+    factory.build(ot.Sample(5, 1), [1.0, 2.0])
+with ott.assert_raises(Exception):
+    factory.build(ot.Sample([[0.0]] * 5))
+with ott.assert_raises(Exception):
+    factory.buildWithLM(ot.Sample(), outputSample, shift)

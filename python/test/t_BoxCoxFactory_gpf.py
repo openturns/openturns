@@ -52,3 +52,11 @@ ott.assert_almost_equal(
 ott.assert_almost_equal(
     result.getCovarianceModel().getAmplitude(), [0.00460823], 1.0e-6, 1.0e-6
 )
+
+# Coverage for GPF/GLM error paths
+with ott.assert_raises(Exception):
+    factory.buildWithGPF(ot.Sample(), outputSample, covarianceModel, basis, shift)
+with ott.assert_raises(Exception):
+    factory.buildWithGPF(inputSample, ot.Sample(5, 1), covarianceModel, basis, shift)
+with ott.assert_raises(Exception):
+    factory.buildWithGLM(ot.Sample(), outputSample, covarianceModel, basis, shift)

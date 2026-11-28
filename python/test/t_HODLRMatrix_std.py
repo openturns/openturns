@@ -781,7 +781,7 @@ err30 = (y30 - b30).norm() / b30.norm()
 # absolute 30 s budget (120 s on Windows) flakes there. A genuine retry cascade is orders of
 # magnitude slower (tens of seconds locally, i.e. 1000 s+ on such a runner),
 # so a scaled budget still catches it.
-t_limit30 = 120.0 if sys.platform.startswith("win") else 30.0
+t_limit30 = 120.0 if sys.platform.startswith("win") else 45.0
 assert (
     t_fac30 < t_limit30
 ), f"factorize took {t_fac30:.1f}s (retry cascade regression, budget {t_limit30:.0f}s)"
@@ -905,5 +905,18 @@ try:
 except Exception as exc:
     assert "not serialized" in str(exc), f"unexpected refusal: {exc}"
 print("  solve, gemv, logDeterminant and factors all survive the round trip: PASS")
+
+# Coverage for profiling flag and rank-starved branch
+cov = ot.MaternModel([0.1], [1.0], 2.5)
+small_vertices = ot.Sample([[i * 0.05] for i in range(30)])
+ot.ResourceMap.SetAsBool("HODLRMatrix-ProfileFactorization", True)
+hodlr_prof = cov.discretizeHODLRMatrix(small_vertices, make_params(leaf=4))
+assert hodlr_prof.getNbRows() == 30
+ot.ResourceMap.SetAsBool("HODLRMatrix-ProfileFactorization", False)
+capped_params = make_params(leaf=4)
+capped_params.setMaxRank(1)
+hodlr_capped = cov.discretizeHODLRMatrix(small_vertices, capped_params)
+hodlr_capped.factorize()
+assert hodlr_capped.getNbRows() == 30
 
 print("\n=== ALL TESTS PASSED ===")

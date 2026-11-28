@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -66,3 +67,14 @@ print(matrix3.__str__())
 # print "log(|det|)=", value, ", sign=", sign
 value = matrix3.computeDeterminant()
 print("det=", value)
+
+# gh #3451: the power iteration starting vector may lie in the nullspace
+nullspace_matrix = ot.SymmetricMatrix(2)
+nullspace_matrix[0, 0] = 1.0
+nullspace_matrix[1, 0] = -1.0
+nullspace_matrix[1, 1] = 1.0
+ott.assert_almost_equal(
+    nullspace_matrix.computeLargestEigenValueModule(), 2.0, 1e-6, 1e-6
+)
+zero_matrix = ot.SymmetricMatrix(2)
+ott.assert_almost_equal(zero_matrix.computeLargestEigenValueModule(), 0.0, 0.0, 0.0)

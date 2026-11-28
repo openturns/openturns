@@ -317,6 +317,32 @@ try:
 finally:
     ot.ResourceMap.SetAsScalar("SpecFunc-LauricellaTolerance", lauricellaTolerance)
 
+# Coverage for SpecFunc incomplete/dawson/faddeeva paths
+ott.assert_almost_equal(
+    ot.SpecFunc.IncompleteBeta(2.0, 3.0, 0.5),
+    ot.SpecFunc.RegularizedIncompleteBeta(2.0, 3.0, 0.5) * ot.SpecFunc.Beta(2.0, 3.0),
+    1e-12,
+    0.0,
+)
+ott.assert_almost_equal(
+    ot.SpecFunc.IncompleteGamma(2.0, 1.0),
+    ot.SpecFunc.RegularizedIncompleteGamma(2.0, 1.0) * ot.SpecFunc.Gamma(2.0),
+    1e-12,
+    0.0,
+)
+assert ot.SpecFunc.IncompleteGammaInverse(2.0, 1.0) > 0.0
+assert ot.SpecFunc.IncompleteBetaInverse(2.0, 3.0, 1.0) > 0.0
+assert ot.SpecFunc.Dawson(0.5) > 0.0
+assert ot.SpecFunc.Dawson(1.0 + 2.0j) != 0j
+assert ot.SpecFunc.Faddeeva(1.0 + 0.0j) != 0j
+assert ot.SpecFunc.FaddeevaIm(1.0) != 0.0
+assert ot.SpecFunc.Ei(1.0) > 0.0
+assert abs(ot.SpecFunc.LogGamma1p(0.1)) >= 0.0
+assert math.isfinite(ot.SpecFunc.LogBesselK(0.0, 1.0))
+assert math.isfinite(ot.SpecFunc.LogBesselK(1.5, 1.0))
+assert math.isfinite(ot.SpecFunc.LogGamma(100.0))
+assert math.isfinite(ot.SpecFunc.IGamma1pm1(0.2))
+
 # A series stopped at its degree limit without convergence must not be
 # reported as a valid value: the caller has to use its fallback.
 lauricellaMaximumDegree = ot.ResourceMap.GetAsUnsignedInteger(

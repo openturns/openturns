@@ -231,3 +231,65 @@ with ott.assert_raises(Exception):
     d4 + ot.Point([1.0, 2.0])
 with ott.assert_raises(Exception):
     ot.Matrix(2, 3) * d4
+
+# Coverage for Distribution/DistributionImplementation forwarders
+d = ot.Normal(0.0, 1.0)
+assert (d + 1.0).getMean()[0] == 1.0
+assert (1.0 + ot.Normal()).getMean()[0] == 1.0
+assert (d - 0.5).getMean()[0] == -0.5
+assert (1.0 - ot.Normal()).getMean()[0] == 1.0
+assert (d * 2.0).getStandardDeviation()[0] == 2.0
+assert (2.0 * ot.Normal()).getStandardDeviation()[0] == 2.0
+assert (d / 2.0).getStandardDeviation()[0] == 0.5
+assert (-ot.Normal()).getMean()[0] == 0.0
+assert (ot.Normal() ** 2).getDimension() == 1
+for op in ["cos", "sin", "tan", "cosh", "sinh", "tanh", "exp", "sqr", "cbrt", "abs"]:
+    getattr(d, op)()
+with ott.assert_raises(Exception):
+    ot.Normal() + ot.Normal(2)
+with ott.assert_raises(Exception):
+    ot.Normal() - ot.Normal(2)
+with ott.assert_raises(Exception):
+    ot.Dirac([2.0]) / ot.Dirac([0.0])
+assert (ot.Dirac([2.0]) / ot.Dirac([2.0])).getMean()[0] == 1.0
+assert d.getCholesky()[0, 0] == 1.0
+ott.assert_almost_equal(ot.Normal(2).getPearsonCorrelation(), ot.CorrelationMatrix(2))
+assert d.getSampleByInversion(5).getSize() == 5
+assert d.getSampleByQMC(5).getSize() == 5
+for meth in ["getPDF", "getCDF", "getComplementaryCDF", "getQuantile",
+             "getSurvivalFunction", "getInverseSurvivalFunction", "getDDF"]:
+    assert getattr(d, meth)().getInputDimension() == 1
+assert d.computeInverseSurvivalFunction(0.5)[0] == d.computeQuantile(0.5)[0]
+pois = ot.Poisson(2.0)
+assert abs(pois.computeGeneratingFunction(0.5)) > 0.0
+assert abs(pois.computeLogGeneratingFunction(0.5)) >= 0.0
+assert pois.computeGeneratingFunction(complex(0.5, 0.1)) != 0.0
+assert d.computeComplementaryCDF([0.0]) == 0.5
+assert d.computeSurvivalFunction([0.0]) == 0.5
+pdf_grid = d.computePDF(-2.0, 2.0, 5)
+assert len(pdf_grid) == 2 and pdf_grid[0].getSize() == 5
+assert len(d.computeLogPDF(-2.0, 2.0, 5)) == 2
+assert len(d.computeCDF(-2.0, 2.0, 5)) == 2
+assert len(d.computeComplementaryCDF(-2.0, 2.0, 5)) == 2
+assert d.computePDFGradient(ot.Sample([[0.0]])).getSize() == 1
+assert d.computeQuantile(0.9, True)[0] == -d.computeQuantile(0.9)[0]
+assert d.computeScalarQuantile(0.9) == d.computeQuantile(0.9)[0]
+coll, thr = d.computeMinimumVolumeLevelSetCollectionWithThreshold([0.5])
+assert len(coll) == 1 and len(thr) == 1
+assert ot.Normal(2).computeConditionalPDF(0.0, [0.0]) > 0.0
+assert ot.Normal(2).computeSequentialConditionalPDF([0.0, 0.0])[0] > 0.0
+assert len(d.drawPDF(5).getDrawables()) > 0
+assert len(d.drawLogPDF(5).getDrawables()) > 0
+assert d.drawMarginalPDFs().getNbRows() == 1
+assert d.getMoment(2)[0] > 0.0
+ott.assert_almost_equal(d.getCentralMoment(2), [1.0])
+ott.assert_almost_equal(d.getInverseCholesky(), ot.TriangularMatrix([[1.0]]))
+ott.assert_almost_equal(d.getCorrelation(), ot.CorrelationMatrix(1))
+# Roughness sampling paths
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-SmallDimensionRoughness", 0)
+assert d.getRoughness() > 0.0
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-SmallDimensionRoughness", 2)
+ot.ResourceMap.SetAsString("Distribution-RoughnessSamplingMethod", "QuasiMonteCarlo")
+assert d.getRoughness() > 0.0
+ot.ResourceMap.SetAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo")
+assert d.computeDDF([0.0])[0] == 0.0
