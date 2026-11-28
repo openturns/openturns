@@ -102,6 +102,11 @@ Thus, :math:`\hat{\gamma}_n` satisfies the relation:
 
 under the constraint :math:`\gamma \leq \min x_i`.
 
+If the profile log-likelihood has no stationary point below
+:math:`\min x_i`, or if the stationary point has a lower log-likelihood
+than the boundary, the local likelihood estimator is not defined and the
+modified moments estimator is used instead.
+
 **Least squares method estimator:**
 
 The parameter :math:`\gamma` is numerically optimized by non-linear least-squares:

@@ -84,40 +84,108 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sampl
   const Scalar std = sample.computeStandardDeviation()[0];
   if (!std::isfinite(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of local maximum likelihood.";
-  const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
-  Scalar step = std * std::sqrt(quantileEpsilon);
+  // The local maximum likelihood estimator of the shift parameter gamma is a
+  // stationary point of the profile log-likelihood, i.e. a zero of the
+  // LogNormalFactoryLMLEParameterConstraint function, see
+  // A. Clifford Cohen & Betty Jones Whitten (1980), "Estimation in the
+  // Three-Parameter Lognormal Distribution", Journal of the American
+  // Statistical Association, 75:370, 399-404.
+  // The bracketing strategy follows scipy.stats.lognorm.fit: the right end of
+  // the bracket is anchored just below the sample minimum, then it is moved
+  // to the left until the constraint function takes a negative value, and the
+  // left end is moved to the left until the signs differ. The profile
+  // log-likelihood at the stationary point is finally compared with the one
+  // at the anchored right end: the stationary point is kept only if it
+  // improves the log-likelihood, otherwise the local maximum likelihood
+  // estimator is declared undefined and the caller falls back to the modified
+  // moments estimator. This comparison discards the spurious stationary
+  // points that the constraint function admits far on the left, where it
+  // asymptotically vanishes and changes sign because of roundoff errors.
+  const UnsignedInteger size = sample.getSize();
   const Scalar xMin = sample.getMin()[0];
-  Scalar right = xMin - quantileEpsilon;
+  const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   const LogNormalFactoryLMLEParameterConstraint constraint(sample);
   MemoizeFunction f(constraint);
   f.enableCache();
-
-  Scalar constraintRight = f(Point(1, right))[0];
-  Scalar left = right - step;
-  Scalar constraintLeft = f(Point(1, left))[0];
-  // First, the bracketing interval. We should find a change of sign within [Xmin-sigma, Xmin], else use another estimator
-  while ((constraintLeft < 0.0) == (constraintRight < 0.0) && (step < std::sqrt(SpecFunc::MaxScalar)))
+  // Right end of the bracket: the closest representable value below the
+  // sample minimum, backed off by quantileEpsilon when it leads to
+  // non-finite quantities (e.g. xMin == 0)
+  Scalar gamma0 = std::nextafter(xMin, -SpecFunc::MaxScalar);
+  if (!(gamma0 < xMin)) throw InvalidArgumentException(HERE) << "Error: unable to find a shift parameter below the sample minimum";
+  Scalar f0 = f(Point(1, gamma0))[0];
+  Point sums0(constraint.computeMaximumLikelihoodSums(gamma0));
+  Bool finite0 = std::isfinite(f0);
+  for (UnsignedInteger i = 0; i < 4; ++i) finite0 = finite0 && std::isfinite(sums0[i]);
+  if (!finite0)
   {
-    right = left;
-    constraintRight = constraintLeft;
-    left -= step;
-    constraintLeft = f(Point(1, left))[0];
-    step *= 2.0;
+    gamma0 = xMin - quantileEpsilon;
+    if (!(gamma0 < xMin)) throw InvalidArgumentException(HERE) << "Error: unable to find a shift parameter below the sample minimum";
+    f0 = f(Point(1, gamma0))[0];
+    sums0 = constraint.computeMaximumLikelihoodSums(gamma0);
+    finite0 = std::isfinite(f0);
+    for (UnsignedInteger i = 0; i < 4; ++i) finite0 = finite0 && std::isfinite(sums0[i]);
+    if (!finite0) throw InvalidArgumentException(HERE) << "Error: unable to evaluate the local maximum likelihood estimator";
   }
-  // If we are unable to bracket the gamma parameter
-  if ((constraintLeft < 0.0) == (constraintRight < 0.0)) throw InvalidArgumentException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
-  // Second, the bisection
-  // Solve the constraint equation
+  const Scalar mu0 = sums0[1] / size;
+  const Scalar sigma20 = sums0[2] / size - mu0 * mu0;
+  if (!(sigma20 > 0.0)) throw InvalidArgumentException(HERE) << "Error: the variance local maximum likelihood estimator should be positive, here sigma2=" << sigma20;
+  // First, move the right end of the bracket to the left until the constraint
+  // function takes a negative value. The right end stays anchored to the
+  // sample minimum instead of sliding with the interval.
+  Scalar delta = xMin - gamma0;
+  Scalar rbrack = gamma0;
+  Scalar fRbrack = f0;
+  while (fRbrack >= 0.0)
+  {
+    delta *= 2.0;
+    rbrack = xMin - delta;
+    if (!std::isfinite(rbrack) || !(rbrack < xMin) || !(delta < std::sqrt(SpecFunc::MaxScalar)))
+    {
+      // The profile log-likelihood increases towards the sample minimum: no
+      // interior stationary point exists, the local maximum likelihood
+      // estimator is not defined
+      throw InvalidArgumentException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
+    }
+    fRbrack = f(Point(1, rbrack))[0];
+    if (!std::isfinite(fRbrack))
+    {
+      // Same situation as above
+      throw InvalidArgumentException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
+    }
+  }
+  // Second, move the left end of the bracket to the left until the signs differ
+  Scalar lbrack = rbrack - 1.0;
+  const Scalar nextDown = std::nextafter(rbrack, -SpecFunc::MaxScalar);
+  if (nextDown < lbrack) lbrack = nextDown;
+  Scalar fLbrack = f(Point(1, lbrack))[0];
+  if (!std::isfinite(fLbrack)) throw InvalidArgumentException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
+  Scalar delta2 = 2.0 * (rbrack - lbrack);
+  while ((fLbrack < 0.0) == (fRbrack < 0.0))
+  {
+    lbrack = rbrack - delta2;
+    delta2 *= 2.0;
+    if (!std::isfinite(lbrack) || !(delta2 < std::sqrt(SpecFunc::MaxScalar))) throw InvalidArgumentException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
+    fLbrack = f(Point(1, lbrack))[0];
+    if (!std::isfinite(fLbrack)) throw InvalidArgumentException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
+  }
+  // Third, solve the constraint equation
   const Brent solver(ResourceMap::GetAsScalar("LogNormalFactory-AbsolutePrecision"), ResourceMap::GetAsScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("LogNormalFactory-MaximumIteration"));
   // Gamma estimate
-  const Scalar gamma = solver.solve(f, 0.0, left, right, constraintLeft, constraintRight);
-  // Third, the final estimates
-  const UnsignedInteger size = sample.getSize();
-  const Point sums(constraint.computeMaximumLikelihoodSums(gamma));
-  const Scalar mu = sums[1] / size;
-  const Scalar sigma2 = sums[2] / size - mu * mu;
-  if (!(sigma2 > 0.0)) throw InvalidArgumentException(HERE) << "Error: the variance local maximum likelihood estimator should be positive, here sigma2=" << sigma2;
-  return LogNormal(mu, std::sqrt(sigma2), gamma);
+  const Scalar gammaStar = solver.solve(f, 0.0, lbrack, rbrack, fLbrack, fRbrack);
+  // Fourth, compare the profile log-likelihood at the stationary point with
+  // the one at the boundary gamma0 and keep the stationary point only if it
+  // improves the log-likelihood. Up to an additive constant independent of
+  // gamma, ll(gamma) = -S1(gamma) - n/2 * log(sigma2(gamma)).
+  const Point sumsStar(constraint.computeMaximumLikelihoodSums(gammaStar));
+  const Scalar muStar = sumsStar[1] / size;
+  const Scalar sigma2Star = sumsStar[2] / size - muStar * muStar;
+  if (!(sigma2Star > 0.0)) throw InvalidArgumentException(HERE) << "Error: the variance local maximum likelihood estimator should be positive, here sigma2=" << sigma2Star;
+  const Scalar deltaLL = -(sumsStar[1] - sums0[1]) - 0.5 * size * std::log(sigma2Star / sigma20);
+  // A stationary point with a lower log-likelihood than the boundary is a
+  // spurious root due to roundoff errors far on the left: the local maximum
+  // likelihood estimator is not defined
+  if (!(deltaLL > 0.0)) throw InvalidArgumentException(HERE) << "Error: unable to find a stationary point of the profile log-likelihood. The local maximum likelihood estimator is not defined";
+  return LogNormal(muStar, std::sqrt(sigma2Star), gammaStar);
 }
 
 struct LogNormalFactoryMMEParameterConstraint

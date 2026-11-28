@@ -27,34 +27,46 @@ using namespace OT::Test;
 int main(int, char *[])
 {
   TESTPREAMBLE;
-  OStream fullprint(std::cout);
 
   try
   {
-    LogNormal distribution(1.5, 2.5, -1.5);
-    fullprint << "Distribution          =" << distribution << std::endl;
-    UnsignedInteger size = 10000;
-    Sample sample(distribution.getSample(size));
+    const LogNormal distribution(1.5, 2.5, -1.5);
+    const UnsignedInteger size = 10000;
+    const Sample sample(distribution.getSample(size));
     LogNormalFactory factory;
+    // Default estimator: local likelihood maximization
     Distribution estimatedDistribution(factory.build(sample));
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+    assert_almost_equal(estimatedDistribution.getParameter(), Point({1.4653145870837043, 2.503644452403846, -1.4997189373077306}));
     estimatedDistribution = factory.build(sample, 0);
-    fullprint << "Estimated distribution (local likelihood)=" << estimatedDistribution << std::endl;
+    assert_almost_equal(estimatedDistribution.getParameter(), Point({1.4653145870837043, 2.503644452403846, -1.4997189373077306}));
     estimatedDistribution = factory.build(sample, 1);
-    fullprint << "Estimated distribution (modified moments)=" << estimatedDistribution << std::endl;
+    assert_almost_equal(estimatedDistribution.getParameter(), Point({2.4277587012992106, 2.0424293078874363, -1.5037171697567402}));
     estimatedDistribution = factory.build(sample, 2);
-    fullprint << "Estimated distribution (moments)=" << estimatedDistribution << std::endl;
+    assert_almost_equal(estimatedDistribution.getParameter(), Point({4.641674507180531, 1.4215894511254732, -195.15997062681078}));
     estimatedDistribution = factory.build();
-    fullprint << "Default distribution=" << estimatedDistribution << std::endl;
+    assert_almost_equal(estimatedDistribution.getParameter(), Point({0.0, 1.0, 0.0}));
     estimatedDistribution = factory.build(distribution.getParameter());
-    fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
-    LogNormal estimatedLogNormal(factory.buildAsLogNormal(sample));
-    fullprint << "LogNormal          =" << distribution << std::endl;
-    fullprint << "Estimated logNormal=" << estimatedLogNormal << std::endl;
-    estimatedLogNormal = factory.buildAsLogNormal();
-    fullprint << "Default logNormal=" << estimatedLogNormal << std::endl;
-    estimatedLogNormal = factory.buildAsLogNormal(distribution.getParameter());
-    fullprint << "LogNormal from parameters=" << estimatedLogNormal << std::endl;
+    assert_almost_equal(estimatedDistribution.getParameter(), Point({1.5, 2.5, -1.5}));
+    const LogNormal estimatedLogNormal(factory.buildAsLogNormal(sample));
+    assert_almost_equal(estimatedLogNormal.getParameter(), Point({1.4653145870837043, 2.503644452403846, -1.4997189373077306}));
+    assert_almost_equal(factory.buildAsLogNormal().getParameter(), Point({0.0, 1.0, 0.0}));
+    assert_almost_equal(factory.buildAsLogNormal(distribution.getParameter()).getParameter(), Point({1.5, 2.5, -1.5}));
+
+    // Local likelihood with no interior stationary point: the profile
+    // log-likelihood increases towards the sample minimum, so the local
+    // likelihood estimator is undefined and the modified moments estimator
+    // is used instead (a spurious far-left root is discarded)
+    Sample degenerateSample(6, 1);
+    degenerateSample[0][0] = 1.5;
+    degenerateSample[1][0] = 3.0;
+    degenerateSample[2][0] = 10.0;
+    degenerateSample[3][0] = 15.0;
+    degenerateSample[4][0] = 23.0;
+    degenerateSample[5][0] = 59.0;
+    const LogNormal estimatedDegenerate(factory.buildAsLogNormal(degenerateSample, 0));
+    assert_almost_equal(estimatedDegenerate.getParameter(), Point({2.872298307618225, 0.7688215878291091, -5.172820948624551}));
+    // The default estimator takes the same path
+    assert_almost_equal(factory.buildAsLogNormal(degenerateSample).getParameter(), Point({2.872298307618225, 0.7688215878291091, -5.172820948624551}));
   }
   catch (TestFailed & ex)
   {
